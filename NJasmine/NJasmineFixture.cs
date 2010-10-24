@@ -9,7 +9,7 @@ namespace NJasmine
 {
     public abstract class NJasmineFixture
     {
-        public abstract void BuildTests(Action action);
+        public abstract void RootDescribe(Action action);
 
         public void describe(string description, Action action)
         {
@@ -31,14 +31,19 @@ namespace NJasmine
         {
         }
 
-        public ExpectActual<T> expect<T>(T t)
+        public NegateableExpectActual<T> expect<T>(T t)
         {
-            return new ExpectActual<T>() { to = t.Should<T, T>().Be };
+            return new NegateableExpectActual<T>() { toBe = t.Should<T, T>().Be, not = new ExpectActual<T>() { toBe = t.Should<T,T>().Not.Be } };
         }
 
         public class ExpectActual<T>
         {
-            public Be<T> to;
+            public Be<T> toBe;
+        }
+
+        public class NegateableExpectActual<T> : ExpectActual<T>
+        {
+            public ExpectActual<T> not;
         }
     }
 }
