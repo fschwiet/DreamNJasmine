@@ -20,7 +20,9 @@ describe("player", delegate()
     forEach(delegate()
     {
         return new Song[] {new Song(), new OggSong(), new Mp3Song()};
-    }, delegate(Song song) {
+    }, 
+    delegate(Song song) 
+    {
 
         it("should be able to play a song", delegate()
         {
