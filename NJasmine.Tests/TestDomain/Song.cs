@@ -4,4 +4,14 @@
     {
         
     }
+
+    public class Mp3Song : Song
+    {
+        
+    }
+
+    public class OggSong : Song
+    {
+        
+    }    
 }
