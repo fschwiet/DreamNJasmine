@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Should.Fluent;
+using Should.Fluent.Model;
 
 namespace NJasmine
 {
@@ -27,6 +29,16 @@ namespace NJasmine
 
         public void it(string description, Action action)
         {
+        }
+
+        public ExpectActual<T> expect<T>(T t)
+        {
+            return new ExpectActual<T>() { to = t.Should<T, T>().Be };
+        }
+
+        public class ExpectActual<T>
+        {
+            public Be<T> to;
         }
     }
 }
