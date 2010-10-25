@@ -2,48 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NJasmine.Core;
+using NUnit.Framework;
 using Should.Fluent;
 using Should.Fluent.Model;
+using Assert = Should.Core.Assertions.Assert;
 
 namespace NJasmine
 {
-    public abstract class NJasmineFixture
+    public abstract class NJasmineFixture : ExpectationsFixture
     {
-        public abstract void RootDescribe(Action action);
-
-        public void describe(string description, Action action)
+        INJasmineFixtureVisitor _visitor = new NJasmineFixtureVisitor();
+        
+        public void SetVisitor(INJasmineFixtureVisitor visitor)
         {
+            _visitor = visitor;
         }
 
-        public void beforeEach(Action action)
+        public void ClearVisitor()
         {
+            _visitor = new NJasmineFixtureVisitor();
         }
 
-        public void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
+        public abstract void Tests();
+
+
+        protected void describe(string description, Action action)
         {
+            _visitor.visitDescribe(description, action);
         }
 
-        public void afterEach(Action action)
+        protected void beforeEach(Action action)
         {
+            _visitor.visitBeforeEach(action);
         }
 
-        public void it(string description, Action action)
+        protected void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
         {
+            throw new NotImplementedException();
         }
 
-        public NegateableExpectActual<T> expect<T>(T t)
+        protected void afterEach(Action action)
         {
-            return new NegateableExpectActual<T>() { toBe = t.Should<T, T>().Be, not = new ExpectActual<T>() { toBe = t.Should<T,T>().Not.Be } };
+            _visitor.visitAfterEach(action);
         }
 
-        public class ExpectActual<T>
+        protected void it(string description, Action action)
         {
-            public Be<T> toBe;
+            _visitor.visitIt(description, action);
         }
 
-        public class NegateableExpectActual<T> : ExpectActual<T>
-        {
-            public ExpectActual<T> not;
-        }
     }
 }

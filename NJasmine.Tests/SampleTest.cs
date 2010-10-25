@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NJasmine;
 using NJasmine.Tests.TestDomain;
+using NUnit.Framework;
 
-namespace NJasmine.Tests
+namespace NJasmineTests
 {
-    public class Class1 : NJasmineFixture
+    public class SampleTest : NJasmineFixture
     {
-        public override void RootDescribe(Action action)
+        public override void Tests()
         {
 
 
@@ -28,8 +30,8 @@ describe("player", delegate()
         {
             player.Play(song);
 
-            expect(player.CurrentSong).toBe.SameAs(song);
-            expect(player.CurrentSong).not.toBe.SameAs(new Song());
+            expect(player.CurrentSong).to.Equal(song);
+            expect(player.CurrentSong).not.to.Equal(new Song());
         });
 
         describe("when song has been paused", delegate()
@@ -42,12 +44,12 @@ describe("player", delegate()
 
             it("should indicate the song is currently paused", delegate()
             {
-                expect(player.IsPlaying).toBe.SameAs(false);
+                expect(player.IsPlaying).to.Equal(false);
             });
 
             it("should not indicate a current song", delegate()
             {
-                expect(player.CurrentSong).toBe.Null();
+                expect(player.CurrentSong).to.Be.Null();
             });
 
             describe("Resume", delegate()
@@ -56,8 +58,8 @@ describe("player", delegate()
 
                 it("should indicate the song is playing", delegate()
                 {
-                    expect(player.IsPlaying).toBe.SameAs(true);
-                    expect(player.CurrentSong).toBe.SameAs(song);
+                    expect(player.IsPlaying).to.Equal(true);
+                    expect(player.CurrentSong).to.Equal(song);
                 });
             });
         });
