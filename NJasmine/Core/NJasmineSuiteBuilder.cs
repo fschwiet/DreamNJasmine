@@ -14,6 +14,7 @@ namespace NJasmine.Core
         }
 
         TestSuite _outerTest = null;
+        TestPosition _nextPosition = null;
 
         public bool CanBuildFrom(Type type)
         {
@@ -27,7 +28,8 @@ namespace NJasmine.Core
             var rootTest = new TestSuite(type.Name);
 
             _outerTest = rootTest;
-            
+            _nextPosition = new TestPosition(0);
+
             instance.SetVisitor(this);
 
             instance.Tests();
@@ -41,30 +43,40 @@ namespace NJasmine.Core
 
         public void visitDescribe(string description, Action action)
         {
+            TestPosition thisPosition = _nextPosition;
+
             var currentOuter = _outerTest;
-            _outerTest = new TestSuite(description);
+            _outerTest = new NJasmineTestSuite(currentOuter.TestName.Name, description, thisPosition);
+
+            _nextPosition = thisPosition.GetFirstChildPosition();
 
             action();
 
             currentOuter.Add(_outerTest);
             _outerTest = currentOuter;
+
+            _nextPosition = thisPosition.GetNextSiblingPosition();
         }
 
         public void visitBeforeEach(Action action)
         {
+            _nextPosition = _nextPosition.GetNextSiblingPosition();
         }
 
         public void visitAfterEach(Action action)
         {
+            _nextPosition = _nextPosition.GetNextSiblingPosition();
         }
 
         public void visitIt(string description, Action action)
         {
-            var testMethod = new NUnitTestMethod(action.Method);
+            var testMethod = new NJasmineTestMethod(action.Method, _nextPosition);
 
             testMethod.TestName.Name = description;
 
             _outerTest.Add(testMethod);
+
+            _nextPosition = _nextPosition.GetNextSiblingPosition();
         }
     }
 }

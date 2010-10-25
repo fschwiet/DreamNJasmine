@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NJasmine</RootNamespace>
     <AssemblyName>NJasmine</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,14 +49,17 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\INJasmineFixtureVisitor.cs" />
+    <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineFixtureVisitor.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
+    <Compile Include="Core\NJasmineTestMethod.cs" />
+    <Compile Include="Core\NJasmineTestSuite.cs" />
+    <Compile Include="Core\TestPosition.cs" />
     <Compile Include="ExpectationsFixture.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,7 +13,7 @@ namespace NJasmine
     public abstract class NJasmineFixture : ExpectationsFixture
     {
         INJasmineFixtureVisitor _visitor = new NJasmineFixtureVisitor();
-        
+
         public void SetVisitor(INJasmineFixtureVisitor visitor)
         {
             _visitor = visitor;
@@ -26,7 +26,6 @@ namespace NJasmine
 
         public abstract void Tests();
 
-
         protected void describe(string description, Action action)
         {
             _visitor.visitDescribe(description, action);
@@ -37,14 +36,14 @@ namespace NJasmine
             _visitor.visitBeforeEach(action);
         }
 
-        protected void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
-        {
-            throw new NotImplementedException();
-        }
-
         protected void afterEach(Action action)
         {
             _visitor.visitAfterEach(action);
+        }
+
+        protected void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
+        {
+            throw new NotImplementedException();
         }
 
         protected void it(string description, Action action)

@@ -32,15 +32,15 @@ namespace NJasmineTests.Core
 
             var rootTest = sut.BuildFrom(typeof (TestOnlyUsingDescribeAndIt));
 
-            var firstTest = rootTest.Tests[0] as Test;
-            var firstDescribe = rootTest.Tests[1] as Test;
-            var firstInnerTest = firstDescribe.Tests[0] as Test;
-            var secondInnerTest = firstDescribe.Tests[1] as Test;
-            var secondDescribe = firstDescribe.Tests[2] as Test;
-            var firstInnerInnerTest = secondDescribe.Tests[0] as Test;
-            var secondInnerInnerTest = secondDescribe.Tests[1] as Test;
+            var firstTest = rootTest.Tests[0] as ITest;
+            var firstDescribe = rootTest.Tests[1] as ITest;
+            var firstInnerTest = firstDescribe.Tests[0] as ITest;
+            var secondInnerTest = firstDescribe.Tests[1] as ITest;
+            var secondDescribe = firstDescribe.Tests[2] as ITest;
+            var firstInnerInnerTest = secondDescribe.Tests[0] as ITest;
+            var secondInnerInnerTest = secondDescribe.Tests[1] as ITest;
 
-            Action<Test, string> expectHasName = delegate(Test test, string name)
+            Action<ITest, string> expectHasName = delegate(ITest test, string name)
             {
                 expect(test.TestName.Name).to.Equal(name);
             };
@@ -55,5 +55,33 @@ namespace NJasmineTests.Core
             expectHasName(secondInnerInnerTest, "second inner-inner test");
         }
 
+        [Test]
+        public void can_load_tests_with_correct_locations()
+        {
+            var sut = new NJasmineSuiteBuilder();
+
+            var rootTest = sut.BuildFrom(typeof(TestOnlyUsingDescribeAndIt));
+
+            var firstTest = rootTest.Tests[0] as INJasmineTest;
+            var firstDescribe = rootTest.Tests[1] as INJasmineTest;
+            var firstInnerTest = firstDescribe.Tests[0] as INJasmineTest;
+            var secondInnerTest = firstDescribe.Tests[1] as INJasmineTest;
+            var secondDescribe = firstDescribe.Tests[2] as INJasmineTest;
+            var firstInnerInnerTest = secondDescribe.Tests[0] as INJasmineTest;
+            var secondInnerInnerTest = secondDescribe.Tests[1] as INJasmineTest;
+
+            Action<INJasmineTest, TestPosition> expectHasPosition = delegate(INJasmineTest test, TestPosition position)
+            {
+                expect(test.Position.Coordinates).to.Equal(position.Coordinates);
+            };
+
+            expectHasPosition(firstTest, new TestPosition(0));
+            expectHasPosition(firstDescribe, new TestPosition(1));
+            expectHasPosition(firstInnerTest, new TestPosition(1,0));
+            expectHasPosition(secondInnerTest, new TestPosition(1,1));
+            expectHasPosition(secondDescribe, new TestPosition(1,2));
+            expectHasPosition(firstInnerInnerTest, new TestPosition(1,2,0));
+            expectHasPosition(secondInnerInnerTest, new TestPosition(1,2,1));
+        }
     }
 }
