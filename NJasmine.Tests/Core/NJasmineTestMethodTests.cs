@@ -109,19 +109,4 @@ namespace NJasmineTests.Core
         }
 
     }
-
-    public class ConfigurableNJasmineFixture : NJasmineFixture
-    {
-        Action _action;
-
-        public void Configure(Action action)
-        {
-            _action = action;
-        }
-
-        public override void Tests()
-        {
-            _action();
-        }
-    }
 }

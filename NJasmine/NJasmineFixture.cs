@@ -44,7 +44,7 @@ namespace NJasmine
 
         protected void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         protected void it(string description, Action action)
