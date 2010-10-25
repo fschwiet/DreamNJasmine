@@ -37,5 +37,26 @@ namespace NJasmine.Core
         {
             return String.Join(", ", Coordinates.Select(c => c.ToString()).ToArray());
         }
+
+        public bool IsInScopeFor(TestPosition testPosition)
+        {
+            var thisCoordinateCount = this.Coordinates.Count();
+
+            if (thisCoordinateCount > testPosition.Coordinates.Count())
+                return false;
+
+            for(var i = 0; i < thisCoordinateCount; i++)
+            {
+                if (this.Coordinates.Skip(i).First() != testPosition.Coordinates.Skip(i).First())
+                {
+                    if (i == thisCoordinateCount - 1)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\INJasmineFixturePositionVisitor.cs" />
     <Compile Include="Core\INJasmineFixtureVisitor.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineFixtureVisitor.cs" />
