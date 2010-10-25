@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Core\NJasmineFixtureTest.cs" />
     <Compile Include="Core\NJasmineSuiteBuilderTests.cs" />
+    <Compile Include="Core\NJasmineTestMethodTests.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
     <Compile Include="TestOnlyUsingDescribeAndIt.cs" />
     <Compile Include="SampleTest.cs" />

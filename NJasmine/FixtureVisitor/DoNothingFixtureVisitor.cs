@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace NJasmine.Core
+namespace NJasmine.FixtureVisitor
 {
-    public class NJasmineFixtureVisitor : INJasmineFixtureVisitor
+    public class DoNothingFixtureVisitor : INJasmineFixtureVisitor
     {
         public void visitDescribe(string description, Action action)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine.Core;
+using NJasmine.FixtureVisitor;
 using NUnit.Framework;
 using Should.Fluent;
 using Should.Fluent.Model;
@@ -12,7 +13,7 @@ namespace NJasmine
 {
     public abstract class NJasmineFixture : ExpectationsFixture
     {
-        INJasmineFixtureVisitor _visitor = new NJasmineFixtureVisitor();
+        INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
 
         public void SetVisitor(INJasmineFixtureVisitor visitor)
         {
@@ -21,7 +22,7 @@ namespace NJasmine
 
         public void ClearVisitor()
         {
-            _visitor = new NJasmineFixtureVisitor();
+            _visitor = new DoNothingFixtureVisitor();
         }
 
         public abstract void Tests();

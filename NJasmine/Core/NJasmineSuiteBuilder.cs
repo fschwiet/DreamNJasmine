@@ -1,4 +1,5 @@
 ﻿using System;
+using NJasmine.FixtureVisitor;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 

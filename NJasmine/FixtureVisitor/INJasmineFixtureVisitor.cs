@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NJasmine.Core
+namespace NJasmine.FixtureVisitor
 {
     public interface INJasmineFixtureVisitor
     {

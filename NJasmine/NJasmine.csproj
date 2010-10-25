@@ -53,14 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\INJasmineFixturePositionVisitor.cs" />
-    <Compile Include="Core\INJasmineFixtureVisitor.cs" />
+    <Compile Include="FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
+    <Compile Include="FixtureVisitor\INJasmineFixtureVisitor.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
-    <Compile Include="Core\NJasmineFixtureVisitor.cs" />
+    <Compile Include="FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\TestPosition.cs" />
+    <Compile Include="FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="ExpectationsFixture.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

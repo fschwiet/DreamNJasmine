@@ -1,4 +1,5 @@
 ﻿using System;
+using NJasmine.FixtureVisitor;
 
 namespace NJasmine.Core
 {
@@ -17,9 +18,11 @@ namespace NJasmine.Core
         {
             TestPosition thisPosition = _nextPosition;
 
-            _nextPosition = thisPosition.GetFirstChildPosition();
-
-            _visitor.visitDescribe(description, action, thisPosition);
+            _visitor.visitDescribe(description, delegate()
+            {
+                _nextPosition = thisPosition.GetFirstChildPosition();
+                action();
+            }, thisPosition);
 
             _nextPosition = thisPosition.GetNextSiblingPosition();
         }
