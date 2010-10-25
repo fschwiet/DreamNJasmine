@@ -5,7 +5,7 @@ using NUnit.Core.Extensibility;
 
 namespace NJasmine.Core
 {
-    [NUnitAddin(Description = "NJasmine")]
+    [NUnitAddin(Description = "NJasmine", Type = ExtensionType.Core)]
     public class NJasmineSuiteBuilder : IAddin, ISuiteBuilder, INJasmineFixturePositionVisitor
     {
         public bool Install(IExtensionHost host)
