@@ -1,28 +1,48 @@
 ﻿using System;
 using NJasmine;
 using NJasmine.Core;
+using NJasmineTests.FailingFixtures;
 using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineSuiteBuilderTests : ExpectationsFixture
+    public class NJasmineSuiteBuilder_suite_building : ExpectationsFixture
     {
-        [Test]
-        public void doesnt_handle_most_test_fixtures()
+        public class TestOnlyUsingDescribeAndIt : NJasmineFixture
         {
-            var sut = new NJasmineSuiteBuilder();
+            public override void Tests()
+            {
+                it("first test", delegate() { });
 
-            expect(sut.CanBuildFrom(typeof (Object))).to.Equal(false);
+                describe("first describe", delegate()
+                {
+                    it("first inner test", delegate() { });
+
+                    it("second inner test", delegate() { });
+
+                    describe("second describe", delegate()
+                    {
+                        it("first inner-inner test", delegate() { });
+
+                        it("second inner-inner test", delegate() { });
+                    });
+                });
+            }
         }
 
         [Test]
-        public void will_handle_subclasses_of_NJasmineFixture()
+        public void suite_has_name()
         {
+            Type suiteType = typeof(TestOnlyUsingDescribeAndIt);
+
             var sut = new NJasmineSuiteBuilder();
 
-            expect(sut.CanBuildFrom(typeof(SampleTest))).to.Equal(true);
+            var rootTest = sut.BuildFrom(suiteType);
+
+            expect(rootTest.TestName.Name).to.Equal(suiteType.Name);
+            expect(rootTest.TestName.FullName).to.Equal(suiteType.Namespace + "." + suiteType.Name);
         }
 
         [Test]
@@ -82,6 +102,27 @@ namespace NJasmineTests.Core
             expectHasPosition(secondDescribe, new TestPosition(1,2));
             expectHasPosition(firstInnerInnerTest, new TestPosition(1,2,0));
             expectHasPosition(secondInnerInnerTest, new TestPosition(1,2,1));
+        }
+
+
+        [Test]
+        public void can_load_test_with_error_in_describe()
+        {
+            var sut = new NJasmineSuiteBuilder();
+
+            var rootTest = sut.BuildFrom(typeof(ExceptionThrownInFirstDescribe));
+
+            var brokenDescribe = rootTest.Tests[1] as NJasmineInvalidTestSuite;
+        }
+
+        [Test]
+        public void can_load_test_with_error_in_outer_scope()
+        {
+            var sut = new NJasmineSuiteBuilder();
+
+            var rootTest = sut.BuildFrom(typeof(ExceptionThrownAtTopLevel));
+
+            var broken = rootTest as NJasmineInvalidTestSuite;
         }
     }
 }

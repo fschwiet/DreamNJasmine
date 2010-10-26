@@ -10,9 +10,9 @@ using NUnit.Framework;
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineTestMethodTests : ExpectationsFixture
+    public class NJasmineTestMethod_can_run_a_test : ExpectationsFixture
     {
-        public class AFixture : NJasmineFixture
+        private class AFixture : NJasmineFixture
         {
             public List<string> Observations
             {
@@ -49,7 +49,7 @@ namespace NJasmineTests.Core
                         Observe("skipped describe");
                     });
 
-                    describe("skipped it", delegate()
+                    it("skipped it", delegate()
                     {
                         Observe("skipped it");
                     });
@@ -62,7 +62,7 @@ namespace NJasmineTests.Core
                         {
                             Observe("11");
                         });
-                        
+
                         beforeEach(delegate()
                         {
                             Observe("8");
@@ -94,7 +94,7 @@ namespace NJasmineTests.Core
         }
 
         [Test]
-        public void can_run_a_test()
+        public void can_be_ran()
         {
             AFixture fixture = new AFixture();
 
