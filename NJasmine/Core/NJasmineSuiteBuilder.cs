@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NJasmine.FixtureVisitor;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
@@ -35,25 +36,34 @@ namespace NJasmine.Core
 
             _fixture.SetVisitor(new VisitorPositionAdapter(this));
 
+            Exception exception = null;
+
             try
             {
                 _fixture.Tests();
             }
             catch (Exception e)
             {
-                rootTest.Add(new NJasmineInvalidTestSuite("Exception at top level", e));
+                exception = e;
+            }
 
-                return rootTest;
+            if (exception == null)
+            {
+                foreach (var sibling in _siblingTests)
+                    rootTest.Add(sibling);
+            }
+            else
+            {
+                rootTest.Add(new NJasmineInvalidTestSuite("Exception at top level", exception));
             }
 
             _fixture.ClearVisitor();
 
-            foreach (var sibling in _siblingTests)
-                rootTest.Add(sibling);
-
             _siblingTests = null;
             _parentTest = null;
             _fixture = null;
+
+            NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootTest);
 
             return rootTest;
         }
