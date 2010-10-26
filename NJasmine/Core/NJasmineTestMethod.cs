@@ -22,18 +22,24 @@ namespace NJasmine.Core
             _fixture = fixture;
             _position = position;
         }
+        
+        public override void  RunTestMethod(TestResult testResult)
+        {
+            this.Run();
+            testResult.Success();
+        }
 
         public static NJasmineTestMethod Create(NJasmineFixture fixture, TestPosition position)
         {
             NJasmineTestMethod result = null;
 
+            //  this method never gets ran
             Action testMethod = delegate()
             {
-                result.Run();
             };
 
             result = new NJasmineTestMethod(testMethod.Method, fixture, position);
-
+            
             return result;
         }
 

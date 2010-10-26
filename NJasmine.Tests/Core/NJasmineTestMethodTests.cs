@@ -100,8 +100,6 @@ namespace NJasmineTests.Core
 
             var sut = NJasmineTestMethod.Create(fixture, new TestPosition(1, 3, 2));
 
-            fixture.SetVisitor(new VisitorPositionAdapter(sut));
-
             sut.Run();
 
             expect(fixture.Observations.ToArray()).to.Equal(
