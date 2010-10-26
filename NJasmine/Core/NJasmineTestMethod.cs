@@ -13,7 +13,7 @@ namespace NJasmine.Core
         readonly NJasmineFixture _fixture;
         readonly TestPosition _position;
 
-        List<Action> _setups = new List<Action>();
+        VisitorPositionAdapter _visitorPositionAdapter;
         List<Action> _teardowns = new List<Action>();
         Action _nextStep;
 
@@ -50,7 +50,8 @@ namespace NJasmine.Core
 
         public void Run()
         {
-            _fixture.SetVisitor(new VisitorPositionAdapter(this));
+            _visitorPositionAdapter = new VisitorPositionAdapter(this);
+            _fixture.SetVisitor(_visitorPositionAdapter);
 
             _nextStep = null;
             _fixture.Tests();
@@ -82,14 +83,23 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
+                _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.beforeEach));
                 action();
+                _fixture.SetVisitor(_visitorPositionAdapter);
             }
         }
 
         public void visitAfterEach(Action action, TestPosition position)
         {
             if (position.IsInScopeFor(_position))
-                _teardowns.Add(action);
+            {
+                _teardowns.Add(delegate()
+                {
+                    _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
+                    action();
+                    _fixture.SetVisitor(_visitorPositionAdapter);
+                });
+            }
         }
 
         public void visitIt(string description, Action action, TestPosition position)
@@ -99,7 +109,12 @@ namespace NJasmine.Core
                 if (_nextStep != null)
                     throw new Exception("Unexpectedly found target test twice.");
 
-                _nextStep = action;
+                _nextStep = delegate()
+                {
+                    _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
+                    action();
+                    _fixture.SetVisitor(_visitorPositionAdapter);
+                };
             }
         }
     }

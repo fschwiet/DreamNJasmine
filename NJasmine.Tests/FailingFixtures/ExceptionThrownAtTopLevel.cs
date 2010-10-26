@@ -1,7 +1,9 @@
 ﻿using NJasmine;
+using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
+    [Explicit, Category("FailureExpected")]
     public class ExceptionThrownAtTopLevel : NJasmineFixture
     {
         public override void Tests()

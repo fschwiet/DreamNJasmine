@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="FixtureVisitor\DontVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixtureVisitor.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

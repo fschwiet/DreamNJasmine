@@ -55,10 +55,14 @@
     <Compile Include="Core\NJasmineInvalidTestSuiteTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_building.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
+    <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownAtTopLevel.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownInFirstDescribe.cs" />
+    <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
+    <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
+    <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

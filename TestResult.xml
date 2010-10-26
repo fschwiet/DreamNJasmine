@@ -1,15 +1,142 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name=".\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="1" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-25" time="20:38:24">
+<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="21" errors="3" failures="2" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-26" time="00:34:53">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name=".\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.076" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Failure" success="False" time="0.568" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.059" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Failure" success="False" time="0.548" asserts="0">
         <results>
-          <test-suite type="TestFixture" name="ShellTestEnumerator" executed="True" result="Success" success="True" time="0.046" asserts="0">
+          <test-suite type="Namespace" name="Core" executed="True" result="Success" success="True" time="0.485" asserts="0">
             <results>
-              <test-case name="NJasmineTests.ShellTestEnumerator.FailingTests" executed="True" result="Success" success="True" time="0.021" asserts="0" />
+              <test-suite type="TestFixture" name="NJasmineInvalidTestSuiteTests" executed="True" result="Success" success="True" time="0.249" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.NJasmineInvalidTestSuiteTests.Report_test_failure_with_reason" executed="True" result="Success" success="True" time="0.201" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="NJasmineSuiteBuilder_suite_building" executed="True" result="Success" success="True" time="0.051" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_test_with_error_in_describe" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_test_with_error_in_outer_scope" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_tests_with_correct_locations" executed="True" result="Success" success="True" time="0.032" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_tests_with_correct_names" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.suite_has_name" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="NJasmineSuiteBuilder_suite_discovery" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.doesnt_handle_most_test_fixtures" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.will_handle_subclasses_of_NJasmineFixture" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.will_not_handle_nonpublic_subclasses_of_NJasmineFixture" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="NJasmineTestMethod_can_detect_reentrancy" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.NJasmineTestMethod_can_detect_reentrancy.can_detect_reentrance_during_it" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="NJasmineTestMethod_can_run_a_test" executed="True" result="Success" success="True" time="0.120" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.NJasmineTestMethod_can_run_a_test.can_be_ran" executed="True" result="Success" success="True" time="0.119" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="TestPositionTests" executed="True" result="Success" success="True" time="0.033" asserts="0">
+                <results>
+                  <test-case name="NJasmineTests.Core.TestPositionTests.GetFirstChildPosition" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="NJasmineTests.Core.TestPositionTests.GetNextSiblingPosition" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="NJasmineTests.Core.TestPositionTests.IsInScopeFor" executed="True" result="Success" success="True" time="0.010" asserts="0" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="Namespace" name="FailingFixtures" executed="True" result="Failure" success="False" time="0.057" asserts="0">
+            <results>
+              <test-suite type="TestSuite" name="ExceptionThrownAtTopLevel" executed="True" result="Failure" success="False" time="0.016" asserts="0">
+                <results>
+                  <test-case name="NJasmine.Core.NJasmineInvalidTestSuite.&lt;.ctor&gt;b__0" executed="True" result="Failure" success="False" time="0.000" asserts="0">
+                    <failure>
+                      <message><![CDATA[Exception at top level: Attempted to divide by zero.]]></message>
+                      <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ExceptionThrownAtTopLevel.cs:line 23
+at NJasmine.Core.NJasmineSuiteBuilder.BuildFrom(Type type) in c:\src\NJasmine\NJasmine\Core\NJasmineSuiteBuilder.cs:line 40
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestSuite" name="ExceptionThrownInFirstDescribe" executed="True" result="Failure" success="False" time="0.003" asserts="0">
+                <results>
+                  <test-case name="NJasmine.Core.NJasmineInvalidTestSuite.&lt;.ctor&gt;b__0" executed="True" result="Failure" success="False" time="0.000" asserts="0">
+                    <failure>
+                      <message><![CDATA[Exception within describe: Attempted to divide by zero.]]></message>
+                      <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.ExceptionThrownInFirstDescribe.<Tests>b__1() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ExceptionThrownInFirstDescribe.cs:line 20
+at NJasmine.Core.VisitorPositionAdapter.<>c__DisplayClass1.<visitDescribe>b__0() in c:\src\NJasmine\NJasmine\FixtureVisitor\VisitorPositionAdapter.cs:line 24
+at NJasmine.Core.NJasmineSuiteBuilder.visitDescribe(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineSuiteBuilder.cs:line 75
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;Create&gt;b__0" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;Create&gt;b__0" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestSuite" name="ReenterDuringAfterEach" executed="True" result="Failure" success="False" time="0.027" asserts="0">
+                <results>
+                  <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;Create&gt;b__0" executed="True" result="Error" success="False" time="0.010" asserts="0">
+                    <failure>
+                      <message><![CDATA[System.InvalidOperationException : Called it() within afterEach.]]></message>
+                      <stack-trace><![CDATA[at NJasmine.FixtureVisitor.DontVisitor.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\FixtureVisitor\DontVisitor.cs:line 42
+at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 52
+at NJasmineTests.FailingFixtures.ReenterDuringAfterEach.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ReenterDuringAfterEach.cs:line 17
+at NJasmine.Core.NJasmineTestMethod.<>c__DisplayClass4.<visitAfterEach>b__2() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 99
+at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 70
+at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
+at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestSuite" name="ReentersDuringBeforeEach" executed="True" result="Failure" success="False" time="0.003" asserts="0">
+                <results>
+                  <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;Create&gt;b__0" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                    <failure>
+                      <message><![CDATA[System.InvalidOperationException : Called it() within beforeEach.]]></message>
+                      <stack-trace><![CDATA[at NJasmine.FixtureVisitor.DontVisitor.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\FixtureVisitor\DontVisitor.cs:line 42
+at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 52
+at NJasmineTests.FailingFixtures.ReentersDuringBeforeEach.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ReentersDuringBeforeEach.cs:line 17
+at NJasmine.Core.NJasmineTestMethod.visitBeforeEach(Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 87
+at NJasmine.Core.VisitorPositionAdapter.visitBeforeEach(Action action) in c:\src\NJasmine\NJasmine\FixtureVisitor\VisitorPositionAdapter.cs:line 32
+at NJasmine.NJasmineFixture.beforeEach(Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 37
+at NJasmineTests.FailingFixtures.ReentersDuringBeforeEach.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ReentersDuringBeforeEach.cs:line 15
+at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 57
+at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
+at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestSuite" name="ReentersDuringIt" executed="True" result="Failure" success="False" time="0.003" asserts="0">
+                <results>
+                  <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;Create&gt;b__0" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                    <failure>
+                      <message><![CDATA[System.InvalidOperationException : Called it() within it.]]></message>
+                      <stack-trace><![CDATA[at NJasmine.FixtureVisitor.DontVisitor.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\FixtureVisitor\DontVisitor.cs:line 42
+at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 52
+at NJasmineTests.FailingFixtures.ReentersDuringIt.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ReentersDuringIt.cs:line 17
+at NJasmine.Core.NJasmineTestMethod.<>c__DisplayClass8.<visitIt>b__6() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 115
+at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 64
+at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
+at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestSuite" name="SampleTest" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0">
+            <results>
+              <test-suite type="TestSuite" name="player" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0" />
             </results>
           </test-suite>
         </results>
