@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineSuiteBuilder_suite_building_with_loops : ExpectationsFixture
+    public class build_and_run_suite_with_loops : ExpectationsFixture
     {
         public class has_test_in_loop : ObservableNJasmineFixture
         {

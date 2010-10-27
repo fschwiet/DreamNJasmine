@@ -16,17 +16,23 @@ namespace NJasmineTests.Core
             expect(sut.CanBuildFrom(typeof (Object))).to.Equal(false);
         }
 
+        public class SomeNestedClass : NJasmineFixture
+        {
+            public override void Tests() { }
+        }
+
+
         [Test]
         public void will_handle_subclasses_of_NJasmineFixture()
         {
             var sut = new NJasmineSuiteBuilder();
 
+            expect(sut.CanBuildFrom(typeof(SomeNestedClass))).to.Equal(true);
             expect(sut.CanBuildFrom(typeof(SampleTest))).to.Equal(true);
         }
 
-        abstract class SomeAbstractClass
+        public abstract class SomeAbstractClass : NJasmineFixture
         {
-            
         }
 
         [Test]

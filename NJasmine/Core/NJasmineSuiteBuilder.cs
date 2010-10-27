@@ -21,10 +21,10 @@ namespace NJasmine.Core
             if (!type.IsSubclassOf(typeof (NJasmineFixture)))
                 return false;
 
-            if (!type.IsPublic)
+            if (!(type.IsPublic || type.IsNestedPublic))
                 return false;
 
-            if (type.GetConstructor(new Type[0]) == null)
+            if (type.GetConstructor(new Type[0]) == null)  // expression really can be false, don't believe Resharper
                 return false;
 
             return true;
