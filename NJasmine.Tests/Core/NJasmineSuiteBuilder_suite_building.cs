@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NJasmine;
 using NJasmine.Core;
 using NJasmineTests.FailingFixtures;
-using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -11,34 +10,6 @@ namespace NJasmineTests.Core
     [TestFixture]
     public class NJasmineSuiteBuilder_suite_building : ExpectationsFixture
     {
-        public void LoadTestsByPosition(Dictionary<TestPosition, INJasmineTest> tests, ITest test)
-        {
-            if (test is INJasmineTest)
-            {
-                tests[(test as INJasmineTest).Position] = test as INJasmineTest;
-            }
-
-            if (test is TestSuite)
-            {
-                foreach (ITest childTest in (test as TestSuite).Tests)
-                {
-                    LoadTestsByPosition(tests, childTest);
-                }
-            }
-        }
-
-        Dictionary<TestPosition, INJasmineTest> GetTestsByPosition<TFixture>()
-        {
-            var sut = new NJasmineSuiteBuilder();
-
-            var rootTest = sut.BuildFrom(typeof(TFixture));
-
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = new Dictionary<TestPosition, INJasmineTest>();
-
-            LoadTestsByPosition(testsByPosition, rootTest);
-            return testsByPosition;
-        }
-
         public class TestOnlyUsingDescribeAndIt : NJasmineFixture
         {
             public override void Tests()
@@ -77,7 +48,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_tests_with_correct_names_and_positions()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition <TestOnlyUsingDescribeAndIt>();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<TestOnlyUsingDescribeAndIt>();
 
             Action<TestPosition, string> expectHasName = delegate(TestPosition position, string name)
             {
@@ -96,7 +67,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_test_with_error_in_describe()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition<ExceptionThrownInFirstDescribe>();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<ExceptionThrownInFirstDescribe>();
 
             expect(testsByPosition[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
@@ -104,7 +75,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_test_with_error_in_outer_scope()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition<ExceptionThrownAtTopLevel>();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<ExceptionThrownAtTopLevel>();
 
             expect(testsByPosition[new TestPosition(0)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }

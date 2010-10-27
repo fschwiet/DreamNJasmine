@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\LoadSuiteElementsByPosition.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuiteTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_building.cs" />
+    <Compile Include="Core\NJasmineSuiteBuilder_suite_building_with_loops.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
