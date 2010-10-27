@@ -17,6 +17,27 @@ namespace NJasmineTests.Core
         }
 
         [Test]
+        public void can_be_used_with_dictionaries()
+        {
+            var position1 = new TestPosition(1, 2, 3);
+            var position2 = new TestPosition(4, 5, 6);
+            var position3 = new TestPosition(7, 8, 9);
+
+            expect(position1.Equals(new TestPosition(1, 2, 3))).to.Equal(true);
+
+            Dictionary<TestPosition, int> dictionary = new Dictionary<TestPosition, int>();
+
+            dictionary[position1] = 1;
+            dictionary[position2] = 2;
+            dictionary[position3] = 3;
+
+            expect(dictionary[new TestPosition(1,2,3)]).to.Equal(1);
+            expect(dictionary[new TestPosition(4,5,6)]).to.Equal(2);
+            expect(dictionary[new TestPosition(7,8,9)]).to.Equal(3);
+        }
+
+
+        [Test]
         public void GetFirstChildPosition()
         {
             expectPositionsEqual(new TestPosition(0).GetFirstChildPosition(), new TestPosition(0, 0));

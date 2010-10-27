@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NJasmine;
 using NJasmine.Core;
 using NJasmineTests.FailingFixtures;
@@ -10,6 +11,34 @@ namespace NJasmineTests.Core
     [TestFixture]
     public class NJasmineSuiteBuilder_suite_building : ExpectationsFixture
     {
+        public void LoadTestsByPosition(Dictionary<TestPosition, INJasmineTest> tests, ITest test)
+        {
+            if (test is INJasmineTest)
+            {
+                tests[(test as INJasmineTest).Position] = test as INJasmineTest;
+            }
+
+            if (test is TestSuite)
+            {
+                foreach (ITest childTest in (test as TestSuite).Tests)
+                {
+                    LoadTestsByPosition(tests, childTest);
+                }
+            }
+        }
+
+        Dictionary<TestPosition, INJasmineTest> GetTestsByPosition<TFixture>()
+        {
+            var sut = new NJasmineSuiteBuilder();
+
+            var rootTest = sut.BuildFrom(typeof(TFixture));
+
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = new Dictionary<TestPosition, INJasmineTest>();
+
+            LoadTestsByPosition(testsByPosition, rootTest);
+            return testsByPosition;
+        }
+
         public class TestOnlyUsingDescribeAndIt : NJasmineFixture
         {
             public override void Tests()
@@ -46,83 +75,38 @@ namespace NJasmineTests.Core
         }
 
         [Test]
-        public void can_load_tests_with_correct_names()
+        public void can_load_tests_with_correct_names_and_positions()
         {
-            var sut = new NJasmineSuiteBuilder();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition <TestOnlyUsingDescribeAndIt>();
 
-            var rootTest = sut.BuildFrom(typeof (TestOnlyUsingDescribeAndIt));
-
-            var firstTest = rootTest.Tests[0] as ITest;
-            var firstDescribe = rootTest.Tests[1] as ITest;
-            var firstInnerTest = firstDescribe.Tests[0] as ITest;
-            var secondInnerTest = firstDescribe.Tests[1] as ITest;
-            var secondDescribe = firstDescribe.Tests[2] as ITest;
-            var firstInnerInnerTest = secondDescribe.Tests[0] as ITest;
-            var secondInnerInnerTest = secondDescribe.Tests[1] as ITest;
-
-            Action<ITest, string> expectHasName = delegate(ITest test, string name)
+            Action<TestPosition, string> expectHasName = delegate(TestPosition position, string name)
             {
-                expect(test.TestName.Name).to.Equal(name);
+                expect(testsByPosition[position].TestName.Name).to.Equal(name);
             };
 
-            expectHasName(rootTest, "TestOnlyUsingDescribeAndIt");
-            expectHasName(firstTest, "first test");
-            expectHasName(firstDescribe, "first describe");
-            expectHasName(firstInnerTest, "first inner test");
-            expectHasName(secondInnerTest, "second inner test");
-            expectHasName(secondDescribe, "second describe");
-            expectHasName(firstInnerInnerTest, "first inner-inner test");
-            expectHasName(secondInnerInnerTest, "second inner-inner test");
+            expectHasName(new TestPosition(0), "first test");
+            expectHasName(new TestPosition(1), "first describe");
+            expectHasName(new TestPosition(1,0), "first inner test");
+            expectHasName(new TestPosition(1,1), "second inner test");
+            expectHasName(new TestPosition(1,2), "second describe");
+            expectHasName(new TestPosition(1, 2, 0), "first inner-inner test");
+            expectHasName(new TestPosition(1, 2, 1), "second inner-inner test");
         }
-
-        [Test]
-        public void can_load_tests_with_correct_locations()
-        {
-            var sut = new NJasmineSuiteBuilder();
-
-            var rootTest = sut.BuildFrom(typeof(TestOnlyUsingDescribeAndIt));
-
-            var firstTest = rootTest.Tests[0] as INJasmineTest;
-            var firstDescribe = rootTest.Tests[1] as INJasmineTest;
-            var firstInnerTest = firstDescribe.Tests[0] as INJasmineTest;
-            var secondInnerTest = firstDescribe.Tests[1] as INJasmineTest;
-            var secondDescribe = firstDescribe.Tests[2] as INJasmineTest;
-            var firstInnerInnerTest = secondDescribe.Tests[0] as INJasmineTest;
-            var secondInnerInnerTest = secondDescribe.Tests[1] as INJasmineTest;
-
-            Action<INJasmineTest, TestPosition> expectHasPosition = delegate(INJasmineTest test, TestPosition position)
-            {
-                expect(test.Position.Coordinates).to.Equal(position.Coordinates);
-            };
-
-            expectHasPosition(firstTest, new TestPosition(0));
-            expectHasPosition(firstDescribe, new TestPosition(1));
-            expectHasPosition(firstInnerTest, new TestPosition(1,0));
-            expectHasPosition(secondInnerTest, new TestPosition(1,1));
-            expectHasPosition(secondDescribe, new TestPosition(1,2));
-            expectHasPosition(firstInnerInnerTest, new TestPosition(1,2,0));
-            expectHasPosition(secondInnerInnerTest, new TestPosition(1,2,1));
-        }
-
 
         [Test]
         public void can_load_test_with_error_in_describe()
         {
-            var sut = new NJasmineSuiteBuilder();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition<ExceptionThrownInFirstDescribe>();
 
-            var rootTest = sut.BuildFrom(typeof(FailingFixtures.ExceptionThrownInFirstDescribe));
-
-            var brokenDescribe = rootTest.Tests[1] as NJasmineInvalidTestSuite;
+            expect(testsByPosition[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
 
         [Test]
         public void can_load_test_with_error_in_outer_scope()
         {
-            var sut = new NJasmineSuiteBuilder();
+            Dictionary<TestPosition, INJasmineTest> testsByPosition = GetTestsByPosition<ExceptionThrownAtTopLevel>();
 
-            var rootTest = sut.BuildFrom(typeof(FailingFixtures.ExceptionThrownAtTopLevel));
-
-            var broken = rootTest as NJasmineInvalidTestSuite;
+            expect(testsByPosition[new TestPosition(0)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
     }
 }

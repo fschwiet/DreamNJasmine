@@ -33,11 +33,6 @@ namespace NJasmine.Core
             };
         }
 
-        public override string ToString()
-        {
-            return String.Join(", ", Coordinates.Select(c => c.ToString()).ToArray());
-        }
-
         public bool IsInScopeFor(TestPosition testPosition)
         {
             var thisCoordinateCount = this.Coordinates.Count();
@@ -57,6 +52,31 @@ namespace NJasmine.Core
             }
 
             return true;
+        }
+
+        public override string ToString()
+        {
+            return String.Join(", ", Coordinates.Select(c => c.ToString()).ToArray());
+        }
+
+        public bool Equals(TestPosition other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.ToString().Equals(this.ToString());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (TestPosition)) return false;
+            return Equals((TestPosition) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }

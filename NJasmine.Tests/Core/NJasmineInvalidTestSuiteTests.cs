@@ -28,7 +28,7 @@ namespace NJasmineTests.Core
                 exception = e;
             }
 
-            var sut = new NJasmineInvalidTestSuite(locationOfFailure, exception);
+            var sut = new NJasmineInvalidTestSuite(locationOfFailure, exception, null);
 
             TestResult result = new TestResult(sut);
 

@@ -63,7 +63,7 @@ namespace NJasmine.Core
             }
             else
             {
-                rootTest.Add(new NJasmineInvalidTestSuite("Exception at top level", exception));
+                rootTest.Add(new NJasmineInvalidTestSuite("Exception at top level", exception, new TestPosition(0)));
             }
 
             _fixture.ClearVisitor();
@@ -100,7 +100,7 @@ namespace NJasmine.Core
 
             if (exceptionSeen != null)
             {
-                newSuite = new NJasmineInvalidTestSuite("Exception within describe", exceptionSeen);
+                newSuite = new NJasmineInvalidTestSuite("Exception within describe", exceptionSeen, position);
             }
             else
             {
