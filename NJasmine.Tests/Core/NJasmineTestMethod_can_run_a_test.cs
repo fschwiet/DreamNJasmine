@@ -24,11 +24,11 @@ namespace NJasmineTests.Core
 
                 describe("first describe", delegate()
                 {
-                    Observe("4");
+                    Observe("3");
 
                     afterEach(delegate()
                     {
-                        Observe("12");
+                        Observe("8");
                     });
 
                     describe("skipped describe", delegate()
@@ -43,40 +43,40 @@ namespace NJasmineTests.Core
 
                     describe("second describe", delegate()
                     {
-                        Observe("7");
+                        Observe("4");
 
                         afterEach(delegate()
                         {
-                            Observe("11");
+                            Observe("7");
                         });
 
                         beforeEach(delegate()
                         {
-                            Observe("8");
+                            Observe("5");
                         });
 
                         it("the test", delegate()
                         {
-                            Observe("10");
+                            Observe("6");
                         });
 
-                        Observe("9");
+                        Observe("-1");
                     });
 
                     beforeEach(delegate()
                     {
-                        Observe("5");
+                        Observe("-1");
                     });
 
-                    Observe("6");
+                    Observe("-1");
                 });
 
                 afterEach(delegate()
                 {
-                    Observe("13");
+                    Observe("-1");
                 });
 
-                Observe("3");
+                Observe("-1");
             }
         }
 
@@ -90,7 +90,7 @@ namespace NJasmineTests.Core
             sut.Run();
 
             expect(fixture.Observations.ToArray()).to.Equal(
-                Enumerable.Range(1, 13).Select(i => i.ToString()).ToArray());
+                Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());
         }
 
     }

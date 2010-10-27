@@ -17,13 +17,13 @@ namespace NJasmine.Core
         List<Action> _teardowns = new List<Action>();
         Action _nextStep;
 
-        public NJasmineTestMethod(MethodInfo method, NJasmineFixture fixture, TestPosition position) : base(method)
+        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position) : base(new Action(delegate() { }).Method)
         {
             _fixture = fixture;
             _position = position;
         }
         
-        public override void  RunTestMethod(TestResult testResult)
+        public override void RunTestMethod(TestResult testResult)
         {
             this.Run();
             testResult.Success();
@@ -33,12 +33,7 @@ namespace NJasmine.Core
         {
             NJasmineTestMethod result = null;
 
-            //  this method never gets ran
-            Action testMethod = delegate()
-            {
-            };
-
-            result = new NJasmineTestMethod(testMethod.Method, fixture, position);
+            result = new NJasmineTestMethod(fixture, position);
             
             return result;
         }
@@ -53,16 +48,15 @@ namespace NJasmine.Core
             _visitorPositionAdapter = new VisitorPositionAdapter(this);
             _fixture.SetVisitor(_visitorPositionAdapter);
 
-            _nextStep = null;
-            _fixture.Tests();
-
-            while(_nextStep != null)
+            try
             {
-                var nextStep = _nextStep;
-                _nextStep = null;
-
-                nextStep();
+                 _fixture.Tests();
             }
+            catch (TestFinishedException)
+            {
+            }
+
+            _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
 
             _teardowns.Reverse();
             foreach(var action in _teardowns)
@@ -75,7 +69,7 @@ namespace NJasmine.Core
         {
             if (_position.ToString().StartsWith(position.ToString()))
             {
-                _nextStep = action;
+                action();
             }
         }
 
@@ -93,12 +87,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _teardowns.Add(delegate()
-                {
-                    _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
-                    action();
-                    _fixture.SetVisitor(_visitorPositionAdapter);
-                });
+                _teardowns.Add(action);
             }
         }
 
@@ -106,16 +95,17 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                if (_nextStep != null)
-                    throw new Exception("Unexpectedly found target test twice.");
+                _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
+                action();
 
-                _nextStep = delegate()
-                {
-                    _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
-                    action();
-                    _fixture.SetVisitor(_visitorPositionAdapter);
-                };
+                throw new TestFinishedException();
             }
         }
+
+        public class TestFinishedException : Exception
+        {
+        }
+
+        private void Ignored() { }
     }
 }

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
 {
+    [TestFixture]
     public class NJasmineSuiteBuilder_suite_building_with_loops : ExpectationsFixture
     {
         public class has_test_in_loop : ObservableNJasmineFixture
@@ -34,7 +36,7 @@ namespace NJasmineTests.Core
 
                     foreach(var i in Enumerable.Range(1,3))
                     {
-                        Observe("a" + i);
+                        Observe("b" + i);
 
                         it("b" + i, () =>
                         {
@@ -46,6 +48,11 @@ namespace NJasmineTests.Core
                 });
 
                 Observe("5");
+
+                it("c", delegate()
+                {
+                    Observe("c");
+                });
             }
         }
 
@@ -54,16 +61,99 @@ namespace NJasmineTests.Core
         {
             var elements = NJasmineSuiteBuilder.LoadElementsByPosition<has_test_in_loop>();
 
+            expect(elements[new TestPosition(0)].TestName.Name).to.Equal("a1");
+            expect(elements[new TestPosition(1)].TestName.Name).to.Equal("a2");
+            expect(elements[new TestPosition(2)].TestName.Name).to.Equal("a3");
+            expect(elements[new TestPosition(3)].TestName.Name).to.Equal("nested");
+            expect(elements[new TestPosition(3, 0)].TestName.Name).to.Equal("b1");
+            expect(elements[new TestPosition(3, 1)].TestName.Name).to.Equal("b2");
+            expect(elements[new TestPosition(3, 2)].TestName.Name).to.Equal("b3");
+        }
 
-            
+        void expect_test_to_observe(TestPosition testPosition, List<string> expected)
+        {
+            var fixture = new has_test_in_loop();
+            var method = new NJasmine.Core.NJasmineTestMethod(fixture, testPosition);
+
+            TestResult result = new TestResult(method);
+            method.RunTestMethod(result);
+
+            expect(result.IsSuccess).to.Equal(true);
+
+            expect(fixture.Observations).to.Equal(expected);
         }
 
         [Test]
-        public void can_run_tests()
+        public void can_run_tests_a1()
         {
-            
+            expect_test_to_observe(new TestPosition(0), new List<string>()
+            {
+                "1",
+                "a1",
+                "ai1"
+            });
         }
 
+        [Test]
+        public void can_run_tests_a3()
+        {
+            expect_test_to_observe(new TestPosition(2), new List<string>()
+            {
+                "1",
+                "a1",
+                "a2",
+                "a3",
+                "ai3"
+            });
+        }
+
+        [Test]
+        public void can_run_tests_b1()
+        {
+            expect_test_to_observe(new TestPosition(3, 0), new List<string>()
+            {
+                "1",
+                "a1",
+                "a2",
+                "a3",
+                "2",
+                "3",
+                "b1",
+                "bi1"
+            });
+        }
+
+        [Test]
+        public void can_run_tests_b3()
+        {
+            expect_test_to_observe(new TestPosition(3, 2), new List<string>()
+            {
+                "1",
+                "a1",
+                "a2",
+                "a3",
+                "2",
+                "3",
+                "b1",
+                "b2",
+                "b3",
+                "bi3"
+            });
+        }
+        [Test]
+        public void can_run_tests_c()
+        {
+            expect_test_to_observe(new TestPosition(4), new List<string>()
+            {
+                "1",
+                "a1",
+                "a2",
+                "a3",
+                "2",
+                "5",
+                "c"
+            });
+        }
 
     }
 }
