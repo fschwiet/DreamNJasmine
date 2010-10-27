@@ -18,7 +18,16 @@ namespace NJasmine.Core
 
         public bool CanBuildFrom(Type type)
         {
-            return type.IsSubclassOf(typeof (NJasmineFixture)) && type.IsPublic;
+            if (!type.IsSubclassOf(typeof (NJasmineFixture)))
+                return false;
+
+            if (!type.IsPublic)
+                return false;
+
+            if (type.GetConstructor(new Type[0]) == null)
+                return false;
+
+            return true;
         }
 
         NJasmineFixture _fixture = null;

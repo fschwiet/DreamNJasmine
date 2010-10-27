@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
@@ -12,20 +11,8 @@ namespace NJasmineTests.Core
     [TestFixture]
     public class NJasmineTestMethod_can_run_a_test : ExpectationsFixture
     {
-        private class AFixture : NJasmineFixture
+        private class AFixture : ObservableNJasmineFixture
         {
-            public List<string> Observations
-            {
-                get { return _observations; }
-            }
-
-            List<string> _observations = new List<string>();
-
-            public void Observe(string value)
-            {
-                _observations.Add(value);
-            }
-
             public override void Tests()
             {
                 Observe("1");

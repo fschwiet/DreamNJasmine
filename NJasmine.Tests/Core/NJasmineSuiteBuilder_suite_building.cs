@@ -110,7 +110,7 @@ namespace NJasmineTests.Core
         {
             var sut = new NJasmineSuiteBuilder();
 
-            var rootTest = sut.BuildFrom(typeof(ExceptionThrownInFirstDescribe));
+            var rootTest = sut.BuildFrom(typeof(FailingFixtures.ExceptionThrownInFirstDescribe));
 
             var brokenDescribe = rootTest.Tests[1] as NJasmineInvalidTestSuite;
         }
@@ -120,7 +120,7 @@ namespace NJasmineTests.Core
         {
             var sut = new NJasmineSuiteBuilder();
 
-            var rootTest = sut.BuildFrom(typeof(ExceptionThrownAtTopLevel));
+            var rootTest = sut.BuildFrom(typeof(FailingFixtures.ExceptionThrownAtTopLevel));
 
             var broken = rootTest as NJasmineInvalidTestSuite;
         }

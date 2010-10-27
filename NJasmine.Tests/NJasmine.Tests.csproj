@@ -57,6 +57,8 @@
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
+    <Compile Include="Core\ObservableNJasmineFixture.cs" />
+    <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownAtTopLevel.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownInFirstDescribe.cs" />

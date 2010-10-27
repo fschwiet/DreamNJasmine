@@ -24,6 +24,19 @@ namespace NJasmineTests.Core
             expect(sut.CanBuildFrom(typeof(SampleTest))).to.Equal(true);
         }
 
+        abstract class SomeAbstractClass
+        {
+            
+        }
+
+        [Test]
+        public void will_not_build_abstract_classes()
+        {
+            var sut = new NJasmineSuiteBuilder();
+
+            expect(sut.CanBuildFrom(typeof(SomeAbstractClass))).to.Equal(false);
+        }
+
         protected class ANonpublicFixture : NJasmineFixture
         {
             public override void Tests()

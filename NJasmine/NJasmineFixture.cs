@@ -52,5 +52,12 @@ namespace NJasmine
             _visitor.visitIt(description, action);
         }
 
+        protected void ignore(Action action)
+        {
+        }
+
+        protected void ignore(string shouldntRun, Action action)
+        {
+        }
     }
 }
