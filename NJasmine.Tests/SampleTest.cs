@@ -26,7 +26,7 @@ describe("player", delegate()
     delegate(Song song) 
     {
 
-        it("should be able to play a song", delegate()
+        it("should be able to play the song", delegate()
         {
             player.Play(song);
 
@@ -42,7 +42,7 @@ describe("player", delegate()
                 player.Pause();
             });
 
-            it("should indicate the song is currently paused", delegate()
+            it("should indicate the song is not currently paused", delegate()
             {
                 expect(player.IsPlaying).to.Equal(false);
             });
