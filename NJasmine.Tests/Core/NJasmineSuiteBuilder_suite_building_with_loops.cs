@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmine.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -49,10 +50,20 @@ namespace NJasmineTests.Core
         }
 
         [Test]
-        public void works_with_loops()
+        public void can_load_tests()
+        {
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<has_test_in_loop>();
+
+
+            
+        }
+
+        [Test]
+        public void can_run_tests()
         {
             
         }
+
 
     }
 }

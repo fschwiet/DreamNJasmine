@@ -130,5 +130,41 @@ namespace NJasmine.Core
 
             _siblingTests.Add(testMethod);
         }
+
+        public static void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
+        {
+            var sut = new NJasmineSuiteBuilder();
+            
+            var rootTest = sut.BuildFrom(typeof(TFixture));
+            
+            VisitAllTestElements(rootTest, visitor);
+        }
+
+        static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
+        {
+
+            if (test is INJasmineTest)
+            {
+                visitor(test as INJasmineTest);
+            }
+
+            if (test is TestSuite)
+            {
+                foreach (ITest childTest in (test as TestSuite).Tests)
+                {
+                    VisitAllTestElements(childTest, visitor);
+                }
+            }
+        }
+
+        static public Dictionary<TestPosition, INJasmineTest> LoadElementsByPosition<TFixture>()
+        {
+            var result = new Dictionary<TestPosition, INJasmineTest>();
+            Action<INJasmineTest> visitor = t => result[t.Position] = t;
+
+            VisitAllTestElements<TFixture>(visitor);
+
+            return result;
+        }
     }
 }

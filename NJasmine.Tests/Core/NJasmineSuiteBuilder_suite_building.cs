@@ -48,11 +48,11 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_tests_with_correct_names_and_positions()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<TestOnlyUsingDescribeAndIt>();
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<TestOnlyUsingDescribeAndIt>();
 
             Action<TestPosition, string> expectHasName = delegate(TestPosition position, string name)
             {
-                expect(testsByPosition[position].TestName.Name).to.Equal(name);
+                expect(elements[position].TestName.Name).to.Equal(name);
             };
 
             expectHasName(new TestPosition(0), "first test");
@@ -67,17 +67,17 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_test_with_error_in_describe()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<ExceptionThrownInFirstDescribe>();
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<ExceptionThrownInFirstDescribe>();
 
-            expect(testsByPosition[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
+            expect(elements[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
 
         [Test]
         public void can_load_test_with_error_in_outer_scope()
         {
-            Dictionary<TestPosition, INJasmineTest> testsByPosition = LoadSuiteElementsByPosition.ForType<ExceptionThrownAtTopLevel>();
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<ExceptionThrownAtTopLevel>();
 
-            expect(testsByPosition[new TestPosition(0)]).to.Be.OfType<NJasmineInvalidTestSuite>();
+            expect(elements[new TestPosition(0)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
     }
 }
