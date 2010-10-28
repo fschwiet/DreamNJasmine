@@ -15,9 +15,18 @@ namespace NJasmine
     {
         INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
 
-        public void SetVisitor(INJasmineFixtureVisitor visitor)
+        Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
+
+        public void PushVisitor(INJasmineFixtureVisitor visitor)
         {
+            _visitorStack.Push(_visitor);
+
             _visitor = visitor;
+        }
+
+        public void PopVisitor()
+        {
+            _visitor = _visitorStack.Pop();
         }
 
         public void ClearVisitor()

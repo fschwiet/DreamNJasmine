@@ -29,15 +29,6 @@ namespace NJasmine.Core
             testResult.Success();
         }
 
-        public static NJasmineTestMethod Create(NJasmineFixture fixture, TestPosition position)
-        {
-            NJasmineTestMethod result = null;
-
-            result = new NJasmineTestMethod(fixture, position);
-            
-            return result;
-        }
-
         public TestPosition Position
         {
             get { return _position; }
@@ -46,7 +37,7 @@ namespace NJasmine.Core
         public void Run()
         {
             _visitorPositionAdapter = new VisitorPositionAdapter(this);
-            _fixture.SetVisitor(_visitorPositionAdapter);
+            _fixture.PushVisitor(_visitorPositionAdapter);
 
             try
             {
@@ -56,7 +47,7 @@ namespace NJasmine.Core
             {
             }
 
-            _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
+            _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
 
             _teardowns.Reverse();
             foreach(var action in _teardowns)
@@ -77,9 +68,9 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.beforeEach));
+                _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.beforeEach));
                 action();
-                _fixture.SetVisitor(_visitorPositionAdapter);
+                _fixture.PopVisitor();
             }
         }
 
@@ -95,7 +86,7 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                _fixture.SetVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
+                _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
                 action();
 
                 throw new TestFinishedException();

@@ -77,7 +77,7 @@ namespace NJasmineTests.Core
         {
             var elements = NJasmineSuiteBuilder.LoadElementsByPosition<ExceptionThrownAtTopLevel>();
 
-            expect(elements[new TestPosition(0)]).to.Be.OfType<NJasmineInvalidTestSuite>();
+            expect(elements[new TestPosition()]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
     }
 }

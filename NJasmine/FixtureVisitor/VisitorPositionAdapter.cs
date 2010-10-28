@@ -6,12 +6,18 @@ namespace NJasmine.Core
     public class VisitorPositionAdapter : INJasmineFixtureVisitor
     {
         readonly INJasmineFixturePositionVisitor _visitor;
-        protected TestPosition _nextPosition = null;
+        protected TestPosition _nextPosition;
 
         public VisitorPositionAdapter(INJasmineFixturePositionVisitor visitor)
         {
             _visitor = visitor;
             _nextPosition = new TestPosition(0);
+        }
+
+        public VisitorPositionAdapter(TestPosition position, INJasmineFixturePositionVisitor visitor)
+        {
+            _visitor = visitor;
+            _nextPosition = position;
         }
 
         public void visitDescribe(string description, Action action)

@@ -8,7 +8,7 @@ using NUnit.Core.Extensibility;
 namespace NJasmine.Core
 {
     [NUnitAddin(Description = "NJasmine", Type = ExtensionType.Core)]
-    public class NJasmineSuiteBuilder : IAddin, ISuiteBuilder, INJasmineFixturePositionVisitor
+    public class NJasmineSuiteBuilder : IAddin, ISuiteBuilder
     {
         public bool Install(IExtensionHost host)
         {
@@ -30,113 +30,25 @@ namespace NJasmine.Core
             return true;
         }
 
-        NJasmineFixture _fixture = null;
-        TestSuite _parentTest = null;
-        List<Test> _siblingTests = null;
-
         public Test BuildFrom(Type type)
         {
-            _fixture = type.GetConstructor(new Type[0]).Invoke(new object[0]) as NJasmineFixture;
+            NJasmineFixture fixture = type.GetConstructor(new Type[0]).Invoke(new object[0]) as NJasmineFixture;
 
-            var rootTest = new TestSuite(type.Namespace, type.Name);
+            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition());
 
-            _parentTest = rootTest;
-            _siblingTests = new List<Test>();
+            rootSuite.BuildSuite(fixture.Tests);
 
-            _fixture.SetVisitor(new VisitorPositionAdapter(this));
+            NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
-            Exception exception = null;
-
-            try
-            {
-                _fixture.Tests();
-            }
-            catch (Exception e)
-            {
-                exception = e;
-            }
-
-            if (exception == null)
-            {
-                foreach (var sibling in _siblingTests)
-                    rootTest.Add(sibling);
-            }
-            else
-            {
-                rootTest.Add(new NJasmineInvalidTestSuite("Exception at top level", exception, new TestPosition(0)));
-            }
-
-            _fixture.ClearVisitor();
-
-            _siblingTests = null;
-            _parentTest = null;
-            _fixture = null;
-
-            NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootTest);
-
-            return rootTest;
-        }
-
-        public void visitDescribe(string description, Action action, TestPosition position)
-        {
-            var currentParent = _parentTest;
-            var currentSiblings = _siblingTests;
-
-            _parentTest = new NJasmineTestSuite(currentParent.TestName.Name, description, position);
-            Test newSuite = _parentTest;
-
-            _siblingTests = new List<Test>();
-
-            Exception exceptionSeen = null;
-            
-            try
-            {
-                action();
-            }
-            catch (Exception e)
-            {
-                exceptionSeen = e;
-            }
-
-            if (exceptionSeen != null)
-            {
-                newSuite = new NJasmineInvalidTestSuite("Exception within describe", exceptionSeen, position);
-            }
-            else
-            {
-                foreach (var sibling in _siblingTests)
-                    _parentTest.Add(sibling);
-            }
-            
-            _parentTest = currentParent;
-            _siblingTests = currentSiblings;
-
-            _siblingTests.Add(newSuite);
-        }
-
-        public void visitBeforeEach(Action action, TestPosition position)
-        {
-        }
-
-        public void visitAfterEach(Action action, TestPosition position)
-        {
-        }
-
-        public void visitIt(string description, Action action, TestPosition position)
-        {
-            var testMethod = NJasmineTestMethod.Create(_fixture, position);
-
-            testMethod.TestName.Name = description;
-
-            _siblingTests.Add(testMethod);
+            return rootSuite;
         }
 
         public static void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
         {
             var sut = new NJasmineSuiteBuilder();
-            
+
             var rootTest = sut.BuildFrom(typeof(TFixture));
-            
+
             VisitAllTestElements(rootTest, visitor);
         }
 

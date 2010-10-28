@@ -85,7 +85,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = NJasmineTestMethod.Create(fixture, new TestPosition(1, 3, 2));
+            var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2));
 
             sut.Run();
 
