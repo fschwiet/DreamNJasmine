@@ -12,55 +12,42 @@ namespace NJasmineTests
     {
         public override void Tests()
         {
-
+            
 
 
 describe("player", delegate()
 {
     var player = new Player();
+    var song = new Song();
 
-    forEach(delegate()
-    {
-        return new Song[] {new Song(), new OggSong(), new Mp3Song()};
-    }, 
-    delegate(Song song) 
-    {
+    beforeEach(delegate {
+        player.Play(song);
+    });
 
-        it("should be able to play the song", delegate()
+    it("should be able to play the song", delegate()
+    {
+        expect(player.IsPlaying).to.Equal(true);
+        expect(player.CurrentSong).to.Equal(song);
+        expect(player.CurrentSong).not.to.Equal(new Song());
+    });
+
+    describe("when song has been paused", delegate()
+    {
+        beforeEach(player.Pause);
+
+        it("should indicate the song is not currently paused", delegate
         {
-            player.Play(song);
-
-            expect(player.CurrentSong).to.Equal(song);
-            expect(player.CurrentSong).not.to.Equal(new Song());
+            expect(player.IsPlaying).to.Equal(false);
+            expect(player.CurrentSong).to.Be.Null();
         });
 
-        describe("when song has been paused", delegate()
+        describe("Resume", delegate
         {
-            beforeEach(delegate()
+            it("should indicate the song is playing", delegate()
             {
-                player.Play(song);
-                player.Pause();
-            });
-
-            it("should indicate the song is not currently paused", delegate()
-            {
-                expect(player.IsPlaying).to.Equal(false);
-            });
-
-            it("should not indicate a current song", delegate()
-            {
-                expect(player.CurrentSong).to.Be.Null();
-            });
-
-            describe("Resume", delegate()
-            {
-                beforeEach(player.Resume);
-
-                it("should indicate the song is playing", delegate()
-                {
-                    expect(player.IsPlaying).to.Equal(true);
-                    expect(player.CurrentSong).to.Equal(song);
-                });
+                player.Resume();
+                expect(player.CurrentSong).to.Equal(song);
+                expect(player.CurrentSong).not.to.Equal(new Song());
             });
         });
     });
