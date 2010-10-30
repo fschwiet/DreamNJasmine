@@ -19,5 +19,10 @@ namespace NJasmine.FixtureVisitor
         public virtual void visitIt(string description, Action action)
         {
         }
+
+        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
+        {
+            return default(TFixture);
+        }
     }
 }

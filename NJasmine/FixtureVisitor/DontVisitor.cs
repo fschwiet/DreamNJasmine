@@ -14,7 +14,8 @@ namespace NJasmine.FixtureVisitor
             describe,
             beforeEach,
             afterEach,
-            it
+            it,
+            importNUnit
         }
 
         public DontVisitor(SpecMethod specMethod)
@@ -40,6 +41,11 @@ namespace NJasmine.FixtureVisitor
         public void visitIt(string description, Action action)
         {
             throw DontException(SpecMethod.it);
+        }
+
+        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
+        {
+            throw DontException(SpecMethod.importNUnit);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

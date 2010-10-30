@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using NJasmine.FixtureVisitor;
 using NUnit.Core;
@@ -22,6 +23,9 @@ namespace NJasmine.Core
             _parentSuiteName = parentSuiteName;
             _name = name;
             _position = position;
+
+            base.fixtureSetUpMethods = new MethodInfo[] { ((Action)this.FixtureSetup).Method };
+            base.fixtureTearDownMethods= new MethodInfo[] { ((Action)this.FixtureSetup).Method };
         }
 
         public TestPosition Position
@@ -88,5 +92,23 @@ namespace NJasmine.Core
             _accumulatedDescendants.Add(testMethod);
         }
 
+        public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
+        {
+            TFixture fixture = new TFixture();
+
+            _fixture.SetNUnitFixture(position, fixture);
+
+            return fixture;
+        }
+
+        public void FixtureSetup()
+        {
+            _fixture.RunOneTimeSetup();
+        }
+
+        public void FixtureTearDown()
+        {
+            _fixture.RunOneTimeTearDown();
+        }
     }
 }

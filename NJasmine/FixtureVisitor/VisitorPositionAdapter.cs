@@ -53,5 +53,14 @@ namespace NJasmine.Core
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
         }
+
+        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
+        {
+            var result = _visitor.visitImportNUnit<TFixture>(_nextPosition);
+
+            _nextPosition = _nextPosition.GetNextSiblingPosition();
+
+            return result;
+        }
     }
 }

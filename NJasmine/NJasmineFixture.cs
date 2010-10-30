@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.FixtureVisitor;
+using NUnit.Core;
 using NUnit.Framework;
 using Should.Fluent;
 using Should.Fluent.Model;
@@ -14,8 +15,8 @@ namespace NJasmine
     public abstract class NJasmineFixture : ExpectationsFixture
     {
         INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
-
-        Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
+        readonly Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
+        readonly Dictionary<TestPosition, object> _importedNUnitFixtures = new Dictionary<TestPosition, object>();
 
         public void PushVisitor(INJasmineFixtureVisitor visitor)
         {
@@ -51,14 +52,14 @@ namespace NJasmine
             _visitor.visitAfterEach(action);
         }
 
-        protected void forEach<T>(Func<IEnumerable<T>> testCases, Action<T> action)
-        {
-            //throw new NotImplementedException();
-        }
-
         protected void it(string description, Action action)
         {
             _visitor.visitIt(description, action);
+        }
+
+        protected TFixture importNUnit<TFixture>() where TFixture: class, new()
+        {
+            return _visitor.visitImportNUnit<TFixture>();
         }
 
         protected void ignore(Action action)
@@ -67,6 +68,83 @@ namespace NJasmine
 
         protected void ignore(string shouldntRun, Action action)
         {
+        }
+
+        public void SetNUnitFixture(TestPosition position, object fixture)
+        {
+            _importedNUnitFixtures[position] = fixture;
+        }
+
+        public object GetNUnitFixture(TestPosition position)
+        {
+            return _importedNUnitFixtures[position];
+        }
+
+        public void RunOneTimeSetup()
+        {
+            foreach (var fixture in _importedNUnitFixtures.Values)
+            {
+                foreach(var method in Reflect.GetMethodsWithAttribute(fixture.GetType(), NUnitFramework.FixtureSetUpAttribute, true))
+                {
+                    method.Invoke(fixture, new object[] {});
+                }
+            }
+        }
+
+        public void RunOneTimeTearDown()
+        {
+            foreach (var fixture in _importedNUnitFixtures.Values)
+            {
+                foreach (var method in Reflect.GetMethodsWithAttribute(fixture.GetType(), NUnitFramework.FixtureTearDownAttribute, true)
+                    .Reverse())
+                {
+                    method.Invoke(fixture, new object[] { });
+                }
+            }
+        }
+
+        public void RunSetup(TestPosition position)
+        {
+            List<object> fixtures = GetFixturesInScopeFor(position);
+
+            foreach (var fixture in fixtures)
+            {
+                foreach (var method in
+                        Reflect.GetMethodsWithAttribute(fixture.GetType(), NUnitFramework.SetUpAttribute, true))
+                {
+                    method.Invoke(fixture, new object[] { });
+                }
+            }
+        }
+
+        public void RunTearDown(TestPosition position)
+        {
+            List<object> fixtures = GetFixturesInScopeFor(position);
+            fixtures.Reverse();
+
+            foreach (var fixture in fixtures)
+            {
+                foreach (var method in
+                        Reflect.GetMethodsWithAttribute(fixture.GetType(), NUnitFramework.TearDownAttribute, true)
+                        .Reverse())
+                {
+                    method.Invoke(fixture, new object[] { });
+                }
+            }
+        }
+
+        List<object> GetFixturesInScopeFor(TestPosition position)
+        {
+            List<object> fixtures = new List<object>();
+
+            foreach (var fixturePosition in _importedNUnitFixtures.Keys)
+            {
+                var fixture = _importedNUnitFixtures[fixturePosition];
+
+                if (fixturePosition.IsInScopeFor(position))
+                    fixtures.Add(fixture);
+            }
+            return fixtures;
         }
     }
 }

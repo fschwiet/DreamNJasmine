@@ -21,6 +21,9 @@ namespace NJasmine.Core
         {
             _fixture = fixture;
             _position = position;
+
+            base.setUpMethods = new MethodInfo[] { ((Action)this.Setup).Method };
+            base.tearDownMethods = new MethodInfo[] { ((Action)this.TearDown).Method };
         }
         
         public override void RunTestMethod(TestResult testResult)
@@ -93,10 +96,23 @@ namespace NJasmine.Core
             }
         }
 
+        public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
+        {
+            return _fixture.GetNUnitFixture(position) as TFixture;
+        }
+
         public class TestFinishedException : Exception
         {
         }
 
-        private void Ignored() { }
+        void Setup()
+        {
+            _fixture.RunSetup(_position);
+        }
+
+        void TearDown()
+        {
+            _fixture.RunTearDown(_position);
+        }
     }
 }
