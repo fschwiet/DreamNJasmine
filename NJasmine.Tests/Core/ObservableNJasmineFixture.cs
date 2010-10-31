@@ -17,5 +17,10 @@ namespace NJasmineTests.Core
         {
             _observations.Add(value);
         }
+
+        public static void Trace(string value)
+        {
+            Console.WriteLine("<<{{" + value + "}}>>");
+        }
     }
 }

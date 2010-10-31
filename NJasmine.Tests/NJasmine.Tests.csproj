@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\build_and_run_suite_importing_NUnit_fixture.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuiteTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_building.cs" />
     <Compile Include="Core\build_and_run_suite_with_loops.cs" />
@@ -68,6 +67,8 @@
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
+    <Compile Include="Integration\suite_importing_NUnit_fixture.cs" />
+    <Compile Include="Integration\suite_using_disposables.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

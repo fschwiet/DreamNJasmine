@@ -1,32 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-31" time="13:33:24">
+<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="0" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-10-31" time="16:15:42">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.164" asserts="0">
-    <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.149" asserts="0">
-        <results>
-          <test-suite type="Namespace" name="Core" executed="True" result="Success" success="True" time="0.147" asserts="0">
-            <results>
-              <test-suite type="TestSuite" name="imports_NUnit_fixture" executed="True" result="Success" success="True" time="0.140" asserts="0">
-                <results>
-                  <test-suite type="TestSuite" name="a block" executed="True" result="Success" success="True" time="0.113" asserts="0">
-                    <results>
-                      <test-suite type="TestSuite" name="a sub block" executed="True" result="Success" success="True" time="0.096" asserts="0">
-                        <results>
-                          <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;.ctor&gt;b__0" executed="True" result="Success" success="True" time="0.056" asserts="0" />
-                        </results>
-                      </test-suite>
-                      <test-case name="NJasmine.Core.NJasmineTestMethod.&lt;.ctor&gt;b__0" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-    </results>
-  </test-suite>
+  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Inconclusive" success="False" time="0.017" asserts="0" />
 </test-results>
