@@ -54,13 +54,18 @@ namespace NJasmineTests.Core
         [Test]
         public void IsInScopeFor()
         {
-            expect(new TestPosition(0).IsInScopeFor(new TestPosition(0,1))).to.Equal(true);
+            expect(new TestPosition(0).IsInScopeFor(new TestPosition(0, 1))).to.Equal(true);
             expect(new TestPosition(0).IsInScopeFor(new TestPosition(1, 2))).to.Equal(true);
             expect(new TestPosition(0).IsInScopeFor(new TestPosition(5))).to.Equal(true);
             expect(new TestPosition(0).IsInScopeFor(new TestPosition(5,123))).to.Equal(true);
 
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 2))).to.Equal(true);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 2))).to.Equal(false);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5))).to.Equal(true);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5, 0))).to.Equal(true);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5, 3))).to.Equal(true);
             expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7))).to.Equal(true);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7, 0))).to.Equal(true);
+            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7, 3))).to.Equal(true);
 
             expect(new TestPosition(1,2,3).IsInScopeFor(new TestPosition(0))).to.Equal(false);
             expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(0, 2, 3))).to.Equal(false);

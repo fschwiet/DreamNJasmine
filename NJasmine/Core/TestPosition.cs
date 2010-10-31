@@ -42,10 +42,13 @@ namespace NJasmine.Core
 
             for(var i = 0; i < thisCoordinateCount; i++)
             {
-                if (this.Coordinates.Skip(i).First() != testPosition.Coordinates.Skip(i).First())
+                int thisCoordinate = this.Coordinates.Skip(i).First();
+                int testCoordinate = testPosition.Coordinates.Skip(i).First();
+
+                if (thisCoordinate != testCoordinate)
                 {
                     if (i == thisCoordinateCount - 1)
-                        return true;
+                        return thisCoordinate <= testCoordinate;
                     else
                         return false;
                 }

@@ -9,10 +9,21 @@ namespace NJasmine.ImportNUnitFixture
 {
     public class Multifixture
     {
+        readonly Multifixture _parent;
         List<TestPosition> _positions = new List<TestPosition>();  // storing position keys separately by order of existence
         Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
         Dictionary<TestPosition, object> _instances = new Dictionary<TestPosition, object>();
-        
+
+        public Multifixture()
+        {
+            _parent = null;
+        }
+
+        public Multifixture(Multifixture parent)
+        {
+            _parent = parent;
+        }
+
         public void DoOnetimeSetUp()
         {
             foreach (var instance in _positions.Select(p => GetInstance(p)))
@@ -43,9 +54,7 @@ namespace NJasmine.ImportNUnitFixture
 
         public void DoSetUp(TestPosition position)
         {
-            foreach (var instance in _positions
-                .Where(fixturePosition => fixturePosition.IsInScopeFor(position))
-                .Select(p => GetInstance(p)))
+            foreach (var instance in GetFixturesAndParentFixturesInScopeFor(position))
             {
                 var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
                                                                          NUnitFramework.SetUpAttribute, true);
@@ -59,10 +68,7 @@ namespace NJasmine.ImportNUnitFixture
 
         public void DoTearDown(TestPosition position)
         {
-            foreach (var instance in _positions
-                .Where(fixturePosition => fixturePosition.IsInScopeFor(position))
-                .Select(p => GetInstance(p))
-                .Reverse())
+            foreach (var instance in GetFixturesAndParentFixturesInScopeFor(position).Reverse())
             {
                 var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
                                                                          NUnitFramework.TearDownAttribute, true);
@@ -104,6 +110,24 @@ namespace NJasmine.ImportNUnitFixture
             }
 
             return instance;
+        }
+
+        IEnumerable<object> GetFixturesAndParentFixturesInScopeFor(TestPosition position)
+        {
+            IEnumerable<object> fixturesAndParentFixturesInScopeFor = EmptyObjectArray;
+
+            if (_parent != null)
+            {
+                fixturesAndParentFixturesInScopeFor =
+                    fixturesAndParentFixturesInScopeFor.Concat(_parent.GetFixturesAndParentFixturesInScopeFor(position));
+            }
+            
+            fixturesAndParentFixturesInScopeFor = fixturesAndParentFixturesInScopeFor
+                .Concat(_positions
+                        .Where( fixturePosition => fixturePosition.IsInScopeFor(position))
+                        .Select(p => GetInstance(p)));
+
+            return fixturesAndParentFixturesInScopeFor;
         }
 
         readonly static object[] EmptyObjectArray = new object[0];

@@ -166,7 +166,21 @@ describe("Multifixture", delegate
 
         it("includes parent filter", delegate
         {
-            Assert.Fail("not implemented");
+            var parent = new Multifixture();
+            parent.AddFixture(new TestPosition(0), typeof(SomeFixtureTypeA));  // in scope
+            parent.AddFixture(new TestPosition(3, 1), typeof(SomeFixtureTypeB));  // not in scope
+            parent.AddFixture(new TestPosition(1), typeof(SomeFixtureTypeC));  // in scope
+
+            sut = new Multifixture(parent);
+            sut.AddFixture(new TestPosition(1, 0), typeof(SomeFixtureTypeD));
+
+            sut.DoSetUp(new TestPosition(1,1));
+            expect(Observed.ToString()).to.Equal("A.SetUp C.SetUp D.SetUp ");
+
+            Observed = new StringBuilder();
+
+            sut.DoTearDown(new TestPosition(1,1));
+            expect(Observed.ToString()).to.Equal("D.TearDown C.TearDown A.TearDown "); 
         });
     });
 });
@@ -193,6 +207,8 @@ describe("Multifixture", delegate
         class SomeFixtureTypeB : SomeFixtureTypeA { }
 
         class SomeFixtureTypeC : SomeFixtureTypeA { }
+
+        class SomeFixtureTypeD : SomeFixtureTypeA { }
 
         static StringBuilder Observed;
     }
