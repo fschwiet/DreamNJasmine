@@ -14,16 +14,16 @@ namespace NJasmine.Core
         readonly NJasmineFixture _fixture;
         readonly string _name;
         readonly TestPosition _position;
-        readonly Multifixture _nunitImports;
+        readonly NUnitFixtureCollection _nunitImports;
         List<Test> _accumulatedDescendants = new List<Test>();
 
-        public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position, Multifixture parentNUnitImports) 
+        public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports) 
             : base(parentSuiteName, name)
         {
             _fixture = fixture;
             _name = name;
             _position = position;
-            _nunitImports = new Multifixture(parentNUnitImports);
+            _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
         }
 
         public TestPosition Position

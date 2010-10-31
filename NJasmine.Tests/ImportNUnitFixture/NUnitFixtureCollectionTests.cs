@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
-using NJasmine.ImportNUnitFixture;
 using NUnit.Framework;
 
 namespace NJasmineTests.ImportNUnitFixture
 {
-    public class MultifixtureTests : NJasmineFixture
+    public class NUnitFixtureCollectionTests : NJasmineFixture
     {
         public override void Tests()
         {
 
-describe("Multifixture", delegate
+describe("NUnitFixtureCollection", delegate
 {
-    var sut = new Multifixture();
+    var sut = new NUnitFixtureCollection();
 
     describe("a collection of fixtures", delegate
     {
@@ -52,10 +51,10 @@ describe("Multifixture", delegate
 
         it("can retrieve the fixture from parent", delegate
         {
-            var parent = new Multifixture();
+            var parent = new NUnitFixtureCollection();
             parent.AddFixture(position, type);
 
-            sut = new Multifixture(parent);
+            sut = new NUnitFixtureCollection(parent);
 
             expect(sut.GetInstance(position)).to.Be.OfType(type);
         });
@@ -187,12 +186,12 @@ describe("Multifixture", delegate
 
         it("includes parent filter", delegate
         {
-            var parent = new Multifixture();
+            var parent = new NUnitFixtureCollection();
             parent.AddFixture(new TestPosition(0), typeof(SomeFixtureTypeA));  // in scope
             parent.AddFixture(new TestPosition(3, 1), typeof(SomeFixtureTypeB));  // not in scope
             parent.AddFixture(new TestPosition(1), typeof(SomeFixtureTypeC));  // in scope
 
-            sut = new Multifixture(parent);
+            sut = new NUnitFixtureCollection(parent);
             sut.AddFixture(new TestPosition(1, 0), typeof(SomeFixtureTypeD));
 
             sut.DoSetUp(new TestPosition(1,1));

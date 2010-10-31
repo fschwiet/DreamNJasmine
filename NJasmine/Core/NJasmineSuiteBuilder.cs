@@ -35,7 +35,7 @@ namespace NJasmine.Core
         {
             NJasmineFixture fixture = type.GetConstructor(new Type[0]).Invoke(new object[0]) as NJasmineFixture;
 
-            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition(), new Multifixture());
+            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition(), new NUnitFixtureCollection());
 
             rootSuite.BuildSuite(fixture.Tests);
 

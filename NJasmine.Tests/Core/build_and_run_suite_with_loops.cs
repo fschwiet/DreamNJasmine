@@ -74,7 +74,7 @@ namespace NJasmineTests.Core
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
         {
             var fixture = new has_test_in_loop();
-            var method = new NJasmine.Core.NJasmineTestMethod(fixture, testPosition, new Multifixture());
+            var method = new NJasmine.Core.NJasmineTestMethod(fixture, testPosition, new NUnitFixtureCollection());
 
             TestResult result = new TestResult(method);
             method.RunTestMethod(result);

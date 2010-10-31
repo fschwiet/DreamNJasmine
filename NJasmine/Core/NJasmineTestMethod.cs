@@ -13,12 +13,12 @@ namespace NJasmine.Core
     {
         readonly NJasmineFixture _fixture;
         readonly TestPosition _position;
-        readonly Multifixture _nUnitImports;
+        readonly NUnitFixtureCollection _nUnitImports;
 
         VisitorPositionAdapter _visitorPositionAdapter;
         List<Action> _teardowns = new List<Action>();
 
-        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, Multifixture nUnitImports) : base(new Action(delegate() { }).Method)
+        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
             _fixture = fixture;
             _position = position;

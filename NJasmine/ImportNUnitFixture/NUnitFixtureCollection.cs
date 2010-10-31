@@ -7,19 +7,19 @@ using NUnit.Core;
 
 namespace NJasmine.ImportNUnitFixture
 {
-    public class Multifixture
+    public class NUnitFixtureCollection
     {
-        readonly Multifixture _parent;
+        readonly NUnitFixtureCollection _parent;
         List<TestPosition> _positions = new List<TestPosition>();  // storing position keys separately by order of existence
         Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
         Dictionary<TestPosition, object> _instances = new Dictionary<TestPosition, object>();
 
-        public Multifixture()
+        public NUnitFixtureCollection()
         {
             _parent = null;
         }
 
-        public Multifixture(Multifixture parent)
+        public NUnitFixtureCollection(NUnitFixtureCollection parent)
         {
             _parent = parent;
         }

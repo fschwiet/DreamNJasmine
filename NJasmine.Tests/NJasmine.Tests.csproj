@@ -67,7 +67,7 @@
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
-    <Compile Include="ImportNUnitFixture\MultifixtureTests.cs" />
+    <Compile Include="ImportNUnitFixture\NUnitFixtureCollectionTests.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
