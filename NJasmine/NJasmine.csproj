@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="Core\NUnitFixtureCollection.cs" />
     <Compile Include="FixtureVisitor\DontVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixtureVisitor.cs" />
@@ -63,12 +64,14 @@
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="ExpectationsFixture.cs" />
-    <Compile Include="ImportNUnitFixture\NUnitFixtureCollection.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ImportNUnitFixture\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

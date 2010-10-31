@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NJasmine.FixtureVisitor;
-using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 
 namespace NJasmine.Core

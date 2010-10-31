@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.ImportNUnitFixture
+namespace NJasmineTests.Core
 {
     public class NUnitFixtureCollectionTests : NJasmineFixture
     {

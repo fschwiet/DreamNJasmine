@@ -42,7 +42,7 @@ task TestDeploy -depends Build {
 	cp $deploySource\* $testDeployTarget -recurse
 }
 
-task TestFixture_imports_NUnit_fixture {
+task IntegrationTests {
 
     $tests = @(
         @{ 
@@ -89,6 +89,9 @@ FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
     $tests | % { 
 
         $test = $_.test;
+
+        "Running integration test $test." | write-host
+
         $expected = $_.expected.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
 	    $testoutput = exec { & $nunit_path $testDll /run:NJasmineTests.Core.imports_NUnit_fixture }
         $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
@@ -106,5 +109,5 @@ task UnitTest -depends Build {
     RunNUnit $testDll
 }
 
-task Test -depends UnitTest, TestFixture_imports_NUnit_fixture {
+task Test -depends UnitTest, IntegrationTests {
 }

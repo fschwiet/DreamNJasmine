@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
-using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 using NUnit.Framework;
 

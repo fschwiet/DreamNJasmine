@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.ImportNUnitFixture
+namespace NJasmine.Core
 {
     public class NUnitFixtureCollection
     {
