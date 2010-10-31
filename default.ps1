@@ -47,38 +47,49 @@ task TestFixture_imports_NUnit_fixture {
     $tests = @(
         @{ 
             test = "NJasmineTests.Core.imports_NUnit_fixture";
-            expected = @(
-                "test started, before first include of a",
-                "after first include of a",
-                "first describe, before include of b",
-                "after include of b",
-                "before second a",
-                "after second a",
-                "FixtureSetup some_Nunit_fixture_a",
-                "FixtureSetup some_Nunit_fixture_b",
-                "FixtureSetup some_Nunit_fixture_a",
-                "test started, before first include of a",
-                "Setup some_Nunit_fixture_a",
-                "after first include of a",
-                "first describe, before include of b",
-                "Setup some_Nunit_fixture_b",
-                "after include of b",
-                "before second a",
-                "Setup some_Nunit_fixture_a",
-                "after second a",
-                "second test test",
-                "test started, before first include of a",
-                "after first include of a",
-                "first describe, before include of b",
-                "after include of b",
-                "first test")
+            expected = @"
+test started, before include of a
+after include of a
+first describe, before include of b
+after include of b
+before include of c
+after include of c
+FixtureSetup NJasmineTests.Core.some_Nunit_fixture_a
+FixtureSetup NJasmineTests.Core.some_Nunit_fixture_b
+FixtureSetup NJasmineTests.Core.some_Nunit_fixture_c
+test started, before include of a
+SetUp NJasmineTests.Core.some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp NJasmineTests.Core.some_Nunit_fixture_b
+after include of b
+before include of c
+SetUp NJasmineTests.Core.some_Nunit_fixture_c
+after include of c
+second test test
+TearDown NJasmineTests.Core.some_Nunit_fixture_c
+TearDown NJasmineTests.Core.some_Nunit_fixture_b
+TearDown NJasmineTests.Core.some_Nunit_fixture_a
+FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_c
+test started, before include of a
+SetUp NJasmineTests.Core.some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp NJasmineTests.Core.some_Nunit_fixture_b
+after include of b
+first test
+TearDown NJasmineTests.Core.some_Nunit_fixture_b
+TearDown NJasmineTests.Core.some_Nunit_fixture_a
+FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_b
+FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
+"@
         }
     )
 
     $tests | % { 
 
         $test = $_.test;
-        $expected = $_.expected;
+        $expected = $_.expected.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
 	    $testoutput = exec { & $nunit_path $testDll /run:NJasmineTests.Core.imports_NUnit_fixture }
         $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
         $comparison = compare-object $expected $actual
@@ -90,11 +101,10 @@ task TestFixture_imports_NUnit_fixture {
     }
 }
 
-task Test -depends Build {
-
-	#exec { & $testDll }
+task UnitTest -depends Build {
 
     RunNUnit $testDll
-
 }
 
+task Test -depends UnitTest, TestFixture_imports_NUnit_fixture {
+}

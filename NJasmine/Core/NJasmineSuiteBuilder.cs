@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.FixtureVisitor;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
@@ -34,7 +35,7 @@ namespace NJasmine.Core
         {
             NJasmineFixture fixture = type.GetConstructor(new Type[0]).Invoke(new object[0]) as NJasmineFixture;
 
-            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition());
+            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition(), new Multifixture());
 
             rootSuite.BuildSuite(fixture.Tests);
 
@@ -54,7 +55,6 @@ namespace NJasmine.Core
 
         static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
         {
-
             if (test is INJasmineTest)
             {
                 visitor(test as INJasmineTest);

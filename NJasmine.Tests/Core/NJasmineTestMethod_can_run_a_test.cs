@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 using NUnit.Framework;
 
@@ -85,7 +86,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2));
+            var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), new Multifixture());
 
             sut.Run();
 

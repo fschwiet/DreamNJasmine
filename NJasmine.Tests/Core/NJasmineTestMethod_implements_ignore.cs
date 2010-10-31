@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -36,7 +37,7 @@ namespace NJasmineTests.Core
 
             it("ignore() isn't run ", delegate() 
             {
-                var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2));
+                var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), null);
 
                 sut.Run();
 

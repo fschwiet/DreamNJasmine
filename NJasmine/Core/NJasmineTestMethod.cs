@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NJasmine.FixtureVisitor;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 
 namespace NJasmine.Core
@@ -12,18 +13,16 @@ namespace NJasmine.Core
     {
         readonly NJasmineFixture _fixture;
         readonly TestPosition _position;
+        readonly Multifixture _nUnitImports;
 
         VisitorPositionAdapter _visitorPositionAdapter;
         List<Action> _teardowns = new List<Action>();
-        Action _nextStep;
 
-        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position) : base(new Action(delegate() { }).Method)
+        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, Multifixture nUnitImports) : base(new Action(delegate() { }).Method)
         {
             _fixture = fixture;
             _position = position;
-
-            base.setUpMethods = new MethodInfo[] { ((Action)this.Setup).Method };
-            base.tearDownMethods = new MethodInfo[] { ((Action)this.TearDown).Method };
+            _nUnitImports = nUnitImports;
         }
         
         public override void RunTestMethod(TestResult testResult)
@@ -98,21 +97,18 @@ namespace NJasmine.Core
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            return _fixture.GetNUnitFixture(position) as TFixture;
+            _nUnitImports.DoSetUp(position);
+
+            _teardowns.Add(delegate
+            {
+                _nUnitImports.DoTearDown(position);
+            });
+
+            return _nUnitImports.GetInstance(position) as TFixture;
         }
 
         public class TestFinishedException : Exception
         {
-        }
-
-        void Setup()
-        {
-            _fixture.RunSetup(_position);
-        }
-
-        void TearDown()
-        {
-            _fixture.RunTearDown(_position);
         }
     }
 }

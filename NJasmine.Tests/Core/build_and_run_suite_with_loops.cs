@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 using NUnit.Framework;
 
@@ -73,7 +74,7 @@ namespace NJasmineTests.Core
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
         {
             var fixture = new has_test_in_loop();
-            var method = new NJasmine.Core.NJasmineTestMethod(fixture, testPosition);
+            var method = new NJasmine.Core.NJasmineTestMethod(fixture, testPosition, new Multifixture());
 
             TestResult result = new TestResult(method);
             method.RunTestMethod(result);

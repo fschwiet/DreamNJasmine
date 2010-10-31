@@ -54,29 +54,26 @@ namespace NJasmine.ImportNUnitFixture
 
         public void DoSetUp(TestPosition position)
         {
-            foreach (var instance in GetFixturesAndParentFixturesInScopeFor(position))
-            {
-                var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
-                                                                         NUnitFramework.SetUpAttribute, true);
+            var instance = GetInstance(position);
 
-                foreach (var method in methods)
-                {
-                    method.Invoke(instance, EmptyObjectArray);
-                }
+            var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
+                                                                        NUnitFramework.SetUpAttribute, true);
+
+            foreach (var method in methods)
+            {
+                method.Invoke(instance, EmptyObjectArray);
             }
         }
 
         public void DoTearDown(TestPosition position)
         {
-            foreach (var instance in GetFixturesAndParentFixturesInScopeFor(position).Reverse())
-            {
-                var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
-                                                                         NUnitFramework.TearDownAttribute, true);
+            var instance = GetInstance(position);
 
-                foreach (var method in methods)
-                {
-                    method.Invoke(instance, EmptyObjectArray);
-                }
+            var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
+                                                                         NUnitFramework.TearDownAttribute, true);
+            foreach (var method in methods)
+            {
+                method.Invoke(instance, EmptyObjectArray);
             }
         }
 
@@ -92,44 +89,32 @@ namespace NJasmine.ImportNUnitFixture
             _fixtures[position] = type;
         }
 
-        public Type GetFixture(TestPosition position)
-        {
-            return _fixtures[position];
-        }
-
         public object GetInstance(TestPosition position)
         {
             object instance = null; 
 
-            if (!_instances.TryGetValue(position, out instance))
+            if (_positions.Contains(position))
             {
-                var type = GetFixture(position);
+                if (!_instances.TryGetValue(position, out instance))
+                {
+                    var type = _fixtures[position];
 
-                instance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
-                _instances[position] = instance;
+                    instance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
+                    _instances[position] = instance;
+                }
+
+                return instance;
             }
-
-            return instance;
-        }
-
-        IEnumerable<object> GetFixturesAndParentFixturesInScopeFor(TestPosition position)
-        {
-            IEnumerable<object> fixturesAndParentFixturesInScopeFor = EmptyObjectArray;
-
-            if (_parent != null)
+            else if (_parent != null)
             {
-                fixturesAndParentFixturesInScopeFor =
-                    fixturesAndParentFixturesInScopeFor.Concat(_parent.GetFixturesAndParentFixturesInScopeFor(position));
+                return _parent.GetInstance(position);
             }
-            
-            fixturesAndParentFixturesInScopeFor = fixturesAndParentFixturesInScopeFor
-                .Concat(_positions
-                        .Where( fixturePosition => fixturePosition.IsInScopeFor(position))
-                        .Select(p => GetInstance(p)));
-
-            return fixturesAndParentFixturesInScopeFor;
+            else
+            {
+                throw new InvalidOperationException("NUnit fixture instance requested not found.");
+            }
         }
-
+        
         readonly static object[] EmptyObjectArray = new object[0];
     }
 }

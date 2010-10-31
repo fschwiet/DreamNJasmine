@@ -23,11 +23,15 @@ describe("Multifixture", delegate
         var position = new TestPosition();
         var type = typeof(SomeFixtureTypeA);
 
-        it("tracks fixture types by test position", delegate
+        it("can add and retrive the fixture instance at a position", delegate
         {
             sut.AddFixture(position, type);
 
-            expect(sut.GetFixture(position)).to.Equal(type);
+            var instance1 = sut.GetInstance(position);
+            var instance2 = sut.GetInstance(position);
+
+            expect(instance1).to.Be.OfType(type);
+            expect(instance1).to.Be.SameAs(instance2);
         });
 
         it("can only add one fixture per position", delegate
@@ -46,15 +50,14 @@ describe("Multifixture", delegate
             Assert.Fail("exception expected");
         });
 
-        it("can retrive the fixture instance at a position", delegate
+        it("can retrieve the fixture from parent", delegate
         {
-            sut.AddFixture(position, type);
+            var parent = new Multifixture();
+            parent.AddFixture(position, type);
 
-            var instance1 = sut.GetInstance(position);
-            var instance2 = sut.GetInstance(position);
+            sut = new Multifixture(parent);
 
-            expect(instance1).to.Be.OfType(type);
-            expect(instance1).to.Be.SameAs(instance2);
+            expect(sut.GetInstance(position)).to.Be.OfType(type);
         });
     });
 
@@ -110,8 +113,26 @@ describe("Multifixture", delegate
         beforeEach(delegate
         {
             Observed = new StringBuilder();
+
+            sut.AddFixture(new TestPosition(1, 2), typeof(SomeFixtureTypeB));
+            sut.AddFixture(new TestPosition(1, 2, 3), typeof(SomeFixtureTypeC));
         });
 
+        it("doing setup", delegate
+        {
+            sut.DoSetUp(new TestPosition(1, 2, 3));
+
+            expect(Observed.ToString()).to.Equal("C.SetUp ");
+        });
+
+        it("doing teardown", delegate
+        {
+            sut.DoTearDown(new TestPosition(1, 2, 3));
+
+            expect(Observed.ToString()).to.Equal("C.TearDown ");
+        });
+
+        /*
         it("for an empty collection", delegate
         {
             sut.DoSetUp(new TestPosition(1));
@@ -182,6 +203,8 @@ describe("Multifixture", delegate
             sut.DoTearDown(new TestPosition(1,1));
             expect(Observed.ToString()).to.Equal("D.TearDown C.TearDown A.TearDown "); 
         });
+         
+         */
     });
 });
 
@@ -207,8 +230,6 @@ describe("Multifixture", delegate
         class SomeFixtureTypeB : SomeFixtureTypeA { }
 
         class SomeFixtureTypeC : SomeFixtureTypeA { }
-
-        class SomeFixtureTypeD : SomeFixtureTypeA { }
 
         static StringBuilder Observed;
     }

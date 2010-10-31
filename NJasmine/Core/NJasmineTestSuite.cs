@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NJasmine.FixtureVisitor;
+using NJasmine.ImportNUnitFixture;
 using NUnit.Core;
 
 namespace NJasmine.Core
@@ -11,21 +12,18 @@ namespace NJasmine.Core
     class NJasmineTestSuite : TestSuite, INJasmineTest, INJasmineFixturePositionVisitor
     {
         readonly NJasmineFixture _fixture;
-        readonly string _parentSuiteName;
         readonly string _name;
         readonly TestPosition _position;
+        readonly Multifixture _nunitImports;
         List<Test> _accumulatedDescendants = new List<Test>();
 
-        public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position) 
+        public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position, Multifixture parentNUnitImports) 
             : base(parentSuiteName, name)
         {
             _fixture = fixture;
-            _parentSuiteName = parentSuiteName;
             _name = name;
             _position = position;
-
-            base.fixtureSetUpMethods = new MethodInfo[] { ((Action)this.FixtureSetup).Method };
-            base.fixtureTearDownMethods= new MethodInfo[] { ((Action)this.FixtureSetup).Method };
+            _nunitImports = new Multifixture(parentNUnitImports);
         }
 
         public TestPosition Position
@@ -68,7 +66,7 @@ namespace NJasmine.Core
         
         public void visitDescribe(string description, Action action, TestPosition position)
         {
-            var describeSuite = new NJasmineTestSuite(_fixture, _name, description, position);
+            var describeSuite = new NJasmineTestSuite(_fixture, _name, description, position, _nunitImports);
 
             describeSuite.BuildSuite(action);
 
@@ -85,7 +83,7 @@ namespace NJasmine.Core
 
         public void visitIt(string description, Action action, TestPosition position)
         {
-            var testMethod = new NJasmineTestMethod(_fixture, position);
+            var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
             testMethod.TestName.Name = description;
 
@@ -94,21 +92,19 @@ namespace NJasmine.Core
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            TFixture fixture = new TFixture();
+            _nunitImports.AddFixture(position, typeof(TFixture));
 
-            _fixture.SetNUnitFixture(position, fixture);
-
-            return fixture;
+            return null;
         }
 
-        public void FixtureSetup()
+        protected override void DoOneTimeSetUp(TestResult suiteResult)
         {
-            _fixture.RunOneTimeSetup();
+            _nunitImports.DoOnetimeSetUp();
         }
 
-        public void FixtureTearDown()
+        protected override void DoOneTimeTearDown(TestResult suiteResult)
         {
-            _fixture.RunOneTimeTearDown();
+            _nunitImports.DoOnetimeTearDown();
         }
     }
 }
