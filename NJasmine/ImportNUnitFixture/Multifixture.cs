@@ -15,7 +15,7 @@ namespace NJasmine.ImportNUnitFixture
         
         public void DoOnetimeSetUp()
         {
-            foreach(var instance in _positions.Select(p => GetInstance(p)))
+            foreach (var instance in _positions.Select(p => GetInstance(p)))
             {
                 var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
                                                                          NUnitFramework.FixtureSetUpAttribute, true);
@@ -40,6 +40,40 @@ namespace NJasmine.ImportNUnitFixture
                 }
             }
         }
+
+        public void DoSetUp(TestPosition position)
+        {
+            foreach (var instance in _positions
+                .Where(fixturePosition => fixturePosition.IsInScopeFor(position))
+                .Select(p => GetInstance(p)))
+            {
+                var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
+                                                                         NUnitFramework.SetUpAttribute, true);
+
+                foreach (var method in methods)
+                {
+                    method.Invoke(instance, EmptyObjectArray);
+                }
+            }
+        }
+
+        public void DoTearDown(TestPosition position)
+        {
+            foreach (var instance in _positions
+                .Where(fixturePosition => fixturePosition.IsInScopeFor(position))
+                .Select(p => GetInstance(p))
+                .Reverse())
+            {
+                var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
+                                                                         NUnitFramework.TearDownAttribute, true);
+
+                foreach (var method in methods)
+                {
+                    method.Invoke(instance, EmptyObjectArray);
+                }
+            }
+        }
+
 
         public void AddFixture(TestPosition position, Type type)
         {

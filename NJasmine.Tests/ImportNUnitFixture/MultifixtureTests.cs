@@ -104,6 +104,71 @@ describe("Multifixture", delegate
             expect(Observed.ToString()).to.Equal("C.TestFixtureTearDown B.TestFixtureTearDown A.TestFixtureTearDown ");
         });
     });
+
+    describe("can run per-test fixture setup and teardown", delegate
+    {
+        beforeEach(delegate
+        {
+            Observed = new StringBuilder();
+        });
+
+        it("for an empty collection", delegate
+        {
+            sut.DoSetUp(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("");
+
+            Observed = new StringBuilder();
+
+            sut.DoTearDown(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("");
+        });
+
+        it("for a single fixture, in scope", delegate
+        {
+            sut.AddFixture(new TestPosition(0), typeof(SomeFixtureTypeA));
+
+            sut.DoSetUp(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("A.SetUp ");
+
+            Observed = new StringBuilder();
+
+            sut.DoTearDown(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("A.TearDown ");
+        });
+
+        it("for a single fixture, not in scope", delegate
+        {
+            sut.AddFixture(new TestPosition(2, 1), typeof(SomeFixtureTypeA));
+
+            sut.DoSetUp(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("");
+
+            Observed = new StringBuilder();
+
+            sut.DoTearDown(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("");
+        });
+
+        it("for a mix of fixtures, some in scope.", delegate
+        {
+            sut.AddFixture(new TestPosition(0), typeof(SomeFixtureTypeA));  // in scope
+            sut.AddFixture(new TestPosition(3, 1), typeof(SomeFixtureTypeB));  // not in scope
+            sut.AddFixture(new TestPosition(1), typeof(SomeFixtureTypeC));  // in scope
+
+            sut.DoSetUp(new TestPosition(2));
+            expect(Observed.ToString()).to.Equal("A.SetUp C.SetUp ");
+
+            Observed = new StringBuilder();
+
+            sut.DoTearDown(new TestPosition(1));
+            expect(Observed.ToString()).to.Equal("C.TearDown A.TearDown ");
+        });
+
+        it("includes parent filter", delegate
+        {
+            Assert.Fail("not implemented");
+        });
+    });
 });
 
         }
