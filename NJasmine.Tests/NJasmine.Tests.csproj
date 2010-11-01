@@ -62,6 +62,7 @@
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
     <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
+    <Compile Include="FailingFixtures\beforeEach_after_it.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownAtTopLevel.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownInFirstDescribe.cs" />
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />

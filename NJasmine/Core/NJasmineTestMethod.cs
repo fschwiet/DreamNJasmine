@@ -14,7 +14,6 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nUnitImports;
 
-        VisitorPositionAdapter _visitorPositionAdapter;
         List<Action> _teardowns = new List<Action>();
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
@@ -37,8 +36,7 @@ namespace NJasmine.Core
 
         public void Run()
         {
-            _visitorPositionAdapter = new VisitorPositionAdapter(this);
-            _fixture.PushVisitor(_visitorPositionAdapter);
+            _fixture.PushVisitor(new VisitorPositionAdapter(this));
 
             try
             {
@@ -48,7 +46,7 @@ namespace NJasmine.Core
             {
             }
 
-            _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.afterEach, this));
+            _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this));
 
             _teardowns.Reverse();
             foreach(var action in _teardowns)
@@ -69,7 +67,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.beforeEach, this));
+                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this));
                 action();
                 _fixture.PopVisitor();
             }
@@ -87,7 +85,7 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.it, this));
+                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this));
                 action();
 
                 throw new TestFinishedException();

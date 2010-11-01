@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NUnitFixtureCollection.cs" />
+    <Compile Include="FixtureVisitor\SpecMethod.cs" />
     <Compile Include="FixtureVisitor\TerminalVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
     <Compile Include="FixtureVisitor\INJasmineFixtureVisitor.cs" />

@@ -46,6 +46,12 @@ task IntegrationTests {
 
     $tests = @(
         @{
+            test = "NJasmineTests.FailingFixtures.beforeEach_after_it";
+            expectedSubstrings = @(
+                "Test Failure : NJasmineTests.FailingFixtures.beforeEach_after_it", 
+                "Exception thrown within test definition: Called beforeEach() after Using().")
+        },
+        @{
             test = "NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel";
             expectedSubstrings = @(
                 "Test Failure : NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel", 
@@ -61,19 +67,19 @@ task IntegrationTests {
             test = "NJasmineTests.FailingFixtures.ReenterDuringAfterEach";
             expectedSubstrings = @(
                 "Test Error : NJasmineTests.FailingFixtures.ReenterDuringAfterEach", 
-                "System.InvalidOperationException : Called it() within afterEach.");
+                "System.InvalidOperationException : Called it() within afterEach().");
         },
         @{
             test = "NJasmineTests.FailingFixtures.ReentersDuringBeforeEach";
             expectedSubstrings = @(
                 "Test Error : NJasmineTests.FailingFixtures.ReentersDuringBeforeEach",
-                "System.InvalidOperationException : Called it() within beforeEach")
+                "System.InvalidOperationException : Called it() within beforeEach().")
         },
         @{
             test = "NJasmineTests.FailingFixtures.ReentersDuringIt";
             expectedSubstrings = @(
                 "Test Error : NJasmineTests.FailingFixtures.ReentersDuringIt",
-                "System.InvalidOperationException : Called it() within it.");
+                "System.InvalidOperationException : Called it() within it().");
         },
         @{ 
             test = "NJasmineTests.Integration.imports_NUnit_fixture";

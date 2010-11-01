@@ -14,7 +14,9 @@ namespace NJasmine.Core
         readonly string _name;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
-        List<Test> _accumulatedDescendants = new List<Test>();
+        readonly List<Test> _accumulatedDescendants;
+
+        bool _haveReachedAnIt;
 
         public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports) 
             : base(parentSuiteName, name)
@@ -23,6 +25,9 @@ namespace NJasmine.Core
             _name = name;
             _position = position;
             _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            _accumulatedDescendants = new List<Test>();
+            _haveReachedAnIt = false;
+
             maintainTestOrder = true;
         }
 
@@ -75,10 +80,14 @@ namespace NJasmine.Core
 
         public void visitBeforeEach(Action action, TestPosition position)
         {
+            if (_haveReachedAnIt)
+                throw WrongMethodAfterItMethod(SpecMethod.beforeEach);
         }
 
         public void visitAfterEach(Action action, TestPosition position)
         {
+            if (_haveReachedAnIt)
+                throw WrongMethodAfterItMethod(SpecMethod.afterEach);
         }
 
         public void visitIt(string description, Action action, TestPosition position)
@@ -89,10 +98,15 @@ namespace NJasmine.Core
             testMethod.TestName.FullName = this.TestName.FullName;
 
             _accumulatedDescendants.Add(testMethod);
+
+            _haveReachedAnIt = true;
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
+            if (_haveReachedAnIt)
+                throw WrongMethodAfterItMethod(SpecMethod.importNUnit);
+
             _nunitImports.AddFixture(position, typeof(TFixture));
 
             return null;
@@ -100,11 +114,17 @@ namespace NJasmine.Core
 
         public TDisposable visitUsing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
         {
+            if (_haveReachedAnIt)
+                throw WrongMethodAfterItMethod(SpecMethod.Using);
+
             return null;
         }
 
         public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
         {
+            if (_haveReachedAnIt)
+                throw WrongMethodAfterItMethod(SpecMethod.Using);
+
             return null;
         }
 
@@ -117,5 +137,11 @@ namespace NJasmine.Core
         {
             _nunitImports.DoOnetimeTearDown();
         }
+
+        InvalidOperationException WrongMethodAfterItMethod(SpecMethod innerSpecMethod)
+        {
+            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.Using + "().");
+        }
+
     }
 }

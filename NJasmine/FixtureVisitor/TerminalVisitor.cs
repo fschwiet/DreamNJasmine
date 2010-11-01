@@ -10,15 +10,6 @@ namespace NJasmine.FixtureVisitor
         readonly SpecMethod _specMethod;
         readonly INJasmineFixturePositionVisitor _originalVisitor;
 
-        public enum SpecMethod
-        {
-            describe,
-            beforeEach,
-            afterEach,
-            it,
-            importNUnit
-        }
-
         public TerminalVisitor(SpecMethod specMethod, INJasmineFixturePositionVisitor originalVisitor)
         {
             _specMethod = specMethod;
@@ -62,7 +53,7 @@ namespace NJasmine.FixtureVisitor
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)
         {
-            return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + ".");
+            return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + "().");
         }
     }
 }
