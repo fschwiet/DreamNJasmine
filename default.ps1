@@ -83,6 +83,13 @@ TearDown NJasmineTests.Core.some_Nunit_fixture_a
 FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_b
 FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
 "@
+        },
+
+        @{ 
+            test = "NJasmineTests.Integration.suite_using_disposables";
+            expected = @"
+hi
+"@
         }
     )
 
@@ -93,7 +100,7 @@ FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
         "Running integration test $test." | write-host
 
         $expected = $_.expected.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
-	    $testoutput = exec { & $nunit_path $testDll /run:NJasmineTests.Core.imports_NUnit_fixture }
+	    $testoutput = exec { & $nunit_path $testDll /run:$test }
         $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
         $comparison = compare-object $expected $actual
         if ($comparison) {

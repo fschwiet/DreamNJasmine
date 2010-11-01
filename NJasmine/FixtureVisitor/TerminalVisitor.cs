@@ -5,9 +5,10 @@ using System.Text;
 
 namespace NJasmine.FixtureVisitor
 {
-    public class DontVisitor : INJasmineFixtureVisitor
+    public class TerminalVisitor : INJasmineFixtureVisitor
     {
         readonly SpecMethod _specMethod;
+        readonly INJasmineFixturePositionVisitor _originalVisitor;
 
         public enum SpecMethod
         {
@@ -18,9 +19,10 @@ namespace NJasmine.FixtureVisitor
             importNUnit
         }
 
-        public DontVisitor(SpecMethod specMethod)
+        public TerminalVisitor(SpecMethod specMethod, INJasmineFixturePositionVisitor originalVisitor)
         {
             _specMethod = specMethod;
+            _originalVisitor = originalVisitor;
         }
 
         public void visitDescribe(string description, Action action)
@@ -46,6 +48,16 @@ namespace NJasmine.FixtureVisitor
         public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
         {
             throw DontException(SpecMethod.importNUnit);
+        }
+
+        public TDisposable visitUsing<TDisposable>() where TDisposable : class, IDisposable, new()
+        {
+            return _originalVisitor.visitUsing<TDisposable>(null);
+        }
+
+        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        {
+            return _originalVisitor.visitUsing(factory, null);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

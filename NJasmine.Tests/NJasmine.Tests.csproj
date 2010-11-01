@@ -68,6 +68,7 @@
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
+    <Compile Include="Integration\suite_using_disposables.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

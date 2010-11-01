@@ -48,7 +48,7 @@ namespace NJasmine.Core
             {
             }
 
-            _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.afterEach));
+            _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.afterEach, this));
 
             _teardowns.Reverse();
             foreach(var action in _teardowns)
@@ -69,7 +69,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.beforeEach));
+                _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.beforeEach, this));
                 action();
                 _fixture.PopVisitor();
             }
@@ -87,7 +87,7 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                _fixture.PushVisitor(new DontVisitor(DontVisitor.SpecMethod.it));
+                _fixture.PushVisitor(new TerminalVisitor(TerminalVisitor.SpecMethod.it, this));
                 action();
 
                 throw new TestFinishedException();
@@ -104,6 +104,30 @@ namespace NJasmine.Core
             });
 
             return _nUnitImports.GetInstance(position) as TFixture;
+        }
+
+        public TDisposable visitUsing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
+        {
+            var result = new TDisposable();
+
+            _teardowns.Add(delegate
+            {
+                result.Dispose();
+            });
+
+            return result;
+        }
+
+        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
+        {
+            var result = factory();
+
+            _teardowns.Add(delegate
+            {
+                result.Dispose();
+            });
+
+            return result;
         }
 
         public class TestFinishedException : Exception

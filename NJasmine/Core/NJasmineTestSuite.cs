@@ -96,6 +96,16 @@ namespace NJasmine.Core
             return null;
         }
 
+        public TDisposable visitUsing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
+        {
+            return null;
+        }
+
+        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
+        {
+            return null;
+        }
+
         protected override void DoOneTimeSetUp(TestResult suiteResult)
         {
             _nunitImports.DoOnetimeSetUp();
