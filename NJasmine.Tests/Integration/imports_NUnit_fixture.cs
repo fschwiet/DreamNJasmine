@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.Core
+namespace NJasmineTests.Integration
 {
     [Explicit, TestFixture]
     public class some_Nunit_fixture_a
@@ -12,25 +10,25 @@ namespace NJasmineTests.Core
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            imports_NUnit_fixture.Trace("FixtureSetup " + this.GetType());
+            imports_NUnit_fixture.Trace("FixtureSetup " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            imports_NUnit_fixture.Trace("FixtureTearDown " + this.GetType());
+            imports_NUnit_fixture.Trace("FixtureTearDown " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [SetUp]
         public void SetUp()
         {
-            imports_NUnit_fixture.Trace("SetUp " + this.GetType());
+            imports_NUnit_fixture.Trace("SetUp " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [TearDown]
         public void TearDown()
         {
-            imports_NUnit_fixture.Trace("TearDown " + this.GetType());
+            imports_NUnit_fixture.Trace("TearDown " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
     }
 

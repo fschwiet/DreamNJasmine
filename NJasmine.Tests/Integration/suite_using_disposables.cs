@@ -61,7 +61,7 @@ namespace NJasmineTests.Integration
                         it("inline using", delegate
                         {
                             var e = Using<some_observable_E>();
-                            var f = Using(() => new some_observable_E());
+                            var f = Using(() => new some_observable_F());
 
                             expect(e).not.to.Be.Null();
                             expect(f).not.to.Be.Null();

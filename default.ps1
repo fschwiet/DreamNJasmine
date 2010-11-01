@@ -46,7 +46,7 @@ task IntegrationTests {
 
     $tests = @(
         @{ 
-            test = "NJasmineTests.Core.imports_NUnit_fixture";
+            test = "NJasmineTests.Integration.imports_NUnit_fixture";
             expected = @"
 test started, before include of a
 after include of a
@@ -54,41 +54,68 @@ first describe, before include of b
 after include of b
 before include of c
 after include of c
-FixtureSetup NJasmineTests.Core.some_Nunit_fixture_a
-FixtureSetup NJasmineTests.Core.some_Nunit_fixture_b
-FixtureSetup NJasmineTests.Core.some_Nunit_fixture_c
+FixtureSetup some_Nunit_fixture_a
+FixtureSetup some_Nunit_fixture_b
+FixtureSetup some_Nunit_fixture_c
 test started, before include of a
-SetUp NJasmineTests.Core.some_Nunit_fixture_a
+SetUp some_Nunit_fixture_a
 after include of a
 first describe, before include of b
-SetUp NJasmineTests.Core.some_Nunit_fixture_b
+SetUp some_Nunit_fixture_b
 after include of b
 before include of c
-SetUp NJasmineTests.Core.some_Nunit_fixture_c
+SetUp some_Nunit_fixture_c
 after include of c
 second test test
-TearDown NJasmineTests.Core.some_Nunit_fixture_c
-TearDown NJasmineTests.Core.some_Nunit_fixture_b
-TearDown NJasmineTests.Core.some_Nunit_fixture_a
-FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_c
+TearDown some_Nunit_fixture_c
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+FixtureTearDown some_Nunit_fixture_c
 test started, before include of a
-SetUp NJasmineTests.Core.some_Nunit_fixture_a
+SetUp some_Nunit_fixture_a
 after include of a
 first describe, before include of b
-SetUp NJasmineTests.Core.some_Nunit_fixture_b
+SetUp some_Nunit_fixture_b
 after include of b
 first test
-TearDown NJasmineTests.Core.some_Nunit_fixture_b
-TearDown NJasmineTests.Core.some_Nunit_fixture_a
-FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_b
-FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+FixtureTearDown some_Nunit_fixture_b
+FixtureTearDown some_Nunit_fixture_a
 "@
         },
 
         @{ 
             test = "NJasmineTests.Integration.suite_using_disposables";
             expected = @"
-hi
+test started, before include of a
+after include of a
+first describe, before include of b
+after include of b
+before include of c
+after include of c
+creating some_observable_A
+creating some_observable_B
+creating some_observable_C
+disposingsome_observable_C
+disposingsome_observable_B
+disposingsome_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+creating some_observable_E
+creating some_observable_F
+disposingsome_observable_F
+disposingsome_observable_E
+disposingsome_observable_D
+disposingsome_observable_B
+disposingsome_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+disposingsome_observable_D
+disposingsome_observable_B
+disposingsome_observable_A
 "@
         }
     )
