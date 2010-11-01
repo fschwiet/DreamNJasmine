@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NJasmine;
 
 namespace NJasmineTests.Core
@@ -21,6 +22,11 @@ namespace NJasmineTests.Core
         public static void Trace(string value)
         {
             Console.WriteLine("<<{{" + value + "}}>>");
+        }
+
+        public static string GetTypeShortName(Type type)
+        {
+            return type.ToString().Split(new char[] {'+', '.'}).Last();
         }
     }
 }

@@ -18,11 +18,6 @@ namespace NJasmineTests.Integration
                 _fixtureName = GetTypeShortName(type);
             }
 
-            public static string GetTypeShortName(Type type)
-            {
-                return type.ToString().Split(new char[] {'+', '.'}).Last();
-            }
-
             [TestFixtureSetUp]
             public void FixtureSetup()
             {

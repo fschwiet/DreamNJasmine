@@ -46,7 +46,7 @@ task IntegrationTests {
 
     $tests = @(
         @{ 
-            test = "NJasmineTests.Core.imports_NUnit_fixture";
+            test = "NJasmineTests.Integration.imports_NUnit_fixture";
             expected = @"
 test started, before include of a
 after include of a
@@ -82,6 +82,12 @@ TearDown NJasmineTests.Core.some_Nunit_fixture_b
 TearDown NJasmineTests.Core.some_Nunit_fixture_a
 FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_b
 FixtureTearDown NJasmineTests.Core.some_Nunit_fixture_a
+"@
+        },
+
+        @{ 
+            test = "NJasmineTests.Integration.suite_using_disposables";
+            expected = @"
 "@
         }
     )
