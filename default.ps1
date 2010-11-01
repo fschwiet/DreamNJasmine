@@ -202,10 +202,10 @@ disposingsome_observable_A
     }
 }
 
-task UnitTest -depends Build {
+task UnitTest {
 
     RunNUnit $testDll
 }
 
-task Test -depends UnitTest, IntegrationTests {
+task Test -depends Build, TestDeploy, UnitTest, IntegrationTests {
 }
