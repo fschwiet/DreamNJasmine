@@ -23,6 +23,7 @@ namespace NJasmine.Core
             _name = name;
             _position = position;
             _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            maintainTestOrder = true;
         }
 
         public TestPosition Position
