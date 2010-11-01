@@ -8,10 +8,11 @@ namespace NJasmine.Core
     {
         string _stackTrace;
 
-        public NJasmineInvalidTestSuite(string locationOfFailure, Exception e, TestPosition position) 
+        public NJasmineInvalidTestSuite(string containingTestElementFullName, string locationOfFailure, Exception e, TestPosition position) 
             : base(((Action)delegate() { }).Method)
         {
             TestName.Name = locationOfFailure + ": " + e.Message;
+            TestName.FullName = containingTestElementFullName;
             _stackTrace = e.StackTrace;
             Position = position;
         }

@@ -54,7 +54,7 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    this.Add(new NJasmineInvalidTestSuite("Exception thrown within test definition", exception, _position));
+                    this.Add(new NJasmineInvalidTestSuite(TestName.FullName, "Exception thrown within test definition", exception, _position));
                 }
             }
             finally
@@ -85,6 +85,7 @@ namespace NJasmine.Core
             var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
             testMethod.TestName.Name = description;
+            testMethod.TestName.FullName = this.TestName.FullName;
 
             _accumulatedDescendants.Add(testMethod);
         }

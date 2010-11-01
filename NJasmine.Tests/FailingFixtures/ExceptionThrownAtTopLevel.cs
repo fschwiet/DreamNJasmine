@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
-    [Explicit, Category("FailureExpected")]
+    [Explicit]
     public class ExceptionThrownAtTopLevel : NJasmineFixture
     {
         public override void Tests()

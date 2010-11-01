@@ -45,9 +45,40 @@ task TestDeploy -depends Build {
 task IntegrationTests {
 
     $tests = @(
+        @{
+            test = "NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel";
+            expectedSubstrings = @(
+                "Test Failure : NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel", 
+                "Exception thrown within test definition: Attempted to divide by zero.")
+        },
+        @{
+            test = "NJasmineTests.FailingFixtures.ExceptionThrownInFirstDescribe";
+            expectedSubstrings = @(
+                "Test Failure : ExceptionThrownInFirstDescribe.broken describe", 
+                "Exception thrown within test definition: Attempted to divide by zero.");
+        },
+        @{
+            test = "NJasmineTests.FailingFixtures.ReenterDuringAfterEach";
+            expectedSubstrings = @(
+                "Test Error : NJasmineTests.FailingFixtures.ReenterDuringAfterEach", 
+                "System.InvalidOperationException : Called it() within afterEach.");
+        },
+        @{
+            test = "NJasmineTests.FailingFixtures.ReentersDuringBeforeEach";
+            expectedSubstrings = @(
+                "Test Error : NJasmineTests.FailingFixtures.ReentersDuringBeforeEach",
+                "System.InvalidOperationException : Called it() within beforeEach")
+        },
+        @{
+            test = "NJasmineTests.FailingFixtures.ReentersDuringIt";
+            expectedSubstrings = @(
+                "Test Error : NJasmineTests.FailingFixtures.ReentersDuringIt",
+                "System.InvalidOperationException : Called it() within it.");
+        },
         @{ 
             test = "NJasmineTests.Integration.imports_NUnit_fixture";
-            expected = @"
+            succeeds = $true;
+            expectedExtraction = @"
 test started, before include of a
 after include of a
 first describe, before include of b
@@ -87,7 +118,8 @@ FixtureTearDown some_Nunit_fixture_a
 
         @{ 
             test = "NJasmineTests.Integration.suite_using_disposables";
-            expected = @"
+            succeeds = $true;
+            expectedExtraction = @"
 test started, before include of a
 after include of a
 first describe, before include of b
@@ -126,14 +158,40 @@ disposingsome_observable_A
 
         "Running integration test $test." | write-host
 
-        $expected = $_.expected.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
-	    $testoutput = exec { & $nunit_path $testDll /run:$test }
-        $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
-        $comparison = compare-object $expected $actual
-        if ($comparison) {
-            $global:expected = $expected;
-            $global:actual = $actual;
-            write-error "Unexpected results for `"$test`".  Expected written to `$global:expected, actual written to `$global:actual."
+        if ($_.succeeds) {
+	        $testoutput = exec { & $nunit_path $testDll /run:$test }
+        } else {
+	        $testoutput = & $nunit_path $testDll /run:$test
+        }
+
+        $hasExpectation = $false;
+
+        if ($_.expectedExtraction) {
+            $expectedExtraction = $_.expectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
+            $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
+            $comparison = compare-object $expectedExtraction $actual
+            if ($comparison) {
+                $global:expected = $expectedExtraction;
+                $global:actual = $actual;
+                write-error "Unexpected results for `"$test`".  Expected written to `$global:expected, actual written to `$global:actual."
+            }
+
+            $hasExpectation = $true;
+        } 
+        
+        $_.expectedSubstrings | % {
+
+            if (-not [String]::Join("\n", $testoutput).Contains($_)) {
+                $global:expected = $_;
+                $global:actual = $testoutput;
+                write-error "Unexpected results for `"$test`".  Expected written to `$global:expected, actual written to `$global:actual."
+            }
+
+            $hasExpectation = $true;
+        }
+        
+        if (-not $hasExpectation) {
+            "Test Skipped: No expectation found for $test" | write-host
         }
     }
 }

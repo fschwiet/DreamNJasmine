@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
-    [Explicit, Category("FailureExpected")]
+    [Explicit]
     public class ReentersDuringBeforeEach : NJasmineFixture
     {
         public override void Tests()
