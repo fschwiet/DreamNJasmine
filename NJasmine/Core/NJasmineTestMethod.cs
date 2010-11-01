@@ -104,7 +104,7 @@ namespace NJasmine.Core
             return _nUnitImports.GetInstance(position) as TFixture;
         }
 
-        public TDisposable visitUsing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
+        public TDisposable visitDisposing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
         {
             var result = new TDisposable();
 
@@ -116,7 +116,7 @@ namespace NJasmine.Core
             return result;
         }
 
-        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
+        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
         {
             var result = factory();
 

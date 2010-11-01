@@ -61,14 +61,14 @@ namespace NJasmine
             return _visitor.visitImportNUnit<TFixture>();
         }
 
-        protected TDisposable Using<TDisposable>() where TDisposable : class, IDisposable, new()
+        protected TDisposable disposing<TDisposable>() where TDisposable : class, IDisposable, new()
         {
-            return _visitor.visitUsing<TDisposable>();
+            return _visitor.visitDisposing<TDisposable>();
         }
 
-        protected TDisposable Using<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        protected TDisposable disposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
         {
-            return _visitor.visitUsing<TDisposable>(factory);
+            return _visitor.visitDisposing<TDisposable>(factory);
         }
 
         protected void ignore(Action action)

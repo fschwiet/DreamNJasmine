@@ -49,7 +49,7 @@ task IntegrationTests {
             test = "NJasmineTests.FailingFixtures.beforeEach_after_it";
             expectedSubstrings = @(
                 "Test Failure : NJasmineTests.FailingFixtures.beforeEach_after_it", 
-                "Exception thrown within test definition: Called beforeEach() after Using().")
+                "Exception thrown within test definition: Called beforeEach() after disposing().")
         },
         @{
             test = "NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel";

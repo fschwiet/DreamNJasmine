@@ -63,18 +63,18 @@ namespace NJasmine.Core
             return result;
         }
 
-        public TDisposable visitUsing<TDisposable>() where TDisposable : class, IDisposable, new()
+        public TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new()
         {
-            var result = _visitor.visitUsing<TDisposable>(_nextPosition);
+            var result = _visitor.visitDisposing<TDisposable>(_nextPosition);
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
 
             return result;
         }
 
-        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
         {
-            var result = _visitor.visitUsing(factory, _nextPosition);
+            var result = _visitor.visitDisposing(factory, _nextPosition);
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
 

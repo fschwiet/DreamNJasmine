@@ -41,14 +41,14 @@ namespace NJasmine.FixtureVisitor
             throw DontException(SpecMethod.importNUnit);
         }
 
-        public TDisposable visitUsing<TDisposable>() where TDisposable : class, IDisposable, new()
+        public TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new()
         {
-            return _originalVisitor.visitUsing<TDisposable>(null);
+            return _originalVisitor.visitDisposing<TDisposable>(null);
         }
 
-        public TDisposable visitUsing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
         {
-            return _originalVisitor.visitUsing(factory, null);
+            return _originalVisitor.visitDisposing(factory, null);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

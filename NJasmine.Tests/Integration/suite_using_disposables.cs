@@ -28,12 +28,12 @@ namespace NJasmineTests.Integration
         
         public override void Tests()
         {
-            var a = Using < some_observable_A>();
-            var b = Using(() => new some_observable_B());
+            var a = disposing < some_observable_A>();
+            var b = disposing(() => new some_observable_B());
 
             describe("first describe block", delegate
             {
-                var c = Using(() => new some_observable_C());
+                var c = disposing(() => new some_observable_C());
                 
                 it("a test", delegate
                 {
@@ -47,7 +47,7 @@ namespace NJasmineTests.Integration
             {
                 describe("nested describe block", delegate
                 {
-                    var d = Using(() => new some_observable_D());
+                    var d = disposing(() => new some_observable_D());
 
                     describe("another describe block", delegate
                     {
@@ -60,8 +60,8 @@ namespace NJasmineTests.Integration
 
                         it("inline using", delegate
                         {
-                            var e = Using<some_observable_E>();
-                            var f = Using(() => new some_observable_F());
+                            var e = disposing<some_observable_E>();
+                            var f = disposing(() => new some_observable_F());
 
                             expect(e).not.to.Be.Null();
                             expect(f).not.to.Be.Null();

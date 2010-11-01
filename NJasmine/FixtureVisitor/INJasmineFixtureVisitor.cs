@@ -9,7 +9,7 @@ namespace NJasmine.FixtureVisitor
         void visitAfterEach(Action action);
         void visitIt(string description, Action action);
         TFixture visitImportNUnit<TFixture>() where TFixture : class, new();
-        TDisposable visitUsing<TDisposable>() where TDisposable : class, IDisposable, new();
-        TDisposable visitUsing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable;
+        TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new();
+        TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable;
     }
 }
