@@ -95,7 +95,7 @@ namespace NJasmine.Core
             var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
             testMethod.TestName.Name = description;
-            testMethod.TestName.FullName = this.TestName.FullName;
+            testMethod.TestName.FullName = this.TestName.FullName + " " + description;
 
             _accumulatedDescendants.Add(testMethod);
 
