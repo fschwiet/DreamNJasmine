@@ -16,6 +16,14 @@ task Build {
 	exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
 }
 
+task TestDeploy -depends Build {
+
+	if (test-path $testDeployTarget) {
+		rm $testDeployTarget -recurse
+	}
+	mkdir $testDeployTarget
+	cp $deploySource\* $testDeployTarget -recurse
+}
 
 function RunNUnit {
 
@@ -33,16 +41,12 @@ function RunNUnit {
     
 }
 
-task TestDeploy -depends Build {
+task UnitTest {
 
-	if (test-path $testDeployTarget) {
-		rm $testDeployTarget -recurse
-	}
-	mkdir $testDeployTarget
-	cp $deploySource\* $testDeployTarget -recurse
+    RunNUnit $testDll
 }
 
-task IntegrationTests {
+task IntegrationTest {
 
     $tests = @(
         @{
@@ -202,10 +206,5 @@ disposingsome_observable_A
     }
 }
 
-task UnitTest {
-
-    RunNUnit $testDll
-}
-
-task Test -depends Build, TestDeploy, UnitTest, IntegrationTests {
+task Test -depends Build, TestDeploy, UnitTest, IntegrationTest {
 }
