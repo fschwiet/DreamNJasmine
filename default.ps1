@@ -8,7 +8,7 @@ properties {
 	$testDeployTarget = "$base_dir\packages\NUnit.2.5.7.10213\Tools\addins\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
     $nunit_path = "$base_dir\packages\NUnit.2.5.7.10213\tools\nunit-console.exe"
-    $localDeployTarget = (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\').fullname
+    $localDeployTargets = (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\') | % {$_.fullname}
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
 }
 
@@ -29,19 +29,21 @@ task TestDeploy -depends Build {
 
 task LocalDeploy -depends AllTests {
 
-    if (-not $localDeployTarget) {
+    if (-not $localDeployTargets) {
         "Local deploy target not found." | write-error
     }
 
-    $addinsPath = (join-path $localDeployTarget "addins");
+    foreach($localDeployTarget in $localDeployTargets) { 
 
-    if (-not (test-path $addinsPath)) {
-        mkdir $addinsPath
-    }
+        $addinsPath = (join-path $localDeployTarget "addins");
 
-    $filesToDeploy | % {
-        (join-path $deploySource $_) + "  ->  " + $addinsPath | write-host
-        cp (join-path $deploySource $_) $addinsPath
+        if (-not (test-path $addinsPath)) {
+            mkdir $addinsPath
+        }
+
+        $filesToDeploy | % {
+            cp (join-path $deploySource $_) $addinsPath
+        }
     }
 }
 

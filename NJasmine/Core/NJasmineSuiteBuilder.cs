@@ -7,7 +7,7 @@ using NUnit.Core.Extensibility;
 
 namespace NJasmine.Core
 {
-    [NUnitAddin(Name = "NJasmine", Description = "A BDD-style test framework based on the Jasmine BDD framework for Javascript.", Type = ExtensionType.Core)]
+    [NUnitAddin(Name = "NJasmine", Description = "A BDD-style test framework inspired by the Jasmine BDD framework for Javascript.", Type = ExtensionType.Core)]
     public class NJasmineSuiteBuilder : IAddin, ISuiteBuilder
     {
         public bool Install(IExtensionHost host)
