@@ -27,7 +27,7 @@ task TestDeploy -depends Build {
 	cp $deploySource\* $testDeployTarget -recurse
 }
 
-task LocalDeploy { # -depends AllTests {
+task LocalDeploy -depends AllTests {
 
     if (-not $localDeployTarget) {
         "Local deploy target not found." | write-error
