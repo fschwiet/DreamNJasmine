@@ -8,7 +8,8 @@ properties {
 	$testDeployTarget = "$base_dir\packages\NUnit.2.5.7.10213\Tools\addins\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
     $nunit_path = "$base_dir\packages\NUnit.2.5.7.10213\tools\nunit-console.exe"
-    $localDeployTarget = (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\addins\').fullname
+    $localDeployTarget = (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\').fullname
+    $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
 }
 
 task default -depends AllTests
@@ -26,7 +27,22 @@ task TestDeploy -depends Build {
 	cp $deploySource\* $testDeployTarget -recurse
 }
 
-task LocalDeploy -depends AllTests {
+task LocalDeploy { # -depends AllTests {
+
+    if (-not $localDeployTarget) {
+        "Local deploy target not found." | write-error
+    }
+
+    $addinsPath = (join-path $localDeployTarget "addins");
+
+    if (-not (test-path $addinsPath)) {
+        mkdir $addinsPath
+    }
+
+    $filesToDeploy | % {
+        (join-path $deploySource $_) + "  ->  " + $addinsPath | write-host
+        cp (join-path $deploySource $_) $addinsPath
+    }
 }
 
 function RunNUnit {
