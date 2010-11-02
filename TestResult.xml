@@ -1,196 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="51" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-11-01" time="01:32:45">
+<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="3" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-11-02" time="00:08:02">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.571" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.366" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.537" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.351" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Core" executed="True" result="Success" success="True" time="0.433" asserts="0">
+          <test-suite type="Namespace" name="Integration" executed="True" result="Success" success="True" time="0.349" asserts="0">
             <results>
-              <test-suite type="TestFixture" name="build_and_run_suite_with_loops" executed="True" result="Success" success="True" time="0.219" asserts="0">
+              <test-suite type="TestSuite" name="suite_using_disposables" executed="True" result="Success" success="True" time="0.333" asserts="0">
                 <results>
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests" executed="True" result="Success" success="True" time="0.166" asserts="0" />
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a1" executed="True" result="Success" success="True" time="0.010" asserts="0" />
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a3" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_b1" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_b3" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                  <test-case name="NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_c" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestSuite" name="has_test_in_loop" executed="True" result="Success" success="True" time="0.027" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.has_test_in_loop" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="NJasmineTests.Core.has_test_in_loop" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="NJasmineTests.Core.has_test_in_loop" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                  <test-suite type="TestSuite" name="nested" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                  <test-suite type="TestSuite" name="first describe block" executed="True" result="Success" success="True" time="0.283" asserts="0">
                     <results>
-                      <test-case name="has_test_in_loop.nested" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                      <test-case name="has_test_in_loop.nested" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                      <test-case name="has_test_in_loop.nested" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      <test-case name="suite_using_disposables.first describe block a test" executed="True" result="Success" success="True" time="0.242" asserts="0" />
                     </results>
                   </test-suite>
-                  <test-case name="NJasmineTests.Core.has_test_in_loop" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="NJasmineInvalidTestSuiteTests" executed="True" result="Success" success="True" time="0.009" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineInvalidTestSuiteTests.Report_test_failure_with_reason" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="NJasmineSuiteBuilder_suite_building" executed="True" result="Success" success="True" time="0.024" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_test_with_error_in_describe" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_test_with_error_in_outer_scope" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.can_load_tests_with_correct_names_and_positions" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_building.suite_has_name" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="NJasmineSuiteBuilder_suite_discovery" executed="True" result="Success" success="True" time="0.009" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.doesnt_handle_most_test_fixtures" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.will_handle_subclasses_of_NJasmineFixture" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.will_not_build_abstract_classes" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="NJasmineTests.Core.NJasmineSuiteBuilder_suite_discovery.will_not_handle_nonpublic_subclasses_of_NJasmineFixture" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="NJasmineTestMethod_can_detect_reentrancy" executed="True" result="Success" success="True" time="0.002" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineTestMethod_can_detect_reentrancy.can_detect_reentrance_during_it" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="NJasmineTestMethod_can_run_a_test" executed="True" result="Success" success="True" time="0.023" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineTestMethod_can_run_a_test.can_be_ran" executed="True" result="Success" success="True" time="0.021" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestSuite" name="NJasmineTestMethod_implements_ignore" executed="True" result="Success" success="True" time="0.003" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.NJasmineTestMethod_implements_ignore" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="TestSuite" name="NUnitFixtureCollectionTests" executed="True" result="Success" success="True" time="0.049" asserts="0">
-                <results>
-                  <test-suite type="TestSuite" name="NUnitFixtureCollection" executed="True" result="Success" success="True" time="0.047" asserts="0">
+                  <test-suite type="TestSuite" name="second describe block" executed="True" result="Success" success="True" time="0.033" asserts="0">
                     <results>
-                      <test-suite type="TestSuite" name="a collection of fixtures" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                      <test-suite type="TestSuite" name="nested describe block" executed="True" result="Success" success="True" time="0.025" asserts="0">
                         <results>
-                          <test-case name="NUnitFixtureCollection.a collection of fixtures" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                          <test-case name="NUnitFixtureCollection.a collection of fixtures" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                          <test-case name="NUnitFixtureCollection.a collection of fixtures" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                        </results>
-                      </test-suite>
-                      <test-suite type="TestSuite" name="can run one-time fixture setup and teardown" executed="True" result="Success" success="True" time="0.026" asserts="0">
-                        <results>
-                          <test-case name="NUnitFixtureCollection.can run one-time fixture setup and teardown" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                          <test-case name="NUnitFixtureCollection.can run one-time fixture setup and teardown" executed="True" result="Success" success="True" time="0.008" asserts="0" />
-                          <test-case name="NUnitFixtureCollection.can run one-time fixture setup and teardown" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                        </results>
-                      </test-suite>
-                      <test-suite type="TestSuite" name="can run per-test fixture setup and teardown" executed="True" result="Success" success="True" time="0.008" asserts="0">
-                        <results>
-                          <test-case name="NUnitFixtureCollection.can run per-test fixture setup and teardown" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                          <test-case name="NUnitFixtureCollection.can run per-test fixture setup and teardown" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                        </results>
-                      </test-suite>
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-              <test-suite type="TestSuite" name="SomeNestedClass" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0" />
-              <test-suite type="TestSuite" name="TestOnlyUsingDescribeAndIt" executed="True" result="Success" success="True" time="0.008" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.TestOnlyUsingDescribeAndIt" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-suite type="TestSuite" name="first describe" executed="True" result="Success" success="True" time="0.006" asserts="0">
-                    <results>
-                      <test-case name="TestOnlyUsingDescribeAndIt.first describe" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                      <test-case name="TestOnlyUsingDescribeAndIt.first describe" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                      <test-suite type="TestSuite" name="second describe" executed="True" result="Success" success="True" time="0.002" asserts="0">
-                        <results>
-                          <test-case name="first describe.second describe" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                          <test-case name="first describe.second describe" executed="True" result="Success" success="True" time="0.001" asserts="0" />
-                        </results>
-                      </test-suite>
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="TestPositionTests" executed="True" result="Success" success="True" time="0.029" asserts="0">
-                <results>
-                  <test-case name="NJasmineTests.Core.TestPositionTests.can_be_used_with_dictionaries" executed="True" result="Success" success="True" time="0.008" asserts="0" />
-                  <test-case name="NJasmineTests.Core.TestPositionTests.GetFirstChildPosition" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                  <test-case name="NJasmineTests.Core.TestPositionTests.GetNextSiblingPosition" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                  <test-case name="NJasmineTests.Core.TestPositionTests.IsInScopeFor" executed="True" result="Success" success="True" time="0.010" asserts="0" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-          <test-suite type="Namespace" name="FailingFixtures" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0" />
-          <test-suite type="Namespace" name="Integration" executed="True" result="Success" success="True" time="0.060" asserts="0">
-            <results>
-              <test-suite type="TestSuite" name="imports_NUnit_fixture" executed="True" result="Success" success="True" time="0.030" asserts="0">
-                <results>
-                  <test-suite type="TestSuite" name="a block" executed="True" result="Success" success="True" time="0.018" asserts="0">
-                    <results>
-                      <test-case name="imports_NUnit_fixture.a block" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                      <test-suite type="TestSuite" name="a sub block" executed="True" result="Success" success="True" time="0.009" asserts="0">
-                        <results>
-                          <test-case name="a block.a sub block" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                        </results>
-                      </test-suite>
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-              <test-suite type="TestSuite" name="suite_using_disposables" executed="True" result="Success" success="True" time="0.029" asserts="0">
-                <results>
-                  <test-suite type="TestSuite" name="first describe block" executed="True" result="Success" success="True" time="0.013" asserts="0">
-                    <results>
-                      <test-case name="suite_using_disposables.first describe block" executed="True" result="Success" success="True" time="0.013" asserts="0" />
-                    </results>
-                  </test-suite>
-                  <test-suite type="TestSuite" name="second describe block" executed="True" result="Success" success="True" time="0.014" asserts="0">
-                    <results>
-                      <test-suite type="TestSuite" name="nested describe block" executed="True" result="Success" success="True" time="0.013" asserts="0">
-                        <results>
-                          <test-suite type="TestSuite" name="another describe block" executed="True" result="Success" success="True" time="0.013" asserts="0">
+                          <test-suite type="TestSuite" name="another describe block" executed="True" result="Success" success="True" time="0.024" asserts="0">
                             <results>
-                              <test-case name="nested describe block.another describe block" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="nested describe block.another describe block" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                              <test-case name="nested describe block.another describe block a test" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                              <test-case name="nested describe block.another describe block inline using" executed="True" result="Success" success="True" time="0.019" asserts="0" />
                             </results>
                           </test-suite>
-                        </results>
-                      </test-suite>
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-          <test-suite type="Namespace" name="Misc" executed="True" result="Success" success="True" time="0.018" asserts="0">
-            <results>
-              <test-suite type="TestSuite" name="STA" executed="True" result="Success" success="True" time="0.017" asserts="0">
-                <properties>
-                  <property name="APARTMENT_STATE" value="STA" />
-                </properties>
-                <results>
-                  <test-case name="NJasmineTests.Misc.STA" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-          <test-suite type="TestSuite" name="SampleTest" executed="True" result="Success" success="True" time="0.014" asserts="0">
-            <results>
-              <test-suite type="TestSuite" name="player" executed="True" result="Success" success="True" time="0.012" asserts="0">
-                <results>
-                  <test-case name="SampleTest.player" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                  <test-suite type="TestSuite" name="when song has been paused" executed="True" result="Success" success="True" time="0.006" asserts="0">
-                    <results>
-                      <test-case name="player.when song has been paused" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                      <test-suite type="TestSuite" name="Resume" executed="True" result="Success" success="True" time="0.003" asserts="0">
-                        <results>
-                          <test-case name="when song has been paused.Resume" executed="True" result="Success" success="True" time="0.001" asserts="0" />
                         </results>
                       </test-suite>
                     </results>
