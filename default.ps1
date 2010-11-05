@@ -14,6 +14,11 @@ properties {
 
 task default -depends AllTests
 
+function GetAllNUnits {
+    (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\framework') | 
+    % { @{ frameworkPath = $_; addinPath = (join-path (resolve-path (join-path $_ "..")) "addins") } };
+}
+
 task Build {
 	exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
 }
