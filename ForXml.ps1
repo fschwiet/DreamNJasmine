@@ -1,16 +1,22 @@
 
 param(
-    [string] $xmlFile = $(throw "config is required"),
-    [ScriptBlock] $action
+    [string] $xmlFile = $(throw "xmlFile is required"),
+    [ScriptBlock] $action = $(throw "action is required")
 )
  
 $doc = New-Object System.Xml.XmlDocument
+$nsmgr = New-Object System.Xml.XmlNamespaceManager $doc.NameTable
+
 $doc.Load($xmlFile)
  
-function Display([string] $xpath, [bool] $onlyIf = $true) {
+function add-xmlnamespace([string] $name, [string] $value) {
+    $nsmgr.AddNamespace( $name, $value);
+}
+
+function get-xml([string] $xpath, [bool] $onlyIf = $true) {
     
     if ($onlyIf -eq $true) {
-        $nodes = $doc.SelectNodes($xpath)
+        $nodes = $doc.SelectNodes($xpath, $nsmgr)
          
         foreach ($node in $nodes) {
             if ($node -ne $null) {
@@ -26,10 +32,10 @@ function Display([string] $xpath, [bool] $onlyIf = $true) {
 }
 
 
-function Config([string] $xpath, [string] $value, [bool] $onlyIf = $true) {
+function set-xml([string] $xpath, [string] $value, [bool] $onlyIf = $true) {
     
     if ($onlyIf -eq $true) {
-        $nodes = $doc.SelectNodes($xpath)
+        $nodes = $doc.SelectNodes($xpath, $nsmgr)
          
         foreach ($node in $nodes) {
             if ($node -ne $null) {
@@ -44,10 +50,10 @@ function Config([string] $xpath, [string] $value, [bool] $onlyIf = $true) {
     }
 }
  
-function Replace([string] $xpath, [string] $value, [bool] $onlyIf = $true) {
+function replace-xml([string] $xpath, [string] $value, [bool] $onlyIf = $true) {
     
     if ($onlyIf -eq $true) {
-        $nodes = $doc.SelectNodes($xpath)
+        $nodes = $doc.SelectNodes($xpath, $nsmgr)
         $newNodes = New-Object System.Xml.XmlDocument;
         $newNodes.LoadXml($value);
         foreach ($node in $nodes) {

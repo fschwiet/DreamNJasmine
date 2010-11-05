@@ -19,6 +19,22 @@ function GetAllNUnits {
     % { @{ frameworkPath = $_; addinPath = (join-path (resolve-path (join-path $_ "..")) "addins") } };
 }
 
+function SetAllProjectsToUseNUnitAt($path = "..\packages\NUnit.2.5.7.10213\") {
+    (".\NJasmine\NJasmine.csproj", ".\NJasmine.Tests\NJasmine.Tests.csproj") | % {
+        .\ForXml.ps1 (resolve-path $_) { 
+            
+            add-xmlnamespace "ns" "http://schemas.microsoft.com/developer/msbuild/2003";  
+            
+            (@("Tools\lib", "nunit.core"), @("Tools\lib", "nunit.core.interfaces"), @("lib", "nunit.framework")) | % {
+                $dll = $_[1]
+                $subpath = $_[0]
+                $filepath = (join-path (join-path $path $subpath) $dll)
+                set-xml "//ns:Reference[@Include='$dll']" "<HintPath>$filepath.dll</HintPath>"
+            }
+        }
+    }
+}
+
 task Build {
 	exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
 }
