@@ -1,95 +1,102 @@
 
 properties {
     $base_dir  = resolve-path .
-    $build_dir = "$base_dir\build\"
+
+    # to build/test against another install of NUnit, override the following {{
+    $wipeDeployTarget = $true
+	$deployTarget = "$base_dir\packages\NUnit.2.5.7.10213\Tools\addins"
+    $nunitBinPath = "$base_dir\packages\NUnit.2.5.7.10213\tools\nunit-console.exe"
+    # }}
+
     $solution = "$base_dir\NJasmine.sln"
     $msbuild_Configuration = "Debug"
 	$deploySource = "$base_dir\NJasmine\bin\$msbuild_Configuration\"
-	$testDeployTarget = "$base_dir\packages\NUnit.2.5.7.10213\Tools\addins\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
-    $nunit_path = "$base_dir\packages\NUnit.2.5.7.10213\tools\nunit-console.exe"
-    $localDeployTargets = (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\') | % {$_.fullname}
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
 }
 
 task default -depends AllTests
 
+task Build {
+    exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
+}
+
+task Deploy -depends Build {
+
+    "Deploying to $deployTarget." | write-host
+
+	if ($wipeDeployTarget -and (test-path $deployTarget)) {
+		rm $deployTarget -recurse
+	}
+
+    if (-not (test-path $deployTarget)) {
+	    $null = mkdir $deployTarget
+    }
+
+	$filesToDeploy | % { cp (join-path $deploySource $_) $deployTarget -recurse -force }
+}
+
+task UnitTests {
+
+    exec { & $nunitBinPath $testDll}
+}
+
+. .\IntegrationTests.ps1
+
+task AllTests -depends Build, Deploy, UnitTests, IntegrationTests {
+    "Ran NUnit at #nunitBinPath." | write-host
+}
+
+task BuildForInstalledNUnits {
+
+    GetAllNUnits | % {
+	    
+        $rootPath = $_.rootPath;   
+        $addinPath = $_.addinPath;
+        $binPath = $_.binPath;
+     
+        try {
+
+            SetAllProjectsToUseNUnitAt $rootPath
+            
+            invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ deployTarget=$addinPath; nunitBinPath=$binPath; wipeDeployTarget=$false}
+        } finally {
+            SetAllProjectsToUseNUnitAt
+        }
+    }
+}
+
 function GetAllNUnits {
     (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\framework') | 
-    % { @{ frameworkPath = $_; addinPath = (join-path (resolve-path (join-path $_ "..")) "addins") } };
+    % { @{ 
+        rootPath = (resolve-path (join-path $_ "..")); 
+        addinPath = (join-path (resolve-path (join-path $_ "..")) "addins") 
+        binPath = (resolve-path (join-path $_ "..\nunit-console.exe"))
+    } };
 }
 
 function SetAllProjectsToUseNUnitAt($path = "..\packages\NUnit.2.5.7.10213\") {
+
+    $path = resolve-path $path
+
     (".\NJasmine\NJasmine.csproj", ".\NJasmine.Tests\NJasmine.Tests.csproj") | % {
         .\ForXml.ps1 (resolve-path $_) { 
             
             add-xmlnamespace "ns" "http://schemas.microsoft.com/developer/msbuild/2003";  
             
-            (@("Tools\lib", "nunit.core"), @("Tools\lib", "nunit.core.interfaces"), @("lib", "nunit.framework")) | % {
-                $dll = $_[1]
-                $subpath = $_[0]
-                $filepath = (join-path (join-path $path $subpath) $dll)
-                set-xml "//ns:Reference[@Include='$dll']" "<HintPath>$filepath.dll</HintPath>"
+            @("nunit.core", "nunit.core.interfaces", "nunit.framework") | % {
+                $dll = $_;
+                $path | write-host
+                (get-childitem $path ($dll + ".dll") -recurse).fullname | write-host
+                $filepath = (get-childitem $path ($dll + ".dll") -recurse).fullname
+
+                if (-not (test-path $filepath)) {
+                    write-error "Unable to find $dll.dll for target NUnit deployment at $path"
+                }
+
+                set-xml "//ns:Reference[@Include='$dll']" "<HintPath>$filepath</HintPath>"
             }
         }
     }
 }
 
-task Build {
-	exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
-}
-
-task TestDeploy -depends Build {
-
-	if (test-path $testDeployTarget) {
-		rm $testDeployTarget -recurse
-	}
-	mkdir $testDeployTarget
-	cp $deploySource\* $testDeployTarget -recurse
-}
-
-task LocalDeploy -depends AllTests {
-
-    if (-not $localDeployTargets) {
-        "Local deploy target not found." | write-error
-    }
-
-    foreach($localDeployTarget in $localDeployTargets) { 
-
-        $addinsPath = (join-path $localDeployTarget "addins");
-
-        if (-not (test-path $addinsPath)) {
-            mkdir $addinsPath
-        }
-
-        $filesToDeploy | % {
-            cp (join-path $deploySource $_) $addinsPath
-        }
-    }
-}
-
-function RunNUnit {
-
-    param ($dll, $run = "")
-
-    $command = @( $nunit_path, $testDll)
-    
-    if ($run) {
-        $command += /run:$run
-    }
-
-    $command = [String]::Join(" ", $command)
-
-    exec { invoke-expression $command }
-    
-}
-
-task UnitTests {
-
-    RunNUnit $testDll
-}
-
-. .\IntegrationTests.ps1
-
-task AllTests -depends Build, TestDeploy, UnitTests, IntegrationTests {
-}

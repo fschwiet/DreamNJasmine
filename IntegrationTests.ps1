@@ -117,14 +117,14 @@ disposingsome_observable_A
 
     $tests | % { 
 
-        $test = $_.test;
+        $testName = $_.test;
 
-        "Running integration test $test." | write-host
+        "Running integration test $testName." | write-host
 
         if ($_.succeeds) {
-	        $testoutput = exec { & $nunit_path $testDll /run:$test }
+	        $testoutput = exec { & $nunitBinPath $testDll /run:$testName }
         } else {
-	        $testoutput = & $nunit_path $testDll /run:$test
+	        $testoutput = & $nunitBinPath $testDll /run:$testName
         }
 
         $hasExpectation = $false;
@@ -136,7 +136,7 @@ disposingsome_observable_A
             if ($comparison) {
                 $global:expected = $expectedExtraction;
                 $global:actual = $actual;
-                write-error "Unexpected results for `"$test`".  Expected written to `$global:expected, actual written to `$global:actual."
+                write-error "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
             }
 
             $hasExpectation = $true;
@@ -147,14 +147,14 @@ disposingsome_observable_A
             if (-not [String]::Join("\n", $testoutput).Contains($_)) {
                 $global:expected = $_;
                 $global:actual = $testoutput;
-                write-error "Unexpected results for `"$test`".  Expected written to `$global:expected, actual written to `$global:actual."
+                write-error "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
             }
 
             $hasExpectation = $true;
         }
         
         if (-not $hasExpectation) {
-            "Test Skipped: No expectation found for $test" | write-host
+            "Test Skipped: No expectation found for $testName" | write-host
         }
     }
 }
