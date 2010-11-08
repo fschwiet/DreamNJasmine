@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnit.2.5.7.10213\Tools\lib\nunit.core.dll</HintPath>
     </Reference>
@@ -68,6 +71,7 @@
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />
+    <Compile Include="Misc\CustomMatchers.cs" />
     <Compile Include="Misc\STA.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
