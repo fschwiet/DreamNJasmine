@@ -36,16 +36,7 @@ describe("NUnitFixtureCollection", delegate
         {
             sut.AddFixture(position, type);
 
-            try
-            {
-                sut.AddFixture(position, type);
-            }
-            catch (InvalidOperationException e)
-            {
-                return;
-            }
-            
-            Assert.Fail("exception expected");
+            expect(() => sut.AddFixture(position, type)).to.Throw<InvalidOperationException>();
         });
 
         it("can retrieve the fixture from parent", delegate

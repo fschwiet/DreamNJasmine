@@ -1,4 +1,5 @@
 //using Should.Fluent;
+using System;
 using Should.Fluent.Model;
 
 
@@ -9,10 +10,17 @@ namespace NJasmine
     {
         protected NegateableExpectActual<T> expect<T>(T t)
         {
-            Should<T, Be<T>> t2 = Should.Fluent.ShouldExtensions.Should<T,T>(t);
+            return new NegateableExpectActual<T>()
+            {
+                to = Should.Fluent.ShouldExtensions.Should<T, T>(t),
+            };
+        }
 
-            return new NegateableExpectActual<T>() { 
-                to = t2,
+        protected NegateableExpectActual<Action> expect(Action t)
+        {
+            return new NegateableExpectActual<Action>()
+            {
+                to = Should.Fluent.ShouldExtensions.Should<Action, Action>(t),
             };
         }
 
