@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="1" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-11-07" time="22:39:44">
+<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="3" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-11-07" time="22:39:58">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Failure" success="False" time="0.202" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.324" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Failure" success="False" time="0.183" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.308" asserts="0">
         <results>
-          <test-suite type="Namespace" name="FailingFixtures" executed="True" result="Failure" success="False" time="0.150" asserts="0">
+          <test-suite type="Namespace" name="Integration" executed="True" result="Success" success="True" time="0.308" asserts="0">
             <results>
-              <test-suite type="TestSuite" name="ReenterDuringAfterEach" executed="True" result="Failure" success="False" time="0.147" asserts="0">
+              <test-suite type="TestSuite" name="suite_using_disposables" executed="True" result="Success" success="True" time="0.299" asserts="0">
                 <results>
-                  <test-case name="NJasmineTests.FailingFixtures.ReenterDuringAfterEach has a valid test" executed="True" result="Error" success="False" time="0.088" asserts="0">
-                    <failure>
-                      <message><![CDATA[System.InvalidOperationException : Called it() within afterEach().]]></message>
-                      <stack-trace><![CDATA[at NJasmine.FixtureVisitor.TerminalVisitor.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\FixtureVisitor\TerminalVisitor.cs:line 36
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 56
-at NJasmineTests.FailingFixtures.ReenterDuringAfterEach.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\ReenterDuringAfterEach.cs:line 17
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 54
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                    </failure>
-                  </test-case>
+                  <test-suite type="TestSuite" name="first describe block" executed="True" result="Success" success="True" time="0.258" asserts="0">
+                    <results>
+                      <test-case name="suite_using_disposables.first describe block a test" executed="True" result="Success" success="True" time="0.234" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestSuite" name="second describe block" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                    <results>
+                      <test-suite type="TestSuite" name="nested describe block" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                        <results>
+                          <test-suite type="TestSuite" name="another describe block" executed="True" result="Success" success="True" time="0.019" asserts="0">
+                            <results>
+                              <test-case name="nested describe block.another describe block a test" executed="True" result="Success" success="True" time="0.013" asserts="0" />
+                              <test-case name="nested describe block.another describe block inline using" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
                 </results>
               </test-suite>
             </results>

@@ -71,7 +71,7 @@
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />
-    <Compile Include="Misc\CustomMatchers.cs" />
+    <Content Include="Misc\ThrowMatchersTests.js" />
     <Compile Include="Misc\STA.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
