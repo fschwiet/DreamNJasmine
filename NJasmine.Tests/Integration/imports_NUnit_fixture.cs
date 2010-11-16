@@ -42,6 +42,42 @@ namespace NJasmineTests.Integration
     {
     }
 
+    [RunExternal(true, ExpectedExtraction = @"
+test started, before include of a
+after include of a
+first describe, before include of b
+after include of b
+before include of c
+after include of c
+FixtureSetup some_Nunit_fixture_a
+FixtureSetup some_Nunit_fixture_b
+FixtureSetup some_Nunit_fixture_c
+test started, before include of a
+SetUp some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp some_Nunit_fixture_b
+after include of b
+before include of c
+SetUp some_Nunit_fixture_c
+after include of c
+second test test
+TearDown some_Nunit_fixture_c
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+FixtureTearDown some_Nunit_fixture_c
+test started, before include of a
+SetUp some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp some_Nunit_fixture_b
+after include of b
+first test
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+FixtureTearDown some_Nunit_fixture_b
+FixtureTearDown some_Nunit_fixture_a
+")]
     public class imports_NUnit_fixture : ObservableNJasmineFixture
     {
         public override void Tests()

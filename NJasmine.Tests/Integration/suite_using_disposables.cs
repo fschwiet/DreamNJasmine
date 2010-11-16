@@ -4,6 +4,36 @@ using NJasmineTests.Core;
 
 namespace NJasmineTests.Integration
 {
+    [RunExternal(true, ExpectedExtraction = @"
+test started, before include of a
+after include of a
+first describe, before include of b
+after include of b
+before include of c
+after include of c
+creating some_observable_A
+creating some_observable_B
+creating some_observable_C
+disposingsome_observable_C
+disposingsome_observable_B
+disposingsome_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+creating some_observable_E
+creating some_observable_F
+disposingsome_observable_F
+disposingsome_observable_E
+disposingsome_observable_D
+disposingsome_observable_B
+disposingsome_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+disposingsome_observable_D
+disposingsome_observable_B
+disposingsome_observable_A
+")]
     public class suite_using_disposables : ObservableNJasmineFixture
     {
         public class ObservableDisposable : IDisposable

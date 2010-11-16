@@ -1,9 +1,12 @@
 ﻿using NJasmine;
+using NJasmineTests.Integration;
 using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
-    [Explicit]
+    [Explicit, RunExternal(false, ExpectedStrings = new []{
+            "Test Failure : NJasmineTests.FailingFixtures.ExceptionThrownAtTopLevel", 
+            "Exception thrown within test definition: Attempted to divide by zero."})]
     public class ExceptionThrownAtTopLevel : NJasmineFixture
     {
         public override void Tests()

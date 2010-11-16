@@ -69,6 +69,7 @@
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
+    <Compile Include="Integration\RunExternalAttribute.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />
     <Content Include="Misc\ThrowMatchersTests.js" />

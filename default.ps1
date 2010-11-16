@@ -13,6 +13,7 @@ properties {
 	$deploySource = "$base_dir\NJasmine\bin\$msbuild_Configuration\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
+    $testResultsFile = "$base_dir\TestResults.Integration.txt"
 }
 
 task default -depends AllTests
@@ -41,7 +42,68 @@ task UnitTests {
     exec { & $nunitBinPath $testDll}
 }
 
-. .\IntegrationTests.ps1
+task IntegrationTests {
+
+    if (test-path $testResultsFile) {
+        rm $testResultsFile
+    }
+
+    $testResults = @();
+
+    $dll = gi .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll | % { $_.fullname }
+    [System.Reflection.Assembly]::LoadFrom($dll)
+    $tests = [NJasmineTests.Integration.RunExternalAttribute]::GetAll()
+
+    $tests | % { 
+
+        $testName = $_.Name;
+
+        "Running integration test $testName." | write-host
+        $testResults = $testResults + "Running integration test $testName."
+
+        if ($_.TestPasses) {
+	        $testoutput = exec { & $nunitBinPath $testDll /run:$testName }
+        } else {
+	        $testoutput = & $nunitBinPath $testDll /run:$testName
+        }
+
+        $hasExpectation = $false;
+
+        if ($_.ExpectedExtraction) {
+            $expectedExtraction = $_.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
+            $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
+            $comparison = compare-object $expectedExtraction $actual
+            if ($comparison) {
+                $global:expected = $expectedExtraction;
+                $global:actual = $actual;
+                $error = "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                write-error $error
+                $testResults = $testResults + $error
+            }
+
+            $hasExpectation = $true;
+        } 
+        
+        $_.ExpectedStrings | % {
+
+            if (-not [String]::Join("\n", $testoutput).Contains($_)) {
+                $global:expected = $_;
+                $global:actual = $testoutput;
+                $error = "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                write-error $error
+                $testResults = $testResults + $error
+            }
+
+            $hasExpectation = $true;
+        }
+        
+        if (-not $hasExpectation) {
+            "Test Skipped: No expectation found for $testName" | write-host
+        }
+    }
+
+    $testResults | set-content $testResultsFile
+}
 
 task AllTests -depends Build, Deploy, UnitTests, IntegrationTests {
     "Ran NUnit at #nunitBinPath." | write-host
