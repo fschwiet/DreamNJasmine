@@ -10,25 +10,25 @@ namespace NJasmineTests.Integration
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            imports_NUnit_fixture.Trace("FixtureSetup " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+            imports_NUnit_fixture.Trace("FixtureSetup " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            imports_NUnit_fixture.Trace("FixtureTearDown " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+            imports_NUnit_fixture.Trace("FixtureTearDown " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [SetUp]
         public void SetUp()
         {
-            imports_NUnit_fixture.Trace("SetUp " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+            imports_NUnit_fixture.Trace("SetUp " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
 
         [TearDown]
         public void TearDown()
         {
-            imports_NUnit_fixture.Trace("TearDown " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+            imports_NUnit_fixture.Trace("TearDown " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
         }
     }
 
@@ -78,7 +78,7 @@ TearDown some_Nunit_fixture_a
 FixtureTearDown some_Nunit_fixture_b
 FixtureTearDown some_Nunit_fixture_a
 ")]
-    public class imports_NUnit_fixture : ObservableNJasmineFixture
+    public class imports_NUnit_fixture : TraceableNJasmineFixture
     {
         public override void Tests()
         {

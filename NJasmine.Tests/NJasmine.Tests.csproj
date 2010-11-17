@@ -61,7 +61,10 @@
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
     <Compile Include="Core\NUnitFixtureCollectionTests.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
+    <Compile Include="Core\TraceableNJasmineFixture.cs" />
     <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
+    <Compile Include="FailingFixtures\runs_teardown_even_after_failure.cs" />
+    <Compile Include="FailingFixtures\skips_outer_teardown_on_outer_failure.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
     <Compile Include="FailingFixtures\beforeEach_after_it.cs" />
     <Compile Include="FailingFixtures\ExceptionThrownAtTopLevel.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="FailingFixtures\ReenterDuringAfterEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
+    <Compile Include="FailingFixtures\skips_teardown_at_level_of_failing_describe.cs" />
     <Compile Include="Integration\RunExternalAttribute.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />

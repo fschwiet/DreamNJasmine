@@ -13,7 +13,8 @@ properties {
 	$deploySource = "$base_dir\NJasmine\bin\$msbuild_Configuration\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
-    $testResultsFile = "$base_dir\TestResults.Integration.txt"
+    $integrationTestResultsFile = "$base_dir\TestResults.Integration.txt"
+    $integrationTestRunPattern = "*"
 }
 
 task default -depends AllTests
@@ -44,15 +45,15 @@ task UnitTests {
 
 task IntegrationTests {
 
-    if (test-path $testResultsFile) {
-        rm $testResultsFile
+    if (test-path $integrationTestResultsFile) {
+        rm $integrationTestResultsFile
     }
 
     $testResults = @();
 
     $dll = gi .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll | % { $_.fullname }
     [System.Reflection.Assembly]::LoadFrom($dll)
-    $tests = [NJasmineTests.Integration.RunExternalAttribute]::GetAll()
+    $tests = [NJasmineTests.Integration.RunExternalAttribute]::GetAll() | ? { $_.Name -like $integrationTestRunPattern }
 
     $tests | % { 
 
@@ -71,12 +72,16 @@ task IntegrationTests {
 
         if ($_.ExpectedExtraction) {
             $expectedExtraction = $_.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
-            $actual = switch -r ($testoutput) { "<<{{(.*)}}>>" { $matches[1] } }
+
+            $actual = @()
+            
+            switch -r ($testoutput) { "RESET" { $actual = @(); } "<<{{(.*)}}>>" { $actual += $matches[1] } }
+
             $comparison = compare-object $expectedExtraction $actual
             if ($comparison) {
                 $global:expected = $expectedExtraction;
                 $global:actual = $actual;
-                $error = "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                $error = "Unexpected extraction results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
                 write-error $error
                 $testResults = $testResults + $error
             }
@@ -89,7 +94,7 @@ task IntegrationTests {
             if (-not [String]::Join("\n", $testoutput).Contains($_)) {
                 $global:expected = $_;
                 $global:actual = $testoutput;
-                $error = "Unexpected results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                $error = "Unexpected contains results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
                 write-error $error
                 $testResults = $testResults + $error
             }
@@ -102,7 +107,7 @@ task IntegrationTests {
         }
     }
 
-    $testResults | set-content $testResultsFile
+    $testResults | set-content $integrationTestResultsFile
 }
 
 task AllTests -depends Build, Deploy, UnitTests, IntegrationTests {

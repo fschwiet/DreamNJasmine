@@ -15,6 +15,7 @@ namespace NJasmine.Core
         readonly NUnitFixtureCollection _nUnitImports;
 
         List<Action> _teardowns = new List<Action>();
+        bool _haveClippedTeardownsAfterFailure = false;
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
@@ -45,13 +46,25 @@ namespace NJasmine.Core
             catch (TestFinishedException)
             {
             }
-
-            _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this));
-
-            _teardowns.Reverse();
-            foreach(var action in _teardowns)
+            catch
             {
-                action();
+                if (!_haveClippedTeardownsAfterFailure)
+                {
+                    _teardowns = new List<Action>();
+                    _haveClippedTeardownsAfterFailure = true;
+                }
+
+                throw;
+            }
+            finally
+            {
+                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this));
+
+                _teardowns.Reverse();
+                foreach (var action in _teardowns)
+                {
+                    action();
+                }
             }
         }
 
@@ -59,7 +72,23 @@ namespace NJasmine.Core
         {
             if (_position.ToString().StartsWith(position.ToString()))
             {
-                action();
+                var existingTeardowns = _teardowns.ToArray();
+                
+                try
+                {
+                    action();
+
+                }
+                catch
+                {
+                    if (!_haveClippedTeardownsAfterFailure)
+                    {
+                        _teardowns = new List<Action>(existingTeardowns);
+                        _haveClippedTeardownsAfterFailure = true;
+                    }
+
+                    throw;
+                }
             }
         }
 

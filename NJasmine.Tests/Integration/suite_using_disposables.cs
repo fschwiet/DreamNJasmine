@@ -34,18 +34,18 @@ disposingsome_observable_D
 disposingsome_observable_B
 disposingsome_observable_A
 ")]
-    public class suite_using_disposables : ObservableNJasmineFixture
+    public class suite_using_disposables : TraceableNJasmineFixture
     {
         public class ObservableDisposable : IDisposable
         {
             public ObservableDisposable()
             {
-                ObservableNJasmineFixture.Trace("creating " + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+                TraceableNJasmineFixture.Trace("creating " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
             }
 
             public void Dispose()
             {
-                ObservableNJasmineFixture.Trace("disposing" + ObservableNJasmineFixture.GetTypeShortName(this.GetType()));
+                TraceableNJasmineFixture.Trace("disposing" + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
             }
         }
 
