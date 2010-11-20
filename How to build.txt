@@ -1,5 +1,5 @@
 
-NOTE:  NJasmine is known to work with 2.5.7.  There is a known issue preventing it from working with 2.5.8+, which I need to fix.
+NOTE:  NJasmine is known to work with NUnit 2.5.7.  There is a known issue preventing it from working with 2.5.8+, which I need to fix.
 
 
 In order to build this project, you need to execute the psake build script from the PowerShell console.
