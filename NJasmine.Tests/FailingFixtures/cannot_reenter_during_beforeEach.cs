@@ -11,9 +11,9 @@ namespace NJasmineTests.FailingFixtures
     [Explicit]
     [RunExternal(false, 
         ExpectedStrings = new string[] {
-                "Test Error : NJasmineTests.FailingFixtures.ReentersDuringBeforeEach",
+                "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_beforeEach",
                 "System.InvalidOperationException : Called it() within beforeEach()."})]
-    public class ReentersDuringBeforeEach : NJasmineFixture
+    public class cannot_reenter_during_beforeEach : NJasmineFixture
     {
         public override void Tests()
         {

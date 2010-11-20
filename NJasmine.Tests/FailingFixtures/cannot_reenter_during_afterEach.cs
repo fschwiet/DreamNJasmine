@@ -9,9 +9,9 @@ using NUnit.Framework;
 namespace NJasmineTests.FailingFixtures
 {
     [Explicit, RunExternal(false, ExpectedStrings = new[] {
-        "Test Error : NJasmineTests.FailingFixtures.ReenterDuringAfterEach", 
+        "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_afterEach", 
         "System.InvalidOperationException : Called it() within afterEach()."})]
-    public class ReenterDuringAfterEach : NJasmineFixture
+    public class cannot_reenter_during_afterEach : NJasmineFixture
     {
         public override void Tests()
         {

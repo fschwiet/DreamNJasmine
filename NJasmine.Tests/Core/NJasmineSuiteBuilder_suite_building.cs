@@ -67,7 +67,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_test_with_error_in_describe()
         {
-            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<ExceptionThrownInFirstDescribe>();
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<reports_exception_within_describe>();
 
             expect(elements[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }
@@ -75,7 +75,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_test_with_error_in_outer_scope()
         {
-            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<ExceptionThrownAtTopLevel>();
+            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<reports_exception_at_outermost_scope>();
 
             expect(elements[new TestPosition()]).to.Be.OfType<NJasmineInvalidTestSuite>();
         }

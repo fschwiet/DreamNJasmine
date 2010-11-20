@@ -4,9 +4,10 @@ using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
-    [Explicit, RunExternal(false, ExpectedStrings = new[] {"Test Failure : ExceptionThrownInFirstDescribe.broken describe", 
-                "Exception thrown within test definition: Attempted to divide by zero."})]
-    public class ExceptionThrownInFirstDescribe : NJasmineFixture
+    [Explicit, RunExternal(false, ExpectedStrings = new []{
+            "Test Failure : NJasmineTests.FailingFixtures.reports_exception_at_outermost_scope", 
+            "Exception thrown within test definition: Attempted to divide by zero."})]
+    public class reports_exception_at_outermost_scope : NJasmineFixture
     {
         public override void Tests()
         {
@@ -17,12 +18,12 @@ namespace NJasmineTests.FailingFixtures
                 it("inner test", delegate()
                 {
                 });
-
-                int j = 5;
-                int i = 1 / (j - 5);
             });
 
             it("last test", delegate() { });
+
+            int j = 5;
+            int i = 1 / (j - 5);
         }
     }
 }
