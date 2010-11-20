@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NJasmine;
 using NJasmineTests.Core;
 using NJasmineTests.Integration;
@@ -10,10 +7,10 @@ using NUnit.Framework;
 namespace NJasmineTests.FailingFixtures
 {
     [Explicit, RunExternal(false, ExpectedExtraction = @"
-beforeEach
-cleanup in outer scope still runs
-")]
-    public class skips_teardown_at_level_of_failing_describe : TraceableNJasmineFixture
+failure_in_test_doesnt_prevent_cleanup_in_same_scope
+failure_in_test_doesnt_prevent_cleanup")]
+
+    public class runs_teardown_even_after_test_failure : TraceableNJasmineFixture
     {
         public override void Tests()
         {
@@ -21,27 +18,21 @@ cleanup in outer scope still runs
 
             afterEach(delegate()
             {
-                Trace("cleanup in outer scope still runs");
+                Trace("failure_in_test_doesnt_prevent_cleanup");
             });
 
-            describe("scope of failure", delegate()
+            describe("failng describe", delegate()
             {
-                beforeEach(delegate()
-                {
-                    Trace("beforeEach");
-                });
-
                 afterEach(delegate()
                 {
-                    Trace("afterEach_shouldnt_run");
+                    Trace("failure_in_test_doesnt_prevent_cleanup_in_same_scope");
                 });
 
                 it("failing test", delegate()
                 {
-                    throw new Exception("Intended test failure.");
+                    throw new Exception("intended test failure");
                 });
             });
-
         }
     }
 }

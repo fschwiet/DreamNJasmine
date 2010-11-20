@@ -15,8 +15,6 @@ namespace NJasmine.Core
         readonly NUnitFixtureCollection _nUnitImports;
 
         List<Action> _allTeardowns = new List<Action>();
-        List<Action> _resourceTeardowns = new List<Action>();
-        bool _haveClippedTeardownsAfterFailure = false;
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
@@ -40,25 +38,12 @@ namespace NJasmine.Core
         {
             _fixture.PushVisitor(new VisitorPositionAdapter(this));
 
-            _resourceTeardowns = new List<Action>();
-
             try
             {
                  _fixture.Tests();
             }
             catch (TestFinishedException)
             {
-            }
-            catch
-            {
-                if (!_haveClippedTeardownsAfterFailure)
-                {
-                    _allTeardowns = new List<Action>();
-                    _allTeardowns.AddRange(_resourceTeardowns);
-                    _haveClippedTeardownsAfterFailure = true;
-                }
-
-                throw;
             }
             finally
             {
@@ -76,33 +61,7 @@ namespace NJasmine.Core
         {
             if (_position.ToString().StartsWith(position.ToString()))
             {
-                var existingTeardowns = _allTeardowns.ToArray();
-                var lastDiposeTeardowns = _resourceTeardowns.ToArray();
-                _resourceTeardowns = new List<Action>();
-                
-                try
-                {
-                    action();
-                }
-                catch (TestFinishedException)
-                {
-                    throw;
-                }
-                catch
-                {
-                    if (!_haveClippedTeardownsAfterFailure)
-                    {
-                        _allTeardowns = new List<Action>(existingTeardowns);
-                        _allTeardowns.AddRange(lastDiposeTeardowns);
-                        _haveClippedTeardownsAfterFailure = true;
-                    }
-
-                    throw;
-                }
-                finally
-                {
-                    _resourceTeardowns = new List<Action>(lastDiposeTeardowns);
-                }
+                action();
             }
         }
 
@@ -139,13 +98,10 @@ namespace NJasmine.Core
         {
             _nUnitImports.DoSetUp(position);
 
-            Action disposeAction = delegate
+            _allTeardowns.Add(delegate
             {
                 _nUnitImports.DoTearDown(position);
-            };
-
-            _allTeardowns.Add(disposeAction);
-            _resourceTeardowns.Add(disposeAction);
+            });
 
             return _nUnitImports.GetInstance(position) as TFixture;
         }
@@ -154,13 +110,10 @@ namespace NJasmine.Core
         {
             var result = new TDisposable();
 
-            Action disposeAction = delegate
+            _allTeardowns.Add(delegate
             {
                 result.Dispose();
-            };
-
-            _allTeardowns.Add(disposeAction);
-            _resourceTeardowns.Add(disposeAction);
+            });
 
             return result;
         }
@@ -169,13 +122,10 @@ namespace NJasmine.Core
         {
             var result = factory();
 
-            Action disposeAction = delegate
+            _allTeardowns.Add(delegate
             {
                 result.Dispose();
-            };
-
-            _allTeardowns.Add(disposeAction);
-            _resourceTeardowns.Add(disposeAction);
+            });
 
             return result;
         }
