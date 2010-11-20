@@ -73,11 +73,11 @@
     <Compile Include="FailingFixtures\ReentersDuringBeforeEach.cs" />
     <Compile Include="FailingFixtures\ReentersDuringIt.cs" />
     <Compile Include="FailingFixtures\skips_teardown_at_level_of_failing_describe.cs" />
-    <Compile Include="Integration\RunExternalAttribute.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />
     <Content Include="Misc\ThrowMatchersTests.js" />
     <Compile Include="Misc\STA.cs" />
+    <Compile Include="RunExternalAttribute.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

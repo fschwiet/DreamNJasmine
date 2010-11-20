@@ -1,4 +1,5 @@
 ﻿using System;
+using NJasmine;
 using NJasmineTests.Core;
 using NUnit.Framework;
 

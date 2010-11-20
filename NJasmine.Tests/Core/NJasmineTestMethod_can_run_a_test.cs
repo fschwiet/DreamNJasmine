@@ -28,7 +28,7 @@ namespace NJasmineTests.Core
 
                     afterEach(delegate()
                     {
-                        Observe("7");
+                        Observe("8");
                     });
 
                     describe("skipped describe", delegate()
@@ -47,7 +47,7 @@ namespace NJasmineTests.Core
 
                         afterEach(delegate()
                         {
-                            Observe("skipped");
+                            Observe("7");
                         });
 
                         beforeEach(delegate()
@@ -90,7 +90,7 @@ namespace NJasmineTests.Core
             sut.Run();
 
             expect(fixture.Observations.ToArray()).to.Equal(
-                Enumerable.Range(1, 7).Select(i => i.ToString()).ToArray());
+                Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());
         }
 
     }

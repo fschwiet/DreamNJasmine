@@ -13,6 +13,7 @@ properties {
 	$deploySource = "$base_dir\NJasmine\bin\$msbuild_Configuration\"
 	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
+    $integrationTestLoader = ".\NJasine.TestLoader\bin\$msbuild_Configuration\NJasine.TestLoader.exe"
     $integrationTestResultsFile = "$base_dir\TestResults.Integration.txt"
     $integrationTestRunPattern = "*"
 }
@@ -51,13 +52,16 @@ task IntegrationTests {
 
     $testResults = @();
 
-    $dll = gi .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll | % { $_.fullname }
-    [System.Reflection.Assembly]::LoadFrom($dll)
-    $tests = [NJasmineTests.Integration.RunExternalAttribute]::GetAll() | ? { $_.Name -like $integrationTestRunPattern }
+    #$dll = gi .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll | % { $_.fullname }
+    #[System.Reflection.Assembly]::LoadFrom($dll)
+    #$tests = [NJasmineTests.RunExternalAttribute]::GetAll() | ? { $_.Name -like $integrationTestRunPattern }
+
+    $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition
 
     $tests | % { 
 
         $testName = $_.Name;
+        $expectedStrings = $_.ExpectedStrings.string;
 
         "Running integration test $testName." | write-host
         $testResults = $testResults + "Running integration test $testName."
@@ -75,7 +79,7 @@ task IntegrationTests {
 
             $actual = @()
             
-            switch -r ($testoutput) { "RESET" { $actual = @(); } "<<{{(.*)}}>>" { $actual += $matches[1] } }
+            switch -r ($testoutput) { "`{`{<<RESET>>`}`}" { $actual = @(); } "<<{{(.*)}}>>" { $actual += $matches[1] } }
 
             $comparison = compare-object $expectedExtraction $actual
             if ($comparison) {
@@ -89,7 +93,7 @@ task IntegrationTests {
             $hasExpectation = $true;
         } 
         
-        $_.ExpectedStrings | % {
+        $expectedStrings | % {
 
             if (-not [String]::Join("\n", $testoutput).Contains($_)) {
                 $global:expected = $_;

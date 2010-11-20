@@ -14,7 +14,8 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nUnitImports;
 
-        List<Action> _teardowns = new List<Action>();
+        List<Action> _allTeardowns = new List<Action>();
+        List<Action> _resourceTeardowns = new List<Action>();
         bool _haveClippedTeardownsAfterFailure = false;
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
@@ -39,6 +40,8 @@ namespace NJasmine.Core
         {
             _fixture.PushVisitor(new VisitorPositionAdapter(this));
 
+            _resourceTeardowns = new List<Action>();
+
             try
             {
                  _fixture.Tests();
@@ -50,7 +53,8 @@ namespace NJasmine.Core
             {
                 if (!_haveClippedTeardownsAfterFailure)
                 {
-                    _teardowns = new List<Action>();
+                    _allTeardowns = new List<Action>();
+                    _allTeardowns.AddRange(_resourceTeardowns);
                     _haveClippedTeardownsAfterFailure = true;
                 }
 
@@ -60,8 +64,8 @@ namespace NJasmine.Core
             {
                 _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this));
 
-                _teardowns.Reverse();
-                foreach (var action in _teardowns)
+                _allTeardowns.Reverse();
+                foreach (var action in _allTeardowns)
                 {
                     action();
                 }
@@ -72,22 +76,32 @@ namespace NJasmine.Core
         {
             if (_position.ToString().StartsWith(position.ToString()))
             {
-                var existingTeardowns = _teardowns.ToArray();
+                var existingTeardowns = _allTeardowns.ToArray();
+                var lastDiposeTeardowns = _resourceTeardowns.ToArray();
+                _resourceTeardowns = new List<Action>();
                 
                 try
                 {
                     action();
-
+                }
+                catch (TestFinishedException)
+                {
+                    throw;
                 }
                 catch
                 {
                     if (!_haveClippedTeardownsAfterFailure)
                     {
-                        _teardowns = new List<Action>(existingTeardowns);
+                        _allTeardowns = new List<Action>(existingTeardowns);
+                        _allTeardowns.AddRange(lastDiposeTeardowns);
                         _haveClippedTeardownsAfterFailure = true;
                     }
 
                     throw;
+                }
+                finally
+                {
+                    _resourceTeardowns = new List<Action>(lastDiposeTeardowns);
                 }
             }
         }
@@ -106,7 +120,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _teardowns.Add(action);
+                _allTeardowns.Add(action);
             }
         }
 
@@ -125,10 +139,13 @@ namespace NJasmine.Core
         {
             _nUnitImports.DoSetUp(position);
 
-            _teardowns.Add(delegate
+            Action disposeAction = delegate
             {
                 _nUnitImports.DoTearDown(position);
-            });
+            };
+
+            _allTeardowns.Add(disposeAction);
+            _resourceTeardowns.Add(disposeAction);
 
             return _nUnitImports.GetInstance(position) as TFixture;
         }
@@ -137,10 +154,13 @@ namespace NJasmine.Core
         {
             var result = new TDisposable();
 
-            _teardowns.Add(delegate
+            Action disposeAction = delegate
             {
                 result.Dispose();
-            });
+            };
+
+            _allTeardowns.Add(disposeAction);
+            _resourceTeardowns.Add(disposeAction);
 
             return result;
         }
@@ -149,10 +169,13 @@ namespace NJasmine.Core
         {
             var result = factory();
 
-            _teardowns.Add(delegate
+            Action disposeAction = delegate
             {
                 result.Dispose();
-            });
+            };
+
+            _allTeardowns.Add(disposeAction);
+            _resourceTeardowns.Add(disposeAction);
 
             return result;
         }
