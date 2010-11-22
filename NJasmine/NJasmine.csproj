@@ -50,23 +50,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\INJasmineFixtureVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\SpecMethod.cs" />
+    <Compile Include="Core\FixtureVisitor\TerminalVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NUnitFixtureCollection.cs" />
-    <Compile Include="FixtureVisitor\SpecMethod.cs" />
-    <Compile Include="FixtureVisitor\TerminalVisitor.cs" />
-    <Compile Include="FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
-    <Compile Include="FixtureVisitor\INJasmineFixtureVisitor.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
-    <Compile Include="FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\TestPosition.cs" />
-    <Compile Include="FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="ExpectationsFixture.cs" />
+    <Compile Include="Extras\ThrowMatchers.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThrowMatchers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.Misc
+namespace NJasmineTests.Core
 {
     [RequiresSTA]
     public class STA : NJasmineFixture

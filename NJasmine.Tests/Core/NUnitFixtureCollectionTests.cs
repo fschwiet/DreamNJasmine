@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Extras;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core

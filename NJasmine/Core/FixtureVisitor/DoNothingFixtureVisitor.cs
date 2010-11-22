@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NJasmine.FixtureVisitor
+namespace NJasmine.Core.FixtureVisitor
 {
     public class DoNothingFixtureVisitor : INJasmineFixtureVisitor
     {

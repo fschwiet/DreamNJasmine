@@ -1,7 +1,6 @@
 ﻿using System;
-using NJasmine.FixtureVisitor;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.FixtureVisitor
 {
     public class VisitorPositionAdapter : INJasmineFixtureVisitor
     {

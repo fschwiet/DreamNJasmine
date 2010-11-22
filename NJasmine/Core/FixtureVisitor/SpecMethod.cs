@@ -1,4 +1,4 @@
-﻿namespace NJasmine.FixtureVisitor
+﻿namespace NJasmine.Core.FixtureVisitor
 {
     public enum SpecMethod
     {

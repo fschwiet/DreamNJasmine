@@ -61,6 +61,7 @@
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
     <Compile Include="Core\NUnitFixtureCollectionTests.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
+    <Compile Include="Core\STA.cs" />
     <Compile Include="Core\TraceableNJasmineFixture.cs" />
     <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_setup_failure.cs" />
@@ -74,8 +75,7 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
     <Compile Include="Integration\imports_NUnit_fixture.cs" />
     <Compile Include="Integration\suite_using_disposables.cs" />
-    <Content Include="Misc\ThrowMatchersTests.js" />
-    <Compile Include="Misc\STA.cs" />
+    <Compile Include="Extras\ThrowMatchersTests.cs" />
     <Compile Include="RunExternalAttribute.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />

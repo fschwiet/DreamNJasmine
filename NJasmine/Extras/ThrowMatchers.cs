@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Should.Fluent.Model;
 
-namespace NJasmine
+namespace NJasmine.Extras
 {
     public static class ThrowMatchers
     {
