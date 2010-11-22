@@ -65,6 +65,7 @@
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="ExpectationsFixture.cs" />
     <Compile Include="Extras\ThrowMatchers.cs" />
+    <Compile Include="Extras\ZipFixtureLoader.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

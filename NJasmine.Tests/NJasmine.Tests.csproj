@@ -64,6 +64,7 @@
     <Compile Include="Core\STA.cs" />
     <Compile Include="Core\TraceableNJasmineFixture.cs" />
     <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
+    <Compile Include="Extras\ZipFixtureLoaderTests.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_setup_failure.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_test_failure.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
@@ -89,9 +90,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Extras\SampleZipFixture.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\lib\7-zip\7za.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Moq;
 using NJasmine;
+using NJasmine.Extras;
 using NUnit.Core;
 using Should.Fluent;
 using Should.Fluent.Model;
