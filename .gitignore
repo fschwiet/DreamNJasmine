@@ -10,4 +10,5 @@ _ReSharper.*
 *.suo
 *.sln.cache
 *.InstallLog
+.backup/
 packages/NUnit.2.5.7.10213/Tools/addins
