@@ -56,7 +56,7 @@ task IntegrationTests {
     #[System.Reflection.Assembly]::LoadFrom($dll)
     #$tests = [NJasmineTests.RunExternalAttribute]::GetAll() | ? { $_.Name -like $integrationTestRunPattern }
 
-    $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition
+    $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
 
     $tests | % { 
 

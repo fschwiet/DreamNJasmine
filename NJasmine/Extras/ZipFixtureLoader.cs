@@ -34,7 +34,11 @@ namespace NJasmine.Extras
                 string consoleOutput = zipProcess.StandardOutput.ReadToEnd();
 
                 if (!consoleOutput.Contains("Everything is Ok"))
-                    throw new Exception("7Zip extraction apparently failed- success message not found.");
+                {
+                    Console.WriteLine(consoleOutput);
+
+                    throw new Exception("7Zip extraction apparently failed- success message not found.  Actual 7Zip results written to console.");
+                }
             }
 
             return tempPath;

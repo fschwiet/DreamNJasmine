@@ -81,6 +81,12 @@ FixtureTearDown some_Nunit_fixture_a
 ")]
     public class imports_NUnit_fixture : TraceableNJasmineFixture
     {
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            TraceReset();
+        }
+
         public override void Tests()
         {
             Trace("test started, before include of a");
@@ -110,11 +116,6 @@ FixtureTearDown some_Nunit_fixture_a
                     });
                 });
             });
-        }
-
-        public static void Trace(string value)
-        {
-            Console.WriteLine("<<{{" + value + "}}>>");
         }
     }
 
