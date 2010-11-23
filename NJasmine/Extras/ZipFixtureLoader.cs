@@ -25,6 +25,7 @@ namespace NJasmine.Extras
             ProcessStartInfo info = new ProcessStartInfo(Get7Zip(),
                                                          String.Format("x -o{1} \"{2}\"", Get7Zip(), tempPath,
                                                                        sourceZipFilepath));
+            info.WorkingDirectory = Path.GetTempPath();
             info.UseShellExecute = false;
             info.RedirectStandardOutput = true;
             info.RedirectStandardError = true;
@@ -35,7 +36,10 @@ namespace NJasmine.Extras
 
                 if (!consoleOutput.Contains("Everything is Ok"))
                 {
+                    Console.WriteLine("7Zip console output:");
                     Console.WriteLine(consoleOutput);
+                    Console.WriteLine("7Zip error output:");
+                    Console.WriteLine(zipProcess.StandardError.ReadToEnd());
 
                     throw new Exception("7Zip extraction apparently failed- success message not found.  Actual 7Zip results written to console.");
                 }
