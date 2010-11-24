@@ -59,7 +59,10 @@ namespace NJasmine.Core
 
         public override string ToString()
         {
-            return String.Join(", ", Coordinates.Select(c => c.ToString()).ToArray());
+            // Note: using StartsWith() to determine if a describe is in scope for a test.
+            // So don't add stuff to the end of ToString() result without adjusting NJasmineTestMethod.visitDescribe
+
+            return "TestPosition:" + String.Join(", ", Coordinates.Select(c => c.ToString()).ToArray());
         }
 
         public bool Equals(TestPosition other)
