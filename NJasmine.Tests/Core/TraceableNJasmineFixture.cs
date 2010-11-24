@@ -7,6 +7,14 @@ namespace NJasmineTests.Core
 {
     public abstract class TraceableNJasmineFixture : NJasmineFixture
     {
+        public class PerClassTraceResetFixture
+        {
+            [TestFixtureSetUp]
+            public void TestFixtureSetup()
+            {
+                TraceReset();
+            }
+        }
 
         public static void Trace(string value)
         {

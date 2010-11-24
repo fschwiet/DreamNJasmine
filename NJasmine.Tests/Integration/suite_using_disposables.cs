@@ -5,12 +5,6 @@ using NJasmineTests.Core;
 namespace NJasmineTests.Integration
 {
     [RunExternal(true, ExpectedExtraction = @"
-test started, before include of a
-after include of a
-first describe, before include of b
-after include of b
-before include of c
-after include of c
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C
@@ -20,16 +14,16 @@ disposingsome_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
-creating some_observable_E
-creating some_observable_F
-disposingsome_observable_F
-disposingsome_observable_E
 disposingsome_observable_D
 disposingsome_observable_B
 disposingsome_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
+creating some_observable_E
+creating some_observable_F
+disposingsome_observable_F
+disposingsome_observable_E
 disposingsome_observable_D
 disposingsome_observable_B
 disposingsome_observable_A
@@ -58,7 +52,9 @@ disposingsome_observable_A
         
         public override void Tests()
         {
-            var a = disposing < some_observable_A>();
+            importNUnit<PerClassTraceResetFixture>();
+
+            var a = disposing<some_observable_A>();
             var b = disposing(() => new some_observable_B());
 
             describe("first describe block", delegate

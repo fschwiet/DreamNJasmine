@@ -142,6 +142,5 @@ namespace NJasmine.Core
         {
             return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.disposing + "().");
         }
-
     }
 }
