@@ -27,7 +27,6 @@ namespace NJasmineTests.Extras
                 string unpacked = ZipFixtureLoader.UnzipBinDeployedToTempDirectory("Extras\\SampleZipFixture.zip", "NJasmine.Extras");
 
                 Directory.Exists(unpacked).Should().Be.True();
-                Console.WriteLine(unpacked);
                 unpacked.ToLower().Should().Contain("temp");
                 
                 string expectedFixtureMember = Path.Combine(unpacked, "success.txt");
