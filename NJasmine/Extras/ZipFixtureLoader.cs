@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace NJasmine.Extras
 {
@@ -16,33 +17,80 @@ namespace NJasmine.Extras
 
         public static string UnzipFileToTempDirectory(string sourceZipFilepath, string tempName)
         {
-            string tempPath = tempPath = Path.Combine(Path.GetTempPath(), tempName);
+            string tempPath = Path.Combine(Path.GetTempPath(), tempName);
 
             DeleteDirectory(tempPath);
-
-            ProcessStartInfo info = new ProcessStartInfo(Get7Zip(),
-                                                         String.Format("x -o{1} \"{2}\"", Get7Zip(), tempPath,
-                                                                       sourceZipFilepath));
-            info.WorkingDirectory = Path.GetTempPath();
-            info.UseShellExecute = false;
-            info.CreateNoWindow = true;
-            info.RedirectStandardOutput = true;
-            info.RedirectStandardError = true;
-
-            using (var zipProcess = Process.Start(info))
+            Directory.CreateDirectory(tempPath);
+            
+            ZipInputStream s = new ZipInputStream(File.OpenRead(sourceZipFilepath));
+            ZipEntry theEntry;
+            string tmpEntry = String.Empty;
+            while ((theEntry = s.GetNextEntry()) != null)
             {
-                string consoleOutput = zipProcess.StandardOutput.ReadToEnd();
-
-                if (!consoleOutput.Contains("Everything is Ok"))
+                string directoryName = tempPath;
+                string fileName = Path.GetFileName(theEntry.Name);
+                // create directory 
+                if (directoryName != "")
                 {
-                    Console.WriteLine("7Zip console output:");
-                    Console.WriteLine(consoleOutput);
-                    Console.WriteLine("7Zip error output:");
-                    Console.WriteLine(zipProcess.StandardError.ReadToEnd());
-
-                    throw new Exception("7Zip extraction apparently failed- success message not found.  Actual 7Zip results written to console.");
+                    Directory.CreateDirectory(directoryName);
+                }
+                if (fileName != String.Empty)
+                {
+                    if (theEntry.Name.IndexOf(".ini") < 0)
+                    {
+                        string fullPath = directoryName + "\\" + theEntry.Name;
+                        fullPath = fullPath.Replace("\\ ", "\\");
+                        string fullDirPath = Path.GetDirectoryName(fullPath);
+                        if (!Directory.Exists(fullDirPath)) Directory.CreateDirectory(fullDirPath);
+                        FileStream streamWriter = File.Create(fullPath);
+                        int size = 2048;
+                        byte[] data = new byte[2048];
+                        while (true)
+                        {
+                            size = s.Read(data, 0, data.Length);
+                            if (size > 0)
+                            {
+                                streamWriter.Write(data, 0, size);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        streamWriter.Close();
+                    }
                 }
             }
+            s.Close();
+
+
+            //string tempPath = tempPath = Path.Combine(Path.GetTempPath(), tempName);
+
+            //DeleteDirectory(tempPath);
+
+            //ProcessStartInfo info = new ProcessStartInfo(Get7Zip(),
+            //                                             String.Format("x -o{1} \"{2}\"", Get7Zip(), tempPath,
+            //                                                           sourceZipFilepath));
+            //info.WorkingDirectory = Path.GetTempPath();
+            //info.UseShellExecute = false;
+            //info.CreateNoWindow = true;
+            //info.RedirectStandardOutput = true;
+            //info.RedirectStandardError = true;
+
+            //using (var zipProcess = Process.Start(info))
+            //{
+            //    string consoleOutput = zipProcess.StandardOutput.ReadToEnd();
+
+            //    if (!consoleOutput.Contains("Everything is Ok"))
+            //    {
+            //        Console.WriteLine("7Zip console output:");
+            //        Console.WriteLine(consoleOutput);
+            //        Console.WriteLine("7Zip error output:");
+            //        Console.WriteLine(zipProcess.StandardError.ReadToEnd());
+
+            //        throw new Exception("7Zip extraction apparently failed- success message not found.  Actual 7Zip results written to console.");
+            //    }
+            //}
 
             return tempPath;
         }

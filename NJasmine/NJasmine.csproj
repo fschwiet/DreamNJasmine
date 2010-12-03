@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnit.2.5.7.10213\Tools\lib\nunit.core.dll</HintPath>
     </Reference>
