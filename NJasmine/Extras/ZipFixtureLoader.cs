@@ -95,7 +95,7 @@ namespace NJasmine.Extras
             return tempPath;
         }
 
-        private static string GetAndCheckPathOfBinDeployedFile(string resourcePath)
+        public static string GetAndCheckPathOfBinDeployedFile(string resourcePath)
         {
             string source = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, resourcePath);
 
