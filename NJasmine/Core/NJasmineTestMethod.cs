@@ -14,7 +14,7 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nUnitImports;
 
-        List<Action> _allTeardowns = new List<Action>();
+        List<Action> _allTeardowns = null;
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
@@ -36,6 +36,8 @@ namespace NJasmine.Core
 
         public void Run()
         {
+            _allTeardowns = new List<Action>();
+
             _fixture.PushVisitor(new VisitorPositionAdapter(this));
 
             try

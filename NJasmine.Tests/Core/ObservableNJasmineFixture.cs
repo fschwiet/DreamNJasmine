@@ -16,5 +16,10 @@ namespace NJasmineTests.Core
         {
             _observations.Add(value);
         }
+
+        public void ResetObservations()
+        {
+            _observations = new List<string>();
+        }
     }
 }
