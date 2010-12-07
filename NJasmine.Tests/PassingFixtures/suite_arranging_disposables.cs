@@ -7,27 +7,27 @@ namespace NJasmineTests.PassingFixtures
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C
-disposingsome_observable_C
-disposingsome_observable_B
-disposingsome_observable_A
+disposing some_observable_C
+disposing some_observable_B
+disposing some_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
-disposingsome_observable_D
-disposingsome_observable_B
-disposingsome_observable_A
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
 creating some_observable_E
 creating some_observable_F
-disposingsome_observable_F
-disposingsome_observable_E
-disposingsome_observable_D
-disposingsome_observable_B
-disposingsome_observable_A
+disposing some_observable_F
+disposing some_observable_E
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
 ")]
-    public class suite_using_disposables : TraceableNJasmineFixture
+    public class suite_arranging_disposables : TraceableNJasmineFixture
     {
         public class ObservableDisposable : IDisposable
         {
@@ -38,7 +38,7 @@ disposingsome_observable_A
 
             public void Dispose()
             {
-                TraceableNJasmineFixture.Trace("disposing" + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
+                TraceableNJasmineFixture.Trace("disposing " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
             }
         }
 
