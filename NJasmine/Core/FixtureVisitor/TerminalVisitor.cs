@@ -43,7 +43,7 @@ namespace NJasmine.Core.FixtureVisitor
             return _originalVisitor.visitArrange<TArranged>(null);
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory)
         {
             return _originalVisitor.visitArrange(factory, null);
         }

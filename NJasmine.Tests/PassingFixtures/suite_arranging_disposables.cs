@@ -37,6 +37,8 @@ creating some_observable_F
         {
             importNUnit<PerClassTraceResetFixture>();
 
+            var i = arrange(() => 123);
+
             var a = arrange<some_observable_A>();
             var b = arrange(() => new some_observable_B());
 
@@ -46,6 +48,7 @@ creating some_observable_F
                 
                 it("a test", delegate
                 {
+                    expect(i).to.Equal(123);
                     expect(a).not.to.Be.Null();
                     expect(b).not.to.Be.Null();
                     expect(c).not.to.Be.Null();

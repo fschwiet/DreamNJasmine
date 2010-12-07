@@ -10,6 +10,6 @@ namespace NJasmine.Core.FixtureVisitor
         void visitIt(string description, Action action, TestPosition position);
         TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new();
         TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, new();
-        TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class;
+        TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position);
     }
 }

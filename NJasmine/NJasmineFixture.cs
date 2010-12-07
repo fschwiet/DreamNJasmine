@@ -66,7 +66,7 @@ namespace NJasmine
             return _visitor.visitArrange<TArranged>();
         }
 
-        protected TArranged arrange<TArranged>(Func<TArranged> factory) where TArranged : class
+        protected TArranged arrange<TArranged>(Func<TArranged> factory)
         {
             return _visitor.visitArrange<TArranged>(factory);
         }

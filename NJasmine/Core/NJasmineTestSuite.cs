@@ -120,12 +120,12 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(SpecMethod.arrange);
 
-            return null;
+            return default(TArranged);
         }
 
         protected override void DoOneTimeSetUp(TestResult suiteResult)

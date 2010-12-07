@@ -123,7 +123,7 @@ namespace NJasmine.Core
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position)
         {
             var result = factory();
 
