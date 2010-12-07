@@ -112,10 +112,13 @@ namespace NJasmine.Core
         {
             var result = new TArranged();
 
-            _allTeardowns.Add(delegate
+            if (result is IDisposable)
             {
-                (result as IDisposable).Dispose();
-            });
+                _allTeardowns.Add(delegate
+                {
+                    (result as IDisposable).Dispose();
+                });
+            }
 
             return result;
         }
@@ -124,10 +127,13 @@ namespace NJasmine.Core
         {
             var result = factory();
 
-            _allTeardowns.Add(delegate
+            if (result is IDisposable)
             {
-                (result as IDisposable).Dispose();
-            });
+                _allTeardowns.Add(delegate
+                {
+                    (result as IDisposable).Dispose();
+                });
+            }
 
             return result;
         }

@@ -7,31 +7,47 @@ namespace NJasmineTests.PassingFixtures
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C
+disposing some_observable_C
+disposing some_observable_B
+disposing some_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
 creating some_observable_E
 creating some_observable_F
+disposing some_observable_F
+disposing some_observable_E
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
 ")]
-    public class suite_arranging_nondisposables : TraceableNJasmineFixture
+    public class suite_arranging_disposables : TraceableNJasmineFixture
     {
-        public class ObservableNondisposable
+        public class ObservableDisposable : IDisposable
         {
-            public ObservableNondisposable()
+            public ObservableDisposable()
             {
                 TraceableNJasmineFixture.Trace("creating " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
             }
+
+            public void Dispose()
+            {
+                TraceableNJasmineFixture.Trace("disposing " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
+            }
         }
 
-        public class some_observable_A : ObservableNondisposable { }
-        public class some_observable_B : ObservableNondisposable { }
-        public class some_observable_C : ObservableNondisposable { }
-        public class some_observable_D : ObservableNondisposable { }
-        public class some_observable_E : ObservableNondisposable { }
-        public class some_observable_F : ObservableNondisposable { }
+        public class some_observable_A : ObservableDisposable { }
+        public class some_observable_B : ObservableDisposable { }
+        public class some_observable_C : ObservableDisposable { }
+        public class some_observable_D : ObservableDisposable { }
+        public class some_observable_E : ObservableDisposable { }
+        public class some_observable_F : ObservableDisposable { }
         
         public override void Tests()
         {
