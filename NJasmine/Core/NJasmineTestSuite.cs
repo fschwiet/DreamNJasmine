@@ -112,18 +112,18 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TDisposable visitDisposing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, IDisposable, new()
         {
             if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.disposing);
+                throw WrongMethodAfterItMethod(SpecMethod.arrange);
 
             return null;
         }
 
-        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class, IDisposable
         {
             if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.disposing);
+                throw WrongMethodAfterItMethod(SpecMethod.arrange);
 
             return null;
         }
@@ -140,7 +140,7 @@ namespace NJasmine.Core
 
         InvalidOperationException WrongMethodAfterItMethod(SpecMethod innerSpecMethod)
         {
-            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.disposing + "().");
+            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.arrange + "().");
         }
     }
 }

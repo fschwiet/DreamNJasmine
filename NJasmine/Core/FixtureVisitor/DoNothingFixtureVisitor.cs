@@ -25,14 +25,14 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>() where TArranged : class, IDisposable, new()
         {
-            return default(TDisposable);
+            return default(TArranged);
         }
 
-        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
         {
-            return default(TDisposable);
+            return default(TArranged);
         }
     }
 }

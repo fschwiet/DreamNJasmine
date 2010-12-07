@@ -108,9 +108,9 @@ namespace NJasmine.Core
             return _nUnitImports.GetInstance(position) as TFixture;
         }
 
-        public TDisposable visitDisposing<TDisposable>(TestPosition position) where TDisposable : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, IDisposable, new()
         {
-            var result = new TDisposable();
+            var result = new TArranged();
 
             _allTeardowns.Add(delegate
             {
@@ -120,7 +120,7 @@ namespace NJasmine.Core
             return result;
         }
 
-        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory, TestPosition position) where TDisposable : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class, IDisposable
         {
             var result = factory();
 

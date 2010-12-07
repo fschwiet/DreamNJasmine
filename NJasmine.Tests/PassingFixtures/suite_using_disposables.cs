@@ -53,12 +53,12 @@ disposingsome_observable_A
         {
             importNUnit<PerClassTraceResetFixture>();
 
-            var a = disposing<some_observable_A>();
-            var b = disposing(() => new some_observable_B());
+            var a = arrange<some_observable_A>();
+            var b = arrange(() => new some_observable_B());
 
             describe("first describe block", delegate
             {
-                var c = disposing(() => new some_observable_C());
+                var c = arrange(() => new some_observable_C());
                 
                 it("a test", delegate
                 {
@@ -72,7 +72,7 @@ disposingsome_observable_A
             {
                 describe("nested describe block", delegate
                 {
-                    var d = disposing(() => new some_observable_D());
+                    var d = arrange(() => new some_observable_D());
 
                     describe("another describe block", delegate
                     {
@@ -85,8 +85,8 @@ disposingsome_observable_A
 
                         it("inline using", delegate
                         {
-                            var e = disposing<some_observable_E>();
-                            var f = disposing(() => new some_observable_F());
+                            var e = arrange<some_observable_E>();
+                            var f = arrange(() => new some_observable_F());
 
                             expect(e).not.to.Be.Null();
                             expect(f).not.to.Be.Null();

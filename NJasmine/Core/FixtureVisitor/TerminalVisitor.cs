@@ -38,14 +38,14 @@ namespace NJasmine.Core.FixtureVisitor
             throw DontException(SpecMethod.importNUnit);
         }
 
-        public TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>() where TArranged : class, IDisposable, new()
         {
-            return _originalVisitor.visitDisposing<TDisposable>(null);
+            return _originalVisitor.visitArrange<TArranged>(null);
         }
 
-        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
         {
-            return _originalVisitor.visitDisposing(factory, null);
+            return _originalVisitor.visitArrange(factory, null);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

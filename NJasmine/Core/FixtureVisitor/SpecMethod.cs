@@ -7,6 +7,6 @@
         afterEach,
         it,
         importNUnit,
-        disposing
+        arrange
     }
 }

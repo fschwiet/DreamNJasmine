@@ -62,18 +62,18 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TDisposable visitDisposing<TDisposable>() where TDisposable : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>() where TArranged : class, IDisposable, new()
         {
-            var result = _visitor.visitDisposing<TDisposable>(_nextPosition);
+            var result = _visitor.visitArrange<TArranged>(_nextPosition);
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
 
             return result;
         }
 
-        public TDisposable visitDisposing<TDisposable>(Func<TDisposable> factory) where TDisposable : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
         {
-            var result = _visitor.visitDisposing(factory, _nextPosition);
+            var result = _visitor.visitArrange(factory, _nextPosition);
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
 
