@@ -108,25 +108,25 @@ namespace NJasmine.Core
             return _nUnitImports.GetInstance(position) as TFixture;
         }
 
-        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, new()
         {
             var result = new TArranged();
 
             _allTeardowns.Add(delegate
             {
-                result.Dispose();
+                (result as IDisposable).Dispose();
             });
 
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class
         {
             var result = factory();
 
             _allTeardowns.Add(delegate
             {
-                result.Dispose();
+                (result as IDisposable).Dispose();
             });
 
             return result;

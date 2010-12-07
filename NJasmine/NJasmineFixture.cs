@@ -61,12 +61,12 @@ namespace NJasmine
             return _visitor.visitImportNUnit<TFixture>();
         }
 
-        protected TArranged arrange<TArranged>() where TArranged : class, IDisposable, new()
+        protected TArranged arrange<TArranged>() where TArranged : class, new()
         {
             return _visitor.visitArrange<TArranged>();
         }
 
-        protected TArranged arrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
+        protected TArranged arrange<TArranged>(Func<TArranged> factory) where TArranged : class
         {
             return _visitor.visitArrange<TArranged>(factory);
         }

@@ -38,12 +38,12 @@ namespace NJasmine.Core.FixtureVisitor
             throw DontException(SpecMethod.importNUnit);
         }
 
-        public TArranged visitArrange<TArranged>() where TArranged : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>() where TArranged : class, new()
         {
             return _originalVisitor.visitArrange<TArranged>(null);
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class
         {
             return _originalVisitor.visitArrange(factory, null);
         }

@@ -62,7 +62,7 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitArrange<TArranged>() where TArranged : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>() where TArranged : class, new()
         {
             var result = _visitor.visitArrange<TArranged>(_nextPosition);
 
@@ -71,7 +71,7 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory) where TArranged : class
         {
             var result = _visitor.visitArrange(factory, _nextPosition);
 

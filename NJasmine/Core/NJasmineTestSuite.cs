@@ -112,7 +112,7 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, IDisposable, new()
+        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, new()
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(SpecMethod.arrange);
@@ -120,7 +120,7 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class, IDisposable
+        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position) where TArranged : class
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(SpecMethod.arrange);
