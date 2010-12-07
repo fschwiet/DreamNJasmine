@@ -74,8 +74,8 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_afterEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_beforeEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
-    <Compile Include="Integration\imports_NUnit_fixture.cs" />
-    <Compile Include="Integration\suite_using_disposables.cs" />
+    <Compile Include="PassingFixtures\imports_NUnit_fixture.cs" />
+    <Compile Include="PassingFixtures\suite_using_disposables.cs" />
     <Compile Include="Extras\ThrowMatchersTests.cs" />
     <Compile Include="RunExternalAttribute.cs" />
     <Compile Include="SampleTest.cs" />

@@ -6,5 +6,5 @@ Running integration test NJasmineTests.FailingFixtures.reports_exception_within_
 Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_afterEach.
 Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_beforeEach.
 Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_it.
-Running integration test NJasmineTests.Integration.imports_NUnit_fixture.
-Running integration test NJasmineTests.Integration.suite_using_disposables.
+Running integration test NJasmineTests.PassingFixtures.imports_NUnit_fixture.
+Running integration test NJasmineTests.PassingFixtures.suite_using_disposables.

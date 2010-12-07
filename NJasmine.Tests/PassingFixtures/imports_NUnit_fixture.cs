@@ -1,9 +1,7 @@
-﻿using System;
-using NJasmine;
-using NJasmineTests.Core;
+﻿using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.Integration
+namespace NJasmineTests.PassingFixtures
 {
     [Explicit, TestFixture]
     public class some_Nunit_fixture_a

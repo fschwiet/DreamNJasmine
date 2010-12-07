@@ -1,5 +1,4 @@
 ﻿using NJasmine;
-using NJasmineTests.Integration;
 using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures

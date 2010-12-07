@@ -1,8 +1,7 @@
 ﻿using System;
-using NJasmine;
 using NJasmineTests.Core;
 
-namespace NJasmineTests.Integration
+namespace NJasmineTests.PassingFixtures
 {
     [RunExternal(true, ExpectedExtraction = @"
 creating some_observable_A
