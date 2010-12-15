@@ -21,7 +21,7 @@ properties {
 task default -depends AllTests
 
 task Build {
-    exec { & $msbuild $sln /property:Configuration=$msbuild_Configuration }
+    exec { &"C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe" "$sln_file" /p:OutDir="$buildartifacts_dir\" }
 }
 
 task Deploy -depends Build {
@@ -42,6 +42,9 @@ task Deploy -depends Build {
 task UnitTests {
 
     exec { & $nunitBinPath $testDll}
+}
+
+task CICommit -depends Deploy, UnitTests {
 }
 
 task IntegrationTests {

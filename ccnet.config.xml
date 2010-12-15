@@ -1,0 +1,45 @@
+<!-- 
+    This config file must be referenced by the CI server's config file.
+    See "Splitting the ccnet.config file to add this config: http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/Multiple%20Projects.html
+-->
+
+
+<project name="NJasmine">
+    <sourcecontrol type="git">
+        <repository>c:/src/njasmine</repository>
+        <branch>master</branch>
+        <autoGetSource>true</autoGetSource>
+        <executable>C:\msysgit\cmd\git.cmd</executable>
+        <tagOnSuccess>false</tagOnSuccess>
+        <commitBuildModifications>false</commitBuildModifications>
+        <commitUntrackedFiles>false</commitUntrackedFiles>
+        <workingDirectory>c:\build\NJasmine.git</workingDirectory>
+        <timeout>60000</timeout>
+    </sourcecontrol>
+    
+    <triggers>  
+        <intervalTrigger name="git" seconds="10" buildCondition="IfModificationExists" />  
+    </triggers> 
+    
+    <tasks>
+        <powershell>
+            <!-- http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/PowerShell%20Task.html -->
+            <script>psake.ps1</script>
+            <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
+            <executable>powershell.exe</executable>
+            <buildArgs>.\default.ps1 CICommit</buildArgs>
+            <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
+            <description>Build.</description>
+        </powershell>
+        <powershell>
+            <!-- http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/PowerShell%20Task.html -->
+            <script>psake.ps1</script>
+            <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
+            <executable>powershell.exe</executable>
+            <buildArgs>.\default.ps1 AllTests</buildArgs>
+            <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
+            <description>Build.</description>
+        </powershell>        
+    </tasks>
+    
+</project>
