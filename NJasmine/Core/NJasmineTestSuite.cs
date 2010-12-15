@@ -14,15 +14,18 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
         readonly List<Test> _accumulatedDescendants;
+        readonly List<string> _globallyAccumulatedTestNames;
 
         bool _haveReachedAnIt;
 
-        public NJasmineTestSuite(NJasmineFixture fixture, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports) 
+        public NJasmineTestSuite(NJasmineFixture fixture, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames) 
             : base(baseName, name)
         {
             _fixture = fixture;
             _position = position;
             _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
+
             _accumulatedDescendants = new List<Test>();
             _haveReachedAnIt = false;
 
@@ -58,7 +61,11 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    this.Add(new NJasmineInvalidTestSuite(TestName.FullName, "Exception thrown within test definition", exception, _position));
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(TestName.FullName, "Exception thrown within test definition", exception, _position);
+
+                    MakeNameUnique(nJasmineInvalidTestSuite);
+
+                    this.Add(nJasmineInvalidTestSuite);
                 }
             }
             finally
@@ -69,19 +76,42 @@ namespace NJasmine.Core
 
         private void MakeNameUnique(TestMethod test)
         {
-            
+            var name = test.TestName.FullName;
+
+            if (_globallyAccumulatedTestNames.Contains(name))
+            {
+                var nextIndex = 1;
+                string suffix;
+                string nextName;
+
+                do
+                {
+                    suffix = "`" + ++nextIndex;
+                    nextName = name + suffix;
+                } while (_globallyAccumulatedTestNames.Contains(nextName));
+
+
+                test.TestName.Name = test.TestName.Name + suffix;
+                test.TestName.FullName = test.TestName.FullName + suffix;
+            }
+
+            _globallyAccumulatedTestNames.Add(test.TestName.FullName);
         }
         
         public void visitDescribe(string description, Action action, TestPosition position)
         {
             if (action == null)
             {
-                _accumulatedDescendants.Add(new NJasmineUnimplementedTestMethod(TestName.FullName + " " + description, description,
-                                                                               position));
+                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(TestName.FullName + " " + description, description,
+                                                                                          position);
+
+                MakeNameUnique(nJasmineUnimplementedTestMethod);
+
+                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
             else
             {
-                var describeSuite = new NJasmineTestSuite(_fixture, TestName.FullName, description, position, _nunitImports);
+                var describeSuite = new NJasmineTestSuite(_fixture, TestName.FullName, description, position, _nunitImports, _globallyAccumulatedTestNames);
 
                 describeSuite.BuildSuite(action);
 
@@ -120,6 +150,8 @@ namespace NJasmine.Core
 
                 testMethod.TestName.Name = testName;
                 testMethod.TestName.FullName = testFullName;
+
+                MakeNameUnique(testMethod);
 
                 _accumulatedDescendants.Add(testMethod);
             }

@@ -1,3 +1,4 @@
+Running integration test NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.
 Running integration test NJasmineTests.FailingFixtures.runs_teardown_even_after_setup_failure.
 Running integration test NJasmineTests.FailingFixtures.runs_teardown_even_after_test_failure.
 Running integration test NJasmineTests.FailingFixtures.cannot_call_beforeEach_after_test.

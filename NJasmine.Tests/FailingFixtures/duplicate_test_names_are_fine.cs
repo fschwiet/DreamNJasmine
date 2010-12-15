@@ -17,12 +17,12 @@ repeated inner it 3
         "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test",
         "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test`2",
         "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test`3",
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it",
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it`2",
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it`3",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test`2",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test`3",
+        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated describe.repeated inner describe",
+        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated describe.repeated inner describe`2",
+        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated describe.repeated inner describe`3",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe`2",
         "Skipped : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe`3"
@@ -38,10 +38,6 @@ repeated inner it 3
             {
                 it("repeated outer test", delegate
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test`2");
-                    Console.WriteLine();
-
                     var value = "outer it " + i;
                     Trace(value);
                     throw new Exception(value);
@@ -58,7 +54,7 @@ repeated inner it 3
 
                     describe("repeated inner describe", delegate
                     {
-                        throw new Exception("repeated inner it " + i);
+                        throw new Exception();
                     });
                 });
 

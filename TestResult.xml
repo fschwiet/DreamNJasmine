@@ -1,157 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="6" errors="6" failures="0" not-run="6" inconclusive="0" ignored="0" skipped="6" invalid="0" date="2010-12-14" time="17:58:18">
+<test-results name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" total="0" errors="0" failures="0" not-run="4" inconclusive="0" ignored="0" skipped="4" invalid="0" date="2010-12-14" time="18:48:15">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Failure" success="False" time="0.181" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll" executed="True" result="Inconclusive" success="False" time="0.139" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Failure" success="False" time="0.162" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Inconclusive" success="False" time="0.116" asserts="0">
         <results>
-          <test-suite type="Namespace" name="FailingFixtures" executed="True" result="Failure" success="False" time="0.156" asserts="0">
+          <test-suite type="Namespace" name="PassingFixtures" executed="True" result="Inconclusive" success="False" time="0.109" asserts="0">
             <results>
-              <test-suite type="TestSuite" name="duplicate_test_names_are_fine" executed="True" result="Failure" success="False" time="0.148" asserts="0">
+              <test-suite type="TestSuite" name="supports_unimplemented_specs" executed="True" result="Inconclusive" success="False" time="0.107" asserts="0">
                 <results>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test" executed="True" result="Error" success="False" time="0.035" asserts="0">
-                    <failure>
-                      <message><![CDATA[System.Exception : outer it 1]]></message>
-                      <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 47
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 39
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                    </failure>
-                  </test-case>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test" executed="False" result="Skipped">
+                  <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented descibe() block" executed="False" result="Skipped">
                     <reason>
                       <message><![CDATA[Specification not implemented.]]></message>
                     </reason>
                   </test-case>
-                  <test-suite type="TestSuite" name="repeated outer describe" executed="True" result="Failure" success="False" time="0.022" asserts="0">
+                  <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented test() block" executed="False" result="Skipped">
+                    <reason>
+                      <message><![CDATA[Specification not implemented.]]></message>
+                    </reason>
+                  </test-case>
+                  <test-suite type="TestSuite" name="nested too of course" executed="True" result="Inconclusive" success="False" time="0.016" asserts="0">
                     <results>
-                      <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it" executed="True" result="Error" success="False" time="0.003" asserts="0">
-                        <failure>
-                          <message><![CDATA[System.Exception : repeated inner it 1]]></message>
-                          <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__2() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 58
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__1() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 54
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.<>c__DisplayClass2.<visitDescribe>b__0() in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 35
-at NJasmine.Core.NJasmineTestMethod.visitDescribe(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 66
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitDescribe(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 32
-at NJasmine.NJasmineFixture.describe(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 46
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 52
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                        </failure>
+                      <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs.nested too of course an unimplemented descibe() block" executed="False" result="Skipped">
+                        <reason>
+                          <message><![CDATA[Specification not implemented.]]></message>
+                        </reason>
+                      </test-case>
+                      <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs.nested too of course an unimplemented test() block" executed="False" result="Skipped">
+                        <reason>
+                          <message><![CDATA[Specification not implemented.]]></message>
+                        </reason>
                       </test-case>
                     </results>
                   </test-suite>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe" executed="False" result="Skipped">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test" executed="True" result="Error" success="False" time="0.002" asserts="0">
-                    <failure>
-                      <message><![CDATA[System.Exception : outer it 2]]></message>
-                      <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 47
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 39
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                    </failure>
-                  </test-case>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test" executed="False" result="Skipped">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
-                  <test-suite type="TestSuite" name="repeated outer describe" executed="True" result="Failure" success="False" time="0.002" asserts="0">
-                    <results>
-                      <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it" executed="True" result="Error" success="False" time="0.001" asserts="0">
-                        <failure>
-                          <message><![CDATA[System.Exception : repeated inner it 2]]></message>
-                          <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__2() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 58
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__1() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 54
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.<>c__DisplayClass2.<visitDescribe>b__0() in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 35
-at NJasmine.Core.NJasmineTestMethod.visitDescribe(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 66
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitDescribe(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 32
-at NJasmine.NJasmineFixture.describe(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 46
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 52
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                        </failure>
-                      </test-case>
-                    </results>
-                  </test-suite>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe" executed="False" result="Skipped">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer test" executed="True" result="Error" success="False" time="0.002" asserts="0">
-                    <failure>
-                      <message><![CDATA[System.Exception : outer it 3]]></message>
-                      <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__0() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 47
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 39
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                    </failure>
-                  </test-case>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated unimplemented outer test" executed="False" result="Skipped">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
-                  <test-suite type="TestSuite" name="repeated outer describe" executed="True" result="Failure" success="False" time="0.019" asserts="0">
-                    <results>
-                      <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.repeated outer describe repeated inner it" executed="True" result="Error" success="False" time="0.018" asserts="0">
-                        <failure>
-                          <message><![CDATA[System.Exception : repeated inner it 3]]></message>
-                          <stack-trace><![CDATA[at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__2() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 58
-at NJasmine.Core.NJasmineTestMethod.visitIt(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 93
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitIt(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 59
-at NJasmine.NJasmineFixture.it(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 66
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.<>c__DisplayClass5.<Tests>b__1() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 54
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.<>c__DisplayClass2.<visitDescribe>b__0() in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 35
-at NJasmine.Core.NJasmineTestMethod.visitDescribe(String description, Action action, TestPosition position) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 66
-at NJasmine.Core.FixtureVisitor.VisitorPositionAdapter.visitDescribe(String description, Action action) in c:\src\NJasmine\NJasmine\Core\FixtureVisitor\VisitorPositionAdapter.cs:line 32
-at NJasmine.NJasmineFixture.describe(String description, Action action) in c:\src\NJasmine\NJasmine\NJasmineFixture.cs:line 46
-at NJasmineTests.FailingFixtures.duplicate_test_names_are_fine.Tests() in c:\src\NJasmine\NJasmine.Tests\FailingFixtures\duplicate_test_names_are_fine.cs:line 52
-at NJasmine.Core.NJasmineTestMethod.Run() in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 45
-at NJasmine.Core.NJasmineTestMethod.RunTestMethod(TestResult testResult) in c:\src\NJasmine\NJasmine\Core\NJasmineTestMethod.cs:line 28
-at NUnit.Core.TestMethod.doTestCase(TestResult testResult)
-]]></stack-trace>
-                        </failure>
-                      </test-case>
-                    </results>
-                  </test-suite>
-                  <test-case name="NJasmineTests.FailingFixtures.duplicate_test_names_are_fine repeated outer unimplemented describe" executed="False" result="Skipped">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
                 </results>
               </test-suite>
             </results>
