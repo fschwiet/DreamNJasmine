@@ -78,7 +78,7 @@ namespace NJasmine.Core
             }
             else
             {
-                var describeSuite = new NJasmineTestSuite(_fixture, _name, description, position, _nunitImports);
+                var describeSuite = new NJasmineTestSuite(_fixture, TestName.FullName, description, position, _nunitImports);
 
                 describeSuite.BuildSuite(action);
 

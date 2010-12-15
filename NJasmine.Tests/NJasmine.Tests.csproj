@@ -78,9 +78,9 @@
     <Compile Include="PassingFixtures\imports_NUnit_fixture.cs" />
     <Compile Include="PassingFixtures\suite_arranging_disposables.cs" />
     <Compile Include="Extras\ThrowMatchersTests.cs" />
+    <Compile Include="PassingFixtures\supports_unimplemented_specs.cs" />
     <Compile Include="RunExternalAttribute.cs" />
     <Compile Include="SampleTest.cs" />
-    <Compile Include="supports_unimplemented_specs.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDomain\Song.cs" />
