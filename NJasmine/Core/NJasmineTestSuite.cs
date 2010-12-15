@@ -10,6 +10,56 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest, INJasmineFixturePositionVisitor
     {
+        public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
+        {
+            MakeNameUnique(this);
+
+            Exception exception = null;
+
+            _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this));
+
+            try
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                }
+
+                if (exception == null)
+                {
+                    foreach (var sibling in _accumulatedDescendants)
+                        Add(sibling);
+                }
+                else
+                {
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, _position);
+
+                    nJasmineInvalidTestSuite.TestName.FullName = this.TestName.FullName;
+                    nJasmineInvalidTestSuite.TestName.Name = this.TestName.Name;
+
+                    if (isOuterScopeOfSpecification)
+                    {
+                        MakeNameUnique(nJasmineInvalidTestSuite);
+                        Add(nJasmineInvalidTestSuite);
+                    }
+                    else
+                    {
+                        return nJasmineInvalidTestSuite;
+                    }
+                }
+            }
+            finally
+            {
+                _fixture.PopVisitor();
+            }
+
+            return this;
+        }
+
         readonly NJasmineFixture _fixture;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
@@ -37,47 +87,7 @@ namespace NJasmine.Core
             get { return _position; }
         }
 
-        public void BuildSuite(Action action)
-        {
-            Exception exception = null;
-
-            _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this));
-
-            try
-            {
-                try
-                {
-                    action();
-                }
-                catch (Exception e)
-                {
-                    exception = e;
-                }
-
-                if (exception == null)
-                {
-                    foreach (var sibling in _accumulatedDescendants)
-                        this.Add(sibling);
-                }
-                else
-                {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, _position);
-
-                    nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
-                    nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
-                    MakeNameUnique(nJasmineInvalidTestSuite);
-                    NameTest(nJasmineInvalidTestSuite, TestName.FullName, "invalid describe");
-
-                    this.Add(nJasmineInvalidTestSuite);
-                }
-            }
-            finally
-            {
-                _fixture.PopVisitor();
-            }
-        }
-
-        private void MakeNameUnique(TestMethod test)
+        private void MakeNameUnique(Test test)
         {
             var name = test.TestName.FullName;
 
@@ -121,9 +131,8 @@ namespace NJasmine.Core
             }
             else
             {
-                var describeSuite = new NJasmineTestSuite(_fixture, TestName.FullName, description, position, _nunitImports, _globallyAccumulatedTestNames);
-
-                describeSuite.BuildSuite(action);
+                string baseName = TestName.FullName;
+                var describeSuite = new NJasmineTestSuite(_fixture, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames).BuildNJasmineTestSuite(action, false);
 
                 _accumulatedDescendants.Add(describeSuite);
             }

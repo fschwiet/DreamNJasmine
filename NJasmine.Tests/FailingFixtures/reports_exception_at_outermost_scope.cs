@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace NJasmineTests.FailingFixtures
 {
     [Explicit, RunExternal(false, ExpectedStrings = new []{
-            "Test Failure : NJasmineTests.FailingFixtures.reports_exception_at_outermost_scope invalid describe", 
+            "Test Failure : NJasmineTests.FailingFixtures.reports_exception_at_outermost_scope`2",
             "Attempted to divide by zero."})]
     public class reports_exception_at_outermost_scope : NJasmineFixture
     {

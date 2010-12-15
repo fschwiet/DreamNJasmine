@@ -35,9 +35,11 @@ namespace NJasmine.Core
             
             List<string> _allCreatedNames = new List<string>();
 
-            var rootSuite = new NJasmineTestSuite(fixture, type.Namespace, type.Name, new TestPosition(), new NUnitFixtureCollection(), _allCreatedNames);
-
-            rootSuite.BuildSuite(fixture.Tests);
+            string baseName = type.Namespace;
+            string name = type.Name;
+            TestPosition position = new TestPosition();
+            NUnitFixtureCollection parentNUnitImports = new NUnitFixtureCollection();
+            var rootSuite = new NJasmineTestSuite(fixture, baseName, name, position, parentNUnitImports, _allCreatedNames).BuildNJasmineTestSuite(fixture.Tests, true);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
