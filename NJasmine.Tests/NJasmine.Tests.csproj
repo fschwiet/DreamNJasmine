@@ -65,6 +65,7 @@
     <Compile Include="Core\TraceableNJasmineFixture.cs" />
     <Compile Include="Core\NJasmineTestMethod_implements_ignore.cs" />
     <Compile Include="Extras\ZipFixtureLoaderTests.cs" />
+    <Compile Include="FailingFixtures\duplicate_test_names_are_fine.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_setup_failure.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_test_failure.cs" />
     <Compile Include="Core\TestPositionTests.cs" />

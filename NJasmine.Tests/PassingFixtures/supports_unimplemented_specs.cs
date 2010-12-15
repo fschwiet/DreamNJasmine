@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.PassingFixtures
 {
-    [Explicit, RunExternal(true, ExpectedStrings = new string[] {
+    [RunExternal(true, ExpectedStrings = new string[] {
 "1) Skipped : NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented descibe() block",
 "2) Skipped : NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented test() block",
 "3) Skipped : NJasmineTests.PassingFixtures.supports_unimplemented_specs.nested too of course an unimplemented descibe() block",

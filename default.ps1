@@ -98,8 +98,9 @@ task IntegrationTests {
 
             if (-not [String]::Join("\n", $testoutput).Contains($_)) {
                 $global:expected = $_;
+                $global:fullExpected = $expectedStrings;
                 $global:actual = $testoutput;
-                $error = "Unexpected contains results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                $error = "Unexpected contains results for `"$testName`".  Expected written to `$global:expected and `$global:fullExpected, actual written to `$global:actual."
                 write-error $error
                 $testResults = $testResults + $error
             }
