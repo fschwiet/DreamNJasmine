@@ -1,6 +1,7 @@
 
 properties {
     $base_dir  = resolve-path .
+    $buildDir = "$base_dir\build\"
 
     # to build/test against another install of NUnit, override the following {{
     $wipeDeployTarget = $true
@@ -10,10 +11,10 @@ properties {
 
     $solution = "$base_dir\NJasmine.sln"
     $msbuild_Configuration = "Debug"
-	$deploySource = "$base_dir\NJasmine\bin\$msbuild_Configuration\"
-	$testDll = "$base_dir\NJasmine.Tests\bin\$msbuild_Configuration\NJasmine.Tests.dll"
+	$deploySource = "$buildDir"
+	$testDll = "$buildDir\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
-    $integrationTestLoader = ".\NJasine.TestLoader\bin\$msbuild_Configuration\NJasine.TestLoader.exe"
+    $integrationTestLoader = "$buildDir\NJasine.TestLoader.exe"
     $integrationTestResultsFile = "$base_dir\TestResults.Integration.txt"
     $integrationTestRunPattern = "*"
 }
@@ -21,7 +22,11 @@ properties {
 task default -depends AllTests
 
 task Build {
-    exec { &"C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe" "$sln_file" /p:OutDir="$buildartifacts_dir\" }
+    rmdir $buildDir -recurse
+
+	$v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
+    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /target:Clean }
+    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" }
 }
 
 task Deploy -depends Build {
