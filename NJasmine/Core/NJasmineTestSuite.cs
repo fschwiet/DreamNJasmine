@@ -11,18 +11,16 @@ namespace NJasmine.Core
     class NJasmineTestSuite : TestSuite, INJasmineTest, INJasmineFixturePositionVisitor
     {
         readonly NJasmineFixture _fixture;
-        readonly string _name;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
         readonly List<Test> _accumulatedDescendants;
 
         bool _haveReachedAnIt;
 
-        public NJasmineTestSuite(NJasmineFixture fixture, string parentSuiteName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports) 
-            : base(parentSuiteName, name)
+        public NJasmineTestSuite(NJasmineFixture fixture, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports) 
+            : base(baseName, name)
         {
             _fixture = fixture;
-            _name = name;
             _position = position;
             _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
             _accumulatedDescendants = new List<Test>();
@@ -68,6 +66,11 @@ namespace NJasmine.Core
                 _fixture.PopVisitor();
             }
         }
+
+        private void MakeNameUnique(TestMethod test)
+        {
+            
+        }
         
         public void visitDescribe(string description, Action action, TestPosition position)
         {
@@ -105,7 +108,11 @@ namespace NJasmine.Core
 
             if (action == null)
             {
-                _accumulatedDescendants.Add(new NJasmineUnimplementedTestMethod(testFullName, testName, position));
+                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(testFullName, testName, position);
+
+                MakeNameUnique(nJasmineUnimplementedTestMethod);
+
+                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
             else
             {

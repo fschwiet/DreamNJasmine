@@ -49,13 +49,16 @@ repeated inner it 3
 
                 it("repeated unimplemented outer test");
 
-                describe("repeated outer describe", delegate
+                describe("repeated describe", delegate
                 {
                     it("repeated inner it", delegate
                     {
-                        var value = "repeated inner it " + i;
-                        Trace(value);
-                        throw new Exception(value);
+                        Trace("repeated inner it " + i);
+                    });
+
+                    describe("repeated inner describe", delegate
+                    {
+                        throw new Exception("repeated inner it " + i);
                     });
                 });
 
