@@ -8,8 +8,8 @@ using NUnit.Framework;
 namespace NJasmineTests.FailingFixtures
 {
     [Explicit, RunExternal(false, ExpectedStrings = new[] 
-            {"Test Failure : NJasmineTests.FailingFixtures.cannot_call_beforeEach_after_test", 
-            "Exception thrown within test definition: Called beforeEach() after arrange()."})]
+            {"Test Failure : NJasmineTests.FailingFixtures.cannot_call_beforeEach_after_test invalid describe", 
+            "Called beforeEach() after it()."})]
     public class cannot_call_beforeEach_after_test : NJasmineFixture
     {
         public override void Tests()

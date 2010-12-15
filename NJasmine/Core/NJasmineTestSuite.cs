@@ -61,9 +61,12 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(TestName.FullName, "Exception thrown within test definition", exception, _position);
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, _position);
 
+                    nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
+                    nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
                     MakeNameUnique(nJasmineInvalidTestSuite);
+                    NameTest(nJasmineInvalidTestSuite, TestName.FullName, "invalid describe");
 
                     this.Add(nJasmineInvalidTestSuite);
                 }
@@ -97,15 +100,22 @@ namespace NJasmine.Core
 
             _globallyAccumulatedTestNames.Add(test.TestName.FullName);
         }
+
+        private void NameTest(TestMethod test, string baseName, string name)
+        {
+            test.TestName.FullName = baseName + " " + name;
+            test.TestName.Name = name;
+
+            MakeNameUnique(test);
+        }
         
         public void visitDescribe(string description, Action action, TestPosition position)
         {
             if (action == null)
             {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(TestName.FullName + " " + description, description,
-                                                                                          position);
+                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                MakeNameUnique(nJasmineUnimplementedTestMethod);
+                NameTest(nJasmineUnimplementedTestMethod, TestName.FullName, description);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
@@ -133,14 +143,11 @@ namespace NJasmine.Core
 
         public void visitIt(string description, Action action, TestPosition position)
         {
-            var testName = description;
-            var testFullName = TestName.FullName + " " + description;
-
             if (action == null)
             {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(testFullName, testName, position);
+                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                MakeNameUnique(nJasmineUnimplementedTestMethod);
+                NameTest(nJasmineUnimplementedTestMethod, TestName.FullName, description);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
@@ -148,10 +155,7 @@ namespace NJasmine.Core
             {
                 var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
-                testMethod.TestName.Name = testName;
-                testMethod.TestName.FullName = testFullName;
-
-                MakeNameUnique(testMethod);
+                NameTest(testMethod, TestName.FullName, description);
 
                 _accumulatedDescendants.Add(testMethod);
             }
@@ -197,7 +201,7 @@ namespace NJasmine.Core
 
         InvalidOperationException WrongMethodAfterItMethod(SpecMethod innerSpecMethod)
         {
-            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.arrange + "().");
+            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.it + "().");
         }
     }
 }

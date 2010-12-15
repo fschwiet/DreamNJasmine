@@ -6,20 +6,20 @@ namespace NJasmine.Core
 {
     public class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
     {
+        readonly string _reason;
         string _stackTrace;
 
-        public NJasmineInvalidTestSuite(string containingTestElementFullName, string locationOfFailure, Exception e, TestPosition position) 
+        public NJasmineInvalidTestSuite(Exception e, TestPosition position) 
             : base(((Action)delegate() { }).Method)
         {
-            TestName.Name = locationOfFailure + ": " + e.Message;
-            TestName.FullName = containingTestElementFullName;
+            _reason = e.Message;
             _stackTrace = e.StackTrace;
             Position = position;
         }
 
         public override void RunTestMethod(TestResult testResult)
         {
-            testResult.Failure(TestName.Name, _stackTrace);
+            testResult.Failure(_reason, _stackTrace);
         }
 
         public TestPosition Position { get; private set; }

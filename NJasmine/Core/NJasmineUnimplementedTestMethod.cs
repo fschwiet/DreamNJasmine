@@ -8,11 +8,9 @@ namespace NJasmine.Core
 {
     public class NJasmineUnimplementedTestMethod : TestMethod, INJasmineTest
     {
-        public NJasmineUnimplementedTestMethod(string containingTestElementFullName, string containingTestName, TestPosition position) 
+        public NJasmineUnimplementedTestMethod(TestPosition position) 
             : base(((Action)delegate() { }).Method)
         {
-            TestName.Name = containingTestName;
-            TestName.FullName = containingTestElementFullName;
             Position = position;
         }
 
