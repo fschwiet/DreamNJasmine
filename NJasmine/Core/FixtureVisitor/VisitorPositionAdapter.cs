@@ -23,11 +23,19 @@ namespace NJasmine.Core.FixtureVisitor
         {
             TestPosition thisPosition = _nextPosition;
 
-            _visitor.visitDescribe(description, delegate()
+            if (action == null)
             {
-                _nextPosition = thisPosition.GetFirstChildPosition();
-                action();
-            }, thisPosition);
+                _visitor.visitDescribe(description, null, thisPosition);
+            }
+            else
+            {
+                _visitor.visitDescribe(description, delegate()
+                {
+                    _nextPosition = thisPosition.GetFirstChildPosition();
+                    action();
+                }, thisPosition);
+            }
+
 
             _nextPosition = thisPosition.GetNextSiblingPosition();
         }

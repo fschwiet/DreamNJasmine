@@ -36,6 +36,11 @@ namespace NJasmine
 
         public abstract void Tests();
 
+        protected void describe(string description)
+        {
+            describe(description, null);
+        }
+
         protected void describe(string description, Action action)
         {
             _visitor.visitDescribe(description, action);
@@ -51,12 +56,17 @@ namespace NJasmine
             _visitor.visitAfterEach(action);
         }
 
+        protected void it(string description)
+        {
+            _visitor.visitIt(description, null);
+        }
+
         protected void it(string description, Action action)
         {
             _visitor.visitIt(description, action);
         }
 
-        protected TFixture importNUnit<TFixture>() where TFixture: class, new()
+        protected TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
             return _visitor.visitImportNUnit<TFixture>();
         }
@@ -75,7 +85,7 @@ namespace NJasmine
         {
         }
 
-        protected void ignore(string shouldntRun, Action action)
+        protected void ignore(string message, Action action)
         {
         }
     }

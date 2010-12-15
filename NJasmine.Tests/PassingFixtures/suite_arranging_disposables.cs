@@ -3,7 +3,7 @@ using NJasmineTests.Core;
 
 namespace NJasmineTests.PassingFixtures
 {
-    [RunExternal(true, ExpectedExtraction = @"
+    [RunExternal(true, ExpectedTraceSequence = @"
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C

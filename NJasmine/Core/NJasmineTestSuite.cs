@@ -71,11 +71,19 @@ namespace NJasmine.Core
         
         public void visitDescribe(string description, Action action, TestPosition position)
         {
-            var describeSuite = new NJasmineTestSuite(_fixture, _name, description, position, _nunitImports);
+            if (action == null)
+            {
+                _accumulatedDescendants.Add(new NJasmineUnimplementedTestMethod(TestName.FullName + " " + description, description,
+                                                                               position));
+            }
+            else
+            {
+                var describeSuite = new NJasmineTestSuite(_fixture, _name, description, position, _nunitImports);
 
-            describeSuite.BuildSuite(action);
+                describeSuite.BuildSuite(action);
 
-            _accumulatedDescendants.Add(describeSuite);
+                _accumulatedDescendants.Add(describeSuite);
+            }
         }
 
         public void visitBeforeEach(Action action, TestPosition position)
@@ -92,12 +100,22 @@ namespace NJasmine.Core
 
         public void visitIt(string description, Action action, TestPosition position)
         {
-            var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
+            var testName = description;
+            var testFullName = TestName.FullName + " " + description;
 
-            testMethod.TestName.Name = description;
-            testMethod.TestName.FullName = this.TestName.FullName + " " + description;
+            if (action == null)
+            {
+                _accumulatedDescendants.Add(new NJasmineUnimplementedTestMethod(testFullName, testName, position));
+            }
+            else
+            {
+                var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
-            _accumulatedDescendants.Add(testMethod);
+                testMethod.TestName.Name = testName;
+                testMethod.TestName.FullName = testFullName;
+
+                _accumulatedDescendants.Add(testMethod);
+            }
 
             _haveReachedAnIt = true;
         }

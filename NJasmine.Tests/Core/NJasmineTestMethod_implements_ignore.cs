@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -38,7 +39,7 @@ namespace NJasmineTests.Core
             {
                 var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), null);
 
-                sut.Run();
+                sut.Run(new TestResult(new TestName()));
 
                 expect(fixture.Observations).to.Equal(new List<string> {"1", "2"});
             });

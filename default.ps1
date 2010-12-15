@@ -85,7 +85,8 @@ task IntegrationTests {
             if ($comparison) {
                 $global:expected = $expectedExtraction;
                 $global:actual = $actual;
-                $error = "Unexpected extraction results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual."
+                $global:fullActual = $testoutput;
+                $error = "Unexpected extraction results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual and `$global:fullActual."
                 write-error $error
                 $testResults = $testResults + $error
             }

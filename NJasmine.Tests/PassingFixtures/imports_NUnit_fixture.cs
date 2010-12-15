@@ -41,7 +41,7 @@ namespace NJasmineTests.PassingFixtures
     {
     }
 
-    [RunExternal(true, ExpectedExtraction = @"
+    [RunExternal(true, ExpectedTraceSequence = @"
 FixtureSetup some_Nunit_fixture_a
 FixtureSetup some_Nunit_fixture_b
 test started, before include of a

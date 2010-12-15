@@ -5,7 +5,7 @@ NJasmine is a port of a subset of JasmineBDD language to .NET in C#.  At the mom
 
 NJasmine uses Should.Fluent.dll for expressing expectations.  It exposes Should.Fluent's Should() via expect(), but this has limitations.  Prefer expressing expectations as N.Should() instead of expect(N) until I can fix this issue.
 
-NJasmine also supports cleanup of test resources that use IDisposable.  Call arrange<TDisposable>() or arrange(Action<TDisposable>) to load such resources and they will automatically be Dispose()d.
+NJasmine also supports cleanup of test resources that use IDisposable.  Call arrange<TDisposable>() or arrange(Action<TDisposable>) to load such resources and they will automatically be Dispose()d.  You may call arrange() outside of beforeEach(), it().
 
 NJasmine also supports including traditional NUnit test fixtures.  If you have fixtures that do resource cleanup via [SetUp], [TestFixtureSetUp], [TearDown] or [TestFixtureTeardown], you can call importNUnit<TFixture>() to load such fixture within the test.  Note that the fixture will need to make members public to be accessible.
 

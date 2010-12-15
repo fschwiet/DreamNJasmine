@@ -60,6 +60,7 @@
     <Compile Include="Core\FixtureVisitor\TerminalVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\NUnitFixtureCollection.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />

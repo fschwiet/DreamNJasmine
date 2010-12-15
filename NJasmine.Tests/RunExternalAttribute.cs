@@ -16,7 +16,7 @@ namespace NJasmineTests
 
         public bool TestPasses { get; set; }
         public string[] ExpectedStrings { get; set; }
-        public string ExpectedExtraction { get; set; }
+        public string ExpectedTraceSequence { get; set; }
 
         public RunExternalAttribute(bool testPasses)
         {
@@ -33,7 +33,7 @@ namespace NJasmineTests
                        Name = t.FullName,
                        Passes = a.TestPasses,
                        ExpectedStrings = a.ExpectedStrings ?? new string[0],
-                       ExpectedExtraction = a.ExpectedExtraction
+                       ExpectedExtraction = a.ExpectedTraceSequence
                    };
         }
     }
