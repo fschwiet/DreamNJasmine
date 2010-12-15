@@ -27,18 +27,18 @@
             <script>psake.ps1</script>
             <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
             <executable>powershell.exe</executable>
-            <buildArgs>.\default.ps1 CICommit</buildArgs>
+            <buildArgs>.\default.ps1 CICommit -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
             <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
-            <description>Build.</description>
+            <description>Commit check</description>
         </powershell>
         <powershell>
             <!-- http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/PowerShell%20Task.html -->
             <script>psake.ps1</script>
             <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
             <executable>powershell.exe</executable>
-            <buildArgs>.\default.ps1 AllTests</buildArgs>
+            <buildArgs>.\default.ps1 AllTests -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
             <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
-            <description>Build.</description>
+            <description>Run all</description>
         </powershell>        
     </tasks>
     
