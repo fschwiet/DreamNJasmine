@@ -16,7 +16,8 @@ namespace NJasmine.Core
 
         public override void RunTestMethod(TestResult testResult)
         {
-            testResult.Skip("Specification not implemented.");
+
+            testResult.SetResult(ResultState.NotRunnable, "Specification not implemented.", null, FailureSite.Test);
         }
 
         public TestPosition Position { get; private set; }
