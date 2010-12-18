@@ -12,8 +12,6 @@ namespace NJasmine.Core
     {
         public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
-            MakeNameUnique(this);
-
             Exception exception = null;
 
             _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this));
@@ -111,9 +109,9 @@ namespace NJasmine.Core
             _globallyAccumulatedTestNames.Add(test.TestName.FullName);
         }
 
-        private void NameTest(TestMethod test, string baseName, string name)
+        private void NameTest(Test test, string baseName, string name)
         {
-            test.TestName.FullName = baseName + " " + name;
+            test.TestName.FullName = baseName + ", " + name;
             test.TestName.Name = name;
 
             MakeNameUnique(test);
@@ -132,9 +130,14 @@ namespace NJasmine.Core
             else
             {
                 string baseName = TestName.FullName;
-                var describeSuite = new NJasmineTestSuite(_fixture, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames).BuildNJasmineTestSuite(action, false);
 
-                _accumulatedDescendants.Add(describeSuite);
+                var describeSuite = new NJasmineTestSuite(_fixture, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames);
+
+                NameTest(describeSuite, TestName.FullName, description);
+
+                var actualSuite = describeSuite.BuildNJasmineTestSuite(action, false);
+
+                _accumulatedDescendants.Add(actualSuite);
             }
         }
 

@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\build\\NJasmine.Tests.dll" total="0" errors="0" failures="0" not-run="4" inconclusive="0" ignored="0" skipped="0" invalid="4" date="2010-12-18" time="13:45:31">
+<test-results name="C:\src\NJasmine\build\\NJasmine.Tests.dll" total="0" errors="0" failures="0" not-run="3" inconclusive="0" ignored="0" skipped="0" invalid="3" date="2010-12-18" time="14:45:50">
   <environment nunit-version="2.5.7.10213" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\build\\NJasmine.Tests.dll" executed="True" result="Inconclusive" success="False" time="0.088" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\build\\NJasmine.Tests.dll" executed="True" result="Inconclusive" success="False" time="0.082" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Inconclusive" success="False" time="0.072" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Inconclusive" success="False" time="0.066" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PassingFixtures" executed="True" result="Inconclusive" success="False" time="0.072" asserts="0">
+          <test-suite type="Namespace" name="FailingFixtures" executed="True" result="Inconclusive" success="False" time="0.065" asserts="0">
             <results>
-              <test-suite type="TestSuite" name="supports_unimplemented_specs" executed="True" result="Inconclusive" success="False" time="0.065" asserts="0">
+              <test-suite type="TestSuite" name="test_name_joins_specification" executed="True" result="Inconclusive" success="False" time="0.063" asserts="0">
+                <reason>
+                  <message><![CDATA[]]></message>
+                </reason>
                 <results>
-                  <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented descibe() block" executed="False" result="NotRunnable">
+                  <test-case name="NJasmineTests.FailingFixtures.test_name_joins_specification, simple test" executed="False" result="NotRunnable">
                     <reason>
                       <message><![CDATA[Specification not implemented.]]></message>
                     </reason>
                   </test-case>
-                  <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs an unimplemented test() block" executed="False" result="NotRunnable">
-                    <reason>
-                      <message><![CDATA[Specification not implemented.]]></message>
-                    </reason>
-                  </test-case>
-                  <test-suite type="TestSuite" name="nested too of course" executed="True" result="Inconclusive" success="False" time="0.010" asserts="0">
+                  <test-suite type="TestSuite" name="simple describe" executed="True" result="Inconclusive" success="False" time="0.008" asserts="0">
                     <results>
-                      <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs.nested too of course an unimplemented descibe() block" executed="False" result="NotRunnable">
+                      <test-case name="NJasmineTests.FailingFixtures.test_name_joins_specification, simple describe, simple test" executed="False" result="NotRunnable">
                         <reason>
                           <message><![CDATA[Specification not implemented.]]></message>
                         </reason>
                       </test-case>
-                      <test-case name="NJasmineTests.PassingFixtures.supports_unimplemented_specs.nested too of course an unimplemented test() block" executed="False" result="NotRunnable">
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestSuite" name="describe with setup" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0">
+                    <results>
+                      <test-case name="NJasmineTests.FailingFixtures.test_name_joins_specification, describe with setup, simple test" executed="False" result="NotRunnable">
                         <reason>
                           <message><![CDATA[Specification not implemented.]]></message>
                         </reason>

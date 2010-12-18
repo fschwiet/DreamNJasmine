@@ -39,7 +39,8 @@ namespace NJasmine.Core
             string name = type.Name;
             TestPosition position = new TestPosition();
             NUnitFixtureCollection parentNUnitImports = new NUnitFixtureCollection();
-            var rootSuite = new NJasmineTestSuite(fixture, baseName, name, position, parentNUnitImports, _allCreatedNames).BuildNJasmineTestSuite(fixture.Tests, true);
+            var rootSuite = new NJasmineTestSuite(fixture, baseName, name, position, parentNUnitImports, _allCreatedNames)
+                .BuildNJasmineTestSuite(fixture.Tests, true);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
@@ -48,9 +49,7 @@ namespace NJasmine.Core
 
         public static void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
         {
-            var sut = new NJasmineSuiteBuilder();
-
-            var rootTest = sut.BuildFrom(typeof(TFixture));
+            var rootTest = new NJasmineSuiteBuilder().BuildFrom(typeof(TFixture));
 
             VisitAllTestElements(rootTest, visitor);
         }
