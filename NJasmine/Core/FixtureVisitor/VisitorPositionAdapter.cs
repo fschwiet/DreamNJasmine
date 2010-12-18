@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
@@ -70,9 +71,9 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory)
+        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
         {
-            var result = _visitor.visitArrange(description, factory, _nextPosition);
+            var result = _visitor.visitArrange(description, factories, _nextPosition);
 
             _nextPosition = _nextPosition.GetNextSiblingPosition();
 

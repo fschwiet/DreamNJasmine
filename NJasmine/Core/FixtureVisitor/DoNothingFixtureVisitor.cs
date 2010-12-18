@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
@@ -25,7 +26,7 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory)
+        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
         {
             return default(TArranged);
         }

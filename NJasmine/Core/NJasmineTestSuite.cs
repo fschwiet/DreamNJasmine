@@ -12,6 +12,8 @@ namespace NJasmine.Core
     {
         public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
+            _baseNameForChildTests = TestName.FullName;
+
             Exception exception = null;
 
             _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this));
@@ -64,6 +66,7 @@ namespace NJasmine.Core
         readonly List<Test> _accumulatedDescendants;
         readonly List<string> _globallyAccumulatedTestNames;
 
+        string _baseNameForChildTests;
         bool _haveReachedAnIt;
 
         public NJasmineTestSuite(NJasmineFixture fixture, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames) 
@@ -109,9 +112,9 @@ namespace NJasmine.Core
             _globallyAccumulatedTestNames.Add(test.TestName.FullName);
         }
 
-        private void NameTest(Test test, string baseName, string name)
+        private void NameTest(Test test, string name)
         {
-            test.TestName.FullName = baseName + ", " + name;
+            test.TestName.FullName = _baseNameForChildTests + ", " + name;
             test.TestName.Name = name;
 
             MakeNameUnique(test);
@@ -123,7 +126,7 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                NameTest(nJasmineUnimplementedTestMethod, TestName.FullName, description);
+                NameTest(nJasmineUnimplementedTestMethod, description);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
@@ -133,7 +136,7 @@ namespace NJasmine.Core
 
                 var describeSuite = new NJasmineTestSuite(_fixture, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames);
 
-                NameTest(describeSuite, TestName.FullName, description);
+                NameTest(describeSuite, description);
 
                 var actualSuite = describeSuite.BuildNJasmineTestSuite(action, false);
 
@@ -159,7 +162,7 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                NameTest(nJasmineUnimplementedTestMethod, TestName.FullName, description);
+                NameTest(nJasmineUnimplementedTestMethod, description);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
@@ -167,7 +170,7 @@ namespace NJasmine.Core
             {
                 var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
 
-                NameTest(testMethod, TestName.FullName, description);
+                NameTest(testMethod, description);
 
                 _accumulatedDescendants.Add(testMethod);
             }
@@ -185,10 +188,13 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(SpecMethod.arrange);
+
+            if (description != null)
+                _baseNameForChildTests = _baseNameForChildTests + ", " + description;
 
             return default(TArranged);
         }

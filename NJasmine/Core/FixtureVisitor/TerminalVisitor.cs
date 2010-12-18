@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
@@ -38,9 +39,9 @@ namespace NJasmine.Core.FixtureVisitor
             throw DontException(SpecMethod.importNUnit);
         }
 
-        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory)
+        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
         {
-            return _originalVisitor.visitArrange(description, factory, null);
+            return _originalVisitor.visitArrange(description, factories, null);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

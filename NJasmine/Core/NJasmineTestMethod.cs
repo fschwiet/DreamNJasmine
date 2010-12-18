@@ -108,16 +108,21 @@ namespace NJasmine.Core
             return _nUnitImports.GetInstance(position) as TFixture;
         }
 
-        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
-            var result = factory();
+            TArranged result = default(TArranged);
 
-            if (result is IDisposable)
+            foreach(var factory in factories)
             {
-                _allTeardowns.Add(delegate
+                result = factory();
+
+                if (result is IDisposable)
                 {
-                    (result as IDisposable).Dispose();
-                });
+                    _allTeardowns.Add(delegate
+                    {
+                        (result as IDisposable).Dispose();
+                    });
+                }
             }
 
             return result;

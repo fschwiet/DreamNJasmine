@@ -78,12 +78,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitArrange<TArranged>(null, factory);
+            return _visitor.visitArrange<TArranged>(null, new [] {factory});
         }
 
         protected TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitArrange<TArranged>(null, factory);
+            return _visitor.visitArrange<TArranged>(null, new[] { factory });
         }
 
         protected void arrange(Action action)
@@ -93,6 +93,8 @@ namespace NJasmine
         
         protected void arrange(string description, params Action[] actions)
         {
+            List<Func<object>> factories = new List<Func<object>>();
+
             foreach(var actionCursor in actions)
             {
                 var action = actionCursor;
@@ -103,8 +105,10 @@ namespace NJasmine
                     return null;
                 };
 
-                _visitor.visitArrange<object>(description, nilFactory);
+                factories.Add(nilFactory);
             }
+
+            _visitor.visitArrange<object>(description, factories.ToArray());
         }
 
         protected void ignore(Action action)

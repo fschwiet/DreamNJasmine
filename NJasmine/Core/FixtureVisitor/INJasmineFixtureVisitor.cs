@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
@@ -9,6 +10,6 @@ namespace NJasmine.Core.FixtureVisitor
         void visitAfterEach(Action action);
         void visitIt(string description, Action action);
         TFixture visitImportNUnit<TFixture>() where TFixture : class, new();
-        TArranged visitArrange<TArranged>(string description, Func<TArranged> factory);
+        TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories);
     }
 }
