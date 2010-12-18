@@ -86,6 +86,27 @@ namespace NJasmine
             return _visitor.visitArrange<TArranged>(factory);
         }
 
+        protected void arrange(Action action)
+        {
+            arrange(null, action);
+        }
+        
+        protected void arrange(string description, params Action[] actions)
+        {
+            foreach(var actionCursor in actions)
+            {
+                var action = actionCursor;
+
+                Func<object> nilFactory = delegate
+                {
+                    action();
+                    return null;
+                };
+
+                _visitor.visitArrange<object>(nilFactory);
+            }
+        }
+
         protected void ignore(Action action)
         {
         }
