@@ -8,7 +8,12 @@ using NUnit.Framework;
 namespace NJasmineTests.FailingFixtures
 {
     [Explicit]
-    //[RunExternal(false, ExpectedStrings = new string[] { @"in progress......"})]
+    [RunExternal(false, ExpectedStrings = new string[]
+    {
+        @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple test",
+        @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple describe, simple test",
+        @"NJasmineTests.FailingFixtures.test_name_joins_specification, describe with setup, simple arrange, simple test",
+    })]
     public class test_name_joins_specification : NJasmineFixture
     {
         public override void Tests()
@@ -26,7 +31,6 @@ namespace NJasmineTests.FailingFixtures
 
                 it("simple test");
             });
-
         }
     }
 }
