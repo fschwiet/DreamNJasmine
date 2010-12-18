@@ -38,9 +38,9 @@ namespace NJasmine.Core.FixtureVisitor
             throw DontException(SpecMethod.importNUnit);
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory)
+        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory)
         {
-            return _originalVisitor.visitArrange(factory, null);
+            return _originalVisitor.visitArrange(description, factory, null);
         }
 
         InvalidOperationException DontException(SpecMethod innerSpecMethod)

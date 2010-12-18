@@ -78,12 +78,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitArrange<TArranged>(factory);
+            return _visitor.visitArrange<TArranged>(null, factory);
         }
 
         protected TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitArrange<TArranged>(factory);
+            return _visitor.visitArrange<TArranged>(null, factory);
         }
 
         protected void arrange(Action action)
@@ -103,7 +103,7 @@ namespace NJasmine
                     return null;
                 };
 
-                _visitor.visitArrange<object>(nilFactory);
+                _visitor.visitArrange<object>(description, nilFactory);
             }
         }
 

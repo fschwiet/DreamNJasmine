@@ -108,7 +108,7 @@ namespace NJasmine.Core
             return _nUnitImports.GetInstance(position) as TFixture;
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position)
+        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory, TestPosition position)
         {
             var result = factory();
 

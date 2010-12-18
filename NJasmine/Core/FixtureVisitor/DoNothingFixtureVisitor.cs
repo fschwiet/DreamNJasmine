@@ -25,7 +25,7 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory)
+        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory)
         {
             return default(TArranged);
         }

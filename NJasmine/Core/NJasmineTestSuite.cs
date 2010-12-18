@@ -185,15 +185,7 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(TestPosition position) where TArranged : class, new()
-        {
-            if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.arrange);
-
-            return null;
-        }
-
-        public TArranged visitArrange<TArranged>(Func<TArranged> factory, TestPosition position)
+        public TArranged visitArrange<TArranged>(string description, Func<TArranged> factory, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(SpecMethod.arrange);
