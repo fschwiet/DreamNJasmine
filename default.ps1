@@ -29,7 +29,7 @@ task Build {
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /property:Configuration=$msbuild_Configuration }
 }
 
-task Deploy -depends Build {
+task DeployForTest -depends Build {
 
     "Deploying to $deployTarget." | write-host
 
@@ -49,7 +49,7 @@ task UnitTests {
     exec { & $nunitBinPath $testDll}
 }
 
-task CICommit -depends Deploy, UnitTests {
+task CICommit -depends DeployForTest, UnitTests {
 }
 
 task IntegrationTests {
@@ -124,11 +124,11 @@ task IntegrationTests {
     $testResults | set-content $integrationTestResultsFile
 }
 
-task AllTests -depends Build, Deploy, UnitTests, IntegrationTests {
+task AllTests -depends Build, DeployForTest, UnitTests, IntegrationTests {
     "Ran NUnit at #nunitBinPath." | write-host
 }
 
-task BuildForInstalledNUnits {
+task Deploy {
 
     GetAllNUnits | % {
 	    
@@ -158,8 +158,6 @@ function GetAllNUnits {
 
 function SetAllProjectsToUseNUnitAt($path = "..\packages\NUnit.2.5.7.10213\") {
 
-    $path = resolve-path $path
-
     (".\NJasmine\NJasmine.csproj", ".\NJasmine.Tests\NJasmine.Tests.csproj") | % {
         .\ForXml.ps1 (resolve-path $_) { 
             
@@ -167,9 +165,7 @@ function SetAllProjectsToUseNUnitAt($path = "..\packages\NUnit.2.5.7.10213\") {
             
             @("nunit.core", "nunit.core.interfaces", "nunit.framework") | % {
                 $dll = $_;
-                $path | write-host
-                (get-childitem $path ($dll + ".dll") -recurse).fullname | write-host
-                $filepath = (get-childitem $path ($dll + ".dll") -recurse).fullname
+                $filepath = @(get-childitem $path ($dll + ".dll") -recurse)[0].fullname
 
                 if (-not (test-path $filepath)) {
                     write-error "Unable to find $dll.dll for target NUnit deployment at $path"
