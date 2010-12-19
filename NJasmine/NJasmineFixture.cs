@@ -12,7 +12,7 @@ using Assert = Should.Core.Assertions.Assert;
 
 namespace NJasmine
 {
-    public abstract class NJasmineFixture : ExpectationsFixture
+    public abstract class NJasmineFixture : ExpectationsFixture, IArrangeContext
     {
         INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
         readonly Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
@@ -46,12 +46,12 @@ namespace NJasmine
             _visitor.visitDescribe(description, action);
         }
 
-        protected void beforeEach(Action action)
+        public void beforeEach(Action action)
         {
             _visitor.visitBeforeEach(action);
         }
 
-        protected void afterEach(Action action)
+        public void afterEach(Action action)
         {
             _visitor.visitAfterEach(action);
         }
@@ -66,12 +66,12 @@ namespace NJasmine
             _visitor.visitIt(description, action);
         }
 
-        protected TFixture importNUnit<TFixture>() where TFixture : class, new()
+        public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
             return _visitor.visitImportNUnit<TFixture>();
         }
 
-        protected TArranged arrange<TArranged>() where TArranged : class, new()
+        public TArranged arrange<TArranged>() where TArranged : class, new()
         {
             Func<TArranged> factory = delegate
             {
@@ -81,17 +81,17 @@ namespace NJasmine
             return _visitor.visitArrange<TArranged>(null, new [] {factory});
         }
 
-        protected TArranged arrange<TArranged>(Func<TArranged> factory)
+        public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
             return _visitor.visitArrange<TArranged>(null, new[] { factory });
         }
 
-        protected void arrange(Action action)
+        public void arrange(Action action)
         {
             arrange(null, action);
         }
-        
-        protected void arrange(string description, params Action[] actions)
+
+        public void arrange(string description, params Action[] actions)
         {
             List<Func<object>> factories = new List<Func<object>>();
 
