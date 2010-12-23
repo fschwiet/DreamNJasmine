@@ -60,12 +60,14 @@ function Load-Configuration
 	  exitcode="1";
 	  modules=(new-object psobject -property @{ autoload=$false })
 	}
-			
-	if (test-path ".\psake-config.ps1")
+		
+	$psakeConfigFilePath = (join-path $PSScriptRoot psake-config.ps1)
+	
+	if (test-path $psakeConfigFilePath)
 	{
 		try
 		{
-			. .\psake-config.ps1
+			. $psakeConfigFilePath
 		}
 		catch
 		{
@@ -481,7 +483,11 @@ The solution is to wrap the condition in () so that PS will evaluate it first.
 		[Parameter(Position=1,Mandatory=1)]$failureMessage
 	)
 	if (!$conditionToCheck)
-	{ 
+	{
+		if ($failureMessage.GetType() -eq [String]) {
+			$failureMessage = "[[ASSERTTEXTONLY]]" + $failureMessage
+		}
+
 		throw $failureMessage 
 	}
 }
@@ -1139,9 +1145,9 @@ Assert
 				Assert (test-path $psake.config.modules.directory) ($msgs.error_invalid_module_dir -f $psake.config.modules.directory)
 				$modules = get-item (join-path $psake.config.modules.directory *.psm1)
 			}
-			elseif (test-path .\modules)
+			elseif (test-path (join-path $PSScriptRoot "modules"))
 			{
-				$modules = get-item .\modules\*.psm1 
+				$modules = get-item (join-path (join-path $PSScriptRoot "modules") "*.psm1")
 			}
 		}
 		else
@@ -1247,13 +1253,19 @@ Assert
     }
     catch
     {
-      	$error_message = "{0}: An Error Occurred. See Error Details Below: `n" -f (Get-Date) 
-		$error_message += ("-" * 70) + "`n"
-		$error_message += Resolve-Error $_
-		$error_message += ("-" * 70) + "`n"
-		$error_message += "Script Variables" + "`n"
-		$error_message += ("-" * 70) + "`n"
-		$error_message += get-variable -scope script | format-table | out-string 
+		if ($_.TargetObject -and $_.TargetObject.GetType() -eq [String] -and $_.TargetObject.StartsWith("[[ASSERTTEXTONLY]]")) {
+
+			$error_message = "{0}: An Assertion Failed.  Message: " -f (Get-Date) + $_.TargetObject.SubString("[[ASSERTTEXTONLY]]".length)
+
+		} else {
+	  	    $error_message = "{0}: An Error Occurred. See Error Details Below: `n" -f (Get-Date) 
+			$error_message += ("-" * 70) + "`n"
+			$error_message += Resolve-Error $_
+			$error_message += ("-" * 70) + "`n"
+			$error_message += "Script Variables" + "`n"
+			$error_message += ("-" * 70) + "`n"
+			$error_message += get-variable -scope script | format-table | out-string 
+		}
 		
 		$psake.build_success = $false
 		
