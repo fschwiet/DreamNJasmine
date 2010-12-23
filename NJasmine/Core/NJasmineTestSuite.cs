@@ -16,9 +16,7 @@ namespace NJasmine.Core
 
             Exception exception = null;
 
-            _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this));
-
-            try
+            using(var visitorOverride = _fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
             {
                 try
                 {
@@ -51,10 +49,6 @@ namespace NJasmine.Core
                         return nJasmineInvalidTestSuite;
                     }
                 }
-            }
-            finally
-            {
-                _fixture.PopVisitor();
             }
 
             return this;

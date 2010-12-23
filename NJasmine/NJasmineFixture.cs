@@ -16,17 +16,33 @@ namespace NJasmine
     {
         INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
         readonly Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
- 
-        public void PushVisitor(INJasmineFixtureVisitor visitor)
+
+        public VisitorChangedContext PushVisitor(INJasmineFixtureVisitor visitor)
         {
             _visitorStack.Push(_visitor);
 
             _visitor = visitor;
+
+            return new VisitorChangedContext(() => _visitor = _visitorStack.Pop());
         }
 
-        public void PopVisitor()
+        public class VisitorChangedContext : IDisposable
         {
-            _visitor = _visitorStack.Pop();
+            Action _action;
+
+            public VisitorChangedContext(Action action)
+            {
+                _action = action;
+            }
+
+            public void Dispose()
+            {
+                if (_action != null)
+                {
+                    _action();
+                    _action = null;
+                }
+            }
         }
 
         public void ClearVisitor()

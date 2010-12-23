@@ -38,23 +38,27 @@ namespace NJasmine.Core
         {
             _allTeardowns = new List<Action>();
 
-            _fixture.PushVisitor(new VisitorPositionAdapter(this));
-
             try
             {
-                 _fixture.Tests();
+                using(var visitorOverride = _fixture.PushVisitor(new VisitorPositionAdapter(this)))
+                {
+                    _fixture.Tests();
+                }
             }
+
             catch (TestFinishedException)
             {
             }
             finally
             {
-                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this));
-
                 _allTeardowns.Reverse();
-                foreach (var action in _allTeardowns)
+
+                using (var visitorOverride2 = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
                 {
-                    action();
+                    foreach (var action in _allTeardowns)
+                    {
+                        action();
+                    }
                 }
             }
         }
@@ -71,9 +75,10 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this));
-                action();
-                _fixture.PopVisitor();
+                using( var visistorOverride = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
+                {
+                    action();
+                }
             }
         }
 
@@ -89,9 +94,11 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                _fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this));
-                action();
-
+                using (var visitorOverride = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this)))
+                {
+                    action();
+                }
+                
                 throw new TestFinishedException();
             }
         }
