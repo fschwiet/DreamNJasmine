@@ -59,8 +59,10 @@
     <Compile Include="Core\FixtureVisitor\SpecMethod.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="Core\NJasmineTestMethod.ArrangeState.cs" />
+    <Compile Include="Core\NJasmineTestMethod.CleanupState.cs" />
     <Compile Include="Core\NJasmineTestMethod.DescribeState.cs" />
-    <Compile Include="Core\NJasmineTestMethod.TerminalState.cs" />
+    <Compile Include="Core\NJasmineTestMethod.ActState.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\NUnitFixtureCollection.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

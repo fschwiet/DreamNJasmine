@@ -12,8 +12,8 @@ namespace NJasmineTests.FailingFixtures
         ExpectedStrings = new string[] {
                 "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail",
                 "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail",
-                "System.InvalidOperationException : Called afterEach() within arrange().",
-                "System.InvalidOperationException : Called beforeEach() within arrange()."
+                "System.InvalidOperationException : Called it() within arrange().",
+                "System.InvalidOperationException : Called it() within arrange()."
         })]
     public class cannot_reenter_during_arrange : NJasmineFixture
     {
@@ -23,7 +23,7 @@ namespace NJasmineTests.FailingFixtures
             {
                 arrange(delegate()
                 {
-                    afterEach(delegate { });
+                    it("has test within arrange", delegate { });
                 });
 
                 it("has a valid test that will now fail", delegate()
@@ -33,7 +33,8 @@ namespace NJasmineTests.FailingFixtures
 
             describe("when the arrange cleanup code tries to re-enter", delegate
             {
-                var fail = arrange(() => new ReentersOnDispose(this));
+                var fail = arrange(() => 
+                    new ActOnDispose(() => this.it("test within arrange()d dispose", delegate { })));
 
                 it("has a valid test that will now fail", delegate()
                 {
@@ -41,18 +42,18 @@ namespace NJasmineTests.FailingFixtures
             });
         }
 
-        public class ReentersOnDispose : IDisposable
+        public class ActOnDispose : IDisposable
         {
-            readonly IArrangeContext _context;
+            readonly Action _action;
 
-            public ReentersOnDispose(IArrangeContext context)
+            public ActOnDispose(Action action)
             {
-                _context = context;
+                _action = action;
             }
 
             public void Dispose()
             {
-                _context.beforeEach(delegate { });
+                _action();
             }
         }
     }

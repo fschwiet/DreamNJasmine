@@ -6,12 +6,12 @@ namespace NJasmine.Core
 {
     public partial class NJasmineTestMethod
     {
-        public class TerminalState : DescribeState
+        public class ArrangeState : DescribeState
         {
-            readonly SpecMethod _specMethod;
-            readonly INJasmineFixturePositionVisitor _originalVisitor;
+            protected readonly SpecMethod _specMethod;
 
-            public TerminalState(NJasmineTestMethod subject, SpecMethod specMethod) : base(subject)
+            public ArrangeState(NJasmineTestMethod subject, SpecMethod specMethod)
+                : base(subject)
             {
                 _specMethod = specMethod;
             }
@@ -19,16 +19,6 @@ namespace NJasmine.Core
             public override void visitDescribe(string description, Action action, TestPosition position)
             {
                 throw DontException(SpecMethod.describe);
-            }
-
-            public override void visitBeforeEach(Action action, TestPosition position)
-            {
-                throw DontException(SpecMethod.beforeEach);
-            }
-
-            public override void visitAfterEach(Action action, TestPosition position)
-            {
-                throw DontException(SpecMethod.afterEach);
             }
 
             public override void visitIt(string description, Action action, TestPosition position)
@@ -41,12 +31,7 @@ namespace NJasmine.Core
                 throw DontException(SpecMethod.importNUnit);
             }
 
-            //public override TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
-            //{
-            //    throw DontException(SpecMethod.arrange);
-            //}
-
-            InvalidOperationException DontException(SpecMethod innerSpecMethod)
+            public InvalidOperationException DontException(SpecMethod innerSpecMethod)
             {
                 return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + "().");
             }

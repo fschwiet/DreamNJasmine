@@ -29,7 +29,7 @@ namespace NJasmine.Core
             {
                 if (_subject._position.IsInScopeFor(_subject._position))
                 {
-                    _subject.whileInState(new TerminalState(_subject, SpecMethod.beforeEach), 
+                    _subject.whileInState(new ArrangeState(_subject, SpecMethod.beforeEach), 
                         action);
                 }
             }
@@ -40,7 +40,7 @@ namespace NJasmine.Core
                 {
                     _subject._allTeardowns.Add(delegate()
                     {
-                        _subject.whileInState(new TerminalState(_subject, SpecMethod.afterEach), action);
+                        _subject.whileInState(new CleanupState(_subject, SpecMethod.afterEach), action);
                     });
                 }
             }
@@ -49,7 +49,7 @@ namespace NJasmine.Core
             {
                 if (position.ToString() == _subject._position.ToString())
                 {
-                    _subject.whileInState(new TerminalState(_subject, SpecMethod.it), action);
+                    _subject.whileInState(new ActState(_subject, SpecMethod.it), action);
 
                     throw new TestFinishedException();
                 }
@@ -57,14 +57,14 @@ namespace NJasmine.Core
 
             public virtual TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture : class, new()
             {
-                _subject.whileInState(new TerminalState(_subject, SpecMethod.importNUnit), delegate
+                _subject.whileInState(new CleanupState(_subject, SpecMethod.importNUnit), delegate
                 {
                     _subject._nUnitImports.DoSetUp(position);
                 });
 
                 _subject._allTeardowns.Add(delegate
                 {
-                    _subject.whileInState(new TerminalState(_subject, SpecMethod.importNUnit), delegate
+                    _subject.whileInState(new CleanupState(_subject, SpecMethod.importNUnit), delegate
                     {
                         _subject._nUnitImports.DoTearDown(position);
                     });
@@ -82,7 +82,7 @@ namespace NJasmine.Core
                     var currentFactory = factory;
                     TArranged result = default(TArranged);
 
-                    _subject.whileInState(new TerminalState(_subject, SpecMethod.arrange), delegate
+                    _subject.whileInState(new ArrangeState(_subject, SpecMethod.arrange), delegate
                     {
                         result = currentFactory();
                     });
@@ -91,7 +91,7 @@ namespace NJasmine.Core
                     {
                         _subject._allTeardowns.Add(delegate
                         {
-                            _subject.whileInState(new TerminalState(_subject, SpecMethod.arrange), delegate
+                            _subject.whileInState(new CleanupState(_subject, SpecMethod.arrange), delegate
                             {
                                 (result as IDisposable).Dispose();
                             });
