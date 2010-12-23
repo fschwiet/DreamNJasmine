@@ -8,25 +8,21 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NJasmineTestMethod : TestMethod, INJasmineTest, INJasmineFixturePositionVisitor
+    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, INJasmineFixturePositionVisitor
     {
         readonly NJasmineFixture _fixture;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nUnitImports;
 
         List<Action> _allTeardowns = null;
+        INJasmineFixturePositionVisitor _state = null;
 
         public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
             _fixture = fixture;
             _position = position;
             _nUnitImports = nUnitImports;
-        }
-        
-        public override void RunTestMethod(TestResult testResult)
-        {
-            this.Run();
-            testResult.Success();
+            _state = new State(this);
         }
 
         public TestPosition Position
@@ -34,16 +30,15 @@ namespace NJasmine.Core
             get { return _position; }
         }
 
-        public void Run()
+        public override void RunTestMethod(TestResult testResult)
         {
-            _allTeardowns = new List<Action>();
+            this._allTeardowns = new List<Action>();
+
+            this._fixture.UseVisitor(new VisitorPositionAdapter(this));
 
             try
             {
-                using(_fixture.UseVisitor(new VisitorPositionAdapter(this)))
-                {
-                    _fixture.Tests();
-                }
+                this._fixture.Tests();
             }
 
             catch (TestFinishedException)
@@ -51,107 +46,162 @@ namespace NJasmine.Core
             }
             finally
             {
-                _allTeardowns.Reverse();
+                this._allTeardowns.Reverse();
 
-                foreach (var action in _allTeardowns)
+                foreach (var action in this._allTeardowns)
                 {
                     action();
                 }
+            }
+            testResult.Success();
+        }
+
+        public void whileInState(INJasmineFixturePositionVisitor state, Action action)
+        {
+            var originalState = _state;
+            _state = state;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _state = originalState;
             }
         }
 
         public void visitDescribe(string description, Action action, TestPosition position)
         {
-            if (_position.ToString().StartsWith(position.ToString()))
-            {
-                action();
-            }
+            _state.visitDescribe(description, action, position);
         }
 
         public void visitBeforeEach(Action action, TestPosition position)
         {
-            if (position.IsInScopeFor(_position))
-            {
-                using(_fixture.UseVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
-                {
-                    action();
-                }
-            }
+            _state.visitBeforeEach(action, position);
         }
 
         public void visitAfterEach(Action action, TestPosition position)
         {
-            if (position.IsInScopeFor(_position))
-            {
-                _allTeardowns.Add(delegate()
-                {
-                    using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
-                    {
-                        action();
-                    }
-                });
-            }
+            _state.visitAfterEach(action, position);
         }
 
         public void visitIt(string description, Action action, TestPosition position)
         {
-            if (position.ToString() == _position.ToString())
-            {
-                using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.it, this)))
-                {
-                    action();
-                }
-                
-                throw new TestFinishedException();
-            }
+            _state.visitIt(description, action, position);
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
-            {
-                _nUnitImports.DoSetUp(position);
-            }
-
-            _allTeardowns.Add(delegate
-            {
-                using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
-                {
-                    _nUnitImports.DoTearDown(position);
-                }
-            });
-
-            return _nUnitImports.GetInstance(position) as TFixture;
+            return _state.visitImportNUnit<TFixture>(position);
         }
 
         public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
-            TArranged result = default(TArranged);
-
-            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
-            {
-                foreach (var factory in factories)
-                {
-                    result = factory();
-
-                    if (result is IDisposable)
-                    {
-                        _allTeardowns.Add(delegate
-                        {
-                            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
-                            {
-                                (result as IDisposable).Dispose();
-                            }
-                        });
-                    }
-                }
-            }
-
-            return result;
+            return _state.visitArrange<TArranged>(description, factories, position);
         }
 
         public class TestFinishedException : Exception
         {
+        }
+
+        public class State : INJasmineFixturePositionVisitor
+        {
+            NJasmineTestMethod _subject;
+
+            public State(NJasmineTestMethod subject)
+            {
+                _subject = subject;
+            }
+
+            public virtual void visitDescribe(string description, Action action, TestPosition position)
+            {
+                if (_subject._position.ToString().StartsWith(position.ToString()))
+                {
+                    action();
+                }
+            }
+
+            public virtual void visitBeforeEach(Action action, TestPosition position)
+            {
+                if (_subject._position.IsInScopeFor(_subject._position))
+                {
+                    _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.beforeEach), 
+                        action);
+                }
+            }
+
+            public virtual void visitAfterEach(Action action, TestPosition position)
+            {
+                if (position.IsInScopeFor(_subject._position))
+                {
+                    _subject._allTeardowns.Add(delegate()
+                    {
+                        _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.afterEach), action);
+                    });
+                }
+            }
+
+            public virtual void visitIt(string description, Action action, TestPosition position)
+            {
+                if (position.ToString() == _subject._position.ToString())
+                {
+                    _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.it), action);
+
+                    throw new TestFinishedException();
+                }
+            }
+
+            public virtual TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture : class, new()
+            {
+                _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.importNUnit), delegate
+                {
+                    _subject._nUnitImports.DoSetUp(position);
+                });
+
+                _subject._allTeardowns.Add(delegate
+                {
+                    _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.importNUnit), delegate
+                    {
+                        _subject._nUnitImports.DoTearDown(position);
+                    });
+                });
+
+                return _subject._nUnitImports.GetInstance(position) as TFixture;
+            }
+
+            public virtual TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            {
+                TArranged lastResult = default(TArranged);
+
+                //_subject.whileInState(new TerminalVisitor(_subject, SpecMethod.arrange), delegate
+                //{
+                    foreach (var factory in factories)
+                    {
+                        var currentFactory = factory;
+                        TArranged result = default(TArranged);
+
+                        _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.arrange), delegate
+                        {
+                            result = currentFactory();
+                        });
+
+                        if (result is IDisposable)
+                        {
+                            _subject._allTeardowns.Add(delegate
+                            {
+                                _subject.whileInState(new TerminalVisitor(_subject, SpecMethod.arrange), delegate
+                                {
+                                    (result as IDisposable).Dispose();
+                                });
+                            });
+                        }
+
+                        lastResult = result;
+                    }
+                //});
+
+                return lastResult;
+            }
         }
     }
 }

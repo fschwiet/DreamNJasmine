@@ -20,62 +20,65 @@ namespace NJasmine.Core.FixtureVisitor
             _nextPosition = position;
         }
 
+        private void DoThenAdvancePosition(Action action)
+        {
+            var nextSibling = _nextPosition.GetNextSiblingPosition();
+
+            action();
+
+            _nextPosition = nextSibling;
+        }
+
         public void visitDescribe(string description, Action action)
         {
-            TestPosition thisPosition = _nextPosition;
-
-            if (action == null)
+            DoThenAdvancePosition(delegate
             {
-                _visitor.visitDescribe(description, null, thisPosition);
-            }
-            else
-            {
-                _visitor.visitDescribe(description, delegate()
+                if (action == null)
                 {
-                    _nextPosition = thisPosition.GetFirstChildPosition();
-                    action();
-                }, thisPosition);
-            }
+                    _visitor.visitDescribe(description, null, _nextPosition);
+                }
+                else
+                {
+                    var firstChildPosition = _nextPosition.GetFirstChildPosition();
 
-
-            _nextPosition = thisPosition.GetNextSiblingPosition();
+                    _visitor.visitDescribe(description, delegate()
+                    {
+                        _nextPosition = firstChildPosition;
+                        action();
+                    }, _nextPosition);
+                }
+            });
         }
 
         public void visitBeforeEach(Action action)
         {
-            _visitor.visitBeforeEach(action, _nextPosition);
-
-            _nextPosition = _nextPosition.GetNextSiblingPosition();
+            DoThenAdvancePosition(() => _visitor.visitBeforeEach(action, _nextPosition));
         }
 
         public void visitAfterEach(Action action)
         {
-            _visitor.visitAfterEach(action, _nextPosition);
-
-            _nextPosition = _nextPosition.GetNextSiblingPosition();
+            DoThenAdvancePosition(() => _visitor.visitAfterEach(action, _nextPosition));
         }
 
         public void visitIt(string description, Action action)
         {
-            _visitor.visitIt(description, action, _nextPosition);
-
-            _nextPosition = _nextPosition.GetNextSiblingPosition();
+            DoThenAdvancePosition(() => _visitor.visitIt(description, action, _nextPosition));
         }
 
         public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
         {
-            var result = _visitor.visitImportNUnit<TFixture>(_nextPosition);
+            TFixture result = null;
 
-            _nextPosition = _nextPosition.GetNextSiblingPosition();
+            DoThenAdvancePosition(() => result = _visitor.visitImportNUnit<TFixture>(_nextPosition));
 
             return result;
         }
 
         public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
         {
-            var result = _visitor.visitArrange(description, factories, _nextPosition);
+            TArranged result = default(TArranged);
 
-            _nextPosition = _nextPosition.GetNextSiblingPosition();
+            DoThenAdvancePosition(() => result = _visitor.visitArrange(description, factories, _nextPosition));
 
             return result;
         }

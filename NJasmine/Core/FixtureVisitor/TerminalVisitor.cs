@@ -1,52 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine.Core.FixtureVisitor
+namespace NJasmine.Core
 {
-    public class TerminalVisitor : INJasmineFixtureVisitor
+    public partial class NJasmineTestMethod
     {
-        readonly SpecMethod _specMethod;
-        readonly INJasmineFixturePositionVisitor _originalVisitor;
-
-        public TerminalVisitor(SpecMethod specMethod, INJasmineFixturePositionVisitor originalVisitor)
+        public class TerminalVisitor : State
         {
-            _specMethod = specMethod;
-            _originalVisitor = originalVisitor;
-        }
+            readonly SpecMethod _specMethod;
+            readonly INJasmineFixturePositionVisitor _originalVisitor;
 
-        public void visitDescribe(string description, Action action)
-        {
-            throw DontException(SpecMethod.describe);
-        }
+            public TerminalVisitor(NJasmineTestMethod subject, SpecMethod specMethod) : base(subject)
+            {
+                _specMethod = specMethod;
+            }
 
-        public void visitBeforeEach(Action action)
-        {
-            throw DontException(SpecMethod.beforeEach);
-        }
+            public override void visitDescribe(string description, Action action, TestPosition position)
+            {
+                throw DontException(SpecMethod.describe);
+            }
 
-        public void visitAfterEach(Action action)
-        {
-            throw DontException(SpecMethod.afterEach);
-        }
+            public override void visitBeforeEach(Action action, TestPosition position)
+            {
+                throw DontException(SpecMethod.beforeEach);
+            }
 
-        public void visitIt(string description, Action action)
-        {
-            throw DontException(SpecMethod.it);
-        }
+            public override void visitAfterEach(Action action, TestPosition position)
+            {
+                throw DontException(SpecMethod.afterEach);
+            }
 
-        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
-        {
-            throw DontException(SpecMethod.importNUnit);
-        }
+            public override void visitIt(string description, Action action, TestPosition position)
+            {
+                throw DontException(SpecMethod.it);
+            }
 
-        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
-        {
-            return _originalVisitor.visitArrange(description, factories, null);
-        }
+            public override TFixture visitImportNUnit<TFixture>(TestPosition position) 
+            {
+                throw DontException(SpecMethod.importNUnit);
+            }
 
-        InvalidOperationException DontException(SpecMethod innerSpecMethod)
-        {
-            return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + "().");
+            //public override TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            //{
+            //    throw DontException(SpecMethod.arrange);
+            //}
+
+            InvalidOperationException DontException(SpecMethod innerSpecMethod)
+            {
+                return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + "().");
+            }
         }
     }
 }
