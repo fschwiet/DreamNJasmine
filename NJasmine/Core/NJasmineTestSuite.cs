@@ -16,7 +16,7 @@ namespace NJasmine.Core
 
             Exception exception = null;
 
-            using(_fixture.PushVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
+            using(_fixture.UseVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
             {
                 try
                 {

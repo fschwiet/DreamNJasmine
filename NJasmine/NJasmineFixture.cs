@@ -15,15 +15,14 @@ namespace NJasmine
     public abstract class NJasmineFixture : ExpectationsFixture, IArrangeContext
     {
         INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
-        readonly Stack<INJasmineFixtureVisitor> _visitorStack = new Stack<INJasmineFixtureVisitor>();
 
-        public VisitorChangedContext PushVisitor(INJasmineFixtureVisitor visitor)
+        public VisitorChangedContext UseVisitor(INJasmineFixtureVisitor visitor)
         {
-            _visitorStack.Push(_visitor);
+            var currentVisitor = _visitor;
 
             _visitor = visitor;
 
-            return new VisitorChangedContext(() => _visitor = _visitorStack.Pop());
+            return new VisitorChangedContext(() => _visitor = currentVisitor);
         }
 
         public class VisitorChangedContext : IDisposable
@@ -43,11 +42,6 @@ namespace NJasmine
                     _action = null;
                 }
             }
-        }
-
-        public void ClearVisitor()
-        {
-            _visitor = new DoNothingFixtureVisitor();
         }
 
         public abstract void Tests();

@@ -40,7 +40,7 @@ namespace NJasmine.Core
 
             try
             {
-                using(_fixture.PushVisitor(new VisitorPositionAdapter(this)))
+                using(_fixture.UseVisitor(new VisitorPositionAdapter(this)))
                 {
                     _fixture.Tests();
                 }
@@ -72,7 +72,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                using(_fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
+                using(_fixture.UseVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
                 {
                     action();
                 }
@@ -85,7 +85,7 @@ namespace NJasmine.Core
             {
                 _allTeardowns.Add(delegate()
                 {
-                    using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
+                    using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
                     {
                         action();
                     }
@@ -97,7 +97,7 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this)))
+                using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.it, this)))
                 {
                     action();
                 }
@@ -108,14 +108,14 @@ namespace NJasmine.Core
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
+            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
             {
                 _nUnitImports.DoSetUp(position);
             }
 
             _allTeardowns.Add(delegate
             {
-                using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
+                using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
                 {
                     _nUnitImports.DoTearDown(position);
                 }
@@ -128,7 +128,7 @@ namespace NJasmine.Core
         {
             TArranged result = default(TArranged);
 
-            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
+            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
             {
                 foreach (var factory in factories)
                 {
@@ -138,7 +138,7 @@ namespace NJasmine.Core
                     {
                         _allTeardowns.Add(delegate
                         {
-                            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
+                            using (_fixture.UseVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
                             {
                                 (result as IDisposable).Dispose();
                             }
