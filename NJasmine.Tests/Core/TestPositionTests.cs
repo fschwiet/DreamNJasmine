@@ -51,6 +51,7 @@ namespace NJasmineTests.Core
             expectPositionsEqual(new TestPosition(3, 1, 0, 10, 93).GetNextSiblingPosition(), new TestPosition(3, 1, 0, 10, 94));
         }
 
+        /*
         [Test]
         public void IsInScopeFor()
         {
@@ -74,5 +75,6 @@ namespace NJasmineTests.Core
             expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(1, 3, 3))).to.Equal(false);
             expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(2, 2, 2, 10))).to.Equal(false);
         }
+         */
     }
 }

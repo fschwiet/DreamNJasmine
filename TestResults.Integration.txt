@@ -9,6 +9,7 @@ Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_aft
 Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_beforeEach.
 Running integration test NJasmineTests.FailingFixtures.cannot_reenter_during_it.
 Running integration test NJasmineTests.FailingFixtures.test_name_joins_specification.
+Running integration test NJasmineTests.PassingFixtures.arrange_operations_can_be_nested.
 Running integration test NJasmineTests.PassingFixtures.suite_arranging_disposables.
 Running integration test NJasmineTests.PassingFixtures.imports_NUnit_fixture.
 Running integration test NJasmineTests.PassingFixtures.suite_arranging_nondisposables.

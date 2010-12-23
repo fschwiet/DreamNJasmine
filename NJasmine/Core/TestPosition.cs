@@ -33,6 +33,7 @@ namespace NJasmine.Core
             };
         }
 
+        /*
         public bool IsInScopeFor(TestPosition testPosition)
         {
             var thisCoordinateCount = this.Coordinates.Count();
@@ -56,6 +57,7 @@ namespace NJasmine.Core
 
             return true;
         }
+        */
 
         public override string ToString()
         {

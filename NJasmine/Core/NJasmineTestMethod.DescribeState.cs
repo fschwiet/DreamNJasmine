@@ -27,22 +27,16 @@ namespace NJasmine.Core
 
             public virtual void visitBeforeEach(Action action, TestPosition position)
             {
-                if (_subject._position.IsInScopeFor(_subject._position))
-                {
-                    _subject.whileInState(new ArrangeState(_subject, SpecMethod.beforeEach), 
-                        action);
-                }
+                _subject.whileInState(new ArrangeState(_subject, SpecMethod.beforeEach), 
+                    action);
             }
 
             public virtual void visitAfterEach(Action action, TestPosition position)
             {
-                if (position.IsInScopeFor(_subject._position))
+                _subject._allTeardowns.Add(delegate()
                 {
-                    _subject._allTeardowns.Add(delegate()
-                    {
-                        _subject.whileInState(new CleanupState(_subject, SpecMethod.afterEach), action);
-                    });
-                }
+                    _subject.whileInState(new CleanupState(_subject, SpecMethod.afterEach), action);
+                });
             }
 
             public virtual void visitIt(string description, Action action, TestPosition position)
