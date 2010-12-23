@@ -6,12 +6,12 @@ namespace NJasmine.Core
 {
     public partial class NJasmineTestMethod
     {
-        public class TerminalVisitor : State
+        public class TerminalState : DescribeState
         {
             readonly SpecMethod _specMethod;
             readonly INJasmineFixturePositionVisitor _originalVisitor;
 
-            public TerminalVisitor(NJasmineTestMethod subject, SpecMethod specMethod) : base(subject)
+            public TerminalState(NJasmineTestMethod subject, SpecMethod specMethod) : base(subject)
             {
                 _specMethod = specMethod;
             }
