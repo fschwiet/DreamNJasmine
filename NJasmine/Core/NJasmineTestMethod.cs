@@ -40,7 +40,7 @@ namespace NJasmine.Core
 
             try
             {
-                using(var visitorOverride = _fixture.PushVisitor(new VisitorPositionAdapter(this)))
+                using(_fixture.PushVisitor(new VisitorPositionAdapter(this)))
                 {
                     _fixture.Tests();
                 }
@@ -53,12 +53,9 @@ namespace NJasmine.Core
             {
                 _allTeardowns.Reverse();
 
-                using (var visitorOverride2 = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
+                foreach (var action in _allTeardowns)
                 {
-                    foreach (var action in _allTeardowns)
-                    {
-                        action();
-                    }
+                    action();
                 }
             }
         }
@@ -75,7 +72,7 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                using( var visistorOverride = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
+                using(_fixture.PushVisitor(new TerminalVisitor(SpecMethod.beforeEach, this)))
                 {
                     action();
                 }
@@ -86,7 +83,13 @@ namespace NJasmine.Core
         {
             if (position.IsInScopeFor(_position))
             {
-                _allTeardowns.Add(action);
+                _allTeardowns.Add(delegate()
+                {
+                    using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.afterEach, this)))
+                    {
+                        action();
+                    }
+                });
             }
         }
 
@@ -94,7 +97,7 @@ namespace NJasmine.Core
         {
             if (position.ToString() == _position.ToString())
             {
-                using (var visitorOverride = _fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this)))
+                using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.it, this)))
                 {
                     action();
                 }
@@ -105,11 +108,17 @@ namespace NJasmine.Core
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            _nUnitImports.DoSetUp(position);
+            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
+            {
+                _nUnitImports.DoSetUp(position);
+            }
 
             _allTeardowns.Add(delegate
             {
-                _nUnitImports.DoTearDown(position);
+                using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.importNUnit, this)))
+                {
+                    _nUnitImports.DoTearDown(position);
+                }
             });
 
             return _nUnitImports.GetInstance(position) as TFixture;
@@ -119,16 +128,22 @@ namespace NJasmine.Core
         {
             TArranged result = default(TArranged);
 
-            foreach(var factory in factories)
+            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
             {
-                result = factory();
-
-                if (result is IDisposable)
+                foreach (var factory in factories)
                 {
-                    _allTeardowns.Add(delegate
+                    result = factory();
+
+                    if (result is IDisposable)
                     {
-                        (result as IDisposable).Dispose();
-                    });
+                        _allTeardowns.Add(delegate
+                        {
+                            using (_fixture.PushVisitor(new TerminalVisitor(SpecMethod.arrange, this)))
+                            {
+                                (result as IDisposable).Dispose();
+                            }
+                        });
+                    }
                 }
             }
 
