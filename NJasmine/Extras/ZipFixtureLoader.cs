@@ -19,7 +19,7 @@ namespace NJasmine.Extras
         {
             string tempPath = Path.Combine(Path.GetTempPath(), tempName);
 
-            DeleteDirectory(tempPath);
+            DirectoryUtil.DeleteDirectory(tempPath);
             Directory.CreateDirectory(tempPath);
             
             ZipInputStream s = new ZipInputStream(File.OpenRead(sourceZipFilepath));
@@ -107,43 +107,6 @@ namespace NJasmine.Extras
         private static string Get7Zip()
         {
             return GetAndCheckPathOfBinDeployedFile("7za.exe");
-        }
-
-        public static void DeleteDirectory(string directory)
-        {
-            const int retries = 10;
-            for (int i = 0; i < retries; i++)
-            {
-                try
-                {
-                    if (Directory.Exists(directory) == false)
-                        return;
-
-                    try
-                    {
-                        File.SetAttributes(directory, FileAttributes.Normal);
-                    }
-                    catch (IOException)
-                    {
-                    }
-                    Directory.Delete(directory, true);
-                    return;
-                }
-                catch (IOException)
-                {
-                    foreach (var childDir in Directory.GetDirectories(directory))
-                    {
-                        try
-                        {
-                            File.SetAttributes(childDir, FileAttributes.Normal);
-                        }
-                        catch (IOException)
-                        {
-                        }
-                    }
-                    Thread.Sleep(100);
-                }
-            }
         }
     }
 }
