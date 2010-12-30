@@ -35,14 +35,17 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core">
-      <HintPath>..\packages\NUnit.2.5.7.10213\Tools\lib\nunit.core.dll</HintPath>
+    <Reference Include="nunit.core, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\nunit.core.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core.interfaces">
-      <HintPath>..\packages\NUnit.2.5.7.10213\Tools\lib\nunit.core.interfaces.dll</HintPath>
+    <Reference Include="nunit.core.interfaces, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\nunit.core.interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Should.Fluent">
       <HintPath>..\lib\ShouldFluent\Should.Fluent.dll</HintPath>
@@ -77,9 +80,6 @@
     <Compile Include="IArrangeContext.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

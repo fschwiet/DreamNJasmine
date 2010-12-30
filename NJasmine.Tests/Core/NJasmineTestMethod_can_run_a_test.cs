@@ -88,7 +88,7 @@ namespace NJasmineTests.Core
 
             var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), new NUnitFixtureCollection());
 
-            sut.Run(new TestResult(new TestName()));
+            sut.RunTestMethod(new TestResult(new TestName()));
 
             expect(fixture.Observations.ToArray()).to.Equal(
                 Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());
@@ -101,11 +101,11 @@ namespace NJasmineTests.Core
 
             var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), new NUnitFixtureCollection());
 
-            sut.Run(new TestResult(new TestName()));
+            sut.RunTestMethod(new TestResult(new TestName()));
 
             fixture.ResetObservations();
 
-            sut.Run(new TestResult(new TestName()));
+            sut.RunTestMethod(new TestResult(new TestName()));
 
             expect(fixture.Observations.ToArray()).to.Equal(
                 Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());

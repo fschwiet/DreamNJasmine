@@ -39,7 +39,7 @@ namespace NJasmineTests.Core
             {
                 var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), null);
 
-                sut.Run(new TestResult(new TestName()));
+                sut.RunTestMethod(new TestResult(new TestName()));
 
                 expect(fixture.Observations).to.Equal(new List<string> {"1", "2"});
             });
