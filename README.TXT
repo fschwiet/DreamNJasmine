@@ -1,5 +1,4 @@
-NOTE:  NJasmine is known to work with NUnit 2.5.9.  There is a known issue preventing it from working with 2.5.8+, which I need to fix.  If that matters to you, please open something in the issue tracker.
-
+NOTE:  NJasmine current only works with NUnit 2.5.9.
 
 NJasmine is a port of a subset of JasmineBDD language to .NET in C#.  At the moment, it supports describe(), beforeEach(), afterEach(), it(), and expect().
 
