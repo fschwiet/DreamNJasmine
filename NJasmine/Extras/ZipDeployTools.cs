@@ -6,7 +6,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace NJasmine.Extras
 {
-    public class ZipFixtureLoader
+    public class ZipDeployTools
     {
         public static string  UnzipBinDeployedToTempDirectory(string binRelativePath, string tempName)
         {
@@ -28,12 +28,12 @@ namespace NJasmine.Extras
             while ((theEntry = s.GetNextEntry()) != null)
             {
                 string directoryName = tempPath;
-                string fileName = Path.GetFileName(theEntry.Name);
                 // create directory 
                 if (directoryName != "")
                 {
                     Directory.CreateDirectory(directoryName);
                 }
+                string fileName = Path.GetFileName(theEntry.Name);
                 if (fileName != String.Empty)
                 {
                     if (theEntry.Name.IndexOf(".ini") < 0)
@@ -59,6 +59,10 @@ namespace NJasmine.Extras
                         }
                         streamWriter.Close();
                     }
+                }
+                else if (theEntry.Name.EndsWith("/"))
+                {
+                    Directory.CreateDirectory(Path.Combine(directoryName, theEntry.Name.TrimEnd(new char[] {'/'})));
                 }
             }
             s.Close();

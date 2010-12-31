@@ -7,7 +7,7 @@ using Should.Fluent.Model;
 
 namespace NJasmineTests.Extras
 {
-    public class ZipFixtureLoaderTests : NJasmineFixture
+    public class ZipDeployToolsTest : NJasmineFixture
     {
         public override void Tests()
         {
@@ -16,7 +16,7 @@ namespace NJasmineTests.Extras
                 expect((Action)delegate
                 {
                     var result =
-                        ZipFixtureLoader.UnzipBinDeployedToTempDirectory(
+                        ZipDeployTools.UnzipBinDeployedToTempDirectory(
                             "incorrectResourcePath.zip", "NJasmine.Extras");
 
                 }).to.Throw<FileNotFoundException>();
@@ -24,7 +24,7 @@ namespace NJasmineTests.Extras
 
             it("can decompress installation zip", delegate
             {
-                string unpacked = ZipFixtureLoader.UnzipBinDeployedToTempDirectory("Extras\\SampleZipFixture.zip", "NJasmine.Extras");
+                string unpacked = ZipDeployTools.UnzipBinDeployedToTempDirectory("Extras\\Sample.zip", "NJasmine.Extras");
 
                 Directory.Exists(unpacked).Should().Be.True();
                 unpacked.ToLower().Should().Contain("temp");
@@ -32,7 +32,15 @@ namespace NJasmineTests.Extras
                 string expectedFixtureMember = Path.Combine(unpacked, "success.txt");
                 
                 File.Exists(expectedFixtureMember).Should().Be.True();
-                File.ReadAllText(expectedFixtureMember).Should().Equal("true");
+                File.ReadAllText(expectedFixtureMember).Should().Equal("Hello, World\r\n");
+            });
+
+            it("decompressed zip includes empty folders", delegate
+            {
+                string unpacked = ZipDeployTools.UnzipBinDeployedToTempDirectory("Extras\\Sample.zip", "NJasmine.Extras");
+                string expectedDirectory = Path.Combine(unpacked, "empty");
+
+                Directory.Exists(expectedDirectory).Should().Be.True();
             });
         }
     }
