@@ -35,7 +35,7 @@ creating some_observable_F
         
         public override void Tests()
         {
-            importNUnit<PerClassTraceResetFixture>();
+            ResetTracing();
 
             var i = arrange(() => 123);
 

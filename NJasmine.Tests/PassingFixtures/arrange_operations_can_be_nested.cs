@@ -21,7 +21,7 @@ four
     {
         public override void Tests()
         {
-            importNUnit<TraceableNJasmineFixture.PerClassTraceResetFixture>();
+            ResetTracing();
 
             beforeEach(delegate
             {

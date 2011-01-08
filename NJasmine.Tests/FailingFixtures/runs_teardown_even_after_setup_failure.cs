@@ -12,7 +12,7 @@ failure_in_setup_doesnt_prevent_cleanup")]
     {
         public override void Tests()
         {
-            importNUnit<PerClassTraceResetFixture>();
+            ResetTracing();
 
             afterEach(delegate()
             {

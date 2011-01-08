@@ -66,7 +66,7 @@ task IntegrationTests {
 
     $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
 
-    $tests | % { 
+    $tests | sort-object -property Name | % { 
 
         $testName = $_.Name;
         $expectedStrings = $_.ExpectedStrings.string;
