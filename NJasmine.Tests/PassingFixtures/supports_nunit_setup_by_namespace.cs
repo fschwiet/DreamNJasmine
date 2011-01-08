@@ -16,6 +16,7 @@ running test 1
 running test 2
 TearDown NamespaceSetupB
 ")]
+        [Explicit("Stateful nature of this test prevents it from running more than once in the GUI runner")]
         public class supports_nunit_setup_by_namespace : TraceableNJasmineFixture
         {
             public override void Tests()
