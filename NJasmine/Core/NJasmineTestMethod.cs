@@ -10,16 +10,16 @@ namespace NJasmine.Core
 {
     public partial class NJasmineTestMethod : TestMethod, INJasmineTest, INJasmineFixturePositionVisitor
     {
-        readonly NJasmineFixture _fixture;
+        readonly Func<NJasmineFixture> _fixtureFactory;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nUnitImports;
 
         List<Action> _allTeardowns = null;
         INJasmineFixturePositionVisitor _state = null;
 
-        public NJasmineTestMethod(NJasmineFixture fixture, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
+        public NJasmineTestMethod(Func<NJasmineFixture> fixtureFactory, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
-            _fixture = fixture;
+            _fixtureFactory = fixtureFactory;
             _position = position;
             _nUnitImports = nUnitImports;
             _state = new DescribeState(this);
@@ -53,11 +53,13 @@ namespace NJasmine.Core
         {
             this._allTeardowns = new List<Action>();
 
-            this._fixture.UseVisitor(new VisitorPositionAdapter(this));
+            var fixture = this._fixtureFactory();
+
+            fixture.UseVisitor(new VisitorPositionAdapter(this));
 
             try
             {
-                this._fixture.Tests();
+                fixture.Tests();
             }
 
             catch (TestFinishedException)

@@ -10,13 +10,18 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest, INJasmineFixturePositionVisitor
     {
-        public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite()
+        {
+            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Tests, true);
+        }
+
+        private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
             _baseNameForChildTests = TestName.FullName;
 
             Exception exception = null;
 
-            using(_fixture.UseVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
+            using (_fixtureInstanceForDiscovery.UseVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
             {
                 try
                 {
@@ -54,7 +59,8 @@ namespace NJasmine.Core
             return this;
         }
 
-        readonly NJasmineFixture _fixture;
+        readonly Func<NJasmineFixture> _fixtureFactory;
+        readonly NJasmineFixture _fixtureInstanceForDiscovery;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
         readonly List<Test> _accumulatedDescendants;
@@ -63,10 +69,26 @@ namespace NJasmine.Core
         string _baseNameForChildTests;
         bool _haveReachedAnIt;
 
-        public NJasmineTestSuite(NJasmineFixture fixture, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames) 
+        public NJasmineTestSuite(Func<NJasmineFixture> fixtureFactory, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
-            _fixture = fixture;
+            _fixtureFactory = fixtureFactory;
+            _fixtureInstanceForDiscovery = fixtureFactory();
+            _position = position;
+            _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
+
+            _accumulatedDescendants = new List<Test>();
+            _haveReachedAnIt = false;
+
+            maintainTestOrder = true;
+        }
+
+        public NJasmineTestSuite(Func<NJasmineFixture> fixtureFactory, NJasmineFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
+            : base(baseName, name)
+        {
+            _fixtureFactory = fixtureFactory;
+            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
             _position = position;
             _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
@@ -128,7 +150,7 @@ namespace NJasmine.Core
             {
                 string baseName = TestName.FullName;
 
-                var describeSuite = new NJasmineTestSuite(_fixture, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames);
+                var describeSuite = new NJasmineTestSuite(_fixtureFactory, _fixtureInstanceForDiscovery, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames);
 
                 NameTest(describeSuite, description);
 
@@ -162,7 +184,7 @@ namespace NJasmine.Core
             }
             else
             {
-                var testMethod = new NJasmineTestMethod(_fixture, position, _nunitImports);
+                var testMethod = new NJasmineTestMethod(_fixtureFactory, position, _nunitImports);
 
                 NameTest(testMethod, description);
 

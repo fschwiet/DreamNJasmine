@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\src\NJasmine\build\NJasmine.Tests.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2011-01-08" time="11:41:34">
+<test-results name="C:\src\NJasmine\build\NJasmine.Tests.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2011-01-08" time="12:14:01">
   <environment nunit-version="2.5.9.10348" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\src\NJasmine" machine-name="NZNZNZ6" user="user" user-domain="nznznz6" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\src\NJasmine\build\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.200" asserts="0">
+  <test-suite type="Assembly" name="C:\src\NJasmine\build\NJasmine.Tests.dll" executed="True" result="Success" success="True" time="0.213" asserts="0">
     <results>
-      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.176" asserts="0">
+      <test-suite type="Namespace" name="NJasmineTests" executed="True" result="Success" success="True" time="0.190" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PassingFixtures" executed="True" result="Success" success="True" time="0.176" asserts="0">
+          <test-suite type="Namespace" name="PassingFixtures" executed="True" result="Success" success="True" time="0.189" asserts="0">
             <results>
-              <test-suite type="SetUpFixture" name="WithNamespaceSetup" executed="True" result="Success" success="True" time="0.173" asserts="0">
+              <test-suite type="SetUpFixture" name="WithNamespaceSetup" executed="True" result="Success" success="True" time="0.185" asserts="0">
                 <results>
-                  <test-suite type="TestSuite" name="supports_nunit_setup_by_namespace" executed="True" result="Success" success="True" time="0.159" asserts="0">
+                  <test-suite type="TestSuite" name="supports_nunit_setup_by_namespace" executed="True" result="Success" success="True" time="0.170" asserts="0">
                     <results>
-                      <test-case name="NJasmineTests.PassingFixtures.WithNamespaceSetup.supports_nunit_setup_by_namespace, test must run setup from NamespaceSetupB only, skipping NamespaceSetupA" executed="True" result="Success" success="True" time="0.114" asserts="0" />
-                      <test-case name="NJasmineTests.PassingFixtures.WithNamespaceSetup.supports_nunit_setup_by_namespace, should only run setup once" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="NJasmineTests.PassingFixtures.WithNamespaceSetup.supports_nunit_setup_by_namespace, test must run setup from NamespaceSetupB only, skipping NamespaceSetupA" executed="True" result="Success" success="True" time="0.117" asserts="0" />
+                      <test-case name="NJasmineTests.PassingFixtures.WithNamespaceSetup.supports_nunit_setup_by_namespace, should only run setup once" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                     </results>
                   </test-suite>
                 </results>

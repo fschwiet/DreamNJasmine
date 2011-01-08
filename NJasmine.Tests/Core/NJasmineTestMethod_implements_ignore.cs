@@ -37,7 +37,7 @@ namespace NJasmineTests.Core
 
             it("ignore() isn't run ", delegate() 
             {
-                var sut = new NJasmineTestMethod(fixture, new TestPosition(1, 3, 2), null);
+                var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), null);
 
                 sut.RunTestMethod(new TestResult(new TestName()));
 

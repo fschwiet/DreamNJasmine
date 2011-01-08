@@ -31,7 +31,9 @@ namespace NJasmine.Core
 
         public Test BuildFrom(Type type)
         {
-            NJasmineFixture fixture = type.GetConstructor(new Type[0]).Invoke(new object[0]) as NJasmineFixture;
+            var constructor = type.GetConstructor(new Type[0]);
+
+            Func<NJasmineFixture> fixtureFactory = () => constructor.Invoke(new object[0]) as NJasmineFixture;
             
             List<string> _allCreatedNames = new List<string>();
 
@@ -39,8 +41,8 @@ namespace NJasmine.Core
             string name = type.Name;
             TestPosition position = new TestPosition();
             NUnitFixtureCollection parentNUnitImports = new NUnitFixtureCollection();
-            var rootSuite = new NJasmineTestSuite(fixture, baseName, name, position, parentNUnitImports, _allCreatedNames)
-                .BuildNJasmineTestSuite(fixture.Tests, true);
+            var rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parentNUnitImports, _allCreatedNames)
+                .BuildNJasmineTestSuite();
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
