@@ -8,7 +8,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, INJasmineFixturePositionVisitor
+    public partial class NJasmineTestMethod : TestMethod, INJasmineTest
     {
         readonly Func<NJasmineFixture> _fixtureFactory;
         readonly TestPosition _position;
