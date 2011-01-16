@@ -5,8 +5,8 @@ properties {
 
     # to build/test against another install of NUnit, override the following {{
     $wipeDeployTarget = $true
-	$deployTarget = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\addins"
-    $nunitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\nunit-console.exe"
+	$deployTarget = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\addins"
+    $nunitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\nunit-console.exe"
     # }}
 
     $solution = "$base_dir\NJasmine.sln"
@@ -156,7 +156,7 @@ function GetAllNUnits {
     } };
 }
 
-function SetAllProjectsToUseNUnitAt($path = "..\lib\NUnit-2.5.9.10348\bin\net-2.0\") {
+function SetAllProjectsToUseNUnitAt($path = "..\lib\NUnit-2.5.9.10348\net-2.0\") {
 
     (".\NJasmine\NJasmine.csproj", ".\NJasmine.Tests\NJasmine.Tests.csproj") | % {
         .\ForXml.ps1 (resolve-path $_) { 
