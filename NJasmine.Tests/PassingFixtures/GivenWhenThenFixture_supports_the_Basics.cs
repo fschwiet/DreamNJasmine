@@ -62,12 +62,12 @@ namespace NJasmineTests.PassingFixtures
 
                         then("another result is expected", delegate
                         {
-                            //expect(() => File.ReadAllText(path) == "IMPORTANT MESSAGE");
+                            expect(() => File.ReadAllText(path) == "IMPORTANT MESSAGE");
                         });
 
                         then("yet another result is expected", delegate
                         {
-                            //expect(() => File.ReadAllText(path2) == "IMPORTANT MESSAGE");
+                            expect(() => File.ReadAllText(path2) == "IMPORTANT MESSAGE");
                         });
                     });
                 });
