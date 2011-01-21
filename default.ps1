@@ -15,7 +15,6 @@ properties {
 	$testDll = "$buildDir\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
     $integrationTestLoader = "$buildDir\NJasine.TestLoader.exe"
-    $integrationTestResultsFile = "$base_dir\TestResults.Integration.txt"
     $integrationTestRunPattern = "*"
 }
 
@@ -46,17 +45,15 @@ task DeployForTest -depends Build {
 
 task UnitTests {
 
-    exec { & $nunitBinPath $testDll}
+    $testOuputTarget = (join-path $buildDir "UnitTests.xml")
+
+    exec { & $nunitBinPath $testDll /xml=$testOuputTarget}
 }
 
 task CICommit -depends DeployForTest, UnitTests {
 }
 
 task IntegrationTests {
-
-    if (test-path $integrationTestResultsFile) {
-        rm $integrationTestResultsFile
-    }
 
     $testResults = @();
 
@@ -74,10 +71,12 @@ task IntegrationTests {
         "Running integration test $testName." | write-host
         $testResults = $testResults + "Running integration test $testName."
 
+        $testOuputTarget = (join-path $buildDir "IntegrationTest.xml")
+
         if ($_.TestPasses) {
-	        $testoutput = exec { & $nunitBinPath $testDll /run:$testName }
+	        $testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOuputTarget }
         } else {
-	        $testoutput = & $nunitBinPath $testDll /run:$testName
+	        $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOuputTarget
         }
 
         $hasExpectation = $false;
@@ -120,8 +119,6 @@ task IntegrationTests {
             "Test Skipped: No expectation found for $testName" | write-host
         }
     }
-
-    $testResults | set-content $integrationTestResultsFile
 }
 
 task AllTests -depends Build, DeployForTest, UnitTests, IntegrationTests {
