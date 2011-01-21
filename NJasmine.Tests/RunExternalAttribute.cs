@@ -12,6 +12,7 @@ namespace NJasmineTests
             public bool Passes;
             public string[] ExpectedStrings;
             public string ExpectedExtraction;
+            public string[] ExpectedTestNames;
         }
 
         public bool TestPasses { get; set; }
@@ -34,7 +35,8 @@ namespace NJasmineTests
                        Name = t.FullName,
                        Passes = a.TestPasses,
                        ExpectedStrings = a.ExpectedStrings ?? new string[0],
-                       ExpectedExtraction = a.ExpectedTraceSequence
+                       ExpectedExtraction = a.ExpectedTraceSequence,
+                       ExpectedTestNames = a.ExpectedTestNames
                    };
         }
     }

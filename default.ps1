@@ -45,9 +45,9 @@ task DeployForTest -depends Build {
 
 task UnitTests {
 
-    $testOuputTarget = (join-path $buildDir "UnitTests.xml")
+    $testOutputTarget = (join-path $buildDir "UnitTests.xml")
 
-    exec { & $nunitBinPath $testDll /xml=$testOuputTarget}
+    exec { & $nunitBinPath $testDll /xml=$testOutputTarget}
 }
 
 task CICommit -depends DeployForTest, UnitTests {
@@ -71,12 +71,12 @@ task IntegrationTests {
         "Running integration test $testName." | write-host
         $testResults = $testResults + "Running integration test $testName."
 
-        $testOuputTarget = (join-path $buildDir "IntegrationTest.xml")
+        $testOutputTarget = (join-path $buildDir "IntegrationTest.xml")
 
         if ($_.TestPasses) {
-	        $testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOuputTarget }
+	        $testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget }
         } else {
-	        $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOuputTarget
+	        $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget
         }
 
         $hasExpectation = $false;
@@ -115,6 +115,26 @@ task IntegrationTests {
             $hasExpectation = $true;
         }
         
+        if ($_.ExpectedTestNames) {
+
+            $allExpected = $_.ExpectedTestNames | % { $_.string };
+
+            $testResults = [xml] (get-content $testOutputTarget)
+
+            $testNames = $testResults.SelectNodes("//test-results/descendant::test-case/@name")
+
+            $global:actual = $testNames
+
+            foreach($expectedTestName in $allExpected) {
+
+                $global:expected = $expectedTestName;
+
+                Assert ($testNames -contains $expectedTestName) "Did not find expected test name.  Expected name stored in `$global:expected, actual stored in `$global:actual."
+
+                $hasExpectation = $true;
+            }
+        }
+
         if (-not $hasExpectation) {
             "Test Skipped: No expectation found for $testName" | write-host
         }
