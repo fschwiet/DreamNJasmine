@@ -17,6 +17,7 @@ namespace NJasmineTests
         public bool TestPasses { get; set; }
         public string[] ExpectedStrings { get; set; }
         public string ExpectedTraceSequence { get; set; }
+        public string[] ExpectedTestNames { get; set; }
 
         public RunExternalAttribute(bool testPasses)
         {

@@ -45,7 +45,7 @@
       <HintPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Should.Fluent">
-      <HintPath>..\packages\ShouldFluent.1.1.12.0\lib\Should.Fluent.dll</HintPath>
+      <HintPath>..\lib\ShouldFluent\Should.Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,6 +78,7 @@
     <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
     <Compile Include="PassingFixtures\constructor_is_run_once_per_test.cs" />
+    <Compile Include="PassingFixtures\simple_GivenWhenThen.cs" />
     <Compile Include="PassingFixtures\suite_arranging_nondisposables.cs" />
     <Compile Include="PassingFixtures\imports_NUnit_fixture.cs" />
     <Compile Include="PassingFixtures\suite_arranging_disposables.cs" />
