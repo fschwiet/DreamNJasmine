@@ -115,7 +115,7 @@ task IntegrationTests {
             $hasExpectation = $true;
         }
         
-        if ($_.ExpectedTestNames) {
+        if ($_.ExpectedTestNames.length -gt 0) {
 
             $allExpected = $_.ExpectedTestNames | % { $_.string };
 

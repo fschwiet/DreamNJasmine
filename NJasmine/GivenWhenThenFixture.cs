@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace NJasmine
 {
@@ -46,9 +47,9 @@ namespace NJasmine
             return _internal.arrange(arrangeAction);
         }
 
-        public void expect(Func<bool> expectation)
+        public void expect(Expression<Func<bool>> expectation)
         {
-            
+            PowerAssert.PAssert.IsTrue(expectation);
         }
 
         public class InnerFixture : NJasmineFixture

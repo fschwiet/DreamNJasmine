@@ -47,6 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PowerAssert">
+      <HintPath>..\lib\PowerAssert\PowerAssert.dll</HintPath>
+    </Reference>
     <Reference Include="Should.Fluent">
       <HintPath>..\lib\ShouldFluent\Should.Fluent.dll</HintPath>
     </Reference>
