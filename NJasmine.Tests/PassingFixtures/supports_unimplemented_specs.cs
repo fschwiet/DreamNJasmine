@@ -10,7 +10,7 @@ namespace NJasmineTests.PassingFixtures
 "4) NotRunnable : NJasmineTests.PassingFixtures.supports_unimplemented_specs, nested too of course, an unimplemented test() block" })]
     public class supports_unimplemented_specs : TraceableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

@@ -74,7 +74,7 @@ FixtureTearDown some_Nunit_fixture_a
 ")]
     public class imports_NUnit_fixture : TraceableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

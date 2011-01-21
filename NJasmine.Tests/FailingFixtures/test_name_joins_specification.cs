@@ -16,7 +16,7 @@ namespace NJasmineTests.FailingFixtures
     })]
     public class test_name_joins_specification : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             it("simple test");
             

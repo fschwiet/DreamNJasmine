@@ -30,7 +30,7 @@ repeated inner it 3
 )]
     public class duplicate_test_names_are_fine : TraceableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

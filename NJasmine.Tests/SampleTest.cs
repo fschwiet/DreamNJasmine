@@ -10,7 +10,7 @@ namespace NJasmineTests
 {
     public class SampleTest : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             
 

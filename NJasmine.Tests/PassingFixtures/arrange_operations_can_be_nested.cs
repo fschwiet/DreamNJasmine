@@ -19,7 +19,7 @@ four
 ")]
     public class arrange_operations_can_be_nested : TraceableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

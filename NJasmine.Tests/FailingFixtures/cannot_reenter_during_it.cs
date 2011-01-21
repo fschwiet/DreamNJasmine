@@ -12,7 +12,7 @@ namespace NJasmineTests.FailingFixtures
         "System.InvalidOperationException : Called it() within it()."})]
     public class cannot_reenter_during_it : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             it("outer test", delegate()
             {

@@ -11,7 +11,7 @@ namespace NJasmineTests.Core
 {
     class ignore_is_ignored : ObservableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             Observe("1");
 
@@ -31,7 +31,7 @@ namespace NJasmineTests.Core
 
     public class NJasmineTestMethod_implements_ignore : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ignore_is_ignored fixture = new ignore_is_ignored();
 

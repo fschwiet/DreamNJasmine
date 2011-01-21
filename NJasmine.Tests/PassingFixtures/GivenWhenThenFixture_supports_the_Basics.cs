@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NJasmine;
 
 namespace NJasmineTests.PassingFixtures
 {
     [RunExternal(true, ExpectedTestNames = new[]
     {
-        "Given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected.", 
-        "Given the environment is in a particular state, given the system is in an even more particular state, when the system is used in another manner, then another result is expected.",
-        "Given the environment is in a particular state, given the system is in an even more particular state, when the system is used in another manner, then yet another result is expected.",
+        "NJasmineTests.PassingFixtures.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected", 
+        "NJasmineTests.PassingFixtures.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then another result is expected",
+        "NJasmineTests.PassingFixtures.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then yet another result is expected",
     })]
-    public class simple_GivenWhenThen : GivenWhenThenFixture
+    public class GivenWhenThenFixture_supports_the_Basics : GivenWhenThenFixture
     {
         public override void Specify()
         {
@@ -71,41 +71,4 @@ namespace NJasmineTests.PassingFixtures
             });
         }
     }
-
-    public abstract class GivenWhenThenFixture
-    {
-        public abstract void Specify();
-        public void given(string givenPhrase, Action specification)
-        {
-        }
-
-        public void when(string whenPhrase, Action specification)
-        {
-        }
-
-        public void then(string thenPhrase, Action test)
-        {
-        }
-
-        public void cleanup(Action cleanup)
-        {
-            
-        }
-
-        public void arrange(Action arrangeAction)
-        {
-        }
-
-        public T arrange<T>(Func<T> arrangeAction)
-        {
-            return default(T);
-        }
-
-        public void expect(Func<bool> expectation)
-        {
-            
-        }
-    }
-
-
 }

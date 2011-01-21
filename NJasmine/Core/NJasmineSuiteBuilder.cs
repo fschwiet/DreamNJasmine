@@ -17,7 +17,7 @@ namespace NJasmine.Core
 
         public bool CanBuildFrom(Type type)
         {
-            if (!type.IsSubclassOf(typeof (NJasmineFixture)))
+            if (!type.IsSubclassOf(typeof(SkeleFixture)))
                 return false;
 
             if (!(type.IsPublic || type.IsNestedPublic))
@@ -33,7 +33,7 @@ namespace NJasmine.Core
         {
             var constructor = type.GetConstructor(new Type[0]);
 
-            Func<NJasmineFixture> fixtureFactory = () => constructor.Invoke(new object[0]) as NJasmineFixture;
+            Func<SkeleFixture> fixtureFactory = () => constructor.Invoke(new object[0]) as SkeleFixture;
             
             List<string> _allCreatedNames = new List<string>();
 

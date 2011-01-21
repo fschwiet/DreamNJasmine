@@ -11,7 +11,7 @@ failure_in_test_doesnt_prevent_cleanup")]
 
     public class runs_teardown_even_after_test_failure : TraceableNJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

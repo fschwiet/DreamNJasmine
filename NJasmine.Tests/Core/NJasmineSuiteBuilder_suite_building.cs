@@ -12,7 +12,7 @@ namespace NJasmineTests.Core
     {
         public class TestOnlyUsingDescribeAndIt : NJasmineFixture
         {
-            public override void Tests()
+            public override void Specify()
             {
                 it("first test", delegate() { });
 

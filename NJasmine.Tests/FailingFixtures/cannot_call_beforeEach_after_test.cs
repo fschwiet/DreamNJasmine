@@ -12,7 +12,7 @@ namespace NJasmineTests.FailingFixtures
             "Called beforeEach() after it()."})]
     public class cannot_call_beforeEach_after_test : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             it("hi", delegate{ });
 

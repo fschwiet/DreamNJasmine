@@ -10,7 +10,7 @@ namespace NJasmineTests.Core
 {
     public class NUnitFixtureCollectionTests : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
 
 describe("NUnitFixtureCollection", delegate

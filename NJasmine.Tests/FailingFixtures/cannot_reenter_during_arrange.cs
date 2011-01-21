@@ -17,7 +17,7 @@ namespace NJasmineTests.FailingFixtures
         })]
     public class cannot_reenter_during_arrange : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             describe("when the arrange code tries to re-enter", delegate
             {

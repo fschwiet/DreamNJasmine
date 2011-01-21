@@ -14,7 +14,7 @@ namespace NJasmineTests.FailingFixtures
                 "System.InvalidOperationException : Called it() within beforeEach()."})]
     public class cannot_reenter_during_beforeEach : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             beforeEach(delegate()
             {

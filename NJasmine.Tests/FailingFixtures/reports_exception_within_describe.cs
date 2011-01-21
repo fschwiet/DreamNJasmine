@@ -8,7 +8,7 @@ namespace NJasmineTests.FailingFixtures
         "Attempted to divide by zero."})]
     public class reports_exception_within_describe : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             it("outer test", delegate() { });
 

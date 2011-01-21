@@ -12,7 +12,7 @@ namespace NJasmine.Core
     {
         public Test BuildNJasmineTestSuite()
         {
-            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Tests, true);
+            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Specify, true);
         }
 
         private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
@@ -59,8 +59,8 @@ namespace NJasmine.Core
             return this;
         }
 
-        readonly Func<NJasmineFixture> _fixtureFactory;
-        readonly NJasmineFixture _fixtureInstanceForDiscovery;
+        readonly Func<SkeleFixture> _fixtureFactory;
+        readonly SkeleFixture _fixtureInstanceForDiscovery;
         readonly TestPosition _position;
         readonly NUnitFixtureCollection _nunitImports;
         readonly List<Test> _accumulatedDescendants;
@@ -69,7 +69,7 @@ namespace NJasmine.Core
         string _baseNameForChildTests;
         bool _haveReachedAnIt;
 
-        public NJasmineTestSuite(Func<NJasmineFixture> fixtureFactory, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
@@ -84,7 +84,7 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public NJasmineTestSuite(Func<NJasmineFixture> fixtureFactory, NJasmineFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, SkeleFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;

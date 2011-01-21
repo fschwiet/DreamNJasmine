@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine.Core;
-using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;
 using NUnit.Framework;
 using Should.Fluent;
@@ -12,19 +11,8 @@ using Assert = Should.Core.Assertions.Assert;
 
 namespace NJasmine
 {
-    public abstract class NJasmineFixture : ExpectationsFixture, IArrangeContext
+    public abstract class NJasmineFixture : SkeleFixture, IArrangeContext
     {
-        INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
-
-        public VisitorChangedContext UseVisitor(INJasmineFixtureVisitor visitor)
-        {
-            var currentVisitor = _visitor;
-
-            _visitor = visitor;
-
-            return new VisitorChangedContext(() => _visitor = currentVisitor);
-        }
-
         public class VisitorChangedContext : IDisposable
         {
             Action _action;
@@ -44,14 +32,12 @@ namespace NJasmine
             }
         }
 
-        public abstract void Tests();
-
-        protected void describe(string description)
+        public void describe(string description)
         {
             describe(description, null);
         }
 
-        protected void describe(string description, Action action)
+        public void describe(string description, Action action)
         {
             _visitor.visitDescribe(description, action);
         }
@@ -66,12 +52,12 @@ namespace NJasmine
             _visitor.visitAfterEach(action);
         }
 
-        protected void it(string description)
+        public void it(string description)
         {
             _visitor.visitIt(description, null);
         }
 
-        protected void it(string description, Action action)
+        public void it(string description, Action action)
         {
             _visitor.visitIt(description, action);
         }

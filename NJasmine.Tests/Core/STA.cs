@@ -9,7 +9,7 @@ namespace NJasmineTests.Core
     public class STA : NJasmineFixture
     {
         [STAThread]
-        public override void Tests()
+        public override void Specify()
         {
             it("is STA", delegate
             {

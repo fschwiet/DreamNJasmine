@@ -49,7 +49,7 @@ disposing some_observable_A
         public class some_observable_E : ObservableDisposable { }
         public class some_observable_F : ObservableDisposable { }
         
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

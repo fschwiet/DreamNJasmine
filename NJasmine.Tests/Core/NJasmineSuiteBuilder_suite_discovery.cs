@@ -18,7 +18,7 @@ namespace NJasmineTests.Core
 
         public class SomeNestedClass : NJasmineFixture
         {
-            public override void Tests() { }
+            public override void Specify() { }
         }
 
 
@@ -45,7 +45,7 @@ namespace NJasmineTests.Core
 
         protected class ANonpublicFixture : NJasmineFixture
         {
-            public override void Tests()
+            public override void Specify()
             {
                 throw new NotImplementedException();
             }

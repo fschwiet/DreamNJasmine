@@ -14,7 +14,7 @@ namespace NJasmineTests.Core
     {
         public class has_test_in_loop : ObservableNJasmineFixture
         {
-            public override void Tests()
+            public override void Specify()
             {
                 Observe("1");
 

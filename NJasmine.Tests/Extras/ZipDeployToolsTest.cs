@@ -9,7 +9,7 @@ namespace NJasmineTests.Extras
 {
     public class ZipDeployToolsTest : NJasmineFixture
     {
-        public override void Tests()
+        public override void Specify()
         {
             it("gives a useful exception if the installation zip is not found", delegate
             {

@@ -78,7 +78,7 @@
     <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
     <Compile Include="PassingFixtures\constructor_is_run_once_per_test.cs" />
-    <Compile Include="PassingFixtures\simple_GivenWhenThen.cs" />
+    <Compile Include="PassingFixtures\GivenWhenThenFixture_supports_the_Basics.cs" />
     <Compile Include="PassingFixtures\suite_arranging_nondisposables.cs" />
     <Compile Include="PassingFixtures\imports_NUnit_fixture.cs" />
     <Compile Include="PassingFixtures\suite_arranging_disposables.cs" />

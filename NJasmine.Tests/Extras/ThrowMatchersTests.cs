@@ -19,7 +19,7 @@ namespace NJasmineTests.Misc
             
         }
 
-        public override void Tests()
+        public override void Specify()
         {
 
 

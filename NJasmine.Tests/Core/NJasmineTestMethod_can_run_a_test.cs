@@ -14,7 +14,7 @@ namespace NJasmineTests.Core
     {
         private class AFixture : ObservableNJasmineFixture
         {
-            public override void Tests()
+            public override void Specify()
             {
                 Observe("1");
 

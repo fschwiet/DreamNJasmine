@@ -14,7 +14,7 @@ namespace NJasmineTests.PassingFixtures
         public constructor_is_run_once_per_test LastInstance;
         public int Value = 0;
 
-        public override void Tests()
+        public override void Specify()
         {
             for (var i = 0; i < 10; i++)
             {

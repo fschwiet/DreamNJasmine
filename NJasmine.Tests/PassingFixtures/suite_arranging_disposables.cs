@@ -33,7 +33,7 @@ creating some_observable_F
         public class some_observable_E : ObservableNondisposable { }
         public class some_observable_F : ObservableNondisposable { }
         
-        public override void Tests()
+        public override void Specify()
         {
             ResetTracing();
 

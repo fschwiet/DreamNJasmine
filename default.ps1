@@ -121,7 +121,7 @@ task IntegrationTests {
 
             $testResults = [xml] (get-content $testOutputTarget)
 
-            $testNames = $testResults.SelectNodes("//test-results/descendant::test-case/@name")
+            $testNames = $testResults.SelectNodes("//test-results/descendant::test-case/@name") | % { $_."#text" }
 
             $global:actual = $testNames
 
@@ -137,7 +137,7 @@ task IntegrationTests {
 
         if (-not $hasExpectation) {
             "Test Skipped: No expectation found for $testName" | write-host
-        }
+        }   
     }
 }
 
