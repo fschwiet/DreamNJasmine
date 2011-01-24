@@ -106,13 +106,5 @@ namespace NJasmine
 
             _visitor.visitArrange<object>(description, factories.ToArray());
         }
-
-        protected void ignore(Action action)
-        {
-        }
-
-        protected void ignore(string message, Action action)
-        {
-        }
     }
 }
