@@ -5,9 +5,9 @@ namespace NJasmine
 {
     public abstract class SkeleFixture : ExpectationsFixture
     {
-        protected INJasmineFixtureVisitor _visitor = new DoNothingFixtureVisitor();
+        protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
 
-        public virtual NJasmineFixture.VisitorChangedContext UseVisitor(INJasmineFixtureVisitor visitor)
+        public virtual NJasmineFixture.VisitorChangedContext UseVisitor(ISpecVisitor visitor)
         {
             var currentVisitor = _visitor;
 

@@ -21,12 +21,12 @@ namespace NJasmine
 
         public void describe(string description, Action action)
         {
-            _visitor.visitDescribe(description, action);
+            _visitor.visitFork(description, action);
         }
 
         public void beforeEach(Action action)
         {
-            _visitor.visitArrange(SpecMethod.beforeEach, null, new Func<string>[]
+            _visitor.visitBeforeEach(SpecMethod.beforeEach, null, new Func<string>[]
             {
                 delegate() { action(); return null; }
             });
@@ -39,12 +39,12 @@ namespace NJasmine
 
         public void it(string description)
         {
-            _visitor.visitIt(description, null);
+            _visitor.visitTest(description, null);
         }
 
         public void it(string description, Action action)
         {
-            _visitor.visitIt(description, action);
+            _visitor.visitTest(description, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
@@ -59,12 +59,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitArrange<TArranged>(SpecMethod.arrange, null, new [] {factory});
+            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, new [] {factory});
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitArrange<TArranged>(SpecMethod.arrange, null, new[] { factory });
+            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, new[] { factory });
         }
 
         public void arrange(Action action)
@@ -89,7 +89,7 @@ namespace NJasmine
                 factories.Add(nilFactory);
             }
 
-            _visitor.visitArrange<object>(SpecMethod.arrange, description, factories.ToArray());
+            _visitor.visitBeforeEach<object>(SpecMethod.arrange, description, factories.ToArray());
         }
     }
 }

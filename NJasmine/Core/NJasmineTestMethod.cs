@@ -15,7 +15,7 @@ namespace NJasmine.Core
         readonly NUnitFixtureCollection _nUnitImports;
 
         List<Action> _allTeardowns = null;
-        INJasmineFixturePositionVisitor _state = null;
+        ISpecPositionVisitor _state = null;
 
         public NJasmineTestMethod(Func<SkeleFixture> fixtureFactory, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
         {
@@ -77,7 +77,7 @@ namespace NJasmine.Core
             testResult.Success();
         }
 
-        public void whileInState(INJasmineFixturePositionVisitor state, Action action)
+        public void whileInState(ISpecPositionVisitor state, Action action)
         {
             var originalState = _state;
             _state = state;
@@ -91,9 +91,9 @@ namespace NJasmine.Core
             }
         }
 
-        public void visitDescribe(string description, Action action, TestPosition position)
+        public void visitFork(string description, Action action, TestPosition position)
         {
-            _state.visitDescribe(description, action, position);
+            _state.visitFork(description, action, position);
         }
 
         public void visitAfterEach(Action action, TestPosition position)
@@ -101,9 +101,9 @@ namespace NJasmine.Core
             _state.visitAfterEach(action, position);
         }
 
-        public void visitIt(string description, Action action, TestPosition position)
+        public void visitTest(string description, Action action, TestPosition position)
         {
-            _state.visitIt(description, action, position);
+            _state.visitTest(description, action, position);
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
@@ -111,9 +111,9 @@ namespace NJasmine.Core
             return _state.visitImportNUnit<TFixture>(position);
         }
 
-        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
-            return _state.visitArrange<TArranged>(origin, description, factories, position);
+            return _state.visitBeforeEach<TArranged>(origin, description, factories, position);
         }
 
         public class TestFinishedException : Exception

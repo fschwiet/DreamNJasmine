@@ -4,18 +4,18 @@ using NUnit.Framework;
 
 namespace NJasmine.Core.FixtureVisitor
 {
-    public class VisitorPositionAdapter : INJasmineFixtureVisitor
+    public class VisitorPositionAdapter : ISpecVisitor
     {
-        readonly INJasmineFixturePositionVisitor _visitor;
+        readonly ISpecPositionVisitor _visitor;
         protected TestPosition _position;
 
-        public VisitorPositionAdapter(INJasmineFixturePositionVisitor visitor)
+        public VisitorPositionAdapter(ISpecPositionVisitor visitor)
         {
             _visitor = visitor;
             _position = new TestPosition(0);
         }
 
-        public VisitorPositionAdapter(TestPosition position, INJasmineFixturePositionVisitor visitor)
+        public VisitorPositionAdapter(TestPosition position, ISpecPositionVisitor visitor)
         {
             _visitor = visitor;
             _position = position;
@@ -67,10 +67,10 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public void visitDescribe(string description, Action action)
+        public void visitFork(string description, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitDescribe(description, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitFork(description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
         public void visitAfterEach(Action action)
@@ -79,10 +79,10 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitAfterEach(WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
-        public void visitIt(string description, Action action)
+        public void visitTest(string description, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitIt(description, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitTest(description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
         public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
@@ -95,14 +95,14 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
         {
             TArranged result = default(TArranged);
 
             factories = WrapFunctionToRunAtChildPosition(factories);
 
             DoThenAdvancePosition(() => result = 
-                _visitor.visitArrange(origin, description, factories, _position));
+                _visitor.visitBeforeEach(origin, description, factories, _position));
 
             return result;
         }

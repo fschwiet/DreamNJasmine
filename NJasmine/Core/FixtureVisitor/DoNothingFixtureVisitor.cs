@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
-    public class DoNothingFixtureVisitor : INJasmineFixtureVisitor
+    public class DoNothingFixtureVisitor : ISpecVisitor
     {
-        public void visitDescribe(string description, Action action)
+        public void visitFork(string description, Action action)
         {
         }
 
@@ -13,7 +13,7 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public virtual void visitIt(string description, Action action)
+        public virtual void visitTest(string description, Action action)
         {
         }
 
@@ -22,7 +22,7 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
         {
             return default(TArranged);
         }

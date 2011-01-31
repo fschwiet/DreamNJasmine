@@ -6,9 +6,9 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, INJasmineFixturePositionVisitor
+    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, ISpecPositionVisitor
     {
-        public class DescribeState : INJasmineFixturePositionVisitor
+        public class DescribeState : ISpecPositionVisitor
         {
             NJasmineTestMethod _subject;
 
@@ -17,7 +17,7 @@ namespace NJasmine.Core
                 _subject = subject;
             }
 
-            public virtual void visitDescribe(string description, Action action, TestPosition position)
+            public virtual void visitFork(string description, Action action, TestPosition position)
             {
                 if (_subject._position.ToString().StartsWith(position.ToString()))
                 {
@@ -33,7 +33,7 @@ namespace NJasmine.Core
                 });
             }
 
-            public virtual void visitIt(string description, Action action, TestPosition position)
+            public virtual void visitTest(string description, Action action, TestPosition position)
             {
                 if (position.ToString() == _subject._position.ToString())
                 {
@@ -61,7 +61,7 @@ namespace NJasmine.Core
                 return _subject._nUnitImports.GetInstance(position) as TFixture;
             }
 
-            public virtual TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            public virtual TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
             {
                 TArranged lastResult = default(TArranged);
 

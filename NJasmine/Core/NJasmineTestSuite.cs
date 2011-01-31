@@ -8,7 +8,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineTestSuite : TestSuite, INJasmineTest, INJasmineFixturePositionVisitor
+    class NJasmineTestSuite : TestSuite, INJasmineTest, ISpecPositionVisitor
     {
         public Test BuildNJasmineTestSuite()
         {
@@ -136,7 +136,7 @@ namespace NJasmine.Core
             MakeNameUnique(test);
         }
         
-        public void visitDescribe(string description, Action action, TestPosition position)
+        public void visitFork(string description, Action action, TestPosition position)
         {
             if (action == null)
             {
@@ -166,7 +166,7 @@ namespace NJasmine.Core
                 throw WrongMethodAfterItMethod(SpecMethod.afterEach);
         }
 
-        public void visitIt(string description, Action action, TestPosition position)
+        public void visitTest(string description, Action action, TestPosition position)
         {
             if (action == null)
             {
@@ -198,7 +198,7 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(origin);

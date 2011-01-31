@@ -60,8 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
-    <Compile Include="Core\FixtureVisitor\INJasmineFixturePositionVisitor.cs" />
-    <Compile Include="Core\FixtureVisitor\INJasmineFixtureVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
+    <Compile Include="Core\FixtureVisitor\ISpecVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecMethod.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />

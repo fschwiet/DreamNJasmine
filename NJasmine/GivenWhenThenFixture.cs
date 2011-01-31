@@ -29,22 +29,22 @@ namespace NJasmine
     {
         public void given(string givenPhrase, Action specification)
         {
-            _visitor.visitDescribe("given " + givenPhrase, specification);
+            _visitor.visitFork("given " + givenPhrase, specification);
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            _visitor.visitDescribe("when " + whenPhrase, specification);
+            _visitor.visitFork("when " + whenPhrase, specification);
         }
 
         public void then(string thenPhrase, Action test)
         {
-            _visitor.visitIt("then " + thenPhrase, test);
+            _visitor.visitTest("then " + thenPhrase, test);
         }
 
         public void then(string thenPhrase)
         {
-            _visitor.visitIt("then " + thenPhrase, null);
+            _visitor.visitTest("then " + thenPhrase, null);
         }
 
         public void cleanup(Action cleanup)
@@ -54,7 +54,7 @@ namespace NJasmine
 
         public void arrange(Action arrangeAction)
         {
-            _visitor.visitArrange(SpecMethod.arrange, null, new Func<string>[]
+            _visitor.visitBeforeEach(SpecMethod.arrange, null, new Func<string>[]
             {
                 delegate() { arrangeAction(); return null; }
             });
@@ -62,7 +62,7 @@ namespace NJasmine
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            return _visitor.visitArrange(SpecMethod.arrange, null, new Func<T>[] {arrangeAction});
+            return _visitor.visitBeforeEach(SpecMethod.arrange, null, new Func<T>[] {arrangeAction});
         }
 
         public void expect(Expression<Func<bool>> expectation)

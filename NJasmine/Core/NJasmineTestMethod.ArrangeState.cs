@@ -16,12 +16,12 @@ namespace NJasmine.Core
                 _specMethod = specMethod;
             }
 
-            public override void visitDescribe(string description, Action action, TestPosition position)
+            public override void visitFork(string description, Action action, TestPosition position)
             {
                 throw DontException(SpecMethod.describe);
             }
 
-            public override void visitIt(string description, Action action, TestPosition position)
+            public override void visitTest(string description, Action action, TestPosition position)
             {
                 throw DontException(SpecMethod.it);
             }
