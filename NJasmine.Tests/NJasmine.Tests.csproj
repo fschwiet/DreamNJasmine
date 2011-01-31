@@ -82,7 +82,6 @@
     <Compile Include="PassingFixtures\suite_arranging_nondisposables.cs" />
     <Compile Include="PassingFixtures\imports_NUnit_fixture.cs" />
     <Compile Include="PassingFixtures\suite_arranging_disposables.cs" />
-    <Compile Include="Extras\ThrowMatchersTests.cs" />
     <Compile Include="PassingFixtures\supports_nunit_setup_by_namespace.cs" />
     <Compile Include="PassingFixtures\supports_unimplemented_specs.cs" />
     <Compile Include="RunExternalAttribute.cs" />

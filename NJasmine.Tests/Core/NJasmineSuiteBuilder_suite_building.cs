@@ -4,11 +4,12 @@ using NJasmine;
 using NJasmine.Core;
 using NJasmineTests.FailingFixtures;
 using NUnit.Framework;
+using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineSuiteBuilder_suite_building : ExpectationsFixture
+    public class NJasmineSuiteBuilder_suite_building
     {
         public class TestOnlyUsingDescribeAndIt : NJasmineFixture
         {
@@ -41,8 +42,8 @@ namespace NJasmineTests.Core
 
             var rootTest = sut.BuildFrom(suiteType);
 
-            expect(rootTest.TestName.Name).to.Equal(suiteType.Name);
-            expect(rootTest.TestName.FullName).to.Equal(suiteType.Namespace + "." + suiteType.Name);
+            rootTest.TestName.Name.Should().Equal(suiteType.Name);
+            rootTest.TestName.FullName.Should().Equal(suiteType.Namespace + "." + suiteType.Name);
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace NJasmineTests.Core
 
             Action<TestPosition, string> expectHasName = delegate(TestPosition position, string name)
             {
-                expect(elements[position].TestName.Name).to.Equal(name);
+                elements[position].TestName.Name.Should().Equal(name);
             };
 
             expectHasName(new TestPosition(0), "first test");
@@ -69,7 +70,7 @@ namespace NJasmineTests.Core
         {
             var elements = NJasmineSuiteBuilder.LoadElementsByPosition<reports_exception_within_describe>();
 
-            expect(elements[new TestPosition(1)]).to.Be.OfType<NJasmineInvalidTestSuite>();
+            elements[new TestPosition(1)].Should().Be.OfType<NJasmineInvalidTestSuite>();
         }
 
         [Test]
@@ -77,7 +78,7 @@ namespace NJasmineTests.Core
         {
             var elements = NJasmineSuiteBuilder.LoadElementsByPosition<reports_exception_at_outermost_scope>();
 
-            expect(elements[new TestPosition()]).to.Be.OfType<NJasmineInvalidTestSuite>();
+            elements[new TestPosition()].Should().Be.OfType<NJasmineInvalidTestSuite>();
         }
     }
 }

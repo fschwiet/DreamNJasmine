@@ -2,6 +2,7 @@
 using System.IO;
 using NJasmine;
 using NJasmine.Extras;
+using NUnit.Framework;
 using Should.Fluent;
 using Should.Fluent.Model;
 
@@ -13,13 +14,13 @@ namespace NJasmineTests.Extras
         {
             it("gives a useful exception if the installation zip is not found", delegate
             {
-                expect((Action)delegate
+                Assert.Throws<FileNotFoundException>(delegate
                 {
                     var result =
                         ZipDeployTools.UnzipBinDeployedToTempDirectory(
                             "incorrectResourcePath.zip", "NJasmine.Extras");
 
-                }).to.Throw<FileNotFoundException>();
+                });
             });
 
             it("can decompress installation zip", delegate

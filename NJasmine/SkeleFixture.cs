@@ -3,7 +3,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
-    public abstract class SkeleFixture : ExpectationsFixture
+    public abstract class SkeleFixture
     {
         protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
 

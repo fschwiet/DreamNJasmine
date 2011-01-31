@@ -1,8 +1,6 @@
 NOTE:  NJasmine current only works with NUnit 2.5.9.
 
-NJasmine is a port of a subset of JasmineBDD language to .NET in C#.  At the moment, it supports describe(), beforeEach(), afterEach(), it(), and expect().
-
-NJasmine uses Should.Fluent.dll for expressing expectations.  It exposes Should.Fluent's Should() via expect(), but this has limitations.  Prefer expressing expectations as N.Should() instead of expect(N) until I can fix this issue.
+NJasmine is a port of a subset of JasmineBDD language to .NET in C#.  At the moment, it supports describe(), beforeEach(), afterEach(), and it().
 
 NJasmine also supports cleanup of test resources that use IDisposable.  Call arrange<TDisposable>() or arrange(Action<TDisposable>) to load such resources and they will automatically be Dispose()d.  You may call arrange() outside of beforeEach(), it().
 

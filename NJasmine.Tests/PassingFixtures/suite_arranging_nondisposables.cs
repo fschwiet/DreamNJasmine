@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmineTests.Core;
+using Should.Fluent;
 
 namespace NJasmineTests.PassingFixtures
 {
@@ -62,9 +63,9 @@ disposing some_observable_A
                 
                 it("a test", delegate
                 {
-                    expect(a).not.to.Be.Null();
-                    expect(b).not.to.Be.Null();
-                    expect(c).not.to.Be.Null();
+                    a.Should().Not.Be.Null();
+                    b.Should().Not.Be.Null();
+                    c.Should().Not.Be.Null();
                 });
             });
 
@@ -78,9 +79,9 @@ disposing some_observable_A
                     {
                         it("a test", delegate
                         {
-                            expect(a).not.to.Be.Null();
-                            expect(b).not.to.Be.Null();
-                            expect(d).not.to.Be.Null();
+                            a.Should().Not.Be.Null();
+                            b.Should().Not.Be.Null();
+                            d.Should().Not.Be.Null();
                         });
 
                         it("inline using", delegate
@@ -88,8 +89,8 @@ disposing some_observable_A
                             var e = arrange<some_observable_E>();
                             var f = arrange(() => new some_observable_F());
 
-                            expect(e).not.to.Be.Null();
-                            expect(f).not.to.Be.Null();
+                            e.Should().Not.Be.Null();
+                            f.Should().Not.Be.Null();
                         });
                     });
                 });

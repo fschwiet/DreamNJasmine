@@ -5,15 +5,16 @@ using System.Text;
 using NJasmine;
 using NJasmine.Core;
 using NUnit.Framework;
+using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class TestPositionTests : ExpectationsFixture
+    public class TestPositionTests
     {
         public void expectPositionsEqual(TestPosition a, TestPosition b)
         {
-            expect(a.Coordinates).to.Equal(b.Coordinates);
+            a.Coordinates.Should().Equal(b.Coordinates);
         }
 
         [Test]
@@ -23,7 +24,7 @@ namespace NJasmineTests.Core
             var position2 = new TestPosition(4, 5, 6);
             var position3 = new TestPosition(7, 8, 9);
 
-            expect(position1.Equals(new TestPosition(1, 2, 3))).to.Equal(true);
+            position1.Equals(new TestPosition(1, 2, 3)).Should().Equal(true);
 
             Dictionary<TestPosition, int> dictionary = new Dictionary<TestPosition, int>();
 
@@ -31,9 +32,9 @@ namespace NJasmineTests.Core
             dictionary[position2] = 2;
             dictionary[position3] = 3;
 
-            expect(dictionary[new TestPosition(1,2,3)]).to.Equal(1);
-            expect(dictionary[new TestPosition(4,5,6)]).to.Equal(2);
-            expect(dictionary[new TestPosition(7,8,9)]).to.Equal(3);
+            dictionary[new TestPosition(1,2,3)].Should().Equal(1);
+            dictionary[new TestPosition(4,5,6)].Should().Equal(2);
+            dictionary[new TestPosition(7,8,9)].Should().Equal(3);
         }
 
 

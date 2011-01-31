@@ -2,6 +2,7 @@
 using System.Threading;
 using NJasmine;
 using NUnit.Framework;
+using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
@@ -13,7 +14,7 @@ namespace NJasmineTests.Core
         {
             it("is STA", delegate
             {
-                expect(System.Threading.Thread.CurrentThread.GetApartmentState()).to.Equal(ApartmentState.STA);
+                System.Threading.Thread.CurrentThread.GetApartmentState().Should().Equal(ApartmentState.STA);
             });
         }
     }
