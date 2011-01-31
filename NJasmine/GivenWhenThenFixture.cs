@@ -39,12 +39,12 @@ namespace NJasmine
 
         public void then(string thenPhrase, Action test)
         {
-            _visitor.visitTest("then " + thenPhrase, test);
+            _visitor.visitTest(SpecElement.then, "then " + thenPhrase, test);
         }
 
         public void then(string thenPhrase)
         {
-            _visitor.visitTest("then " + thenPhrase, null);
+            _visitor.visitTest(SpecElement.then, "then " + thenPhrase, null);
         }
 
         public void cleanup(Action cleanup)

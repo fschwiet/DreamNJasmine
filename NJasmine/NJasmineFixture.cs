@@ -36,12 +36,12 @@ namespace NJasmine
 
         public void it(string description)
         {
-            _visitor.visitTest(description, null);
+            _visitor.visitTest(SpecElement.it, description, null);
         }
 
         public void it(string description, Action action)
         {
-            _visitor.visitTest(description, action);
+            _visitor.visitTest(SpecElement.it, description, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()

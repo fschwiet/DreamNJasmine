@@ -57,10 +57,10 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitAfterEach(WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
-        public void visitTest(string description, Action action)
+        public void visitTest(SpecElement origin, string description, Action action)
         {
-            DoThenAdvancePosition(() => 
-                _visitor.visitTest(description, WrapActionToRunAtFirstchildPosition(action), _position));
+            DoThenAdvancePosition(() =>
+                _visitor.visitTest(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
         public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()

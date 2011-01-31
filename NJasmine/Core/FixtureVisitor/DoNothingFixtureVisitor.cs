@@ -13,7 +13,7 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public virtual void visitTest(string description, Action action)
+        public virtual void visitTest(SpecElement origin, string description, Action action)
         {
         }
 

@@ -101,9 +101,9 @@ namespace NJasmine.Core
             _state.visitAfterEach(action, position);
         }
 
-        public void visitTest(string description, Action action, TestPosition position)
+        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _state.visitTest(description, action, position);
+            _state.visitTest(origin, description, action, position);
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()

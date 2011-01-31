@@ -21,9 +21,9 @@ namespace NJasmine.Core
                 throw DontException(origin);
             }
 
-            public override void visitTest(string description, Action action, TestPosition position)
+            public override void visitTest(SpecElement origin, string description, Action action, TestPosition position)
             {
-                throw DontException(SpecElement.it);
+                throw DontException(origin);
             }
 
             public override TFixture visitImportNUnit<TFixture>(TestPosition position) 

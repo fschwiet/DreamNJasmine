@@ -166,7 +166,7 @@ namespace NJasmine.Core
                 throw WrongMethodAfterItMethod(_testTypeReached.Value, SpecElement.afterEach);
         }
 
-        public void visitTest(string description, Action action, TestPosition position)
+        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
             if (action == null)
             {
@@ -185,7 +185,7 @@ namespace NJasmine.Core
                 _accumulatedDescendants.Add(testMethod);
             }
 
-            _testTypeReached = SpecElement.it;
+            _testTypeReached = origin;
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()

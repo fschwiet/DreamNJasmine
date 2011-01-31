@@ -33,11 +33,11 @@ namespace NJasmine.Core
                 });
             }
 
-            public virtual void visitTest(string description, Action action, TestPosition position)
+            public virtual void visitTest(SpecElement origin, string description, Action action, TestPosition position)
             {
                 if (position.ToString() == _subject._position.ToString())
                 {
-                    _subject.whileInState(new ActState(_subject, SpecElement.it), action);
+                    _subject.whileInState(new ActState(_subject, origin), action);
 
                     throw new TestFinishedException();
                 }

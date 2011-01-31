@@ -9,6 +9,7 @@
         importNUnit,
         arrange,
         given,
-        when
+        when,
+        then
     }
 }
