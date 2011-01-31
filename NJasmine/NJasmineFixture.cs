@@ -31,7 +31,7 @@ namespace NJasmine
 
         public void afterEach(Action action)
         {
-            _visitor.visitAfterEach(action);
+            _visitor.visitAfterEach(SpecElement.afterEach, action);
         }
 
         public void it(string description)

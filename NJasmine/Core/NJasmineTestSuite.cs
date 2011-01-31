@@ -160,10 +160,10 @@ namespace NJasmine.Core
             }
         }
 
-        public void visitAfterEach(Action action, TestPosition position)
+        public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
             if (_testTypeReached.HasValue)
-                throw WrongMethodAfterItMethod(_testTypeReached.Value, SpecElement.afterEach);
+                throw WrongMethodAfterItMethod(_testTypeReached.Value, origin);
         }
 
         public void visitTest(SpecElement origin, string description, Action action, TestPosition position)

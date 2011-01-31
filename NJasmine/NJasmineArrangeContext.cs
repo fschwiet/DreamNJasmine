@@ -23,7 +23,7 @@ namespace NJasmine
 
         public void afterEach(Action action)
         {
-            _specVisitor.visitAfterEach(action);
+            _specVisitor.visitAfterEach(SpecElement.afterEach, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()

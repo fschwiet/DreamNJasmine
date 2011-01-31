@@ -10,6 +10,7 @@
         arrange,
         given,
         when,
-        then
+        then,
+        cleanup
     }
 }

@@ -43,7 +43,7 @@ namespace NJasmine
 
         public void cleanup(Action cleanup)
         {
-            _specVisitor.visitAfterEach(cleanup);
+            _specVisitor.visitAfterEach(SpecElement.cleanup, cleanup);
         }
 
         public void arrange(Action arrangeAction)

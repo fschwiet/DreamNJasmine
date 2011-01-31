@@ -9,7 +9,7 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public virtual void visitAfterEach(Action action)
+        public virtual void visitAfterEach(SpecElement origin, Action action)
         {
         }
 

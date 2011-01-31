@@ -13,9 +13,9 @@ namespace NJasmine.Core
             {
             }
 
-            public override void visitAfterEach(Action action, TestPosition position)
+            public override void visitAfterEach(SpecElement origin, Action action, TestPosition position)
             {
-                throw DontException(SpecElement.afterEach);
+                throw DontException(origin);
             }
 
             public override TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)

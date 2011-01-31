@@ -51,10 +51,10 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitFork(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
-        public void visitAfterEach(Action action)
+        public void visitAfterEach(SpecElement origin, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitAfterEach(WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitAfterEach(origin, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
         public void visitTest(SpecElement origin, string description, Action action)

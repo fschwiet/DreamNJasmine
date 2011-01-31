@@ -28,7 +28,7 @@ namespace NJasmine
 
         public void cleanup(Action cleanup)
         {
-            _visitor.visitAfterEach(cleanup);
+            _visitor.visitAfterEach(SpecElement.cleanup, cleanup);
         }
 
         public void arrange(Action arrangeAction)

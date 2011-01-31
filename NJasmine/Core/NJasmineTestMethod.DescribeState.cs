@@ -25,11 +25,11 @@ namespace NJasmine.Core
                 }
             }
 
-            public virtual void visitAfterEach(Action action, TestPosition position)
+            public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
             {
                 _subject._allTeardowns.Add(delegate()
                 {
-                    _subject.whileInState(new CleanupState(_subject, SpecElement.afterEach), action);
+                    _subject.whileInState(new CleanupState(_subject, origin), action);
                 });
             }
 
