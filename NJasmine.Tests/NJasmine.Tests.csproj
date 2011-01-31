@@ -77,6 +77,7 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
     <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
+    <Compile Include="PassingFixtures\Can_mix_runtime_models.cs" />
     <Compile Include="PassingFixtures\constructor_is_run_once_per_test.cs" />
     <Compile Include="PassingFixtures\GivenWhenThenFixture_supports_the_Basics.cs" />
     <Compile Include="PassingFixtures\suite_arranging_nondisposables.cs" />

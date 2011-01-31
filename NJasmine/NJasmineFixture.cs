@@ -12,7 +12,7 @@ using Assert = Should.Core.Assertions.Assert;
 
 namespace NJasmine
 {
-    public abstract class NJasmineFixture : SkeleFixture, IArrangeContext
+    public abstract class NJasmineFixture : SkeleFixture
     {
         public void describe(string description)
         {

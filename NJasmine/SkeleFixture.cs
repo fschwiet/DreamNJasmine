@@ -7,6 +7,11 @@ namespace NJasmine
     {
         protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
 
+        public ISpecVisitor SpecVisitor
+        {
+            get { return _visitor; }
+        }
+
         public virtual NJasmineFixture.VisitorChangedContext UseVisitor(ISpecVisitor visitor)
         {
             var currentVisitor = _visitor;

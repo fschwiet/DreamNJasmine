@@ -78,8 +78,11 @@
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
+    <Compile Include="GivenWhenThenContext.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />
-    <Compile Include="IArrangeContext.cs" />
+    <Compile Include="IGivenWhenThenContext.cs" />
+    <Compile Include="INJasmineArrangeContext.cs" />
+    <Compile Include="NJasmineArrangeContext.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkeleFixture.cs" />

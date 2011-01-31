@@ -2,7 +2,7 @@
 
 namespace NJasmine
 {
-    public interface IArrangeContext
+    public interface INJasmineArrangeContext
     {
         void beforeEach(Action action);
         void afterEach(Action action);
