@@ -54,15 +54,12 @@ namespace NJasmine
 
         public void arrange(Action arrangeAction)
         {
-            _visitor.visitBeforeEach(SpecMethod.arrange, null, new Func<string>[]
-            {
-                delegate() { arrangeAction(); return null; }
-            });
+            _visitor.visitBeforeEach(SpecMethod.arrange, null, delegate() { arrangeAction(); return (string)null; });
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            return _visitor.visitBeforeEach(SpecMethod.arrange, null, new Func<T>[] {arrangeAction});
+            return _visitor.visitBeforeEach(SpecMethod.arrange, null, arrangeAction);
         }
 
         public void expect(Expression<Func<bool>> expectation)

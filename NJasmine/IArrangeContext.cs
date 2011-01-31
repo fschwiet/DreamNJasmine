@@ -10,6 +10,6 @@ namespace NJasmine
         TArranged arrange<TArranged>() where TArranged : class, new();
         TArranged arrange<TArranged>(Func<TArranged> factory);
         void arrange(Action action);
-        void arrange(string description, params Action[] actions);
+        void arrange(string description, Action action);
     }
 }

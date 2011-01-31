@@ -198,7 +198,7 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(origin);

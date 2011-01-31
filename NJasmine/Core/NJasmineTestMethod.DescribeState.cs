@@ -61,35 +61,27 @@ namespace NJasmine.Core
                 return _subject._nUnitImports.GetInstance(position) as TFixture;
             }
 
-            public virtual TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            public virtual TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
             {
-                TArranged lastResult = default(TArranged);
+                TArranged result = default(TArranged);
 
-                foreach (var factory in factories)
+                _subject.whileInState(new ArrangeState(_subject, origin), delegate
                 {
-                    var currentFactory = factory;
-                    TArranged result = default(TArranged);
+                    result = factory();
+                });
 
-                    _subject.whileInState(new ArrangeState(_subject, origin), delegate
+                if (result is IDisposable)
+                {
+                    _subject._allTeardowns.Add(delegate
                     {
-                        result = currentFactory();
-                    });
-
-                    if (result is IDisposable)
-                    {
-                        _subject._allTeardowns.Add(delegate
+                        _subject.whileInState(new CleanupState(_subject, origin), delegate
                         {
-                            _subject.whileInState(new CleanupState(_subject, origin), delegate
-                            {
-                                (result as IDisposable).Dispose();
-                            });
+                            (result as IDisposable).Dispose();
                         });
-                    }
-
-                    lastResult = result;
+                    });
                 }
 
-                return lastResult;
+                return result;
             }
         }
     }

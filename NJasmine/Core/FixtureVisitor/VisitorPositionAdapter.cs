@@ -44,29 +44,7 @@ namespace NJasmine.Core.FixtureVisitor
                 action();
             };
         }
-
-        private IEnumerable<Func<T>> WrapFunctionToRunAtChildPosition<T>(IEnumerable<Func<T>> funcs)
-        {
-            List<Func<T>> result = new List<Func<T>>();
-            var nextChildPosition = _position.GetFirstChildPosition();
-
-            foreach(var func in funcs)
-            {
-                var thisPosition = nextChildPosition;
-                var thisFunc = func;
-
-                result.Add(delegate
-                {
-                    _position = thisPosition.GetFirstChildPosition();
-                    return thisFunc();
-                });
-
-                nextChildPosition = nextChildPosition.GetNextSiblingPosition();
-            }
-
-            return result;
-        }
-
+        
         public void visitFork(string description, Action action)
         {
             DoThenAdvancePosition(() => 
@@ -95,14 +73,12 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
+        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory)
         {
             TArranged result = default(TArranged);
 
-            factories = WrapFunctionToRunAtChildPosition(factories);
-
             DoThenAdvancePosition(() => result = 
-                _visitor.visitBeforeEach(origin, description, factories, _position));
+                _visitor.visitBeforeEach(origin, description, factory, _position));
 
             return result;
         }

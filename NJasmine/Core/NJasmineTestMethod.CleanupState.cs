@@ -18,7 +18,7 @@ namespace NJasmine.Core
                 throw DontException(SpecMethod.afterEach);
             }
 
-            public override TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            public override TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
             {
                 throw DontException(origin);
             }

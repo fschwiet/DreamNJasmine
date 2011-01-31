@@ -26,10 +26,7 @@ namespace NJasmine
 
         public void beforeEach(Action action)
         {
-            _visitor.visitBeforeEach(SpecMethod.beforeEach, null, new Func<string>[]
-            {
-                delegate() { action(); return null; }
-            });
+            _visitor.visitBeforeEach(SpecMethod.beforeEach, null, delegate() { action(); return (string)null; });
         }
 
         public void afterEach(Action action)
@@ -59,12 +56,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, new [] {factory});
+            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, factory);
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, new[] { factory });
+            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, factory);
         }
 
         public void arrange(Action action)
@@ -72,24 +69,9 @@ namespace NJasmine
             arrange(null, action);
         }
 
-        public void arrange(string description, params Action[] actions)
+        public void arrange(string description, Action action)
         {
-            List<Func<object>> factories = new List<Func<object>>();
-
-            foreach(var actionCursor in actions)
-            {
-                var action = actionCursor;
-
-                Func<object> nilFactory = delegate
-                {
-                    action();
-                    return null;
-                };
-
-                factories.Add(nilFactory);
-            }
-
-            _visitor.visitBeforeEach<object>(SpecMethod.arrange, description, factories.ToArray());
+            _visitor.visitBeforeEach<string>(SpecMethod.arrange, description, delegate() { action(); return (string)null; });
         }
     }
 }

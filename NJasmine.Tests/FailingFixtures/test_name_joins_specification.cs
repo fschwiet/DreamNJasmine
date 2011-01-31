@@ -27,7 +27,7 @@ namespace NJasmineTests.FailingFixtures
 
             describe("describe with setup", delegate
             {
-                arrange("simple arrange");
+                arrange("simple arrange", delegate {});
 
                 it("simple test");
             });
