@@ -29,12 +29,12 @@ namespace NJasmine
     {
         public void given(string givenPhrase, Action specification)
         {
-            _visitor.visitFork("given " + givenPhrase, specification);
+            _visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification);
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            _visitor.visitFork("when " + whenPhrase, specification);
+            _visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification);
         }
 
         public void then(string thenPhrase, Action test)

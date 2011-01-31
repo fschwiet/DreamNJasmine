@@ -45,10 +45,10 @@ namespace NJasmine.Core.FixtureVisitor
             };
         }
         
-        public void visitFork(string description, Action action)
+        public void visitFork(SpecElement origin, string description, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitFork(description, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitFork(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
         public void visitAfterEach(Action action)

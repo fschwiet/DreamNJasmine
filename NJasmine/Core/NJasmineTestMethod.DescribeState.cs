@@ -17,7 +17,7 @@ namespace NJasmine.Core
                 _subject = subject;
             }
 
-            public virtual void visitFork(string description, Action action, TestPosition position)
+            public virtual void visitFork(SpecElement origin, string description, Action action, TestPosition position)
             {
                 if (_subject._position.ToString().StartsWith(position.ToString()))
                 {

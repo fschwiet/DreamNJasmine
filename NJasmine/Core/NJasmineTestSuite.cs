@@ -67,7 +67,7 @@ namespace NJasmine.Core
         readonly List<string> _globallyAccumulatedTestNames;
 
         string _baseNameForChildTests;
-        bool _haveReachedAnIt;
+        SpecElement? _testTypeReached;
 
         public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
@@ -79,7 +79,7 @@ namespace NJasmine.Core
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
 
             _accumulatedDescendants = new List<Test>();
-            _haveReachedAnIt = false;
+            _testTypeReached = null;
 
             maintainTestOrder = true;
         }
@@ -94,7 +94,7 @@ namespace NJasmine.Core
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
 
             _accumulatedDescendants = new List<Test>();
-            _haveReachedAnIt = false;
+            _testTypeReached = null;
 
             maintainTestOrder = true;
         }
@@ -136,7 +136,7 @@ namespace NJasmine.Core
             MakeNameUnique(test);
         }
         
-        public void visitFork(string description, Action action, TestPosition position)
+        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
             if (action == null)
             {
@@ -162,8 +162,8 @@ namespace NJasmine.Core
 
         public void visitAfterEach(Action action, TestPosition position)
         {
-            if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecElement.afterEach);
+            if (_testTypeReached.HasValue)
+                throw WrongMethodAfterItMethod(_testTypeReached.Value, SpecElement.afterEach);
         }
 
         public void visitTest(string description, Action action, TestPosition position)
@@ -185,13 +185,13 @@ namespace NJasmine.Core
                 _accumulatedDescendants.Add(testMethod);
             }
 
-            _haveReachedAnIt = true;
+            _testTypeReached = SpecElement.it;
         }
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecElement.importNUnit);
+            if (_testTypeReached.HasValue)
+                throw WrongMethodAfterItMethod(_testTypeReached.Value, SpecElement.importNUnit);
 
             _nunitImports.AddFixture(position, typeof(TFixture));
 
@@ -200,8 +200,8 @@ namespace NJasmine.Core
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
         {
-            if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(origin);
+            if (_testTypeReached.HasValue)
+                throw WrongMethodAfterItMethod(_testTypeReached.Value, origin);
 
             if (description != null)
                 _baseNameForChildTests = _baseNameForChildTests + ", " + description;
@@ -219,9 +219,9 @@ namespace NJasmine.Core
             _nunitImports.DoOnetimeTearDown();
         }
 
-        InvalidOperationException WrongMethodAfterItMethod(SpecElement innerSpecElement)
+        InvalidOperationException WrongMethodAfterItMethod(SpecElement testElement, SpecElement innerSpecElement)
         {
-            return new InvalidOperationException("Called " + innerSpecElement + "() after " + SpecElement.it + "().");
+            return new InvalidOperationException("Called " + innerSpecElement + "() after test started, within a call to " + testElement + "().");
         }
     }
 }

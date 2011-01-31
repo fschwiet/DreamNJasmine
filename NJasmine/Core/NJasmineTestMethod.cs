@@ -91,9 +91,9 @@ namespace NJasmine.Core
             }
         }
 
-        public void visitFork(string description, Action action, TestPosition position)
+        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _state.visitFork(description, action, position);
+            _state.visitFork(origin, description, action, position);
         }
 
         public void visitAfterEach(Action action, TestPosition position)

@@ -7,6 +7,8 @@
         afterEach,
         it,
         importNUnit,
-        arrange
+        arrange,
+        given,
+        when
     }
 }

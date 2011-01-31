@@ -21,7 +21,7 @@ namespace NJasmine
 
         public void describe(string description, Action action)
         {
-            _visitor.visitFork(description, action);
+            _visitor.visitFork(SpecElement.describe, description, action);
         }
 
         public void beforeEach(Action action)

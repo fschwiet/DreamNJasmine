@@ -16,9 +16,9 @@ namespace NJasmine.Core
                 SpecElement = specElement;
             }
 
-            public override void visitFork(string description, Action action, TestPosition position)
+            public override void visitFork(SpecElement origin, string description, Action action, TestPosition position)
             {
-                throw DontException(SpecElement.describe);
+                throw DontException(origin);
             }
 
             public override void visitTest(string description, Action action, TestPosition position)

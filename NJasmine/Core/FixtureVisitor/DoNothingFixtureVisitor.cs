@@ -5,7 +5,7 @@ namespace NJasmine.Core.FixtureVisitor
 {
     public class DoNothingFixtureVisitor : ISpecVisitor
     {
-        public void visitFork(string description, Action action)
+        public void visitFork(SpecElement origin, string description, Action action)
         {
         }
 
