@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
@@ -26,46 +27,42 @@ namespace NJasmine
 
     public abstract class GivenWhenThenFixture : SkeleFixture, ISpecificationVisitor, ITestExecutionVisitor
     {
-        public NJasmineFixture _internal = new InnerFixture();
-
-        public override NJasmineFixture.VisitorChangedContext UseVisitor(Core.FixtureVisitor.INJasmineFixtureVisitor visitor)
-        {
-            return _internal.UseVisitor(visitor);
-        }
-
         public void given(string givenPhrase, Action specification)
         {
-            _internal.describe("given " + givenPhrase, specification);
+            _visitor.visitDescribe("given " + givenPhrase, specification);
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            _internal.describe("when " + whenPhrase, specification);
+            _visitor.visitDescribe("when " + whenPhrase, specification);
         }
 
         public void then(string thenPhrase, Action test)
         {
-            _internal.it("then " + thenPhrase, test);
+            _visitor.visitIt("then " + thenPhrase, test);
         }
 
         public void then(string thenPhrase)
         {
-            _internal.it("then " + thenPhrase);
+            _visitor.visitIt("then " + thenPhrase, null);
         }
 
         public void cleanup(Action cleanup)
         {
-            _internal.afterEach(cleanup);
+            _visitor.visitAfterEach(cleanup);
         }
 
         public void arrange(Action arrangeAction)
         {
-            _internal.arrange(arrangeAction);
+            _visitor.visitArrange(SpecMethod.arrange, null, new Func<string>[]
+            {
+                delegate() { arrangeAction(); return null; }
+            });
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            return _internal.arrange(arrangeAction);
+            return _visitor.visitArrange(SpecMethod.arrange, null, new Func<T>[] {arrangeAction});
         }
 
         public void expect(Expression<Func<bool>> expectation)
@@ -75,7 +72,7 @@ namespace NJasmine
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
-            return _internal.importNUnit<TFixture>();
+            return _visitor.visitImportNUnit<TFixture>();
         }
 
         public class InnerFixture : NJasmineFixture
