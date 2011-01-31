@@ -9,10 +9,6 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public virtual void visitBeforeEach(Action action)
-        {
-        }
-
         public virtual void visitAfterEach(Action action)
         {
         }
@@ -26,7 +22,7 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
+        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
         {
             return default(TArranged);
         }

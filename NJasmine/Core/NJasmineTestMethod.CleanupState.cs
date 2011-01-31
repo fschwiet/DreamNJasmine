@@ -13,19 +13,14 @@ namespace NJasmine.Core
             {
             }
 
-            public override void visitBeforeEach(Action action, TestPosition position)
-            {
-                throw DontException(SpecMethod.beforeEach);
-            }
-
             public override void visitAfterEach(Action action, TestPosition position)
             {
                 throw DontException(SpecMethod.afterEach);
             }
 
-            public override TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            public override TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
             {
-                throw DontException(SpecMethod.arrange);
+                throw DontException(origin);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using NJasmine.Core.FixtureVisitor;
+﻿using System;
+using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
@@ -16,5 +17,24 @@ namespace NJasmine
         }
 
         public abstract void Specify();
+
+        public class VisitorChangedContext : IDisposable
+        {
+            Action _action;
+
+            public VisitorChangedContext(Action action)
+            {
+                _action = action;
+            }
+
+            public void Dispose()
+            {
+                if (_action != null)
+                {
+                    _action();
+                    _action = null;
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine.Core;
+using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;
 using NUnit.Framework;
 using Should.Fluent;
@@ -13,25 +14,6 @@ namespace NJasmine
 {
     public abstract class NJasmineFixture : SkeleFixture, IArrangeContext
     {
-        public class VisitorChangedContext : IDisposable
-        {
-            Action _action;
-
-            public VisitorChangedContext(Action action)
-            {
-                _action = action;
-            }
-
-            public void Dispose()
-            {
-                if (_action != null)
-                {
-                    _action();
-                    _action = null;
-                }
-            }
-        }
-
         public void describe(string description)
         {
             describe(description, null);
@@ -44,7 +26,10 @@ namespace NJasmine
 
         public void beforeEach(Action action)
         {
-            _visitor.visitBeforeEach(action);
+            _visitor.visitArrange(SpecMethod.beforeEach, null, new Func<string>[]
+            {
+                delegate() { action(); return null; }
+            });
         }
 
         public void afterEach(Action action)
@@ -74,12 +59,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitArrange<TArranged>(null, new [] {factory});
+            return _visitor.visitArrange<TArranged>(SpecMethod.arrange, null, new [] {factory});
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitArrange<TArranged>(null, new[] { factory });
+            return _visitor.visitArrange<TArranged>(SpecMethod.arrange, null, new[] { factory });
         }
 
         public void arrange(Action action)
@@ -104,7 +89,7 @@ namespace NJasmine
                 factories.Add(nilFactory);
             }
 
-            _visitor.visitArrange<object>(description, factories.ToArray());
+            _visitor.visitArrange<object>(SpecMethod.arrange, description, factories.ToArray());
         }
     }
 }

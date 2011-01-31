@@ -73,12 +73,6 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitDescribe(description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
-        public void visitBeforeEach(Action action)
-        {
-            DoThenAdvancePosition(() => 
-                _visitor.visitBeforeEach(WrapActionToRunAtFirstchildPosition(action), _position));
-        }
-
         public void visitAfterEach(Action action)
         {
             DoThenAdvancePosition(() => 
@@ -101,14 +95,14 @@ namespace NJasmine.Core.FixtureVisitor
             return result;
         }
 
-        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories)
+        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories)
         {
             TArranged result = default(TArranged);
 
             factories = WrapFunctionToRunAtChildPosition(factories);
 
             DoThenAdvancePosition(() => result = 
-                _visitor.visitArrange(description, factories, _position));
+                _visitor.visitArrange(origin, description, factories, _position));
 
             return result;
         }

@@ -25,12 +25,6 @@ namespace NJasmine.Core
                 }
             }
 
-            public virtual void visitBeforeEach(Action action, TestPosition position)
-            {
-                _subject.whileInState(new ArrangeState(_subject, SpecMethod.beforeEach), 
-                    action);
-            }
-
             public virtual void visitAfterEach(Action action, TestPosition position)
             {
                 _subject._allTeardowns.Add(delegate()
@@ -67,7 +61,7 @@ namespace NJasmine.Core
                 return _subject._nUnitImports.GetInstance(position) as TFixture;
             }
 
-            public virtual TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+            public virtual TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
             {
                 TArranged lastResult = default(TArranged);
 
@@ -76,7 +70,7 @@ namespace NJasmine.Core
                     var currentFactory = factory;
                     TArranged result = default(TArranged);
 
-                    _subject.whileInState(new ArrangeState(_subject, SpecMethod.arrange), delegate
+                    _subject.whileInState(new ArrangeState(_subject, origin), delegate
                     {
                         result = currentFactory();
                     });
@@ -85,7 +79,7 @@ namespace NJasmine.Core
                     {
                         _subject._allTeardowns.Add(delegate
                         {
-                            _subject.whileInState(new CleanupState(_subject, SpecMethod.arrange), delegate
+                            _subject.whileInState(new CleanupState(_subject, origin), delegate
                             {
                                 (result as IDisposable).Dispose();
                             });

@@ -96,11 +96,6 @@ namespace NJasmine.Core
             _state.visitDescribe(description, action, position);
         }
 
-        public void visitBeforeEach(Action action, TestPosition position)
-        {
-            _state.visitBeforeEach(action, position);
-        }
-
         public void visitAfterEach(Action action, TestPosition position)
         {
             _state.visitAfterEach(action, position);
@@ -116,9 +111,9 @@ namespace NJasmine.Core
             return _state.visitImportNUnit<TFixture>(position);
         }
 
-        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
-            return _state.visitArrange<TArranged>(description, factories, position);
+            return _state.visitArrange<TArranged>(origin, description, factories, position);
         }
 
         public class TestFinishedException : Exception

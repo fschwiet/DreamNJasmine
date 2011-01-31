@@ -160,12 +160,6 @@ namespace NJasmine.Core
             }
         }
 
-        public void visitBeforeEach(Action action, TestPosition position)
-        {
-            if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.beforeEach);
-        }
-
         public void visitAfterEach(Action action, TestPosition position)
         {
             if (_haveReachedAnIt)
@@ -204,10 +198,10 @@ namespace NJasmine.Core
             return null;
         }
 
-        public TArranged visitArrange<TArranged>(string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
+        public TArranged visitArrange<TArranged>(SpecMethod origin, string description, IEnumerable<Func<TArranged>> factories, TestPosition position)
         {
             if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.arrange);
+                throw WrongMethodAfterItMethod(origin);
 
             if (description != null)
                 _baseNameForChildTests = _baseNameForChildTests + ", " + description;
