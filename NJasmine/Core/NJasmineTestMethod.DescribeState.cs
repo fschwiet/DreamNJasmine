@@ -29,7 +29,7 @@ namespace NJasmine.Core
             {
                 _subject._allTeardowns.Add(delegate()
                 {
-                    _subject.whileInState(new CleanupState(_subject, SpecMethod.afterEach), action);
+                    _subject.whileInState(new CleanupState(_subject, SpecElement.afterEach), action);
                 });
             }
 
@@ -37,7 +37,7 @@ namespace NJasmine.Core
             {
                 if (position.ToString() == _subject._position.ToString())
                 {
-                    _subject.whileInState(new ActState(_subject, SpecMethod.it), action);
+                    _subject.whileInState(new ActState(_subject, SpecElement.it), action);
 
                     throw new TestFinishedException();
                 }
@@ -45,14 +45,14 @@ namespace NJasmine.Core
 
             public virtual TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture : class, new()
             {
-                _subject.whileInState(new CleanupState(_subject, SpecMethod.importNUnit), delegate
+                _subject.whileInState(new CleanupState(_subject, SpecElement.importNUnit), delegate
                 {
                     _subject._nUnitImports.DoSetUp(position);
                 });
 
                 _subject._allTeardowns.Add(delegate
                 {
-                    _subject.whileInState(new CleanupState(_subject, SpecMethod.importNUnit), delegate
+                    _subject.whileInState(new CleanupState(_subject, SpecElement.importNUnit), delegate
                     {
                         _subject._nUnitImports.DoTearDown(position);
                     });
@@ -61,7 +61,7 @@ namespace NJasmine.Core
                 return _subject._nUnitImports.GetInstance(position) as TFixture;
             }
 
-            public virtual TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
+            public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
             {
                 TArranged result = default(TArranged);
 

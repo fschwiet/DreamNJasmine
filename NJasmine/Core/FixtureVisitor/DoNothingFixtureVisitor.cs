@@ -22,7 +22,7 @@ namespace NJasmine.Core.FixtureVisitor
             return default(TFixture);
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
         {
             return default(TArranged);
         }

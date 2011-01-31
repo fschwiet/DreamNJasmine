@@ -111,7 +111,7 @@ namespace NJasmine.Core
             return _state.visitImportNUnit<TFixture>(position);
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
         {
             return _state.visitBeforeEach<TArranged>(origin, description, factory, position);
         }

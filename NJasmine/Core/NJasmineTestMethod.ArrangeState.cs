@@ -8,32 +8,32 @@ namespace NJasmine.Core
     {
         public class ArrangeState : DescribeState
         {
-            protected readonly SpecMethod _specMethod;
+            protected readonly SpecElement SpecElement;
 
-            public ArrangeState(NJasmineTestMethod subject, SpecMethod specMethod)
+            public ArrangeState(NJasmineTestMethod subject, SpecElement specElement)
                 : base(subject)
             {
-                _specMethod = specMethod;
+                SpecElement = specElement;
             }
 
             public override void visitFork(string description, Action action, TestPosition position)
             {
-                throw DontException(SpecMethod.describe);
+                throw DontException(SpecElement.describe);
             }
 
             public override void visitTest(string description, Action action, TestPosition position)
             {
-                throw DontException(SpecMethod.it);
+                throw DontException(SpecElement.it);
             }
 
             public override TFixture visitImportNUnit<TFixture>(TestPosition position) 
             {
-                throw DontException(SpecMethod.importNUnit);
+                throw DontException(SpecElement.importNUnit);
             }
 
-            public InvalidOperationException DontException(SpecMethod innerSpecMethod)
+            public InvalidOperationException DontException(SpecElement innerSpecElement)
             {
-                return new InvalidOperationException("Called " + innerSpecMethod + "() within " + _specMethod + "().");
+                return new InvalidOperationException("Called " + innerSpecElement + "() within " + SpecElement + "().");
             }
         }
     }

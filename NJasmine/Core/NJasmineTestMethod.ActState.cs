@@ -8,8 +8,8 @@ namespace NJasmine.Core
     {
         public class ActState : ArrangeState
         {
-            public ActState(NJasmineTestMethod subject, SpecMethod specMethod)
-                : base(subject, specMethod)
+            public ActState(NJasmineTestMethod subject, SpecElement specElement)
+                : base(subject, specElement)
             {
             }
         }

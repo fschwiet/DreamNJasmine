@@ -1,6 +1,6 @@
 ﻿namespace NJasmine.Core.FixtureVisitor
 {
-    public enum SpecMethod
+    public enum SpecElement
     {
         describe,
         beforeEach,

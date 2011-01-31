@@ -8,17 +8,17 @@ namespace NJasmine.Core
     {
         public class CleanupState : ArrangeState
         {
-            public CleanupState(NJasmineTestMethod subject, SpecMethod specMethod)
-                : base(subject, specMethod)
+            public CleanupState(NJasmineTestMethod subject, SpecElement specElement)
+                : base(subject, specElement)
             {
             }
 
             public override void visitAfterEach(Action action, TestPosition position)
             {
-                throw DontException(SpecMethod.afterEach);
+                throw DontException(SpecElement.afterEach);
             }
 
-            public override TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
+            public override TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
             {
                 throw DontException(origin);
             }

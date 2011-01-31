@@ -26,7 +26,7 @@ namespace NJasmine
 
         public void beforeEach(Action action)
         {
-            _visitor.visitBeforeEach(SpecMethod.beforeEach, null, delegate() { action(); return (string)null; });
+            _visitor.visitBeforeEach(SpecElement.beforeEach, null, delegate() { action(); return (string)null; });
         }
 
         public void afterEach(Action action)
@@ -56,12 +56,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, factory);
+            return _visitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitBeforeEach<TArranged>(SpecMethod.arrange, null, factory);
+            return _visitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
         }
 
         public void arrange(Action action)
@@ -71,7 +71,7 @@ namespace NJasmine
 
         public void arrange(string description, Action action)
         {
-            _visitor.visitBeforeEach<string>(SpecMethod.arrange, description, delegate() { action(); return (string)null; });
+            _visitor.visitBeforeEach<string>(SpecElement.arrange, description, delegate() { action(); return (string)null; });
         }
     }
 }

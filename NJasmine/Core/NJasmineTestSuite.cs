@@ -163,7 +163,7 @@ namespace NJasmine.Core
         public void visitAfterEach(Action action, TestPosition position)
         {
             if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.afterEach);
+                throw WrongMethodAfterItMethod(SpecElement.afterEach);
         }
 
         public void visitTest(string description, Action action, TestPosition position)
@@ -191,14 +191,14 @@ namespace NJasmine.Core
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
             if (_haveReachedAnIt)
-                throw WrongMethodAfterItMethod(SpecMethod.importNUnit);
+                throw WrongMethodAfterItMethod(SpecElement.importNUnit);
 
             _nunitImports.AddFixture(position, typeof(TFixture));
 
             return null;
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecMethod origin, string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
         {
             if (_haveReachedAnIt)
                 throw WrongMethodAfterItMethod(origin);
@@ -219,9 +219,9 @@ namespace NJasmine.Core
             _nunitImports.DoOnetimeTearDown();
         }
 
-        InvalidOperationException WrongMethodAfterItMethod(SpecMethod innerSpecMethod)
+        InvalidOperationException WrongMethodAfterItMethod(SpecElement innerSpecElement)
         {
-            return new InvalidOperationException("Called " + innerSpecMethod + "() after " + SpecMethod.it + "().");
+            return new InvalidOperationException("Called " + innerSpecElement + "() after " + SpecElement.it + "().");
         }
     }
 }
