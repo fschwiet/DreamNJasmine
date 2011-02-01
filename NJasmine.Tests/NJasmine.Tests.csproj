@@ -69,13 +69,13 @@
     <Compile Include="FailingFixtures\runs_teardown_even_after_setup_failure.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_test_failure.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
-    <Compile Include="FailingFixtures\cannot_call_beforeEach_after_test.cs" />
     <Compile Include="FailingFixtures\reports_exception_at_outermost_scope.cs" />
     <Compile Include="FailingFixtures\reports_exception_within_describe.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_afterEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_beforeEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
     <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
+    <Compile Include="PassingFixtures\arrange_after_test_is_not_included_in_prior_test.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
     <Compile Include="PassingFixtures\Can_mix_runtime_models.cs" />
     <Compile Include="PassingFixtures\constructor_is_run_once_per_test.cs" />

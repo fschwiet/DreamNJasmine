@@ -162,8 +162,6 @@ namespace NJasmine.Core
 
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
-            if (_testTypeReached.HasValue)
-                throw WrongMethodAfterItMethod(_testTypeReached.Value, origin);
         }
 
         public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
@@ -190,9 +188,6 @@ namespace NJasmine.Core
 
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
-            if (_testTypeReached.HasValue)
-                throw WrongMethodAfterItMethod(_testTypeReached.Value, SpecElement.importNUnit);
-
             _nunitImports.AddFixture(position, typeof(TFixture));
 
             return null;
@@ -200,9 +195,6 @@ namespace NJasmine.Core
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
         {
-            if (_testTypeReached.HasValue)
-                throw WrongMethodAfterItMethod(_testTypeReached.Value, origin);
-
             if (description != null)
                 _baseNameForChildTests = _baseNameForChildTests + ", " + description;
 
@@ -217,11 +209,6 @@ namespace NJasmine.Core
         protected override void DoOneTimeTearDown(TestResult suiteResult)
         {
             _nunitImports.DoOnetimeTearDown();
-        }
-
-        InvalidOperationException WrongMethodAfterItMethod(SpecElement testElement, SpecElement innerSpecElement)
-        {
-            return new InvalidOperationException("Called " + innerSpecElement + "() after test started, within a call to " + testElement + "().");
         }
     }
 }
