@@ -4,6 +4,7 @@ namespace NJasmine
 {
     public interface INJasmineArrangeContext
     {
+        ISpecVisitor SpecVisitor { get; }
         void beforeEach(Action action);
         void afterEach(Action action);
         TFixture importNUnit<TFixture>() where TFixture : class, new();

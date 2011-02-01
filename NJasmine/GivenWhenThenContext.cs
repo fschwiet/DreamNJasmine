@@ -13,6 +13,8 @@ namespace NJasmine
             _specVisitor = specVisitor;
         }
 
+        public ISpecVisitor SpecVisitor { get { return _specVisitor; } }
+        
         public void given(string givenPhrase, Action specification)
         {
             _specVisitor.visitBeforeEach(SpecElement.given, "given " + givenPhrase, delegate()

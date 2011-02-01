@@ -5,6 +5,7 @@ namespace NJasmine
 {
     public interface IGivenWhenThenContext
     {
+        ISpecVisitor SpecVisitor { get; }
         void given(string givenPhrase, Action specification);
         void when(string whenPhrase, Action specification);
         void then(string thenPhrase, Action test);

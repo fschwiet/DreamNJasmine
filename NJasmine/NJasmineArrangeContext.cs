@@ -12,6 +12,8 @@ namespace NJasmine
             _specVisitor = specVisitor;
         }
 
+        public ISpecVisitor SpecVisitor { get { return _specVisitor; } }
+
         public void beforeEach(Action action)
         {
             _specVisitor.visitBeforeEach(SpecElement.beforeEach, null, delegate()
