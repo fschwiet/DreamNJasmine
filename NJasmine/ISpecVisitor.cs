@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine.Core.FixtureVisitor
+namespace NJasmine
 {
     public interface ISpecVisitor
     {

@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
-    <Compile Include="Core\FixtureVisitor\ISpecVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="GivenWhenThenFixture.cs" />
     <Compile Include="IGivenWhenThenContext.cs" />
     <Compile Include="INJasmineArrangeContext.cs" />
+    <Compile Include="ISpecVisitor.cs" />
     <Compile Include="NJasmineArrangeContext.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

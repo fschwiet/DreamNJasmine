@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
-using NJasmine.Core.FixtureVisitor;
 using NJasmineTests.Core;
 
 namespace NJasmineTests.PassingFixtures
