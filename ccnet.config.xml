@@ -12,7 +12,7 @@
 <project name="NJasmine">
    
     <sourcecontrol type="git">
-        <repository>c:/src/njasmine</repository>
+        <repository>git://github.com/fschwiet/DreamNJasmine.git</repository>
         <branch>master</branch>
         <autoGetSource>true</autoGetSource>
         <executable>$(gitpath)</executable>
