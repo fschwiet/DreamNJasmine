@@ -4,13 +4,18 @@
 -->
 
 
+<!-- make sure cruisecontrol config defines git install location, something like:
+  <cb:define gitpath="C:\Program Files (x86)\Git\bin\git.cmd"/>  
+-->
 
-<!-- add something like this to ccnet's config
+
+<project name="NJasmine">
+   
     <sourcecontrol type="git">
         <repository>c:/src/njasmine</repository>
         <branch>master</branch>
         <autoGetSource>true</autoGetSource>
-        <executable>C:\msysgit\cmd\git.cmd</executable>
+        <executable>$(gitpath)</executable>
         <tagOnSuccess>false</tagOnSuccess>
         <commitBuildModifications>false</commitBuildModifications>
         <commitUntrackedFiles>false</commitUntrackedFiles>
@@ -18,11 +23,6 @@
         <timeout>60000</timeout>
     </sourcecontrol>
 
--->
-
-
-<project name="NJasmine">
-   
     <triggers>  
         <intervalTrigger name="git" seconds="10" buildCondition="IfModificationExists" />  
     </triggers> 
