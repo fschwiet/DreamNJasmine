@@ -21,7 +21,10 @@ properties {
 task default -depends AllTests
 
 task Build {
-    rmdir $buildDir -recurse
+
+    if (test-path $buildDir) {
+        rmdir $buildDir -recurse
+    }
 
 	$v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /property:Configuration=$msbuild_Configuration /target:Clean }

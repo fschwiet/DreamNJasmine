@@ -5,7 +5,7 @@
 
 
 <!-- make sure cruisecontrol config defines git install location, something like:
-  <cb:define gitpath="C:\Program Files (x86)\Git\bin\git.cmd"/>  
+  <cb:define gitpath="C:\Program Files (x86)\Git\bin\git.exe"/>  
 -->
 
 
