@@ -35,14 +35,23 @@ namespace NJasmine.Core
             listener.TestStarted(base.TestName);
             long ticks = DateTime.Now.Ticks;
             TestResult testResult = new TestResult(this);
-            try
+
+            if (_nUnitImports.ExceptionFromOnetimeSetup != null)
             {
-                RunTestMethod(testResult);
+                testResult.Error(_nUnitImports.ExceptionFromOnetimeSetup);
             }
-            catch (Exception e)
+            else
             {
-                testResult.Error(e);
+                try
+                {
+                    RunTestMethod(testResult);
+                }
+                catch (Exception e)
+                {
+                    testResult.Error(e);
+                }
             }
+
             double num3 = ((double)(DateTime.Now.Ticks - ticks)) / 10000000.0;
             testResult.Time = num3;
             listener.TestFinished(testResult);

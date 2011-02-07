@@ -12,6 +12,8 @@ namespace NJasmine.Core
         Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
         Dictionary<TestPosition, object> _instances = new Dictionary<TestPosition, object>();
 
+        public Exception ExceptionFromOnetimeSetup { get; private set; }
+
         public NUnitFixtureCollection()
         {
             _parent = null;
@@ -24,15 +26,26 @@ namespace NJasmine.Core
 
         public void DoOnetimeSetUp()
         {
-            foreach (var instance in _positions.Select(p => GetInstance(p)))
+            try
             {
-                var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
-                                                                         NUnitFramework.FixtureSetUpAttribute, true);
-
-                foreach(var method in methods)
+                foreach (var instance in _positions.Select(p => GetInstance(p)))
                 {
-                    method.Invoke(instance, EmptyObjectArray);
+                    var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
+                                                                             NUnitFramework.FixtureSetUpAttribute, true);
+
+                    foreach (var method in methods)
+                    {
+                        method.Invoke(instance, EmptyObjectArray);
+                    }
                 }
+            }
+            catch (System.Reflection.TargetInvocationException e)
+            {
+                ExceptionFromOnetimeSetup = e.InnerException;
+            }
+            catch (Exception e)
+            {
+                ExceptionFromOnetimeSetup = e;
             }
         }
 
