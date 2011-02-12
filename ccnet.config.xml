@@ -24,7 +24,7 @@
     </sourcecontrol>
 
     <triggers>  
-        <intervalTrigger name="git" seconds="10" buildCondition="IfModificationExists" />  
+        <intervalTrigger name="git" seconds="3600" buildCondition="IfModificationExists" />  
     </triggers> 
     
     <tasks>
