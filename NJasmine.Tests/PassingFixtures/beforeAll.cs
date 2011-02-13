@@ -19,11 +19,30 @@ second test
 third test
 FINAL AFTER ALL
 INNER AFTER ALL
+TESTING INNER BEFORE ALL
 SECOND AFTER ALL
+DISPOSING SECOND BEFORE ALL
 AFTER ALL
+DISPOSING BEFORE ALL
 ")]
     public class beforeAll : TraceableNJasmineFixture
     {
+        public class RunOnDispose : IDisposable
+        {
+            private Action _action; 
+
+            public RunOnDispose(Action action)
+            {
+                _action = action;
+            }
+
+            public void Dispose()
+            {
+                _action();
+                _action = null;
+            }
+        }
+
         public override void Specify()
         {
             beforeAll(ResetTracing);
@@ -31,7 +50,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("BEFORE ALL");
-                return (string)null;
+                return new RunOnDispose(() => Trace("DISPOSING BEFORE ALL"));
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -47,7 +66,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("SECOND BEFORE ALL");
-                return (string)null;
+                return new RunOnDispose(() => Trace("DISPOSING SECOND BEFORE ALL"));
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -60,7 +79,7 @@ AFTER ALL
                 SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
                 {
                     Trace("INNER BEFORE ALL");
-                    return (string)null;
+                    return new RunOnDispose(() => Trace("TESTING INNER BEFORE ALL"));
                 });
 
                 SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -83,7 +102,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("FINAL BEFORE ALL");
-                return (string)null;
+                return new RunOnDispose(() => Trace("TESTING FINAL BEFORE ALL"));
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
