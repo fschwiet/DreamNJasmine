@@ -51,6 +51,16 @@ namespace NJasmine
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, action);
         }
 
+        public T beforeAll<T>(Func<T> action)
+        {
+            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
+                                                                  {
+                                                                      action();
+                                                                  });
+
+            return default(T);
+        }
+
         public void AfterAll(Action action)
         {
             SpecVisitor.visitAfterAll(SpecElement.afterAll, action);
