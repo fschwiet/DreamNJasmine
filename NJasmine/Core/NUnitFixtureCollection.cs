@@ -8,9 +8,8 @@ namespace NJasmine.Core
     public class NUnitFixtureCollection
     {
         readonly NUnitFixtureCollection _parent;
-        List<TestPosition> _positions = new List<TestPosition>();  // storing position keys separately by order of existence
-        List<TestPosition> _setupPositions = new List<TestPosition>();
-        List<TestPosition> _teardownPositions = new List<TestPosition>();
+        List<TestPosition> _fixtureSetupPositions = new List<TestPosition>();
+        List<TestPosition> _fixtureTeardownPositions = new List<TestPosition>();
         Dictionary<TestPosition, Func<object>> _fixtureSetupMethods = new Dictionary<TestPosition, Func<object>>();
         Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
@@ -31,7 +30,7 @@ namespace NJasmine.Core
         {
             try
             {
-                foreach (var record in _setupPositions.Select(p => 
+                foreach (var record in _fixtureSetupPositions.Select(p => 
                     new { Position = p, Action = _fixtureSetupMethods[p]}))
                 {
                     _fixtureSetupResults[record.Position] = record.Action();
@@ -49,7 +48,7 @@ namespace NJasmine.Core
 
         public void DoOnetimeTearDown()
         {
-            foreach (var action in _teardownPositions.Select(p => _fixtureTeardownMethods[p]).Reverse())
+            foreach (var action in _fixtureTeardownPositions.Select(p => _fixtureTeardownMethods[p]).Reverse())
             {
                 action();
             }
@@ -87,10 +86,10 @@ namespace NJasmine.Core
 
         public void AddFixtureSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
-            if (_setupPositions.Contains(position))
+            if (_fixtureSetupPositions.Contains(position))
                 throw new InvalidOperationException();
 
-            _setupPositions.Add(position);
+            _fixtureSetupPositions.Add(position);
             _fixtureSetupMethods[position] = delegate
             {
                 return action();
@@ -99,7 +98,7 @@ namespace NJasmine.Core
 
         public void AddFixtureTearDown(TestPosition position, Action action)
         {
-            _teardownPositions.Add(position);
+            _fixtureTeardownPositions.Add(position);
             _fixtureTeardownMethods[position] = action;
         }
 
@@ -123,7 +122,7 @@ namespace NJasmine.Core
 
         public object GetSetupResult(TestPosition position)
         {
-            if (_setupPositions.Contains(position))
+            if (_fixtureSetupPositions.Contains(position))
             {
                 return _fixtureSetupResults[position];
             }
