@@ -75,27 +75,26 @@ namespace NJasmine.Core
 
         public void AddFixture(TestPosition position, Type type)
         {
-            if (_fixtures.ContainsKey(position))
-            {
-                throw new InvalidOperationException();
-            }
 
+            object fixtureInstance = null;
+                        if (_positions.Contains(position))                throw new InvalidOperationException();
             _positions.Add(position);
-            _fixtures[position] = type;
 
-            AddSetup(position, delegate
+            AddFixtureSetup(position, delegate
             {
-                RunMethodsWithAttribute(GetInstance(position), NUnitFramework.FixtureSetUpAttribute);
-                return (string)null;
+                fixtureInstance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
+                _instances[position] = fixtureInstance;
+                RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureSetUpAttribute);
+                return fixtureInstance;
             });
 
-            AddTearDown(position, delegate
+            AddFixtureTearDown(position, delegate
             {
-                RunMethodsWithAttribute(GetInstance(position), NUnitFramework.FixtureTearDownAttribute);
+                RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureTearDownAttribute);
             });
         }
 
-        public void AddSetup<TArranged>(TestPosition position, Func<TArranged> action)
+        public void AddFixtureSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
             _setupPositions.Add(position);
             _fixtureSetupMethods[position] = delegate
@@ -104,7 +103,7 @@ namespace NJasmine.Core
             };
         }
 
-        public void AddTearDown(TestPosition position, Action action)
+        public void AddFixtureTearDown(TestPosition position, Action action)
         {
             _teardownPositions.Add(position);
             _fixtureTeardownMethods[position] = action;
@@ -114,17 +113,7 @@ namespace NJasmine.Core
         {
             if (_positions.Contains(position))
             {
-                object instance;
-
-                if (!_instances.TryGetValue(position, out instance))
-                {
-                    var type = _fixtures[position];
-
-                    instance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
-                    _instances[position] = instance;
-                }
-
-                return instance;
+                return _instances[position];
             }
             else if (_parent != null)
             {

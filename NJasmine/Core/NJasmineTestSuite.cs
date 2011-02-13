@@ -162,13 +162,13 @@ namespace NJasmine.Core
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            _nunitImports.AddSetup(position, action);
+            _nunitImports.AddFixtureSetup(position, action);
             return default(TArranged);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _nunitImports.AddTearDown(position, action);
+            _nunitImports.AddFixtureTearDown(position, action);
         }
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)

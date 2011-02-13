@@ -27,6 +27,8 @@ describe("NUnitFixtureCollection", delegate
         {
             sut.AddFixture(position, type);
 
+            sut.DoOnetimeSetUp();
+
             var instance1 = sut.GetInstance(position);
             var instance2 = sut.GetInstance(position);
 
@@ -47,6 +49,9 @@ describe("NUnitFixtureCollection", delegate
             parent.AddFixture(position, type);
 
             sut = new NUnitFixtureCollection(parent);
+
+            parent.DoOnetimeSetUp();
+            sut.DoOnetimeSetUp();
 
             sut.GetInstance(position).Should().Be.OfType(type);
         });
@@ -111,16 +116,20 @@ describe("NUnitFixtureCollection", delegate
 
         it("doing setup", delegate
         {
+            sut.DoOnetimeSetUp();
+
             sut.DoSetUp(new TestPosition(1, 2, 3));
 
-            Observed.ToString().Should().Equal("C.SetUp ");
+            Observed.ToString().Should().EndWith("C.SetUp ");
         });
 
         it("doing teardown", delegate
         {
+            sut.DoOnetimeSetUp();
+
             sut.DoTearDown(new TestPosition(1, 2, 3));
 
-            Observed.ToString().Should().Equal("C.TearDown ");
+            Observed.ToString().Should().EndWith("C.TearDown ");
         });
 
         /*
