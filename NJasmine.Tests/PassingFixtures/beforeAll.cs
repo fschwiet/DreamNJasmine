@@ -18,8 +18,9 @@ first test
 second test
 third test
 FINAL AFTER ALL
+DISPOSING FINAL BEFORE ALL
 INNER AFTER ALL
-TESTING INNER BEFORE ALL
+DISPOSING INNER BEFORE ALL
 SECOND AFTER ALL
 DISPOSING SECOND BEFORE ALL
 AFTER ALL
@@ -79,7 +80,7 @@ DISPOSING BEFORE ALL
                 SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
                 {
                     Trace("INNER BEFORE ALL");
-                    return new RunOnDispose(() => Trace("TESTING INNER BEFORE ALL"));
+                    return new RunOnDispose(() => Trace("DISPOSING INNER BEFORE ALL"));
                 });
 
                 SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -102,7 +103,7 @@ DISPOSING BEFORE ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("FINAL BEFORE ALL");
-                return new RunOnDispose(() => Trace("TESTING FINAL BEFORE ALL"));
+                return new RunOnDispose(() => Trace("DISPOSING FINAL BEFORE ALL"));
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate

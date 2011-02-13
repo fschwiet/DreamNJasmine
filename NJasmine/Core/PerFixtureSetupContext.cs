@@ -64,10 +64,25 @@ namespace NJasmine.Core
             {
                 return action();
             };
+
+            AddFixtureTearDown(position, delegate
+            {
+                // setup won't have run if there is a prior error
+                if (!_fixtureSetupResults.ContainsKey(position))
+                    return;
+
+                var disposeable = _fixtureSetupResults[position] as IDisposable;
+
+                if (disposeable != null)
+                    disposeable.Dispose();
+            });
         }
 
         public void AddFixtureTearDown(TestPosition position, Action action)
         {
+            if (_fixtureTeardownPositions.Contains(position))
+                throw new InvalidOperationException();
+
             _fixtureTeardownPositions.Add(position);
             _fixtureTeardownMethods[position] = action;
         }
