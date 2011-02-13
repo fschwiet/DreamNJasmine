@@ -5,9 +5,9 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NUnitFixtureCollection
+    public class PerFixtureSetupContext
     {
-        readonly NUnitFixtureCollection _parent;
+        readonly PerFixtureSetupContext _parent;
         List<TestPosition> _fixtureSetupPositions = new List<TestPosition>();
         List<TestPosition> _fixtureTeardownPositions = new List<TestPosition>();
         Dictionary<TestPosition, Func<object>> _fixtureSetupMethods = new Dictionary<TestPosition, Func<object>>();
@@ -16,12 +16,12 @@ namespace NJasmine.Core
 
         public Exception ExceptionFromOnetimeSetup { get; private set; }
 
-        public NUnitFixtureCollection()
+        public PerFixtureSetupContext()
         {
             _parent = null;
         }
 
-        public NUnitFixtureCollection(NUnitFixtureCollection parent)
+        public PerFixtureSetupContext(PerFixtureSetupContext parent)
         {
             _parent = parent;
         }

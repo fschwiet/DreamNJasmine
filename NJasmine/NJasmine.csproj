@@ -69,7 +69,7 @@
     <Compile Include="Core\NJasmineTestMethod.DescribeState.cs" />
     <Compile Include="Core\NJasmineTestMethod.ActState.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
-    <Compile Include="Core\NUnitFixtureCollection.cs" />
+    <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />

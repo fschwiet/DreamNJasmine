@@ -12,16 +12,16 @@ namespace NJasmine.Core
     {
         readonly Func<SkeleFixture> _fixtureFactory;
         readonly TestPosition _position;
-        readonly NUnitFixtureCollection _nUnitImports;
+        readonly PerFixtureSetupContext _fixtureSetupTeardown;
 
         List<Action> _allTeardowns = null;
         ISpecPositionVisitor _state = null;
 
-        public NJasmineTestMethod(Func<SkeleFixture> fixtureFactory, TestPosition position, NUnitFixtureCollection nUnitImports) : base(new Action(delegate() { }).Method)
+        public NJasmineTestMethod(Func<SkeleFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown) : base(new Action(delegate() { }).Method)
         {
             _fixtureFactory = fixtureFactory;
             _position = position;
-            _nUnitImports = nUnitImports;
+            _fixtureSetupTeardown = fixtureSetupTeardown;
             _state = new DescribeState(this);
         }
 
@@ -36,9 +36,9 @@ namespace NJasmine.Core
             long ticks = DateTime.Now.Ticks;
             TestResult testResult = new TestResult(this);
 
-            if (_nUnitImports.ExceptionFromOnetimeSetup != null)
+            if (_fixtureSetupTeardown.ExceptionFromOnetimeSetup != null)
             {
-                testResult.Error(_nUnitImports.ExceptionFromOnetimeSetup);
+                testResult.Error(_fixtureSetupTeardown.ExceptionFromOnetimeSetup);
             }
             else
             {

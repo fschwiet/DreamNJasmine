@@ -62,20 +62,20 @@ namespace NJasmine.Core
         readonly Func<SkeleFixture> _fixtureFactory;
         readonly SkeleFixture _fixtureInstanceForDiscovery;
         readonly TestPosition _position;
-        readonly NUnitFixtureCollection _nunitImports;
+        readonly PerFixtureSetupContext _nunitImports;
         readonly List<Test> _accumulatedDescendants;
         readonly List<string> _globallyAccumulatedTestNames;
 
         string _baseNameForChildTests;
         SpecElement? _testTypeReached;
 
-        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
             _fixtureInstanceForDiscovery = fixtureFactory();
             _position = position;
-            _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            _nunitImports = new PerFixtureSetupContext(parent);
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
 
             _accumulatedDescendants = new List<Test>();
@@ -84,13 +84,13 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, SkeleFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, NUnitFixtureCollection parentNUnitImports, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, SkeleFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
             _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
             _position = position;
-            _nunitImports = new NUnitFixtureCollection(parentNUnitImports);
+            _nunitImports = new PerFixtureSetupContext(parent);
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
 
             _accumulatedDescendants = new List<Test>();
