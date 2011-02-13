@@ -84,15 +84,5 @@ namespace NJasmine.Core.FixtureVisitor
             DoThenAdvancePosition(() =>
                 _visitor.visitTest(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
-
-        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
-        {
-            TFixture result = null;
-
-            DoThenAdvancePosition(() => 
-                result = _visitor.visitImportNUnit<TFixture>(_position));
-
-            return result;
-        }
     }
 }

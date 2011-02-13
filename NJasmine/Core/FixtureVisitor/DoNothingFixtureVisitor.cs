@@ -26,11 +26,6 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public TFixture visitImportNUnit<TFixture>() where TFixture: class, new()
-        {
-            return default(TFixture);
-        }
-
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
         {
             return default(TArranged);

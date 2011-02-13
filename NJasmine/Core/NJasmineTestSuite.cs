@@ -205,13 +205,6 @@ namespace NJasmine.Core
             _testTypeReached = origin;
         }
 
-        public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
-        {
-            _nunitImports.AddFixture(position, typeof(TFixture));
-
-            return null;
-        }
-
         protected override void DoOneTimeSetUp(TestResult suiteResult)
         {
             _nunitImports.DoOnetimeSetUp();

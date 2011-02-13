@@ -14,7 +14,5 @@ namespace NJasmine.Core.FixtureVisitor
         void visitAfterEach(SpecElement origin, Action action, TestPosition position);
 
         void visitTest(SpecElement origin, string description, Action action, TestPosition position);
-
-        TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new();
     }
 }

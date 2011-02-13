@@ -71,7 +71,8 @@ namespace NJasmine.Core
         public void AddFixture(TestPosition position, Type type)
         {
             object fixtureInstance = null;
-                        AddFixtureSetup(position, delegate
+            
+            AddFixtureSetup(position, delegate
             {
                 fixtureInstance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
                 RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureSetUpAttribute);

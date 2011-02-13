@@ -36,11 +36,6 @@ namespace NJasmine.Core
                 throw DontException(origin);
             }
 
-            public override TFixture visitImportNUnit<TFixture>(TestPosition position) 
-            {
-                throw DontException(SpecElement.importNUnit);
-            }
-
             public InvalidOperationException DontException(SpecElement innerSpecElement)
             {
                 return new InvalidOperationException("Called " + innerSpecElement + "() within " + SpecElement + "().");

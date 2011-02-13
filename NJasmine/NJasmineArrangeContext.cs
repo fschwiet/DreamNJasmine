@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 
 namespace NJasmine
 {
@@ -30,7 +31,7 @@ namespace NJasmine
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
-            return _specVisitor.visitImportNUnit<TFixture>();
+            return NUnitFixtureDriver.IncludeFixture<TFixture>(SpecVisitor);
         }
 
         public TArranged arrange<TArranged>() where TArranged : class, new()

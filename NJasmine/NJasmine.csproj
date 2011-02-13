@@ -76,6 +76,7 @@
     <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
+    <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenContext.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />

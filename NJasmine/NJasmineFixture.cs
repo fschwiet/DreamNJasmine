@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 using NUnit.Core;
 using NUnit.Framework;
 using Should.Fluent;
@@ -46,7 +47,7 @@ namespace NJasmine
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
-            return SpecVisitor.visitImportNUnit<TFixture>();
+            return NUnitFixtureDriver.IncludeFixture<TFixture>(SpecVisitor);
         }
 
         public TArranged arrange<TArranged>() where TArranged : class, new()

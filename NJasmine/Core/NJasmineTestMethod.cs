@@ -130,11 +130,6 @@ namespace NJasmine.Core
             _state.visitTest(origin, description, action, position);
         }
 
-        public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
-        {
-            return _state.visitImportNUnit<TFixture>(position);
-        }
-
         public class TestFinishedException : Exception
         {
         }
