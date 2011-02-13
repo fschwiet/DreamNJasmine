@@ -15,10 +15,6 @@ namespace NJasmine.Core
         Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
 
-        
-        Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
-        Dictionary<TestPosition, object> _instances = new Dictionary<TestPosition, object>();
-
         public Exception ExceptionFromOnetimeSetup { get; private set; }
 
         public NUnitFixtureCollection()
@@ -75,15 +71,10 @@ namespace NJasmine.Core
 
         public void AddFixture(TestPosition position, Type type)
         {
-
             object fixtureInstance = null;
-                        if (_positions.Contains(position))                throw new InvalidOperationException();
-            _positions.Add(position);
-
-            AddFixtureSetup(position, delegate
+                        AddFixtureSetup(position, delegate
             {
                 fixtureInstance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
-                _instances[position] = fixtureInstance;
                 RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureSetUpAttribute);
                 return fixtureInstance;
             });
@@ -96,6 +87,9 @@ namespace NJasmine.Core
 
         public void AddFixtureSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
+            if (_setupPositions.Contains(position))
+                throw new InvalidOperationException();
+
             _setupPositions.Add(position);
             _fixtureSetupMethods[position] = delegate
             {
@@ -111,18 +105,7 @@ namespace NJasmine.Core
 
         public object GetInstance(TestPosition position)
         {
-            if (_positions.Contains(position))
-            {
-                return _instances[position];
-            }
-            else if (_parent != null)
-            {
-                return _parent.GetInstance(position);
-            }
-            else
-            {
-                throw new InvalidOperationException("NUnit fixture instance requested not found.");
-            }
+            return GetSetupResult(position);
         }
 
         void RunMethodsWithAttribute(object instance, string attribute)

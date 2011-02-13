@@ -18,6 +18,11 @@ describe("NUnitFixtureCollection", delegate
 {
     var sut = new NUnitFixtureCollection();
 
+    beforeEach(delegate
+    {
+        Observed = new StringBuilder();
+    });
+
     describe("a collection of fixtures", delegate
     {
         var position = new TestPosition();
@@ -28,6 +33,8 @@ describe("NUnitFixtureCollection", delegate
             sut.AddFixture(position, type);
 
             sut.DoOnetimeSetUp();
+
+            sut.ExceptionFromOnetimeSetup.Should().Be.Null();
 
             var instance1 = sut.GetInstance(position);
             var instance2 = sut.GetInstance(position);
@@ -59,11 +66,6 @@ describe("NUnitFixtureCollection", delegate
 
     describe("can run one-time fixture setup and teardown", delegate
     {
-        beforeEach(delegate
-        {
-            Observed = new StringBuilder();
-        });
-
         it("for an empty collection", delegate
         {
             sut.DoOnetimeSetUp();
