@@ -25,6 +25,15 @@ namespace NJasmine
             SpecVisitor.visitFork(SpecElement.describe, description, action);
         }
 
+        public void beforeAll(Action action)
+        {
+            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate()
+            {
+                action();
+                return (string)null;
+            });
+        }
+
         public void beforeEach(Action action)
         {
             SpecVisitor.visitBeforeEach(SpecElement.beforeEach, null, delegate() { action(); return (string)null; });

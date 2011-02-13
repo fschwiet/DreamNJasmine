@@ -52,7 +52,7 @@ disposing some_observable_A
         
         public override void Specify()
         {
-            ResetTracingAtFixtureStart();
+            beforeAll(ResetTracing);
 
             var a = arrange<some_observable_A>();
             var b = arrange(() => new some_observable_B());

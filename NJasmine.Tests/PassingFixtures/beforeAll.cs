@@ -26,7 +26,7 @@ AFTER ALL
     {
         public override void Specify()
         {
-            ResetTracingAtFixtureStart();
+            beforeAll(ResetTracing);
 
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {

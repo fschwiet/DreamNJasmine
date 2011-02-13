@@ -21,7 +21,7 @@ four
     {
         public override void Specify()
         {
-            ResetTracingAtFixtureStart();
+            beforeAll(ResetTracing);
 
             beforeEach(delegate
             {

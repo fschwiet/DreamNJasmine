@@ -12,7 +12,7 @@ failure_in_setup_doesnt_prevent_cleanup")]
     {
         public override void Specify()
         {
-            ResetTracingAtFixtureStart();
+            beforeAll(ResetTracing);
 
             afterEach(delegate()
             {

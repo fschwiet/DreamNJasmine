@@ -22,8 +22,8 @@ namespace NJasmineTests.PassingFixtures
 
         public void do_arrange_in_njasmine(string arrangeDescription)
         {
-            _njasmineContext.importNUnit<TraceableNJasmineFixture.PerClassTraceResetFixture>();
-
+            _njasmineContext.beforeAll(() => TraceableNJasmineFixture.ResetTracing());
+            
             _njasmineContext.arrange(arrangeDescription, delegate
             {
                 TraceableNJasmineFixture.Trace("doing arrange in NJasmine");

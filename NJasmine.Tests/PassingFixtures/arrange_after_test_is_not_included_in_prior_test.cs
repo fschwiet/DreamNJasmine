@@ -17,7 +17,7 @@ First cleanup
     {
         public override void Specify()
         {
-            ResetTracingAtFixtureStart();
+            beforeAll(ResetTracing);
 
             arrange(() => Trace("First setup"));
             afterEach(() => Trace("First cleanup"));

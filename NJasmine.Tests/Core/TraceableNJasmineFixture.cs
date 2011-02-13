@@ -7,21 +7,12 @@ namespace NJasmineTests.Core
 {
     public abstract class TraceableNJasmineFixture : NJasmineFixture
     {
-        public class PerClassTraceResetFixture
-        {
-            [TestFixtureSetUp]
-            public void TestFixtureSetup()
-            {
-                TraceReset();
-            }
-        }
-
         public static void Trace(string value)
         {
             Console.WriteLine("<<{{" + value + "}}>>");
         }
 
-        public static void TraceReset()
+        public static void ResetTracing()
         {
             Console.WriteLine("{{<<RESET>>}}");
         }
@@ -29,11 +20,6 @@ namespace NJasmineTests.Core
         public static string GetTypeShortName(Type type)
         {
             return type.ToString().Split(new char[] {'+', '.'}).Last();
-        }
-
-        protected void ResetTracingAtFixtureStart()
-        {
-            importNUnit<PerClassTraceResetFixture>();
         }
     }
 }
