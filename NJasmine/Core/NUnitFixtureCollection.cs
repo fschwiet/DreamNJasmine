@@ -54,37 +54,6 @@ namespace NJasmine.Core
             }
         }
 
-        public void DoSetUp(TestPosition position)
-        {
-            var instance = GetInstance(position);
-
-            RunMethodsWithAttribute(instance, NUnitFramework.SetUpAttribute);
-        }
-
-        public void DoTearDown(TestPosition position)
-        {
-            var instance = GetInstance(position);
-
-            RunMethodsWithAttribute(instance, NUnitFramework.TearDownAttribute);
-        }
-
-        public void AddFixture(TestPosition position, Type type)
-        {
-            object fixtureInstance = null;
-            
-            AddFixtureSetup(position, delegate
-            {
-                fixtureInstance = type.GetConstructor(new Type[0]).Invoke(EmptyObjectArray);
-                RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureSetUpAttribute);
-                return fixtureInstance;
-            });
-
-            AddFixtureTearDown(position, delegate
-            {
-                RunMethodsWithAttribute(fixtureInstance, NUnitFramework.FixtureTearDownAttribute);
-            });
-        }
-
         public void AddFixtureSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
             if (_fixtureSetupPositions.Contains(position))
@@ -102,24 +71,6 @@ namespace NJasmine.Core
             _fixtureTeardownPositions.Add(position);
             _fixtureTeardownMethods[position] = action;
         }
-
-        public object GetInstance(TestPosition position)
-        {
-            return GetSetupResult(position);
-        }
-
-        void RunMethodsWithAttribute(object instance, string attribute)
-        {
-            var methods = NUnit.Core.Reflect.GetMethodsWithAttribute(instance.GetType(),
-                                                                     attribute, true);
-
-            foreach (var method in methods)
-            {
-                method.Invoke(instance, EmptyObjectArray);
-            }
-        }
-
-        readonly static object[] EmptyObjectArray = new object[0];
 
         public object GetSetupResult(TestPosition position)
         {

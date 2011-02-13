@@ -58,7 +58,6 @@
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
-    <Compile Include="Core\NUnitFixtureCollectionTests.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
     <Compile Include="Core\STA.cs" />
     <Compile Include="Core\TraceableNJasmineFixture.cs" />
