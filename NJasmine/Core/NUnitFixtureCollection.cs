@@ -11,9 +11,12 @@ namespace NJasmine.Core
         List<TestPosition> _positions = new List<TestPosition>();  // storing position keys separately by order of existence
         List<TestPosition> _setupPositions = new List<TestPosition>();
         List<TestPosition> _teardownPositions = new List<TestPosition>();
-        Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
-        Dictionary<TestPosition, Action> _fixtureSetupMethods = new Dictionary<TestPosition, Action>();
+        Dictionary<TestPosition, Func<object>> _fixtureSetupMethods = new Dictionary<TestPosition, Func<object>>();
+        Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
+
+        
+        Dictionary<TestPosition, Type> _fixtures = new Dictionary<TestPosition, Type>();
         Dictionary<TestPosition, object> _instances = new Dictionary<TestPosition, object>();
 
         public Exception ExceptionFromOnetimeSetup { get; private set; }
@@ -32,9 +35,10 @@ namespace NJasmine.Core
         {
             try
             {
-                foreach (var setupAction in _setupPositions.Select(p => _fixtureSetupMethods[p]))
+                foreach (var record in _setupPositions.Select(p => 
+                    new { Position = p, Action = _fixtureSetupMethods[p]}))
                 {
-                    setupAction();
+                    _fixtureSetupResults[record.Position] = record.Action();
                 }
             }
             catch (System.Reflection.TargetInvocationException e)
@@ -82,6 +86,7 @@ namespace NJasmine.Core
             AddSetup(position, delegate
             {
                 RunMethodsWithAttribute(GetInstance(position), NUnitFramework.FixtureSetUpAttribute);
+                return (string)null;
             });
 
             AddTearDown(position, delegate
@@ -90,10 +95,13 @@ namespace NJasmine.Core
             });
         }
 
-        public void AddSetup(TestPosition position, Action action)
+        public void AddSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
             _setupPositions.Add(position);
-            _fixtureSetupMethods[position] = action;
+            _fixtureSetupMethods[position] = delegate
+            {
+                return action();
+            };
         }
 
         public void AddTearDown(TestPosition position, Action action)
@@ -140,5 +148,21 @@ namespace NJasmine.Core
         }
 
         readonly static object[] EmptyObjectArray = new object[0];
+
+        public object GetSetupResult(TestPosition position)
+        {
+            if (_setupPositions.Contains(position))
+            {
+                return _fixtureSetupResults[position];
+            }
+            else if (_parent != null)
+            {
+                return _parent.GetSetupResult(position);
+            }
+            else
+            {
+                throw new InvalidOperationException("Attempted to find undefined setup result.");
+            }
+        }
     }
 }

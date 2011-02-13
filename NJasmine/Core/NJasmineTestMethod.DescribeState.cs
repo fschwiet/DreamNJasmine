@@ -25,11 +25,12 @@ namespace NJasmine.Core
                 }
             }
 
-            public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+            public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
             {
+                return (TArranged)_subject._nUnitImports.GetSetupResult(position);
             }
 
-            public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+            public virtual void visitAfterAll(SpecElement origin, Action action, TestPosition position)
             {
             }
 

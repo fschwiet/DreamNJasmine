@@ -7,7 +7,7 @@ namespace NJasmine
     {
         void visitFork(SpecElement origin, string description, Action action);
 
-        void visitBeforeAll(SpecElement origin, Action action);
+        TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action);
         void visitAfterAll(SpecElement origin, Action action);
 
         TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory);

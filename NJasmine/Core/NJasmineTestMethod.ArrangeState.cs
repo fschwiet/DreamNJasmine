@@ -21,12 +21,12 @@ namespace NJasmine.Core
                 throw DontException(origin);
             }
 
-            public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+            public override TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
             {
                 throw DontException(origin);
             }
 
-            public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+            public override void visitAfterAll(SpecElement origin, Action action, TestPosition position)
             {
                 throw DontException(origin);
             }

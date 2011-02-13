@@ -31,6 +31,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("BEFORE ALL");
+                return (string)null;
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -46,6 +47,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("SECOND BEFORE ALL");
+                return (string)null;
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -58,6 +60,7 @@ AFTER ALL
                 SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
                 {
                     Trace("INNER BEFORE ALL");
+                    return (string)null;
                 });
 
                 SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
@@ -80,6 +83,7 @@ AFTER ALL
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("FINAL BEFORE ALL");
+                return (string)null;
             });
 
             SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate

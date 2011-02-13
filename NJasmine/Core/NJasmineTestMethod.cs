@@ -105,9 +105,9 @@ namespace NJasmine.Core
             _state.visitFork(origin, description, action, position);
         }
 
-        public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            _state.visitBeforeAll(origin,action, position);
+            return _state.visitBeforeAll(origin,action, position);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)

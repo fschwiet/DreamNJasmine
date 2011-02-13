@@ -51,9 +51,11 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitFork(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
-        public void visitBeforeAll(SpecElement origin, Action action)
+        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action)
         {
-            DoThenAdvancePosition(() => _visitor.visitBeforeAll(origin, action, _position));
+            TArranged arranged = default(TArranged);
+            DoThenAdvancePosition(() => arranged = _visitor.visitBeforeAll(origin, action, _position));
+            return arranged;
         }
 
         public void visitAfterAll(SpecElement origin, Action action)

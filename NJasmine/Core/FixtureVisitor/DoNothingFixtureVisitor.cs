@@ -9,8 +9,9 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public void visitBeforeAll(SpecElement origin, Action action)
+        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action)
         {
+            return default(TArranged);
         }
 
         public void visitAfterAll(SpecElement origin, Action action)
