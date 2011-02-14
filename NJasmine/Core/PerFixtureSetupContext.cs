@@ -8,8 +8,6 @@ namespace NJasmine.Core
     public class PerFixtureSetupContext
     {
         readonly PerFixtureSetupContext _parent;
-        List<TestPosition> _fixtureSetupPositions = new List<TestPosition>();
-        List<TestPosition> _fixtureTeardownPositions = new List<TestPosition>();
         Dictionary<TestPosition, Func<object>> _fixtureSetupMethods = new Dictionary<TestPosition, Func<object>>();
         Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
@@ -28,7 +26,7 @@ namespace NJasmine.Core
 
         public object DoOnetimeSetup(TestPosition position)
         {
-            if (_fixtureSetupPositions.Contains(position))
+            if (_fixtureSetupMethods.ContainsKey(position))
             {
                 if (!_fixtureSetupResults.ContainsKey(position))
                 {
@@ -45,7 +43,7 @@ namespace NJasmine.Core
 
         public void IncludeCleanupFor(TestPosition position)
         {
-            if (_fixtureTeardownPositions.Contains(position))
+            if (_fixtureTeardownMethods.ContainsKey(position))
             {
                 if (!_pendingCleanups.Contains(position))
                 {
@@ -92,10 +90,9 @@ namespace NJasmine.Core
 
         public void AddFixtureSetup<TArranged>(TestPosition position, Func<TArranged> action)
         {
-            if (_fixtureSetupPositions.Contains(position))
+            if (_fixtureSetupMethods.ContainsKey(position))
                 throw new InvalidOperationException();
 
-            _fixtureSetupPositions.Add(position);
             _fixtureSetupMethods[position] = delegate
             {
                 return action();
@@ -116,16 +113,15 @@ namespace NJasmine.Core
 
         public void AddFixtureTearDown(TestPosition position, Action action)
         {
-            if (_fixtureTeardownPositions.Contains(position))
+            if (_fixtureTeardownMethods.ContainsKey(position))
                 throw new InvalidOperationException();
 
-            _fixtureTeardownPositions.Add(position);
             _fixtureTeardownMethods[position] = action;
         }
 
         public object GetSetupResult(TestPosition position)
         {
-            if (_fixtureSetupPositions.Contains(position))
+            if (_fixtureSetupMethods.ContainsKey(position))
             {
                 return _fixtureSetupResults[position];
             }
