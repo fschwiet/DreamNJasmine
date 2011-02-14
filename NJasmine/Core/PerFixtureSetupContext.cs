@@ -16,8 +16,6 @@ namespace NJasmine.Core
 
         private List<TestPosition> _pendingCleanups = new List<TestPosition>();
 
-        public Exception ExceptionFromOnetimeSetup { get; private set; }
-
         public PerFixtureSetupContext()
         {
             _parent = null;

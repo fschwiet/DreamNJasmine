@@ -36,32 +36,25 @@ namespace NJasmine.Core
             long ticks = DateTime.Now.Ticks;
             TestResult testResult = new TestResult(this);
 
-            if (_fixtureSetupTeardown.ExceptionFromOnetimeSetup != null)
+            try
             {
-                testResult.Error(_fixtureSetupTeardown.ExceptionFromOnetimeSetup);
+                _fixtureSetupTeardown.DoCleanupFor(Position);
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    _fixtureSetupTeardown.DoCleanupFor(Position);
-                }
-                catch (Exception e)
-                {
-                    testResult.Error(new Exception(
-                            "Exception thrown during cleanup of previous test, see inner exception for details", 
-                            e));
-                }
+                testResult.Error(new Exception(
+                        "Exception thrown during cleanup of previous test, see inner exception for details", 
+                        e));
+            }
 
-                try
-                {
-                    if (!testResult.HasResults)
-                        RunTestMethod(testResult);
-                }
-                catch (Exception e)
-                {
-                    testResult.Error(e);
-                }
+            try
+            {
+                if (!testResult.HasResults)
+                    RunTestMethod(testResult);
+            }
+            catch (Exception e)
+            {
+                testResult.Error(e);
             }
 
             double num3 = ((double)(DateTime.Now.Ticks - ticks)) / 10000000.0;
