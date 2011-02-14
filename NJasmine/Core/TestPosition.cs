@@ -13,6 +13,27 @@ namespace NJasmine.Core
             Coordinates = coordinates;
         }
 
+        public TestPosition Parent
+        {
+            get
+            {
+                return new TestPosition()
+                {
+                    Coordinates = Coordinates.Take(Coordinates.Count() - 1)
+                };
+            }
+        }
+
+        public bool IsParentOf(TestPosition position)
+        {
+            if (Coordinates.Count() < position.Coordinates.Count())
+            {
+                return (position.Coordinates.Take(Coordinates.Count()).SequenceEqual(Coordinates));
+            }
+
+            return false;
+        }
+
         public TestPosition GetFirstChildPosition()
         {
             return new TestPosition()

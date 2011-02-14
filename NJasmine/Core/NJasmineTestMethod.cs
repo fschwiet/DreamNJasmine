@@ -44,7 +44,19 @@ namespace NJasmine.Core
             {
                 try
                 {
-                    RunTestMethod(testResult);
+                    _fixtureSetupTeardown.DoCleanupFor(Position);
+                }
+                catch (Exception e)
+                {
+                    testResult.Error(new Exception(
+                            "Exception thrown during cleanup of previous test, see inner exception for details", 
+                            e));
+                }
+
+                try
+                {
+                    if (!testResult.HasResults)
+                        RunTestMethod(testResult);
                 }
                 catch (Exception e)
                 {

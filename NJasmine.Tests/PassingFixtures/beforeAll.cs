@@ -8,17 +8,13 @@ using NUnit.Framework;
 
 namespace NJasmineTests.PassingFixtures
 {
-    [Explicit]
     [RunExternal(true, ExpectedTraceSequence = @"
 BEFORE ALL
+first test
 SECOND BEFORE ALL
 INNER BEFORE ALL
-FINAL BEFORE ALL
-first test 
 second test
 third test
-FINAL AFTER ALL
-DISPOSING FINAL BEFORE ALL
 INNER AFTER ALL
 DISPOSING INNER BEFORE ALL
 SECOND AFTER ALL
@@ -97,7 +93,6 @@ DISPOSING BEFORE ALL
                 {
                     Trace("third test");
                 });
-
             });
 
             SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate

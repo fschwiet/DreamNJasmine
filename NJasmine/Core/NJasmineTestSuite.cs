@@ -205,14 +205,16 @@ namespace NJasmine.Core
             _testTypeReached = origin;
         }
 
+        /*
         protected override void DoOneTimeSetUp(TestResult suiteResult)
         {
             _nunitImports.DoOnetimeSetUp();
         }
+         */
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)
         {
-            _nunitImports.DoOnetimeTearDown();
+            _nunitImports.DoAllCleanup();
         }
     }
 }

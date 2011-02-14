@@ -14,6 +14,8 @@ namespace NJasmine.Core
         Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
 
+        private List<TestPosition> _pendingCleanups = new List<TestPosition>();
+
         public Exception ExceptionFromOnetimeSetup { get; private set; }
 
         public PerFixtureSetupContext()
@@ -26,31 +28,67 @@ namespace NJasmine.Core
             _parent = parent;
         }
 
-        public void DoOnetimeSetUp()
+        public object DoOnetimeSetup(TestPosition position)
         {
-            try
+            if (_fixtureSetupPositions.Contains(position))
             {
-                foreach (var record in _fixtureSetupPositions.Select(p => 
-                    new { Position = p, Action = _fixtureSetupMethods[p]}))
+                if (!_fixtureSetupResults.ContainsKey(position))
                 {
-                    _fixtureSetupResults[record.Position] = record.Action();
+                    _fixtureSetupResults[position] = _fixtureSetupMethods[position]();
                 }
+
+                return _fixtureSetupResults[position];
             }
-            catch (System.Reflection.TargetInvocationException e)
+            else
             {
-                ExceptionFromOnetimeSetup = e.InnerException;
-            }
-            catch (Exception e)
-            {
-                ExceptionFromOnetimeSetup = e;
+                return _parent.DoOnetimeSetup(position);
             }
         }
 
-        public void DoOnetimeTearDown()
+        public void IncludeCleanupFor(TestPosition position)
         {
-            foreach (var action in _fixtureTeardownPositions.Select(p => _fixtureTeardownMethods[p]).Reverse())
+            if (_fixtureTeardownPositions.Contains(position))
             {
-                action();
+                if (!_pendingCleanups.Contains(position))
+                {
+                    if (!_fixtureTeardownMethods.ContainsKey(position))
+                        throw new Exception("bugbug");
+
+                    _pendingCleanups.Add(position);
+                }
+            }
+            else
+            {
+                _parent.IncludeCleanupFor(position);
+            }
+        }
+
+        public void DoCleanupFor(TestPosition position)
+        {
+            for(var i = _pendingCleanups.Count - 1; i >= 0; i--)
+            {
+                var positionToClean = _pendingCleanups[i];
+
+                if (positionToClean.Parent.IsParentOf(position))
+                {
+                    break;
+                }
+
+                _pendingCleanups.RemoveAt(i);
+                _fixtureTeardownMethods[positionToClean]();
+            }
+        }
+
+        public void DoAllCleanup()
+        {
+            var pendingCleanups = _pendingCleanups;
+            _pendingCleanups = new List<TestPosition>();
+
+            pendingCleanups.Reverse();
+
+            foreach (var position in pendingCleanups)
+            {
+                _fixtureTeardownMethods[position]();
             }
         }
 

@@ -37,6 +37,23 @@ namespace NJasmineTests.Core
             dictionary[new TestPosition(7,8,9)].Should().Equal(3);
         }
 
+        [Test]
+        public void test_Parent()
+        {
+            var position = new TestPosition(1, 2, 3);
+
+            position.Parent.Should().Equal(new TestPosition(1, 2));
+        }
+
+        [Test]
+        public void test_IsParentOf()
+        {
+            var position = new TestPosition(1, 2, 3);
+
+            position.IsParentOf(new TestPosition(1, 2, 3, 4)).Should().Be.True();
+            position.IsParentOf(new TestPosition(1, 2)).Should().Be.False();
+            position.IsParentOf(new TestPosition(3, 2, 1, 4)).Should().Be.False();
+        }
 
         [Test]
         public void GetFirstChildPosition()

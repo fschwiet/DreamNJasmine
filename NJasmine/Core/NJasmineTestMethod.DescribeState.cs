@@ -27,11 +27,16 @@ namespace NJasmine.Core
 
             public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
             {
-                return (TArranged)_subject._fixtureSetupTeardown.GetSetupResult(position);
+                var result = (TArranged)_subject._fixtureSetupTeardown.DoOnetimeSetup(position);
+
+                _subject._fixtureSetupTeardown.IncludeCleanupFor(position);
+
+                return result;
             }
 
             public virtual void visitAfterAll(SpecElement origin, Action action, TestPosition position)
             {
+                _subject._fixtureSetupTeardown.IncludeCleanupFor(position);
             }
 
             public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
