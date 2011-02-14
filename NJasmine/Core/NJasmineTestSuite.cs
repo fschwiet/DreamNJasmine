@@ -214,7 +214,19 @@ namespace NJasmine.Core
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)
         {
-            _nunitImports.DoAllCleanup();
+            try
+            {
+                _nunitImports.DoAllCleanup();
+            }
+            catch (Exception innerException)
+            {
+                NUnitException exception2 = innerException as NUnitException;
+                if (exception2 != null)
+                {
+                    innerException = exception2.InnerException;
+                }
+                suiteResult.Failure(innerException.Message, innerException.StackTrace, FailureSite.TearDown);
+            }
         }
     }
 }

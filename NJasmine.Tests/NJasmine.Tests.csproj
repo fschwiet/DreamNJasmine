@@ -75,6 +75,7 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_beforeEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
     <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
+    <Compile Include="PassingFixtures\afterAll_failures_only_fail_the_fixture.cs" />
     <Compile Include="PassingFixtures\arrange_after_test_is_not_included_in_prior_test.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
     <Compile Include="PassingFixtures\beforeAll.cs" />

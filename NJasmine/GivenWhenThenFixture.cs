@@ -60,7 +60,7 @@ namespace NJasmine
             return SpecVisitor.visitBeforeAll(SpecElement.beforeAll, action);
         }
 
-        public void AfterAll(Action action)
+        public void afterAll(Action action)
         {
             SpecVisitor.visitAfterAll(SpecElement.afterAll, action);
         }
