@@ -51,6 +51,26 @@ namespace NJasmine.Core.FixtureVisitor
                 _visitor.visitFork(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
 
+        public void visitBeforeAll(SpecElement origin, Action action)
+        {
+            DoThenAdvancePosition(() => _visitor.visitBeforeAll(origin, action, _position));
+        }
+
+        public void visitAfterAll(SpecElement origin, Action action)
+        {
+            DoThenAdvancePosition(() => _visitor.visitAfterAll(origin, action, _position));
+        }
+
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
+        {
+            TArranged result = default(TArranged);
+
+            DoThenAdvancePosition(() => result =
+                _visitor.visitBeforeEach(origin, description, factory, _position));
+
+            return result;
+        }
+
         public void visitAfterEach(SpecElement origin, Action action)
         {
             DoThenAdvancePosition(() => 
@@ -69,16 +89,6 @@ namespace NJasmine.Core.FixtureVisitor
 
             DoThenAdvancePosition(() => 
                 result = _visitor.visitImportNUnit<TFixture>(_position));
-
-            return result;
-        }
-
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
-        {
-            TArranged result = default(TArranged);
-
-            DoThenAdvancePosition(() => result = 
-                _visitor.visitBeforeEach(origin, description, factory, _position));
 
             return result;
         }

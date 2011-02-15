@@ -105,6 +105,21 @@ namespace NJasmine.Core
             _state.visitFork(origin, description, action, position);
         }
 
+        public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+        {
+            _state.visitBeforeAll(origin,action, position);
+        }
+
+        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        {
+            _state.visitAfterAll(origin, action, position);
+        }
+
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        {
+            return _state.visitBeforeEach<TArranged>(origin, description, factory, position);
+        }
+        
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
             _state.visitAfterEach(origin, action, position);
@@ -118,11 +133,6 @@ namespace NJasmine.Core
         public TFixture visitImportNUnit<TFixture>(TestPosition position) where TFixture: class, new()
         {
             return _state.visitImportNUnit<TFixture>(position);
-        }
-
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
-        {
-            return _state.visitBeforeEach<TArranged>(origin, description, factory, position);
         }
 
         public class TestFinishedException : Exception

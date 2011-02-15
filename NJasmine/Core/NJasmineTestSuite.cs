@@ -160,6 +160,24 @@ namespace NJasmine.Core
             }
         }
 
+        public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+        {
+            _nunitImports.AddSetup(position, action);
+        }
+
+        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        {
+            _nunitImports.AddTearDown(position, action);
+        }
+
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        {
+            if (description != null)
+                _baseNameForChildTests = _baseNameForChildTests + ", " + description;
+
+            return default(TArranged);
+        }
+
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
         }
@@ -191,14 +209,6 @@ namespace NJasmine.Core
             _nunitImports.AddFixture(position, typeof(TFixture));
 
             return null;
-        }
-
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
-        {
-            if (description != null)
-                _baseNameForChildTests = _baseNameForChildTests + ", " + description;
-
-            return default(TArranged);
         }
 
         protected override void DoOneTimeSetUp(TestResult suiteResult)

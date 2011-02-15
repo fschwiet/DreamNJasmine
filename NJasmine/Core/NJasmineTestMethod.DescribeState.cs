@@ -25,6 +25,14 @@ namespace NJasmine.Core
                 }
             }
 
+            public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+            {
+            }
+
+            public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+            {
+            }
+
             public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
             {
                 _subject._allTeardowns.Add(delegate()
