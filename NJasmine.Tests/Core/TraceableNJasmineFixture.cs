@@ -31,7 +31,7 @@ namespace NJasmineTests.Core
             return type.ToString().Split(new char[] {'+', '.'}).Last();
         }
 
-        protected void ResetTracing()
+        protected void ResetTracingAtFixtureStart()
         {
             importNUnit<PerClassTraceResetFixture>();
         }

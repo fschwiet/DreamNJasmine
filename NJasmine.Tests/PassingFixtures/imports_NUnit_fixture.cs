@@ -76,7 +76,7 @@ FixtureTearDown some_Nunit_fixture_a
     {
         public override void Specify()
         {
-            ResetTracing();
+            ResetTracingAtFixtureStart();
 
             Trace("test started, before include of a");
             var firstA = importNUnit<some_Nunit_fixture_a>();

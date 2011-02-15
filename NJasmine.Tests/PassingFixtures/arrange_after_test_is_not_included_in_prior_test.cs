@@ -17,7 +17,7 @@ First cleanup
     {
         public override void Specify()
         {
-            importNUnit<PerClassTraceResetFixture>();
+            ResetTracingAtFixtureStart();
 
             arrange(() => Trace("First setup"));
             afterEach(() => Trace("First cleanup"));

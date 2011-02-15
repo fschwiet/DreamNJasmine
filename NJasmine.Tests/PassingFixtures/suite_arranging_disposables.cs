@@ -36,7 +36,7 @@ creating some_observable_F
         
         public override void Specify()
         {
-            ResetTracing();
+            ResetTracingAtFixtureStart();
 
             var i = arrange(() => 123);
 

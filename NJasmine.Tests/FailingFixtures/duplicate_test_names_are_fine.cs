@@ -32,7 +32,7 @@ repeated inner it 3
     {
         public override void Specify()
         {
-            ResetTracing();
+            ResetTracingAtFixtureStart();
 
             foreach (var i in Enumerable.Range(1, 3))
             {

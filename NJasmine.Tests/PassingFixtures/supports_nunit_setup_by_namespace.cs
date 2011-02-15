@@ -21,7 +21,7 @@ TearDown NamespaceSetupB
         {
             public override void Specify()
             {
-                ResetTracing();
+                ResetTracingAtFixtureStart();
 
                 it("test must run setup from NamespaceSetupB only, skipping NamespaceSetupA", delegate {
                     

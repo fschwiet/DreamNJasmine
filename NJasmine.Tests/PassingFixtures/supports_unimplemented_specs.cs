@@ -12,7 +12,7 @@ namespace NJasmineTests.PassingFixtures
     {
         public override void Specify()
         {
-            ResetTracing();
+            ResetTracingAtFixtureStart();
 
             describe("an unimplemented descibe() block");
 
