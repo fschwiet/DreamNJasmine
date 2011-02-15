@@ -21,32 +21,32 @@ namespace NJasmine
 
         public void describe(string description, Action action)
         {
-            _visitor.visitFork(SpecElement.describe, description, action);
+            SpecVisitor.visitFork(SpecElement.describe, description, action);
         }
 
         public void beforeEach(Action action)
         {
-            _visitor.visitBeforeEach(SpecElement.beforeEach, null, delegate() { action(); return (string)null; });
+            SpecVisitor.visitBeforeEach(SpecElement.beforeEach, null, delegate() { action(); return (string)null; });
         }
 
         public void afterEach(Action action)
         {
-            _visitor.visitAfterEach(SpecElement.afterEach, action);
+            SpecVisitor.visitAfterEach(SpecElement.afterEach, action);
         }
 
         public void it(string description)
         {
-            _visitor.visitTest(SpecElement.it, description, null);
+            SpecVisitor.visitTest(SpecElement.it, description, null);
         }
 
         public void it(string description, Action action)
         {
-            _visitor.visitTest(SpecElement.it, description, action);
+            SpecVisitor.visitTest(SpecElement.it, description, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
-            return _visitor.visitImportNUnit<TFixture>();
+            return SpecVisitor.visitImportNUnit<TFixture>();
         }
 
         public TArranged arrange<TArranged>() where TArranged : class, new()
@@ -56,12 +56,12 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            return _visitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
+            return SpecVisitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            return _visitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
+            return SpecVisitor.visitBeforeEach<TArranged>(SpecElement.arrange, null, factory);
         }
 
         public void arrange(Action action)
@@ -71,7 +71,7 @@ namespace NJasmine
 
         public void arrange(string description, Action action)
         {
-            _visitor.visitBeforeEach<string>(SpecElement.arrange, description, delegate() { action(); return (string)null; });
+            SpecVisitor.visitBeforeEach<string>(SpecElement.arrange, description, delegate() { action(); return (string)null; });
         }
     }
 }

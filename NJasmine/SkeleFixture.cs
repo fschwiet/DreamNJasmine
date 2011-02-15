@@ -5,7 +5,9 @@ namespace NJasmine
 {
     public abstract class SkeleFixture
     {
-        protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
+        public abstract void Specify();
+
+        ISpecVisitor _visitor = new DoNothingFixtureVisitor();
 
         public ISpecVisitor SpecVisitor
         {
@@ -20,8 +22,6 @@ namespace NJasmine
 
             return new NJasmineFixture.VisitorChangedContext(() => _visitor = currentVisitor);
         }
-
-        public abstract void Specify();
 
         public class VisitorChangedContext : IDisposable
         {

@@ -8,37 +8,37 @@ namespace NJasmine
     {
         public void given(string givenPhrase, Action specification)
         {
-            _visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification);
+            SpecVisitor.visitFork(SpecElement.given, "given " + givenPhrase, specification);
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            _visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification);
+            SpecVisitor.visitFork(SpecElement.when, "when " + whenPhrase, specification);
         }
 
         public void then(string thenPhrase, Action test)
         {
-            _visitor.visitTest(SpecElement.then, "then " + thenPhrase, test);
+            SpecVisitor.visitTest(SpecElement.then, "then " + thenPhrase, test);
         }
 
         public void then(string thenPhrase)
         {
-            _visitor.visitTest(SpecElement.then, "then " + thenPhrase, null);
+            SpecVisitor.visitTest(SpecElement.then, "then " + thenPhrase, null);
         }
 
         public void cleanup(Action cleanup)
         {
-            _visitor.visitAfterEach(SpecElement.cleanup, cleanup);
+            SpecVisitor.visitAfterEach(SpecElement.cleanup, cleanup);
         }
 
         public void arrange(Action arrangeAction)
         {
-            _visitor.visitBeforeEach(SpecElement.arrange, null, delegate() { arrangeAction(); return (string)null; });
+            SpecVisitor.visitBeforeEach(SpecElement.arrange, null, delegate() { arrangeAction(); return (string)null; });
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            return _visitor.visitBeforeEach(SpecElement.arrange, null, arrangeAction);
+            return SpecVisitor.visitBeforeEach(SpecElement.arrange, null, arrangeAction);
         }
 
         public void expect(Expression<Func<bool>> expectation)
@@ -48,7 +48,7 @@ namespace NJasmine
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
-            return _visitor.visitImportNUnit<TFixture>();
+            return SpecVisitor.visitImportNUnit<TFixture>();
         }
 
         public class InnerFixture : NJasmineFixture
