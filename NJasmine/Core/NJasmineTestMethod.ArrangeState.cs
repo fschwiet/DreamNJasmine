@@ -21,6 +21,16 @@ namespace NJasmine.Core
                 throw DontException(origin);
             }
 
+            public void visitBeforeAll(SpecElement origin, Action action, TestPosition position)
+            {
+                throw DontException(origin);
+            }
+
+            public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+            {
+                throw DontException(origin);
+            }
+
             public override void visitTest(SpecElement origin, string description, Action action, TestPosition position)
             {
                 throw DontException(origin);

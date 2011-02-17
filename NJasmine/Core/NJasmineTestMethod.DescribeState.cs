@@ -6,7 +6,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, ISpecPositionVisitor
+    public partial class NJasmineTestMethod : ISpecPositionVisitor
     {
         public class DescribeState : ISpecPositionVisitor
         {
