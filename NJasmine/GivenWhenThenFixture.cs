@@ -46,6 +46,16 @@ namespace NJasmine
             PowerAssert.PAssert.IsTrue(expectation);
         }
 
+        public void beforeAll(Action action)
+        {
+            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, action);
+        }
+
+        public void AfterAll(Action action)
+        {
+            SpecVisitor.visitAfterAll(SpecElement.afterAll, action);
+        }
+
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
             return SpecVisitor.visitImportNUnit<TFixture>();
