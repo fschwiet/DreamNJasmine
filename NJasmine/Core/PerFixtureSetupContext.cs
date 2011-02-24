@@ -108,6 +108,8 @@ namespace NJasmine.Core
 
                 if (disposeable != null)
                     disposeable.Dispose();
+
+                _fixtureSetupResults.Remove(position);
             });
         }
 
