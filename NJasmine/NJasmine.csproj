@@ -74,19 +74,21 @@
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
+    <Compile Include="Core\RunsActionOnDispose.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenContext.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />
-    <Compile Include="IGivenWhenThenContext.cs" />
-    <Compile Include="INJasmineArrangeContext.cs" />
+    <Compile Include="ISpecificationContext.cs" />
+    <Compile Include="ISpecificationRunner.cs" />
     <Compile Include="ISpecVisitor.cs" />
-    <Compile Include="NJasmineArrangeContext.cs" />
+    <Compile Include="NJasmineContext.cs" />
     <Compile Include="NJasmineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkeleFixture.cs" />
+    <Compile Include="SpecificationFixture.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

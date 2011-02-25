@@ -6,34 +6,35 @@ namespace NJasmine.Extras
 {
     public class NUnitFixtureDriver
     {
-        public static T IncludeFixture<T>(ISpecVisitor specVisitor) where T : new()
+        public static T IncludeFixture<T>(SkeleFixture specificationBuilder) where T : new()
         {
-            T createdFixture = default(T);
+            T fixtureDuringDiscovery = default(T);
+            T fixture = default(T);
 
-            T fixture = specVisitor.visitBeforeAll(SpecElement.importNUnit, delegate
+            specificationBuilder.ExtendSpec(s => fixture = s.visitBeforeAll(SpecElement.importNUnit, delegate
             {
-                createdFixture = new T();
-                RunMethodsWithAttribute(createdFixture, NUnitFramework.FixtureSetUpAttribute);
-                return createdFixture;
-            });
+                fixtureDuringDiscovery = new T();
+                RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureSetUpAttribute);
+                return fixtureDuringDiscovery;
+            }));
 
-            specVisitor.visitBeforeEach(SpecElement.importNUnit, null, delegate
+            specificationBuilder.ExtendSpec(s => s.visitBeforeEach(SpecElement.importNUnit, null, delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.SetUpAttribute);
-                return fixture;
-            });
+                return fixtureDuringDiscovery;
+            }));
 
-            specVisitor.visitAfterEach(SpecElement.importNUnit, delegate
+            specificationBuilder.ExtendSpec(s => s.visitAfterEach(SpecElement.importNUnit, delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.TearDownAttribute);
-            });
+            }));
 
-            specVisitor.visitAfterAll(SpecElement.importNUnit, delegate
+            specificationBuilder.ExtendSpec(s => s.visitAfterAll(SpecElement.importNUnit, delegate
             {
-                RunMethodsWithAttribute(createdFixture, NUnitFramework.FixtureTearDownAttribute);
-            });
+                RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureTearDownAttribute);
+            }));
 
-            return fixture;
+            return fixtureDuringDiscovery;
         }
 
         static void RunMethodsWithAttribute(object instance, string attribute)

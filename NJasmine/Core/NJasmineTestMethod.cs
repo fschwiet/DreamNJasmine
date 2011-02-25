@@ -10,14 +10,15 @@ namespace NJasmine.Core
 {
     public partial class NJasmineTestMethod : TestMethod, INJasmineTest
     {
-        readonly Func<SkeleFixture> _fixtureFactory;
+        readonly Func<ISpecificationRunner> _fixtureFactory;
         readonly TestPosition _position;
         readonly PerFixtureSetupContext _fixtureSetupTeardown;
 
         List<Action> _allTeardowns = null;
         ISpecPositionVisitor _state = null;
 
-        public NJasmineTestMethod(Func<SkeleFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown) : base(new Action(delegate() { }).Method)
+        public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown)
+            : base(new Action(delegate() { }).Method)
         {
             _fixtureFactory = fixtureFactory;
             _position = position;
@@ -73,7 +74,7 @@ namespace NJasmine.Core
 
             try
             {
-                fixture.Specify();
+                fixture.Run();
             }
 
             catch (TestFinishedException)

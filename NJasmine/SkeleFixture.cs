@@ -1,45 +1,36 @@
 ﻿using System;
+using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
-    public abstract class SkeleFixture
+    public class SkeleFixture : ISpecificationRunner, ISpecificationContext
     {
-        public abstract void Specify();
+        private readonly Action _specification;
+        protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
 
-        ISpecVisitor _visitor = new DoNothingFixtureVisitor();
-
-        public ISpecVisitor SpecVisitor
+        public SkeleFixture(Action specification)
         {
-            get { return _visitor; }
+            _specification = specification;
         }
 
-        public virtual NJasmineFixture.VisitorChangedContext UseVisitor(ISpecVisitor visitor)
+        public void Run()
+        {
+            _specification();
+        }
+
+        public virtual RunsActionOnDispose UseVisitor(ISpecVisitor visitor)
         {
             var currentVisitor = _visitor;
 
             _visitor = visitor;
 
-            return new NJasmineFixture.VisitorChangedContext(() => _visitor = currentVisitor);
+            return new RunsActionOnDispose(() => _visitor = currentVisitor);
         }
 
-        public class VisitorChangedContext : IDisposable
+        public void ExtendSpec(Action<ISpecVisitor> spec)
         {
-            Action _action;
-
-            public VisitorChangedContext(Action action)
-            {
-                _action = action;
-            }
-
-            public void Dispose()
-            {
-                if (_action != null)
-                {
-                    _action();
-                    _action = null;
-                }
-            }
+            spec(_visitor);
         }
     }
 }

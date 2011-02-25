@@ -12,7 +12,7 @@ namespace NJasmine.Core
     {
         public Test BuildNJasmineTestSuite()
         {
-            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Specify, true);
+            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Run, true);
         }
 
         private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
@@ -59,8 +59,8 @@ namespace NJasmine.Core
             return this;
         }
 
-        readonly Func<SkeleFixture> _fixtureFactory;
-        readonly SkeleFixture _fixtureInstanceForDiscovery;
+        readonly Func<ISpecificationRunner> _fixtureFactory;
+        readonly ISpecificationRunner _fixtureInstanceForDiscovery;
         readonly TestPosition _position;
         readonly PerFixtureSetupContext _nunitImports;
         readonly List<Test> _accumulatedDescendants;
@@ -69,7 +69,7 @@ namespace NJasmine.Core
         string _baseNameForChildTests;
         SpecElement? _testTypeReached;
 
-        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
@@ -84,7 +84,7 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public NJasmineTestSuite(Func<SkeleFixture> fixtureFactory, SkeleFixture fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, ISpecificationRunner fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;

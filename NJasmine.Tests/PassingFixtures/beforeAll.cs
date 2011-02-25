@@ -44,67 +44,67 @@ DISPOSING BEFORE ALL
         {
             beforeAll(ResetTracing);
 
-            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
+            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING BEFORE ALL"));
-            });
+            }));
 
-            SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
+            ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
             {
                 Trace("AFTER ALL");
-            }); 
+            })); 
             
-            SpecVisitor.visitTest(SpecElement.it, "first teest", delegate
+            ExtendSpec(s => s.visitTest(SpecElement.it, "first teest", delegate
             {
                 Trace("first test");
-            });
+            }));
 
-            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
+            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("SECOND BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING SECOND BEFORE ALL"));
-            });
+            }));
 
-            SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
+            ExtendSpec(s =>s.visitAfterAll(SpecElement.afterAll, delegate
             {
                 Trace("SECOND AFTER ALL");
-            });
+            }));
 
-            SpecVisitor.visitFork(SpecElement.describe, "in some context", delegate
+            ExtendSpec(r => r.visitFork(SpecElement.describe, "in some context", delegate
             {
-                SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
+                ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
                 {
                     Trace("INNER BEFORE ALL");
                     return new RunOnDispose(() => Trace("DISPOSING INNER BEFORE ALL"));
-                });
+                }));
 
-                SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
+                ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
                 {
                     Trace("INNER AFTER ALL");
-                });
+                }));
 
-                SpecVisitor.visitTest(SpecElement.it, "second teest", delegate
+                ExtendSpec(s => s.visitTest(SpecElement.it, "second teest", delegate
                 {
                     Trace("second test");
-                });
+                }));
 
-                SpecVisitor.visitTest(SpecElement.it, "third teest", delegate
+                ExtendSpec(s => s.visitTest(SpecElement.it, "third teest", delegate
                 {
                     Trace("third test");
-                });
-            });
+                }));
+            }));
 
-            SpecVisitor.visitBeforeAll(SpecElement.beforeAll, delegate
+            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
             {
                 Trace("FINAL BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING FINAL BEFORE ALL"));
-            });
+            }));
 
-            SpecVisitor.visitAfterAll(SpecElement.afterAll, delegate
+            ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
             {
                 Trace("FINAL AFTER ALL");
-            }); 
+            })); 
         }
     }
 }

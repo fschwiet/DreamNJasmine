@@ -7,6 +7,11 @@ namespace NJasmineTests.Core
 {
     public abstract class TraceableNJasmineFixture : NJasmineFixture
     {
+        public void ExtendSpec(Action<ISpecVisitor> specVisitor)
+        {
+            GetUnderlyingSkelefixture(this).ExtendSpec(specVisitor);
+        }
+
         public static void Trace(string value)
         {
             Console.WriteLine("<<{{" + value + "}}>>");

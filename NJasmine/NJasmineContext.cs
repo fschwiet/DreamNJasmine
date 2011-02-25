@@ -2,9 +2,9 @@
 
 namespace NJasmine
 {
-    public class GivenWhenThenContext : GivenWhenThenFixture
+    public class NJasmineContext : NJasmineFixture
     {
-        public GivenWhenThenContext(SkeleFixture fixture) : base(fixture)
+        public NJasmineContext(SkeleFixture fixture) : base(fixture)
         {
         }
 

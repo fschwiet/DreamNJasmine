@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
@@ -9,13 +8,13 @@ namespace NJasmineTests.PassingFixtures
 {
     public class TestDriver
     {
-        NJasmineArrangeContext _njasmineContext;
+        NJasmineContext _njasmineContext;
         GivenWhenThenContext _gwtTestContext;
 
-        public TestDriver(ISpecVisitor specVisitor)
+        public TestDriver(SpecificationFixture fixture)
         {
-            _njasmineContext = new NJasmineArrangeContext(specVisitor);
-            _gwtTestContext = new GivenWhenThenContext(specVisitor);
+            _njasmineContext = new NJasmineContext(SpecificationFixture.GetUnderlyingSkelefixture(fixture));
+            _gwtTestContext = new GivenWhenThenContext(SpecificationFixture.GetUnderlyingSkelefixture(fixture));
         }
 
         public int Value = 0;
@@ -49,7 +48,7 @@ doing test in GivenWhenThen
     {
         public override void Specify()
         {
-            var testDriver = new TestDriver(SpecVisitor);
+            var testDriver = new TestDriver(this);
 
             testDriver.do_arrange_in_njasmine("the arrange");
 
@@ -65,7 +64,7 @@ doing test in GivenWhenThen
     {
         public override void Specify()
         {
-            var testDriver = new TestDriver(SpecVisitor);
+            var testDriver = new TestDriver(this);
 
             testDriver.do_arrange_in_njasmine("the arrange");
 
