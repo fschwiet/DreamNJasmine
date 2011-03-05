@@ -84,6 +84,16 @@ task IntegrationTests {
 
         $hasExpectation = $false;
 
+        if ($_.VerificationScript) {
+
+            $verificationCommand = "{" + $_.VerificationScript + "}"
+            $verificationCommand = invoke-expression $verificationCommand
+
+            & $verificationCommand
+
+            $hasExpectation = $true;
+        }
+
         if ($_.ExpectedExtraction) {
             $expectedExtraction = $_.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
 

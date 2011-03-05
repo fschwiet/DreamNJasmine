@@ -13,12 +13,14 @@ namespace NJasmineTests
             public string[] ExpectedStrings;
             public string ExpectedExtraction;
             public string[] ExpectedTestNames;
+            public string VerificationScript;  // param([string]$consoleOutput)
         }
 
         public bool TestPasses { get; set; }
         public string[] ExpectedStrings { get; set; }
         public string ExpectedTraceSequence { get; set; }
         public string[] ExpectedTestNames { get; set; }
+        public string VerificationScript { get; set; }
 
         public RunExternalAttribute(bool testPasses)
         {
@@ -36,7 +38,8 @@ namespace NJasmineTests
                        Passes = a.TestPasses,
                        ExpectedStrings = a.ExpectedStrings ?? new string[0],
                        ExpectedExtraction = a.ExpectedTraceSequence,
-                       ExpectedTestNames = a.ExpectedTestNames
+                       ExpectedTestNames = a.ExpectedTestNames,
+                       VerificationScript = a.VerificationScript
                    };
         }
     }
