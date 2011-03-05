@@ -81,12 +81,8 @@ namespace NJasmine
             return NUnitFixtureDriver.IncludeFixture<TFixture>(_skeleFixture);
         }
 
-        public class InnerFixture : NJasmineFixture
+        public void ignoreBecause(string theTestRequiresIt)
         {
-            public override void Specify()
-            {
-                throw new Exception("this Specify method won't be used");
-            }
         }
     }
 }

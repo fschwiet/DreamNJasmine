@@ -89,7 +89,7 @@ task IntegrationTests {
             $verificationCommand = "{" + $_.VerificationScript + "}"
             $verificationCommand = invoke-expression $verificationCommand
 
-            & $verificationCommand
+            & $verificationCommand testoutput $testOutputTarget
 
             $hasExpectation = $true;
         }
