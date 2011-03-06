@@ -38,7 +38,7 @@ namespace NJasmine.Core
 
                     if (isOuterScopeOfSpecification)
                     {
-                        MakeNameUnique(nJasmineInvalidTestSuite);
+                        _nameGenator.MakeNameUnique(nJasmineInvalidTestSuite);
                         Add(nJasmineInvalidTestSuite);
                     }
                     else
@@ -56,27 +56,25 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         readonly PerFixtureSetupContext _nunitImports;
         readonly List<Test> _accumulatedDescendants;
-        readonly List<string> _globallyAccumulatedTestNames;
+        readonly NameGenerator _nameGenator;
 
         string _baseNameForChildTests;
-        SpecElement? _testTypeReached;
 
-        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
+        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent)
         {
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parent, globallyAccumulatedTestNames, fixtureFactory());
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parent, new NameGenerator(), fixtureFactory());
             
             return rootSuite.BuildNJasmineTestSuite(rootSuite._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames, ISpecificationRunner fixtureInstanceForDiscovery)
+        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
             _position = position;
             _nunitImports = new PerFixtureSetupContext(parent);
-            _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
+            _nameGenator = nameGenerator;
             _accumulatedDescendants = new List<Test>();
-            _testTypeReached = null;
 
             maintainTestOrder = true;
 
@@ -88,36 +86,12 @@ namespace NJasmine.Core
             get { return _position; }
         }
 
-        private void MakeNameUnique(Test test)
-        {
-            var name = test.TestName.FullName;
-
-            if (_globallyAccumulatedTestNames.Contains(name))
-            {
-                var nextIndex = 1;
-                string suffix;
-                string nextName;
-
-                do
-                {
-                    suffix = "`" + ++nextIndex;
-                    nextName = name + suffix;
-                } while (_globallyAccumulatedTestNames.Contains(nextName));
-
-
-                test.TestName.Name = test.TestName.Name + suffix;
-                test.TestName.FullName = test.TestName.FullName + suffix;
-            }
-
-            _globallyAccumulatedTestNames.Add(test.TestName.FullName);
-        }
-
         private void NameTest(Test test, string name)
         {
             test.TestName.FullName = _baseNameForChildTests + ", " + name;
             test.TestName.Name = name;
 
-            MakeNameUnique(test);
+            _nameGenator.MakeNameUnique(test);
         }
         
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
@@ -134,7 +108,7 @@ namespace NJasmine.Core
             {
                 string baseName = TestName.FullName;
 
-                var describeSuite = new NJasmineTestSuite(_fixtureFactory, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames, _fixtureInstanceForDiscovery);
+                var describeSuite = new NJasmineTestSuite(_fixtureFactory, baseName, description, position, _nunitImports, _nameGenator, _fixtureInstanceForDiscovery);
 
                 NameTest(describeSuite, description);
 
@@ -185,8 +159,6 @@ namespace NJasmine.Core
 
                 _accumulatedDescendants.Add(testMethod);
             }
-
-            _testTypeReached = origin;
         }
 
         public void visitIgnoreBecause(string reason, TestPosition position)

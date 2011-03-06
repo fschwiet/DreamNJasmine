@@ -39,14 +39,12 @@ namespace NJasmine.Core
                 return SpecificationFixture.GetUnderlyingSkelefixture(fixture);
             };
             
-            List<string> _allCreatedNames = new List<string>();
-
             string baseName = type.Namespace;
             string name = type.Name;
             TestPosition position = new TestPosition();
             PerFixtureSetupContext parent = new PerFixtureSetupContext();
 
-            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, baseName, name, position, parent, _allCreatedNames);
+            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, baseName, name, position, parent);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
