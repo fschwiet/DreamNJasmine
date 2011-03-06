@@ -7,9 +7,6 @@ using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 using NUnit.Core;
 using NUnit.Framework;
-using Should.Fluent;
-using Should.Fluent.Model;
-using Assert = Should.Core.Assertions.Assert;
 
 namespace NJasmine
 {
