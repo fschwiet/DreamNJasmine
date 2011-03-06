@@ -9,7 +9,7 @@ namespace NJasmine.Core
         readonly string _reason;
         string _stackTrace;
 
-        public NJasmineInvalidTestSuite(TestName name, Exception e, TestPosition position) 
+        public NJasmineInvalidTestSuite(TestName name, Exception e, TestPosition position)
             : base(((Action)delegate() { }).Method)
         {
             _reason = e.Message;

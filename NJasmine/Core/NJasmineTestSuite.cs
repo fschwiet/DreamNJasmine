@@ -8,25 +8,27 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineTestSuite : NJasmineTestSuiteBase, INJasmineTest
+    class NJasmineTestSuite : TestSuite, INJasmineTest
     {
+        readonly SuiteBuilder _builder;
         readonly TestPosition _position;
 
         public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
         {
-            SuiteBuildContext buildContext = new SuiteBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+            AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
             NJasmineTestSuite rootSuite = new NJasmineTestSuite(buildContext, new TestPosition(), new PerFixtureSetupContext());
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(rootSuite._buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(SuiteBuildContext buildContext, TestPosition position, PerFixtureSetupContext parent)
-            : base(buildContext, parent)
+        public NJasmineTestSuite(AllSuitesBuildContext buildContext, TestPosition position, PerFixtureSetupContext parent)
+            : base("thistestname", "willbeoverwritten")
         {
             _position = position;
+            _builder = new SuiteBuilder(this, buildContext, parent);
 
             maintainTestOrder = true;
         }
@@ -40,9 +42,7 @@ namespace NJasmine.Core
         {
             Exception exception = null;
 
-            var visitorPositionAdapter = new VisitorPositionAdapter(_position.GetFirstChildPosition(), this);
-
-            using (_buildContext._fixtureInstanceForDiscovery.UseVisitor(visitorPositionAdapter))
+            using (_builder.VisitSuiteFromPosition(this, _position.GetFirstChildPosition()))
             {
                 try
                 {
@@ -55,8 +55,7 @@ namespace NJasmine.Core
 
                 if (exception == null)
                 {
-                    foreach (var sibling in _accumulatedDescendants)
-                        Add(sibling);
+                    _builder.AddAccumulatedDescendents();
                 }
                 else
                 {
@@ -64,7 +63,6 @@ namespace NJasmine.Core
 
                     if (isOuterScopeOfSpecification)
                     {
-                        _buildContext._nameGenator.MakeNameUnique(nJasmineInvalidTestSuite);
                         Add(nJasmineInvalidTestSuite);
                     }
                     else
@@ -81,7 +79,7 @@ namespace NJasmine.Core
         {
             try
             {
-                _nunitImports.DoAllCleanup();
+                _builder.DoFixtureCleanup();
             }
             catch (Exception innerException)
             {

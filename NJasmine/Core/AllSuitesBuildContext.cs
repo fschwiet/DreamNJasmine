@@ -2,13 +2,13 @@
 
 namespace NJasmine.Core
 {
-    internal class SuiteBuildContext
+    internal class AllSuitesBuildContext
     {
         public Func<ISpecificationRunner> _fixtureFactory;
         public ISpecificationRunner _fixtureInstanceForDiscovery;
         public NameGenerator _nameGenator;
 
-        public SuiteBuildContext(Func<ISpecificationRunner> fixtureFactory, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
+        public AllSuitesBuildContext(Func<ISpecificationRunner> fixtureFactory, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
         {
             _fixtureFactory = fixtureFactory;
             _nameGenator = nameGenerator;

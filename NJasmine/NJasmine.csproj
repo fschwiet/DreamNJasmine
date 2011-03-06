@@ -71,7 +71,7 @@
     <Compile Include="Core\NJasmineExecutionContext.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineTestRunner.cs" />
-    <Compile Include="Core\NJasmineTestSuiteBase.cs" />
+    <Compile Include="Core\SuiteBuilder.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\RunsActionOnDispose.cs" />
-    <Compile Include="Core\SuiteBuildContext.cs" />
+    <Compile Include="Core\AllSuitesBuildContext.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\NUnitFixtureDriver.cs" />
