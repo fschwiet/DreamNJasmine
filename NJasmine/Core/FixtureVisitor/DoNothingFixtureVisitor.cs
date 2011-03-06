@@ -26,6 +26,10 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
+        public void visitIgnoreBecause(string reason)
+        {
+        }
+
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
         {
             return default(TArranged);

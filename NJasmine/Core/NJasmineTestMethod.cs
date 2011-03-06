@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using NJasmine.Core.Execution;
 using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest
+    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, ISpecPositionVisitor
     {
         readonly Func<ISpecificationRunner> _fixtureFactory;
         readonly TestPosition _position;
         readonly PerFixtureSetupContext _fixtureSetupTeardown;
 
-        List<Action> _allTeardowns = null;
-        ISpecPositionVisitor _state = null;
+        NJasmineExecutionContext _executionContext;
 
         public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown)
             : base(new Action(delegate() { }).Method)
@@ -23,7 +23,6 @@ namespace NJasmine.Core
             _fixtureFactory = fixtureFactory;
             _position = position;
             _fixtureSetupTeardown = fixtureSetupTeardown;
-            _state = new DescribeState(this);
         }
 
         public TestPosition Position
@@ -66,8 +65,8 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult)
         {
-            this._allTeardowns = new List<Action>();
-
+            _executionContext = new NJasmineExecutionContext(this, _fixtureSetupTeardown);
+            
             var fixture = this._fixtureFactory();
 
             fixture.UseVisitor(new VisitorPositionAdapter(this));
@@ -82,58 +81,44 @@ namespace NJasmine.Core
             }
             finally
             {
-                this._allTeardowns.Reverse();
-
-                foreach (var action in this._allTeardowns)
-                {
-                    action();
-                }
+                _executionContext.RunAllPerTestTeardowns();
             }
             testResult.Success();
         }
 
-        public void whileInState(ISpecPositionVisitor state, Action action)
-        {
-            var originalState = _state;
-            _state = state;
-            try
-            {
-                action();
-            }
-            finally
-            {
-                _state = originalState;
-            }
-        }
-
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _state.visitFork(origin, description, action, position);
+            _executionContext.State.visitFork(origin, description, action, position);
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            return _state.visitBeforeAll(origin,action, position);
+            return _executionContext.State.visitBeforeAll(origin, action, position);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _state.visitAfterAll(origin, action, position);
+            _executionContext.State.visitAfterAll(origin, action, position);
         }
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
         {
-            return _state.visitBeforeEach<TArranged>(origin, description, factory, position);
+            return _executionContext.State.visitBeforeEach<TArranged>(origin, description, factory, position);
         }
         
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
-            _state.visitAfterEach(origin, action, position);
+            _executionContext.State.visitAfterEach(origin, action, position);
         }
 
         public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _state.visitTest(origin, description, action, position);
+            _executionContext.State.visitTest(origin, description, action, position);
+        }
+
+        public void visitIgnoreBecause(string reason, TestPosition position)
+        {
+            throw new NotImplementedException();
         }
 
         public class TestFinishedException : Exception

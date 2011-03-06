@@ -84,5 +84,11 @@ namespace NJasmine.Core.FixtureVisitor
             DoThenAdvancePosition(() =>
                 _visitor.visitTest(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
         }
+
+        public void visitIgnoreBecause(string reason)
+        {
+            DoThenAdvancePosition(() => 
+                _visitor.visitIgnoreBecause(reason, _position));
+        }
     }
 }

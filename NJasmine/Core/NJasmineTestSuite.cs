@@ -205,6 +205,11 @@ namespace NJasmine.Core
             _testTypeReached = origin;
         }
 
+        public void visitIgnoreBecause(string reason, TestPosition position)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void DoOneTimeTearDown(TestResult suiteResult)
         {
             try

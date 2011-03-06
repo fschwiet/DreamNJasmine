@@ -59,15 +59,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Execution\ActState.cs" />
+    <Compile Include="Core\Execution\ArrangeState.cs" />
+    <Compile Include="Core\Execution\CleanupState.cs" />
+    <Compile Include="Core\Execution\DescribeState.cs" />
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
+    <Compile Include="Core\NJasmineExecutionContext.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
-    <Compile Include="Core\NJasmineTestMethod.ArrangeState.cs" />
-    <Compile Include="Core\NJasmineTestMethod.CleanupState.cs" />
-    <Compile Include="Core\NJasmineTestMethod.DescribeState.cs" />
-    <Compile Include="Core\NJasmineTestMethod.ActState.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

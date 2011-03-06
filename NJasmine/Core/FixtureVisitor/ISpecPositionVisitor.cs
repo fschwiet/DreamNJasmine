@@ -14,5 +14,6 @@ namespace NJasmine.Core.FixtureVisitor
         void visitAfterEach(SpecElement origin, Action action, TestPosition position);
 
         void visitTest(SpecElement origin, string description, Action action, TestPosition position);
+        void visitIgnoreBecause(string reason, TestPosition position);
     }
 }
