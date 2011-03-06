@@ -8,13 +8,39 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineTestSuite : TestSuite, INJasmineTest, ISpecPositionVisitor
+    class NJasmineTestSuite : NJasmineTestSuiteBase, INJasmineTest
     {
-        private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
+        readonly TestPosition _position;
+
+        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
+        {
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, new TestPosition(), new PerFixtureSetupContext(), new NameGenerator(), fixtureFactory());
+            rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
+            rootSuite.TestName.Name = type.Name;
+
+            return rootSuite.BuildNJasmineTestSuite(rootSuite._fixtureInstanceForDiscovery.Run, true);
+        }
+
+        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext parent, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
+            : base(fixtureFactory, parent, nameGenerator, fixtureInstanceForDiscovery)
+        {
+            _position = position;
+
+            maintainTestOrder = true;
+        }
+
+        public TestPosition Position
+        {
+            get { return _position; }
+        }
+
+        public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
             Exception exception = null;
 
-            using (_fixtureInstanceForDiscovery.UseVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
+            var visitorPositionAdapter = new VisitorPositionAdapter(_position.GetFirstChildPosition(), this);
+
+            using (_fixtureInstanceForDiscovery.UseVisitor(visitorPositionAdapter))
             {
                 try
                 {
@@ -47,110 +73,6 @@ namespace NJasmine.Core
             }
 
             return this;
-        }
-
-        readonly Func<ISpecificationRunner> _fixtureFactory;
-        readonly ISpecificationRunner _fixtureInstanceForDiscovery;
-        readonly TestPosition _position;
-        readonly PerFixtureSetupContext _nunitImports;
-        readonly List<Test> _accumulatedDescendants;
-        readonly NameGenerator _nameGenator;
-
-        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
-        {
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, new TestPosition(), new PerFixtureSetupContext(), new NameGenerator(), fixtureFactory());
-            rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
-            rootSuite.TestName.Name = type.Name;
-
-            return rootSuite.BuildNJasmineTestSuite(rootSuite._fixtureInstanceForDiscovery.Run, true);
-        }
-
-        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext parent, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
-            : base("thistestname", "willbeoverwritten")
-        {
-            _fixtureFactory = fixtureFactory;
-            _position = position;
-            _nunitImports = new PerFixtureSetupContext(parent);
-            _nameGenator = nameGenerator;
-            _accumulatedDescendants = new List<Test>();
-
-            maintainTestOrder = true;
-
-            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
-        }
-
-        public TestPosition Position
-        {
-            get { return _position; }
-        }
-
-        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
-        {
-            if (action == null)
-            {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
-
-                _nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
-
-                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
-            }
-            else
-            {
-                string baseName = TestName.FullName;
-
-                var describeSuite = new NJasmineTestSuite(_fixtureFactory, position, _nunitImports, _nameGenator, _fixtureInstanceForDiscovery);
-
-                _nameGenator.NameTest(this, description, describeSuite);
-
-                var actualSuite = describeSuite.BuildNJasmineTestSuite(action, false);
-
-                _accumulatedDescendants.Add(actualSuite);
-            }
-        }
-
-        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
-        {
-            _nunitImports.AddFixtureSetup(position, action);
-            return default(TArranged);
-        }
-
-        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
-        {
-            _nunitImports.AddFixtureTearDown(position, action);
-        }
-
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
-        {
-            return default(TArranged);
-        }
-
-        public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
-        {
-        }
-
-        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
-        {
-            if (action == null)
-            {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
-
-                _nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
-
-                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
-            }
-            else
-            {
-                var testMethod = new NJasmineTestMethod(_fixtureFactory, position, _nunitImports);
-
-                _nameGenator.NameTest(this, description, testMethod);
-
-                _accumulatedDescendants.Add(testMethod);
-            }
-        }
-
-        public void visitIgnoreBecause(string reason, TestPosition position)
-        {
-            throw new NotImplementedException();
         }
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)

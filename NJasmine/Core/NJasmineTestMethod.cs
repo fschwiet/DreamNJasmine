@@ -68,21 +68,22 @@ namespace NJasmine.Core
             
             var fixture = this._fixtureFactory();
 
-            fixture.UseVisitor(new VisitorPositionAdapter(runner));
+            using (fixture.UseVisitor(new VisitorPositionAdapter(runner)))
+            {
+                try
+                {
+                    fixture.Run();
+                }
 
-            try
-            {
-                fixture.Run();
+                catch (TestFinishedException)
+                {
+                }
+                finally
+                {
+                    executionContext.RunAllPerTestTeardowns();
+                }
+                testResult.Success();
             }
-
-            catch (TestFinishedException)
-            {
-            }
-            finally
-            {
-                executionContext.RunAllPerTestTeardowns();
-            }
-            testResult.Success();
         }
 
         public class TestFinishedException : Exception

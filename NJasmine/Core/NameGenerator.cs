@@ -10,7 +10,7 @@ namespace NJasmine.Core
     {
         readonly List<string> _globallyAccumulatedTestNames = new List<string>();
 
-        public void NameTest(NJasmineTestSuite parentTest, string testShortName, Test test)
+        public void NameTest(NJasmineTestSuiteBase parentTest, string testShortName, Test test)
         {
             test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
             test.TestName.Name = testShortName;
