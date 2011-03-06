@@ -10,14 +10,12 @@ namespace NJasmine.Core
         public ISpecPositionVisitor State { get; private set; }
 
         private readonly TestPosition _position;
-        private readonly NJasmineTestMethod _subject;
         private PerFixtureSetupContext _fixtureSetupTeardown;
         private readonly List<Action> _allTeardowns;
 
-        public NJasmineExecutionContext(NJasmineTestMethod subject, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineExecutionContext(TestPosition position, PerFixtureSetupContext fixtureSetupContext)
         {
-            _position = subject.Position;
-            _subject = subject;
+            _position = position;
             _fixtureSetupTeardown = fixtureSetupContext;
             _allTeardowns = new List<Action>();
             State = new DescribeState(this);

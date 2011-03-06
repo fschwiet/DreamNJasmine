@@ -14,6 +14,7 @@ namespace NJasmine
         void visitAfterEach(SpecElement origin, Action action);
 
         void visitTest(SpecElement origin, string description, Action action);
+
         void visitIgnoreBecause(string reason);
     }
 }

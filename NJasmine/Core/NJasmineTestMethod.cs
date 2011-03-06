@@ -9,18 +9,18 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest
+    public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
-        readonly Func<ISpecificationRunner> _fixtureFactory;
         readonly TestPosition _position;
-        readonly PerFixtureSetupContext _fixtureSetupTeardown;
+        readonly Func<ISpecificationRunner> _fixtureFactory;
+        readonly PerFixtureSetupContext _fixtureSetupContext;
 
-        public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown)
+        public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext)
             : base(new Action(delegate() { }).Method)
         {
-            _fixtureFactory = fixtureFactory;
             _position = position;
-            _fixtureSetupTeardown = fixtureSetupTeardown;
+            _fixtureFactory = fixtureFactory;
+            _fixtureSetupContext = fixtureSetupContext;
         }
 
         public TestPosition Position
@@ -36,7 +36,7 @@ namespace NJasmine.Core
 
             try
             {
-                _fixtureSetupTeardown.DoCleanupFor(Position);
+                _fixtureSetupContext.DoCleanupFor(Position);
             }
             catch (Exception e)
             {
@@ -63,7 +63,7 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult)
         {
-            var executionContext = new NJasmineExecutionContext(this, _fixtureSetupTeardown);
+            var executionContext = new NJasmineExecutionContext(Position, _fixtureSetupContext);
             var runner = new NJasmineTestRunner(executionContext);
             
             var fixture = this._fixtureFactory();

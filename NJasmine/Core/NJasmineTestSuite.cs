@@ -39,10 +39,7 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, _position);
-
-                    nJasmineInvalidTestSuite.TestName.FullName = this.TestName.FullName;
-                    nJasmineInvalidTestSuite.TestName.Name = this.TestName.Name;
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(this.TestName, exception, _position);
 
                     if (isOuterScopeOfSpecification)
                     {

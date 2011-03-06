@@ -30,7 +30,7 @@ namespace NJasmine.Core.FixtureVisitor
             _position = nextSibling;
         }
 
-        private Action WrapActionToRunAtFirstchildPosition(Action action)
+        private Action ActionRunningFromFirstChildPosition(Action action)
         {
             if (action == null)
                 return null;
@@ -48,7 +48,7 @@ namespace NJasmine.Core.FixtureVisitor
         public void visitFork(SpecElement origin, string description, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitFork(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitFork(origin, description, ActionRunningFromFirstChildPosition(action), _position));
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action)
@@ -76,13 +76,13 @@ namespace NJasmine.Core.FixtureVisitor
         public void visitAfterEach(SpecElement origin, Action action)
         {
             DoThenAdvancePosition(() => 
-                _visitor.visitAfterEach(origin, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitAfterEach(origin, ActionRunningFromFirstChildPosition(action), _position));
         }
 
         public void visitTest(SpecElement origin, string description, Action action)
         {
             DoThenAdvancePosition(() =>
-                _visitor.visitTest(origin, description, WrapActionToRunAtFirstchildPosition(action), _position));
+                _visitor.visitTest(origin, description, ActionRunningFromFirstChildPosition(action), _position));
         }
 
         public void visitIgnoreBecause(string reason)
