@@ -53,7 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\NJasmineSuiteBuilder_suite_building.cs" />
     <Compile Include="Core\build_and_run_suite_with_loops.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
