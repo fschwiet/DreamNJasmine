@@ -10,11 +10,6 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest, ISpecPositionVisitor
     {
-        public Test BuildNJasmineTestSuite()
-        {
-            return BuildNJasmineTestSuite(_fixtureInstanceForDiscovery.Run, true);
-        }
-
         private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
             _baseNameForChildTests = TestName.FullName;
@@ -66,34 +61,26 @@ namespace NJasmine.Core
         string _baseNameForChildTests;
         SpecElement? _testTypeReached;
 
-        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
-            : base(baseName, name)
+        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
         {
-            _fixtureFactory = fixtureFactory;
-            _fixtureInstanceForDiscovery = fixtureFactory();
-            _position = position;
-            _nunitImports = new PerFixtureSetupContext(parent);
-            _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
-
-            _accumulatedDescendants = new List<Test>();
-            _testTypeReached = null;
-
-            maintainTestOrder = true;
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parent, globallyAccumulatedTestNames, fixtureFactory());
+            
+            return rootSuite.BuildNJasmineTestSuite(rootSuite._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, ISpecificationRunner fixtureInstanceForDiscovery, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames)
+        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent, List<string> globallyAccumulatedTestNames, ISpecificationRunner fixtureInstanceForDiscovery)
             : base(baseName, name)
         {
             _fixtureFactory = fixtureFactory;
-            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
             _position = position;
             _nunitImports = new PerFixtureSetupContext(parent);
             _globallyAccumulatedTestNames = globallyAccumulatedTestNames;
-
             _accumulatedDescendants = new List<Test>();
             _testTypeReached = null;
 
             maintainTestOrder = true;
+
+            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
         }
 
         public TestPosition Position
@@ -147,7 +134,7 @@ namespace NJasmine.Core
             {
                 string baseName = TestName.FullName;
 
-                var describeSuite = new NJasmineTestSuite(_fixtureFactory, _fixtureInstanceForDiscovery, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames);
+                var describeSuite = new NJasmineTestSuite(_fixtureFactory, baseName, description, position, _nunitImports, _globallyAccumulatedTestNames, _fixtureInstanceForDiscovery);
 
                 NameTest(describeSuite, description);
 

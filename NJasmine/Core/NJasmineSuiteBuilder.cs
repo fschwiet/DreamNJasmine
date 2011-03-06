@@ -45,8 +45,8 @@ namespace NJasmine.Core
             string name = type.Name;
             TestPosition position = new TestPosition();
             PerFixtureSetupContext parent = new PerFixtureSetupContext();
-            var rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parent, _allCreatedNames)
-                .BuildNJasmineTestSuite();
+
+            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, baseName, name, position, parent, _allCreatedNames);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
