@@ -12,7 +12,6 @@ namespace NJasmineTests.FailingFixtures
     {
         @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple test",
         @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple describe, simple test",
-        @"NJasmineTests.FailingFixtures.test_name_joins_specification, describe with setup, simple arrange, simple test",
     })]
     public class test_name_joins_specification : NJasmineFixture
     {
@@ -22,13 +21,6 @@ namespace NJasmineTests.FailingFixtures
             
             describe("simple describe", delegate
             {
-                it("simple test");
-            });
-
-            describe("describe with setup", delegate
-            {
-                arrange("simple arrange", delegate {});
-
                 it("simple test");
             });
         }

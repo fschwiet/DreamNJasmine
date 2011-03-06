@@ -63,12 +63,12 @@ namespace NJasmine.Core.FixtureVisitor
             DoThenAdvancePosition(() => _visitor.visitAfterAll(origin, action, _position));
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory)
         {
             TArranged result = default(TArranged);
 
             DoThenAdvancePosition(() => result =
-                _visitor.visitBeforeEach(origin, description, factory, _position));
+                _visitor.visitBeforeEach(origin, factory, _position));
 
             return result;
         }

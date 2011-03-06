@@ -30,7 +30,7 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory)
         {
             return default(TArranged);
         }

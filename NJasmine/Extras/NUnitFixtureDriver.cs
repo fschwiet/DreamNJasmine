@@ -18,7 +18,7 @@ namespace NJasmine.Extras
                 return fixtureDuringDiscovery;
             }));
 
-            specificationBuilder.ExtendSpec(s => s.visitBeforeEach(SpecElement.importNUnit, null, delegate
+            specificationBuilder.ExtendSpec(s => s.visitBeforeEach(SpecElement.importNUnit, delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.SetUpAttribute);
                 return fixtureDuringDiscovery;

@@ -10,7 +10,7 @@ namespace NJasmine
         TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action);
         void visitAfterAll(SpecElement origin, Action action);
 
-        TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory);
+        TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory);
         void visitAfterEach(SpecElement origin, Action action);
 
         void visitTest(SpecElement origin, string description, Action action);

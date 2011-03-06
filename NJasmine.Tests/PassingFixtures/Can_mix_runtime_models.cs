@@ -19,11 +19,11 @@ namespace NJasmineTests.PassingFixtures
 
         public int Value = 0;
 
-        public void do_arrange_in_njasmine(string arrangeDescription)
+        public void do_arrange_in_njasmine()
         {
             _njasmineContext.beforeAll(() => TraceableNJasmineFixture.ResetTracing());
             
-            _njasmineContext.arrange(arrangeDescription, delegate
+            _njasmineContext.arrange(delegate
             {
                 TraceableNJasmineFixture.Trace("doing arrange in NJasmine");
                 Value = 2;
@@ -50,7 +50,7 @@ doing test in GivenWhenThen
         {
             var testDriver = new TestDriver(this);
 
-            testDriver.do_arrange_in_njasmine("the arrange");
+            testDriver.do_arrange_in_njasmine();
 
             testDriver.do_test_with_gwt("the test");
         }
@@ -66,7 +66,7 @@ doing test in GivenWhenThen
         {
             var testDriver = new TestDriver(this);
 
-            testDriver.do_arrange_in_njasmine("the arrange");
+            testDriver.do_arrange_in_njasmine();
 
             testDriver.do_test_with_gwt("the test");
         }

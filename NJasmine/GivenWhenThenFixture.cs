@@ -41,13 +41,13 @@ namespace NJasmine
 
         public void arrange(Action arrangeAction)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, null, delegate() { arrangeAction(); return (string)null; }));
+            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { arrangeAction(); return (string)null; }));
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
             T result = default(T);
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, null, arrangeAction));
+            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, arrangeAction));
             return result;
         }
 

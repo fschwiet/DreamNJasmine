@@ -42,7 +42,7 @@ namespace NJasmine
 
         public void beforeEach(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.beforeEach, null, delegate() { action(); return (string)null; }));
+            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.beforeEach, delegate() { action(); return (string)null; }));
         }
 
         public void afterEach(Action action)
@@ -74,7 +74,7 @@ namespace NJasmine
 
             TArranged result = default(TArranged);
 
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, null, factory));
+            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, factory));
 
             return result;
         }
@@ -82,18 +82,13 @@ namespace NJasmine
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
             TArranged result = default(TArranged);
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, null, factory));
+            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, factory));
             return result;
         }
 
         public void arrange(Action action)
         {
-            arrange(null, action);
-        }
-
-        public void arrange(string description, Action action)
-        {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, description, delegate() { action(); return (string)null; }));
+            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { action(); return (string)null; }));
         }
     }
 }

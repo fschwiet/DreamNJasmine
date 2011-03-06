@@ -12,8 +12,6 @@ namespace NJasmine.Core
     {
         private Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
         {
-            _baseNameForChildTests = TestName.FullName;
-
             Exception exception = null;
 
             using (_fixtureInstanceForDiscovery.UseVisitor(new VisitorPositionAdapter(_position.GetFirstChildPosition(), this)))
@@ -58,8 +56,6 @@ namespace NJasmine.Core
         readonly List<Test> _accumulatedDescendants;
         readonly NameGenerator _nameGenator;
 
-        string _baseNameForChildTests;
-
         public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, string baseName, string name, TestPosition position, PerFixtureSetupContext parent)
         {
             NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, baseName, name, position, parent, new NameGenerator(), fixtureFactory());
@@ -88,7 +84,7 @@ namespace NJasmine.Core
 
         private void NameTest(Test test, string name)
         {
-            test.TestName.FullName = _baseNameForChildTests + ", " + name;
+            test.TestName.FullName = TestName.FullName + ", " + name;
             test.TestName.Name = name;
 
             _nameGenator.MakeNameUnique(test);
@@ -129,11 +125,8 @@ namespace NJasmine.Core
             _nunitImports.AddFixtureTearDown(position, action);
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
-            if (description != null)
-                _baseNameForChildTests = _baseNameForChildTests + ", " + description;
-
             return default(TArranged);
         }
 

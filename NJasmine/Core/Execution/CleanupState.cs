@@ -15,7 +15,7 @@ namespace NJasmine.Core.Execution
             throw DontException(origin);
         }
 
-        public override TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        public override TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             throw DontException(origin);
         }

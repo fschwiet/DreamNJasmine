@@ -27,9 +27,9 @@ namespace NJasmine.Core
             _executionContext.State.visitAfterAll(origin, action, position);
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
-            return _executionContext.State.visitBeforeEach<TArranged>(origin, description, factory, position);
+            return _executionContext.State.visitBeforeEach<TArranged>(origin, factory, position);
         }
 
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)

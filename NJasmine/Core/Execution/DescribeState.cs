@@ -53,7 +53,7 @@ namespace NJasmine.Core.Execution
             throw new NotImplementedException();
         }
 
-        public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
+        public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             TArranged result = default(TArranged);
 
