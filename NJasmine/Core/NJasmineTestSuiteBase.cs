@@ -7,18 +7,14 @@ namespace NJasmine.Core
 {
     internal class NJasmineTestSuiteBase : TestSuite, ISpecPositionVisitor
     {
-        Func<ISpecificationRunner> _fixtureFactory;
-        protected ISpecificationRunner _fixtureInstanceForDiscovery;
+        protected readonly SuiteBuildContext _buildContext;
         protected PerFixtureSetupContext _nunitImports;
         protected List<Test> _accumulatedDescendants;
-        protected NameGenerator _nameGenator;
 
-        public NJasmineTestSuiteBase(Func<ISpecificationRunner> fixtureFactory, PerFixtureSetupContext parent, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
+        public NJasmineTestSuiteBase(SuiteBuildContext buildContext, PerFixtureSetupContext parent)
             : base("thistestname", "willbeoverwritten")
         {
-            _fixtureFactory = fixtureFactory;
-            _nameGenator = nameGenerator;
-            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
+            _buildContext = buildContext;
             _nunitImports = new PerFixtureSetupContext(parent);
             _accumulatedDescendants = new List<Test>();
         }
@@ -29,7 +25,7 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                _nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
@@ -37,9 +33,9 @@ namespace NJasmine.Core
             {
                 string baseName = TestName.FullName;
 
-                var describeSuite = new NJasmineTestSuite(_fixtureFactory, position, _nunitImports, _nameGenator, _fixtureInstanceForDiscovery);
+                var describeSuite = new NJasmineTestSuite(_buildContext,position, _nunitImports);
 
-                _nameGenator.NameTest(this, description, describeSuite);
+                _buildContext._nameGenator.NameTest(this, description, describeSuite);
 
                 var actualSuite = describeSuite.BuildNJasmineTestSuite(action, false);
 
@@ -73,15 +69,15 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                _nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(this, description, nJasmineUnimplementedTestMethod);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
             else
             {
-                var testMethod = new NJasmineTestMethod(_fixtureFactory, position, _nunitImports);
+                var testMethod = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _nunitImports);
 
-                _nameGenator.NameTest(this, description, testMethod);
+                _buildContext._nameGenator.NameTest(this, description, testMethod);
 
                 _accumulatedDescendants.Add(testMethod);
             }

@@ -14,15 +14,17 @@ namespace NJasmine.Core
 
         public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
         {
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureFactory, new TestPosition(), new PerFixtureSetupContext(), new NameGenerator(), fixtureFactory());
+            SuiteBuildContext buildContext = new SuiteBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(buildContext, new TestPosition(), new PerFixtureSetupContext());
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(rootSuite._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(rootSuite._buildContext._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext parent, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
-            : base(fixtureFactory, parent, nameGenerator, fixtureInstanceForDiscovery)
+        public NJasmineTestSuite(SuiteBuildContext buildContext, TestPosition position, PerFixtureSetupContext parent)
+            : base(buildContext, parent)
         {
             _position = position;
 
@@ -40,7 +42,7 @@ namespace NJasmine.Core
 
             var visitorPositionAdapter = new VisitorPositionAdapter(_position.GetFirstChildPosition(), this);
 
-            using (_fixtureInstanceForDiscovery.UseVisitor(visitorPositionAdapter))
+            using (_buildContext._fixtureInstanceForDiscovery.UseVisitor(visitorPositionAdapter))
             {
                 try
                 {
@@ -62,7 +64,7 @@ namespace NJasmine.Core
 
                     if (isOuterScopeOfSpecification)
                     {
-                        _nameGenator.MakeNameUnique(nJasmineInvalidTestSuite);
+                        _buildContext._nameGenator.MakeNameUnique(nJasmineInvalidTestSuite);
                         Add(nJasmineInvalidTestSuite);
                     }
                     else
