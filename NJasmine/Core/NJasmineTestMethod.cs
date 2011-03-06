@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.Execution;
 using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;

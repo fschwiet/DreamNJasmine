@@ -1,6 +1,7 @@
 ﻿using System;
 using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 
 namespace NJasmine
 {

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.Discovery
 {
     class NameGenerator
     {
         readonly List<string> _globallyAccumulatedTestNames = new List<string>();
 
-        public void NameTest(NJasmineTestSuite parentTest, string testShortName, Test test)
+        public void NameTest(Test parentTest, string testShortName, Test test)
         {
             NameTest(parentTest.TestName.FullName, testShortName, test);
         }

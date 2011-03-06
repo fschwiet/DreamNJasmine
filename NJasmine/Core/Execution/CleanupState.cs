@@ -1,4 +1,5 @@
 ﻿using System;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution

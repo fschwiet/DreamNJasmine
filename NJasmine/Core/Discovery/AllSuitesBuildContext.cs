@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.Discovery
 {
     internal class AllSuitesBuildContext
     {

@@ -1,4 +1,5 @@
 ﻿using NJasmine.Core;
+using NJasmine.Extras;
 
 namespace NJasmine
 {

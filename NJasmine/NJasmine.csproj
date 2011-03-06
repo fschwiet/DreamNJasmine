@@ -59,30 +59,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Discovery\AllSuitesBuildContext.cs" />
+    <Compile Include="Core\Discovery\NameGenerator.cs" />
+    <Compile Include="Core\Discovery\NJasmineTestSuiteBuilder.cs" />
     <Compile Include="Core\Execution\ActState.cs" />
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />
     <Compile Include="Core\Execution\DescribeState.cs" />
+    <Compile Include="Core\Execution\NJasmineTestRunContext.cs" />
+    <Compile Include="Core\Execution\NJasmineTestRunner.cs" />
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
-    <Compile Include="Core\NameGenerator.cs" />
-    <Compile Include="Core\NJasmineTestRunContext.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
-    <Compile Include="Core\NJasmineTestRunner.cs" />
-    <Compile Include="Core\SuiteBuilder.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
-    <Compile Include="Core\RunsActionOnDispose.cs" />
-    <Compile Include="Core\AllSuitesBuildContext.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\NUnitFixtureDriver.cs" />
+    <Compile Include="Extras\RunsActionOnDispose.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenContext.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />

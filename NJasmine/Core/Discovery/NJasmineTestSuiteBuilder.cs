@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.Discovery
 {
-    class SuiteBuilder : ISpecPositionVisitor
+    class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         readonly AllSuitesBuildContext _buildContext;
         PerFixtureSetupContext _fixtureSetupContext;
         List<Test> _accumulatedDescendants;
         private string _fullName;
 
-        public SuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
         {
             _fullName = test.TestName.FullName;
             _buildContext = buildContext;

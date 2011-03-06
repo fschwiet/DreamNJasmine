@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;
 
@@ -45,7 +46,7 @@ namespace NJasmine.Core
 
             _perFixtureSetupContext = new PerFixtureSetupContext(fixtureSetupContext);
 
-            var builder = new SuiteBuilder(this, buildContext, _perFixtureSetupContext);
+            var builder = new NJasmineTestSuiteBuilder(this, buildContext, _perFixtureSetupContext);
             
             Exception exception = null;
 

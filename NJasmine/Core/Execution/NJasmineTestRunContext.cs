@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NJasmine.Core.Execution;
 using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.Execution
 {
     public class NJasmineTestRunContext
     {

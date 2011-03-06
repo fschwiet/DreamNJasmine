@@ -1,7 +1,7 @@
 ﻿using System;
 using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.Execution
 {
     public class NJasmineTestRunner : ISpecPositionVisitor
     {

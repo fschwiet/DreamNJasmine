@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NJasmine.Core
+namespace NJasmine.Extras
 {
     public class RunsActionOnDispose : IDisposable
     {
