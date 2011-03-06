@@ -69,6 +69,7 @@
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NJasmineExecutionContext.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="Core\NJasmineTestRunner.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

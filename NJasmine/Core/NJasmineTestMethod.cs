@@ -9,13 +9,11 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public partial class NJasmineTestMethod : TestMethod, INJasmineTest, ISpecPositionVisitor
+    public partial class NJasmineTestMethod : TestMethod, INJasmineTest
     {
         readonly Func<ISpecificationRunner> _fixtureFactory;
         readonly TestPosition _position;
         readonly PerFixtureSetupContext _fixtureSetupTeardown;
-
-        NJasmineExecutionContext _executionContext;
 
         public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupTeardown)
             : base(new Action(delegate() { }).Method)
@@ -65,11 +63,12 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult)
         {
-            _executionContext = new NJasmineExecutionContext(this, _fixtureSetupTeardown);
+            var executionContext = new NJasmineExecutionContext(this, _fixtureSetupTeardown);
+            var runner = new NJasmineTestRunner(executionContext);
             
             var fixture = this._fixtureFactory();
 
-            fixture.UseVisitor(new VisitorPositionAdapter(this));
+            fixture.UseVisitor(new VisitorPositionAdapter(runner));
 
             try
             {
@@ -81,44 +80,9 @@ namespace NJasmine.Core
             }
             finally
             {
-                _executionContext.RunAllPerTestTeardowns();
+                executionContext.RunAllPerTestTeardowns();
             }
             testResult.Success();
-        }
-
-        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
-        {
-            _executionContext.State.visitFork(origin, description, action, position);
-        }
-
-        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
-        {
-            return _executionContext.State.visitBeforeAll(origin, action, position);
-        }
-
-        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
-        {
-            _executionContext.State.visitAfterAll(origin, action, position);
-        }
-
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, string description, Func<TArranged> factory, TestPosition position)
-        {
-            return _executionContext.State.visitBeforeEach<TArranged>(origin, description, factory, position);
-        }
-        
-        public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
-        {
-            _executionContext.State.visitAfterEach(origin, action, position);
-        }
-
-        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
-        {
-            _executionContext.State.visitTest(origin, description, action, position);
-        }
-
-        public void visitIgnoreBecause(string reason, TestPosition position)
-        {
-            throw new NotImplementedException();
         }
 
         public class TestFinishedException : Exception
