@@ -5,7 +5,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core
 {
-    public class NJasmineExecutionContext
+    public class NJasmineTestRunContext
     {
         public ISpecPositionVisitor State { get; private set; }
 
@@ -13,7 +13,7 @@ namespace NJasmine.Core
         private PerFixtureSetupContext _fixtureSetupTeardown;
         private readonly List<Action> _allTeardowns;
 
-        public NJasmineExecutionContext(TestPosition position, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestRunContext(TestPosition position, PerFixtureSetupContext fixtureSetupContext)
         {
             _position = position;
             _fixtureSetupTeardown = fixtureSetupContext;

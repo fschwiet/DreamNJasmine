@@ -7,8 +7,8 @@ namespace NJasmine.Core.Execution
     {
         protected readonly SpecElement SpecElement;
 
-        public ArrangeState(NJasmineExecutionContext executionContext, SpecElement specElement)
-            : base(executionContext)
+        public ArrangeState(NJasmineTestRunContext runContext, SpecElement specElement)
+            : base(runContext)
         {
             SpecElement = specElement;
         }

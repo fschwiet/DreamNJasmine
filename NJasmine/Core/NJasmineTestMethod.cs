@@ -63,7 +63,7 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult)
         {
-            var executionContext = new NJasmineExecutionContext(Position, _fixtureSetupContext);
+            var executionContext = new NJasmineTestRunContext(Position, _fixtureSetupContext);
             var runner = new NJasmineTestRunner(executionContext);
             
             var fixture = this._fixtureFactory();

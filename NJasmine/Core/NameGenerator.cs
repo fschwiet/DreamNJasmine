@@ -12,7 +12,12 @@ namespace NJasmine.Core
 
         public void NameTest(NJasmineTestSuite parentTest, string testShortName, Test test)
         {
-            test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
+            NameTest(parentTest.TestName.FullName, testShortName, test);
+        }
+
+        public void NameTest(string parentFullName, string testShortName, Test test)
+        {
+            test.TestName.FullName = parentFullName + ", " + testShortName;
             test.TestName.Name = testShortName;
             MakeNameUnique(test);
         }

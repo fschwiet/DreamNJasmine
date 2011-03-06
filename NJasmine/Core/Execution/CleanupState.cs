@@ -5,8 +5,8 @@ namespace NJasmine.Core.Execution
 {
     public class CleanupState : ArrangeState
     {
-        public CleanupState(NJasmineExecutionContext executionContext, SpecElement specElement)
-            : base(executionContext, specElement)
+        public CleanupState(NJasmineTestRunContext runContext, SpecElement specElement)
+            : base(runContext, specElement)
         {
         }
 

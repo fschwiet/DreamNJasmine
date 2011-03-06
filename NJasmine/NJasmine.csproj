@@ -68,7 +68,7 @@
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\FixtureVisitor\VisitorPositionAdapter.cs" />
     <Compile Include="Core\NameGenerator.cs" />
-    <Compile Include="Core\NJasmineExecutionContext.cs" />
+    <Compile Include="Core\NJasmineTestRunContext.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineTestRunner.cs" />
     <Compile Include="Core\SuiteBuilder.cs" />

@@ -5,35 +5,30 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    internal class SuiteBuilder : ISpecPositionVisitor
+    class SuiteBuilder : ISpecPositionVisitor
     {
-        private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
-        PerFixtureSetupContext _nunitImports;
+        PerFixtureSetupContext _fixtureSetupContext;
         List<Test> _accumulatedDescendants;
+        private string _fullName;
 
-        public SuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext parent)
+        public SuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
         {
-            _test = test;
+            _fullName = test.TestName.FullName;
             _buildContext = buildContext;
-            _nunitImports = new PerFixtureSetupContext(parent);
+            _fixtureSetupContext = fixtureSetupContext;
             _accumulatedDescendants = new List<Test>();
         }
 
-        public RunsActionOnDispose VisitSuiteFromPosition(NJasmineTestSuite nJasmineTestSuite, TestPosition position)
+        public RunsActionOnDispose VisitSuiteFromPosition(TestPosition position)
         {
             return _buildContext._fixtureInstanceForDiscovery.UseVisitor(new VisitorPositionAdapter(position, this));
         }
 
-        public void AddAccumulatedDescendents()
+        public void VisitAccumulatedTests(Action<Test> action)
         {
-            foreach (var sibling in _accumulatedDescendants)
-                _test.Add(sibling);
-        }
-
-        public void DoFixtureCleanup()
-        {
-            _nunitImports.DoAllCleanup();
+            foreach (var descendant in _accumulatedDescendants)
+                action(descendant);
         }
 
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
@@ -42,19 +37,17 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_test, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, nJasmineUnimplementedTestMethod);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
             else
             {
-                string baseName = _test.TestName.FullName;
+                var describeSuite = new NJasmineTestSuite(position);
 
-                var describeSuite = new NJasmineTestSuite(_buildContext,position, _nunitImports);
+                _buildContext._nameGenator.NameTest(_fullName, description, describeSuite);
 
-                _buildContext._nameGenator.NameTest(_test, description, describeSuite);
-
-                var actualSuite = describeSuite.BuildNJasmineTestSuite(action, false);
+                var actualSuite = describeSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
 
                 _accumulatedDescendants.Add(actualSuite);
             }
@@ -62,13 +55,13 @@ namespace NJasmine.Core
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            _nunitImports.AddFixtureSetup(position, action);
+            _fixtureSetupContext.AddFixtureSetup(position, action);
             return default(TArranged);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _nunitImports.AddFixtureTearDown(position, action);
+            _fixtureSetupContext.AddFixtureTearDown(position, action);
         }
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
@@ -86,15 +79,15 @@ namespace NJasmine.Core
             {
                 var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_test, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, nJasmineUnimplementedTestMethod);
 
                 _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
             }
             else
             {
-                var testMethod = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _nunitImports);
+                var testMethod = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext);
 
-                _buildContext._nameGenator.NameTest(_test, description, testMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, testMethod);
 
                 _accumulatedDescendants.Add(testMethod);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using NJasmine.Core.FixtureVisitor;
 using NUnit.Core;
 
@@ -10,25 +11,24 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest
     {
-        readonly SuiteBuilder _builder;
         readonly TestPosition _position;
+        private PerFixtureSetupContext _perFixtureSetupContext;
 
         public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
         {
             AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(buildContext, new TestPosition(), new PerFixtureSetupContext());
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition());
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, new PerFixtureSetupContext(), buildContext._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(AllSuitesBuildContext buildContext, TestPosition position, PerFixtureSetupContext parent)
+        public NJasmineTestSuite(TestPosition position)
             : base("thistestname", "willbeoverwritten")
         {
             _position = position;
-            _builder = new SuiteBuilder(this, buildContext, parent);
 
             maintainTestOrder = true;
         }
@@ -38,11 +38,18 @@ namespace NJasmine.Core
             get { return _position; }
         }
 
-        public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, Action action, bool isOuterScopeOfSpecification)
         {
+            if (_perFixtureSetupContext != null)
+                throw new NotSupportedException();
+
+            _perFixtureSetupContext = new PerFixtureSetupContext(fixtureSetupContext);
+
+            var builder = new SuiteBuilder(this, buildContext, _perFixtureSetupContext);
+            
             Exception exception = null;
 
-            using (_builder.VisitSuiteFromPosition(this, _position.GetFirstChildPosition()))
+            using (builder.VisitSuiteFromPosition(_position.GetFirstChildPosition()))
             {
                 try
                 {
@@ -55,7 +62,7 @@ namespace NJasmine.Core
 
                 if (exception == null)
                 {
-                    _builder.AddAccumulatedDescendents();
+                    builder.VisitAccumulatedTests(Add);
                 }
                 else
                 {
@@ -79,7 +86,7 @@ namespace NJasmine.Core
         {
             try
             {
-                _builder.DoFixtureCleanup();
+                _perFixtureSetupContext.DoAllCleanup();
             }
             catch (Exception innerException)
             {

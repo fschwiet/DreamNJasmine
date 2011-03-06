@@ -5,16 +5,16 @@ namespace NJasmine.Core.Execution
 {
     public class DescribeState : ISpecPositionVisitor
     {
-        private NJasmineExecutionContext _executionContext;
+        private NJasmineTestRunContext _runContext;
 
-        public DescribeState(NJasmineExecutionContext executionContext)
+        public DescribeState(NJasmineTestRunContext runContext)
         {
-            _executionContext = executionContext;
+            _runContext = runContext;
         }
 
         public virtual void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            if (_executionContext.TestIsAncestorOfPosition(position))
+            if (_runContext.TestIsAncestorOfPosition(position))
             {
                 action();
             }
@@ -22,27 +22,27 @@ namespace NJasmine.Core.Execution
 
         public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            return _executionContext.IncludeOneTimeSetup<TArranged>(position);
+            return _runContext.IncludeOneTimeSetup<TArranged>(position);
         }
 
         public virtual void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _executionContext.IncludeOneTimeCleanup(position);
+            _runContext.IncludeOneTimeCleanup(position);
         }
 
         public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
-            _executionContext.AddTeardownAction(delegate()
+            _runContext.AddTeardownAction(delegate()
             {
-                _executionContext.whileInState(new CleanupState(_executionContext, origin), action);
+                _runContext.whileInState(new CleanupState(_runContext, origin), action);
             });
         }
 
         public virtual void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
-            if (_executionContext.TestIsAtPosition(position))
+            if (_runContext.TestIsAtPosition(position))
             {
-                _executionContext.whileInState(new ActState(_executionContext, origin), action);
+                _runContext.whileInState(new ActState(_runContext, origin), action);
 
                 throw new NJasmineTestMethod.TestFinishedException();
             }
@@ -57,16 +57,16 @@ namespace NJasmine.Core.Execution
         {
             TArranged result = default(TArranged);
 
-            _executionContext.whileInState(new ArrangeState(_executionContext, origin), delegate
+            _runContext.whileInState(new ArrangeState(_runContext, origin), delegate
             {
                 result = factory();
             });
 
             if (result is IDisposable)
             {
-                _executionContext.AddTeardownAction(delegate
+                _runContext.AddTeardownAction(delegate
                 {
-                    _executionContext.whileInState(new CleanupState(_executionContext, origin), delegate
+                    _runContext.whileInState(new CleanupState(_runContext, origin), delegate
                     {
                         (result as IDisposable).Dispose();
                     });

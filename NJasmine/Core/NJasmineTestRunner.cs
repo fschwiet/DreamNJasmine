@@ -5,41 +5,41 @@ namespace NJasmine.Core
 {
     public class NJasmineTestRunner : ISpecPositionVisitor
     {
-        NJasmineExecutionContext _executionContext;
+        NJasmineTestRunContext _runContext;
 
-        public NJasmineTestRunner(NJasmineExecutionContext executionContext)
+        public NJasmineTestRunner(NJasmineTestRunContext runContext)
         {
-            _executionContext = executionContext;
+            _runContext = runContext;
         }
 
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _executionContext.State.visitFork(origin, description, action, position);
+            _runContext.State.visitFork(origin, description, action, position);
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            return _executionContext.State.visitBeforeAll(origin, action, position);
+            return _runContext.State.visitBeforeAll(origin, action, position);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _executionContext.State.visitAfterAll(origin, action, position);
+            _runContext.State.visitAfterAll(origin, action, position);
         }
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
-            return _executionContext.State.visitBeforeEach<TArranged>(origin, factory, position);
+            return _runContext.State.visitBeforeEach<TArranged>(origin, factory, position);
         }
 
         public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
-            _executionContext.State.visitAfterEach(origin, action, position);
+            _runContext.State.visitAfterEach(origin, action, position);
         }
 
         public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
-            _executionContext.State.visitTest(origin, description, action, position);
+            _runContext.State.visitTest(origin, description, action, position);
         }
 
         public void visitIgnoreBecause(string reason, TestPosition position)

@@ -4,8 +4,8 @@ namespace NJasmine.Core.Execution
 {
     public class ActState : ArrangeState
     {
-        public ActState(NJasmineExecutionContext ExecutionContext, SpecElement specElement)
-            : base(ExecutionContext, specElement)
+        public ActState(NJasmineTestRunContext runContext, SpecElement specElement)
+            : base(runContext, specElement)
         {
         }
     }
