@@ -44,7 +44,7 @@ namespace NJasmine.Core.Execution
 
         public void visitIgnoreBecause(string reason, TestPosition position)
         {
-            throw new NotImplementedException();
+            _runContext.State.visitIgnoreBecause(reason, position);
         }
     }
 }

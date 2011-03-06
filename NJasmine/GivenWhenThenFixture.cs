@@ -5,6 +5,7 @@ using NJasmine.Extras;
 
 namespace NJasmine
 {
+    [NUnit.Framework.Explicit]
     public abstract class GivenWhenThenFixture : SpecificationFixture
     {
         public GivenWhenThenFixture()
@@ -81,8 +82,9 @@ namespace NJasmine
             return NUnitFixtureDriver.IncludeFixture<TFixture>(_skeleFixture);
         }
 
-        public void ignoreBecause(string theTestRequiresIt)
+        public void ignoreBecause(string reason)
         {
+            _skeleFixture.ExtendSpec(s => s.visitIgnoreBecause(reason));
         }
     }
 }

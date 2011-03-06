@@ -51,7 +51,6 @@ namespace NJasmine.Core.Execution
 
         public void visitIgnoreBecause(string reason, TestPosition position)
         {
-            throw new NotImplementedException();
         }
 
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)

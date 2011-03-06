@@ -8,17 +8,21 @@ namespace NJasmine.Core.Discovery
 {
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
+        string _fullName;
+        private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
         PerFixtureSetupContext _fixtureSetupContext;
         List<Test> _accumulatedDescendants;
-        private string _fullName;
+        string _ignoreReason;
 
         public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
         {
             _fullName = test.TestName.FullName;
+            _test = test;
             _buildContext = buildContext;
             _fixtureSetupContext = fixtureSetupContext;
             _accumulatedDescendants = new List<Test>();
+            _ignoreReason = null;
         }
 
         public RunsActionOnDispose VisitSuiteFromPosition(TestPosition position)
@@ -32,23 +36,36 @@ namespace NJasmine.Core.Discovery
                 action(descendant);
         }
 
+        private void ApplyIgnoreIfSet(Test test)
+        {
+            if (_ignoreReason != null)
+            {
+                test.RunState = RunState.Explicit;
+                test.IgnoreReason = _ignoreReason;
+            }
+        }
+
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
             if (action == null)
             {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
+                var subSuiteAsFailedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, subSuiteAsFailedTest);
 
-                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
+                ApplyIgnoreIfSet(subSuiteAsFailedTest);
+
+                _accumulatedDescendants.Add(subSuiteAsFailedTest);
             }
             else
             {
-                var describeSuite = new NJasmineTestSuite(position);
+                var subSuite = new NJasmineTestSuite(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, describeSuite);
+                _buildContext._nameGenator.NameTest(_fullName, description, subSuite);
 
-                var actualSuite = describeSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
+                ApplyIgnoreIfSet(subSuite);
+
+                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
 
                 _accumulatedDescendants.Add(actualSuite);
             }
@@ -78,25 +95,37 @@ namespace NJasmine.Core.Discovery
         {
             if (action == null)
             {
-                var nJasmineUnimplementedTestMethod = new NJasmineUnimplementedTestMethod(position);
+                var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, nJasmineUnimplementedTestMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, unimplementedTest);
 
-                _accumulatedDescendants.Add(nJasmineUnimplementedTestMethod);
+                ApplyIgnoreIfSet(unimplementedTest);
+
+                _accumulatedDescendants.Add(unimplementedTest);
             }
             else
             {
-                var testMethod = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext);
+                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, testMethod);
+                _buildContext._nameGenator.NameTest(_fullName, description, test);
 
-                _accumulatedDescendants.Add(testMethod);
+                ApplyIgnoreIfSet(test);
+
+                _accumulatedDescendants.Add(test);
             }
         }
 
         public void visitIgnoreBecause(string reason, TestPosition position)
         {
-            throw new NotImplementedException();
+            if (_accumulatedDescendants.Count > 0)
+            {
+                _ignoreReason = reason;
+            }
+            else if (string.IsNullOrEmpty(this._test.IgnoreReason))
+            {
+                this._test.RunState = RunState.Explicit;
+                this._test.IgnoreReason = reason;
+            }
         }
     }
 }

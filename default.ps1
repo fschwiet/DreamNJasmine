@@ -60,10 +60,6 @@ task IntegrationTests {
 
     $testResults = @();
 
-    #$dll = gi .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll | % { $_.fullname }
-    #[System.Reflection.Assembly]::LoadFrom($dll)
-    #$tests = [NJasmineTests.RunExternalAttribute]::GetAll() | ? { $_.Name -like $integrationTestRunPattern }
-
     $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
 
     $tests | sort-object -property Name | % { 
