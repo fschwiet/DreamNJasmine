@@ -81,11 +81,15 @@ FixtureTearDown some_Nunit_fixture_a
             var firstA = importNUnit<some_Nunit_fixture_a>();
             Trace("after include of a");
 
+            arrange(() => Assert.That(firstA is some_Nunit_fixture_a));
+
             describe("a block", () =>
             {
                 Trace("first describe, before include of b");
                 var firstB = importNUnit<some_Nunit_fixture_b>();
                 Trace("after include of b");
+
+                arrange(() => Assert.That(firstB is some_Nunit_fixture_b));
 
                 it("check fixtures", () =>
                 {
@@ -97,6 +101,9 @@ FixtureTearDown some_Nunit_fixture_a
                     Trace("before include of c");
                     var secondA = importNUnit<some_Nunit_fixture_c>();
                     Trace("after include of c");
+
+                    arrange(() => Assert.That(secondA is some_Nunit_fixture_a));
+                    arrange(() => Assert.That(secondA, Is.Not.SameAs(firstA)));
 
                     it("check fixtures again", () =>
                     {

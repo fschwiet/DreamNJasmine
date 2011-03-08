@@ -34,7 +34,7 @@ namespace NJasmine.Extras
                 RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureTearDownAttribute);
             }));
 
-            return fixtureDuringDiscovery;
+            return fixture;
         }
 
         static void RunMethodsWithAttribute(object instance, string attribute)
