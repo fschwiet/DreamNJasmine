@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
@@ -86,6 +87,16 @@ namespace NJasmine
         public void arrange(Action action)
         {
             _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { action(); return (string)null; }));
+        }
+
+        public void expect(Expression<Func<bool>> expectation)
+        {
+            PowerAssert.PAssert.IsTrue(expectation);
+        }
+
+        public void waitUntil(Expression<Func<bool>> expectation)
+        {
+            PowerAssert.PAssert.IsTrue(expectation);
         }
     }
 }

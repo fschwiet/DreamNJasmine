@@ -75,7 +75,12 @@ task IntegrationTests {
         if ($_.TestPasses) {
 	        $testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget }
         } else {
-	        $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget
+
+            $sawError = $false;
+
+            $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget
+            
+            Assert ($lastexitcode -ne 0) "Expected test $testName to fail."
         }
 
         $hasExpectation = $false;

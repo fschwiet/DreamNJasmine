@@ -64,6 +64,7 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_arrange.cs" />
     <Compile Include="FailingFixtures\duplicate_test_names_are_fine.cs" />
     <Compile Include="FailingFixtures\error_during_nunit_fixture_calls\fixture_setup_has_useful_errors.cs" />
+    <Compile Include="FailingFixtures\waitUntil_waits_for_a_condition.cs" />
     <Compile Include="FailingFixtures\GivenWhenThenFixture_supports_expect.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_setup_failure.cs" />
     <Compile Include="FailingFixtures\runs_teardown_even_after_test_failure.cs" />
