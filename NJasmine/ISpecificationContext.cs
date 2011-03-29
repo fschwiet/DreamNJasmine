@@ -4,6 +4,6 @@ namespace NJasmine
 {
     public interface ISpecificationContext
     {
-        void ExtendSpec(Action<ISpecVisitor> spec);
+        ISpecVisitor Visitor { get; }
     }
 }

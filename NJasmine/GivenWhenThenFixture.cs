@@ -17,59 +17,62 @@ namespace NJasmine
 
         public void given(string givenPhrase, Action specification)
         {
-            _skeleFixture.ExtendSpec(s => s.visitFork(SpecElement.given, "given " + givenPhrase, specification));
+            _skeleFixture.Visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification);
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            _skeleFixture.ExtendSpec(s => s.visitFork(SpecElement.when, "when " + whenPhrase, specification));
+            _skeleFixture.Visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification);
         }
 
         public void then(string thenPhrase, Action test)
         {
-            _skeleFixture.ExtendSpec(s => s.visitTest(SpecElement.then, "then " + thenPhrase, test));
+            _skeleFixture.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, test);
         }
 
         public void then(string thenPhrase)
         {
-            _skeleFixture.ExtendSpec(s => s.visitTest(SpecElement.then, "then " + thenPhrase, null));
+            _skeleFixture.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, null);
         }
 
         public void cleanup(Action cleanup)
         {
-            _skeleFixture.ExtendSpec(s => s.visitAfterEach(SpecElement.cleanup, cleanup));
+            _skeleFixture.Visitor.visitAfterEach(SpecElement.cleanup, cleanup);
         }
 
         public void arrange(Action arrangeAction)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { arrangeAction(); return (string)null; }));
+            _skeleFixture.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
+            {
+                arrangeAction();
+                return (string) null;
+            });
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
             T result = default(T);
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, arrangeAction));
+            result = _skeleFixture.Visitor.visitBeforeEach(SpecElement.arrange, arrangeAction);
             return result;
         }
 
         public void beforeAll(Action action)
         {
-            _skeleFixture.ExtendSpec(s =>s.visitBeforeAll<string>(SpecElement.beforeAll, delegate {
+            _skeleFixture.Visitor.visitBeforeAll<string>(SpecElement.beforeAll, delegate
+            {
                 action();
-                return (string)null;
-            }));
+                return (string) null;
+            });
         }
 
         public T beforeAll<T>(Func<T> action)
         {
-            T result = default(T);
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeAll(SpecElement.beforeAll, action));
-            return result;
+            return  _skeleFixture.Visitor.visitBeforeAll(SpecElement.beforeAll, action);
         }
 
         public void afterAll(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, action));
+            _skeleFixture.Visitor.visitAfterAll(SpecElement.afterAll, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
@@ -79,7 +82,7 @@ namespace NJasmine
 
         public void ignoreBecause(string reason)
         {
-            _skeleFixture.ExtendSpec(s => s.visitIgnoreBecause(reason));
+            _skeleFixture.Visitor.visitIgnoreBecause(reason);
         }
     }
 }

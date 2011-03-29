@@ -27,36 +27,36 @@ namespace NJasmine
 
         public void describe(string description, Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitFork(SpecElement.describe, description, action));
+            _skeleFixture.Visitor.visitFork(SpecElement.describe, description, action);
         }
 
         public void beforeAll(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate()
+            _skeleFixture.Visitor.visitBeforeAll(SpecElement.beforeAll, delegate()
             {
                 action();
-                return (string)null;
-            }));
+                return (string) null;
+            });
         }
 
         public void beforeEach(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.beforeEach, delegate() { action(); return (string)null; }));
+            _skeleFixture.Visitor.visitBeforeEach(SpecElement.beforeEach, delegate() { action(); return (string)null; });
         }
 
         public void afterEach(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitAfterEach(SpecElement.afterEach, action));
+            _skeleFixture.Visitor.visitAfterEach(SpecElement.afterEach, action);
         }
 
         public void it(string description)
         {
-            _skeleFixture.ExtendSpec(s => s.visitTest(SpecElement.it, description, null));
+            _skeleFixture.Visitor.visitTest(SpecElement.it, description, null);
         }
 
         public void it(string description, Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitTest(SpecElement.it, description, action));
+            _skeleFixture.Visitor.visitTest(SpecElement.it, description, action);
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
@@ -71,23 +71,17 @@ namespace NJasmine
                 return new TArranged();
             };
 
-            TArranged result = default(TArranged);
-
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, factory));
-
-            return result;
+            return _skeleFixture.Visitor.visitBeforeEach(SpecElement.arrange, factory);
         }
 
         public TArranged arrange<TArranged>(Func<TArranged> factory)
         {
-            TArranged result = default(TArranged);
-            _skeleFixture.ExtendSpec(s => result = s.visitBeforeEach(SpecElement.arrange, factory));
-            return result;
+            return _skeleFixture.Visitor.visitBeforeEach(SpecElement.arrange, factory);
         }
 
         public void arrange(Action action)
         {
-            _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { action(); return (string)null; }));
+            _skeleFixture.Visitor.visitBeforeEach(SpecElement.arrange, delegate() { action(); return (string)null; });
         }
     }
 }

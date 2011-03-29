@@ -11,28 +11,28 @@ namespace NJasmine.Extras
             T fixtureDuringDiscovery = default(T);
             T fixture = default(T);
 
-            specificationBuilder.ExtendSpec(s => fixture = s.visitBeforeAll(SpecElement.importNUnit, delegate
+            fixture = specificationBuilder.Visitor.visitBeforeAll(SpecElement.importNUnit, delegate
             {
                 fixtureDuringDiscovery = new T();
                 RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureSetUpAttribute);
                 return fixtureDuringDiscovery;
-            }));
+            });
 
-            specificationBuilder.ExtendSpec(s => s.visitBeforeEach(SpecElement.importNUnit, delegate
+            specificationBuilder.Visitor.visitBeforeEach(SpecElement.importNUnit, delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.SetUpAttribute);
                 return fixtureDuringDiscovery;
-            }));
+            });
 
-            specificationBuilder.ExtendSpec(s => s.visitAfterEach(SpecElement.importNUnit, delegate
+            specificationBuilder.Visitor.visitAfterEach(SpecElement.importNUnit, delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.TearDownAttribute);
-            }));
+            });
 
-            specificationBuilder.ExtendSpec(s => s.visitAfterAll(SpecElement.importNUnit, delegate
+            specificationBuilder.Visitor.visitAfterAll(SpecElement.importNUnit, delegate
             {
                 RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureTearDownAttribute);
-            }));
+            });
 
             return fixture;
         }

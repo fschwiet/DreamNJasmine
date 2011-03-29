@@ -8,10 +8,11 @@ namespace NJasmine
     public class SkeleFixture : ISpecificationRunner, ISpecificationContext
     {
         private readonly Action _specification;
-        protected ISpecVisitor _visitor = new DoNothingFixtureVisitor();
+        public ISpecVisitor Visitor { get; protected set; }
 
         public SkeleFixture(Action specification)
         {
+            Visitor = new DoNothingFixtureVisitor();
             _specification = specification;
         }
 
@@ -22,16 +23,11 @@ namespace NJasmine
 
         public virtual RunsActionOnDispose UseVisitor(ISpecVisitor visitor)
         {
-            var currentVisitor = _visitor;
+            var currentVisitor = Visitor;
 
-            _visitor = visitor;
+            Visitor = visitor;
 
-            return new RunsActionOnDispose(() => _visitor = currentVisitor);
-        }
-
-        public void ExtendSpec(Action<ISpecVisitor> spec)
-        {
-            spec(_visitor);
+            return new RunsActionOnDispose(() => Visitor = currentVisitor);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace NJasmineTests.Core
     {
         public void ExtendSpec(Action<ISpecVisitor> specVisitor)
         {
-            GetUnderlyingSkelefixture(this).ExtendSpec(specVisitor);
+            specVisitor(GetUnderlyingSkelefixture(this).Visitor);
         }
 
         public static void Trace(string value)
