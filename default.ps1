@@ -74,11 +74,13 @@ task IntegrationTests {
 
         $testOutputTarget = (join-path $buildDir "IntegrationTest.xml")
 
-        if ($test.TesPasses) {
-	        #$testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget }
-        } else {
+        if ($test.TestPasses -eq "true") {
 
-            $sawError = $false;
+            $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget
+            
+            Assert ($lastexitcode -eq 0) "Expected test $testName to pass, actual exit code: $lastexitcode."
+
+        } else {
 
             $testoutput = & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget
             
