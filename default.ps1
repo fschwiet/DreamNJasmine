@@ -62,18 +62,20 @@ task IntegrationTests {
 
     $tests = ([xml](& $integrationTestLoader)).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
 
-    $tests | sort-object -property Name | % { 
+    $global:t = $tests;
 
-        $testName = $_.Name;
-        $expectedStrings = $_.ExpectedStrings.string;
+    foreach($test in $tests)  { 
+
+        $testName = $test.Name;
+        $expectedStrings = $test.ExpectedStrings.string;
 
         "Running integration test $testName." | write-host
         $testResults = $testResults + "Running integration test $testName."
 
         $testOutputTarget = (join-path $buildDir "IntegrationTest.xml")
 
-        if ($_.TestPasses) {
-	        $testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget }
+        if ($test.TesPasses) {
+	        #$testoutput = exec { & $nunitBinPath $testDll /run=$testName /xml=$testOutputTarget }
         } else {
 
             $sawError = $false;
@@ -85,9 +87,9 @@ task IntegrationTests {
 
         $hasExpectation = $false;
 
-        if ($_.VerificationScript) {
+        if ($test.VerificationScript) {
 
-            $verificationCommand = "{" + $_.VerificationScript + "}"
+            $verificationCommand = "{" + $test.VerificationScript + "}"
             $verificationCommand = invoke-expression $verificationCommand
 
             & $verificationCommand $testoutput $testOutputTarget
@@ -95,8 +97,8 @@ task IntegrationTests {
             $hasExpectation = $true;
         }
 
-        if ($_.ExpectedExtraction) {
-            $expectedExtraction = $_.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
+        if ($test.ExpectedExtraction) {
+            $expectedExtraction = $test.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
 
             $actual = @()
             
@@ -129,9 +131,9 @@ task IntegrationTests {
             $hasExpectation = $true;
         }
         
-        if ($_.ExpectedTestNames.length -gt 0) {
+        if ($test.ExpectedTestNames.length -gt 0) {
 
-            $allExpected = $_.ExpectedTestNames | % { $_.string };
+            $allExpected = $test.ExpectedTestNames | % { $_.string };
 
             $testResults = [xml] (get-content $testOutputTarget)
 

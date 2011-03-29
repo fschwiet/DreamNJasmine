@@ -9,7 +9,7 @@ namespace NJasmineTests
         public class TestDefinition
         {
             public string Name;
-            public bool Passes;
+            public bool TestPasses;
             public string[] ExpectedStrings;
             public string ExpectedExtraction;
             public string[] ExpectedTestNames;
@@ -35,7 +35,7 @@ namespace NJasmineTests
                    select new TestDefinition
                    {
                        Name = t.FullName,
-                       Passes = a.TestPasses,
+                       TestPasses = a.TestPasses,
                        ExpectedStrings = a.ExpectedStrings ?? new string[0],
                        ExpectedExtraction = a.ExpectedTraceSequence,
                        ExpectedTestNames = a.ExpectedTestNames,
