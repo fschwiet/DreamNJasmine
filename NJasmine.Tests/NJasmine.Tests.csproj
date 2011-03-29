@@ -74,7 +74,6 @@
     <Compile Include="FailingFixtures\cannot_reenter_during_afterEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_beforeEach.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_it.cs" />
-    <Compile Include="FailingFixtures\test_name_joins_specification.cs" />
     <Compile Include="PassingFixtures\afterAll_failures_only_fail_the_fixture.cs" />
     <Compile Include="PassingFixtures\arrange_after_test_is_not_included_in_prior_test.cs" />
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="PassingFixtures\suite_arranging_disposables.cs" />
     <Compile Include="PassingFixtures\supports_nunit_setup_by_namespace.cs" />
     <Compile Include="PassingFixtures\supports_unimplemented_specs.cs" />
+    <Compile Include="PassingFixtures\test_name_joins_specification.cs" />
     <Compile Include="RunExternalAttribute.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />

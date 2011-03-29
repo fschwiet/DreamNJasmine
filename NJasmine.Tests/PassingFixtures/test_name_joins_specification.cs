@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
+﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.PassingFixtures
 {
     [Explicit]
-    [RunExternal(false, ExpectedStrings = new string[]
+    [RunExternal(true, ExpectedStrings = new string[]
     {
         @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple test",
         @"NJasmineTests.FailingFixtures.test_name_joins_specification, simple describe, simple test",

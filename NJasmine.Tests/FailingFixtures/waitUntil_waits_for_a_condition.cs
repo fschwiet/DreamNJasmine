@@ -7,20 +7,21 @@ using NUnit.Framework;
 
 namespace NJasmineTests.FailingFixtures
 {
-    [Explicit, RunExternal(false, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect works when no waits are left'][@result='Success']""
-    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect fails when waits are left'][@result='Error']""
-    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
-}
-")]
-    public class waitUntil_waits_for_a_condition : NJasmineFixture
+//    [Explicit, RunExternal(false, VerificationScript = @"
+//
+//param ($consoleOutput, $xmlFile);
+//
+//import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
+//
+//update-xml $xmlFile {
+//
+//    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect works when no waits are left'][@result='Success']""
+//    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect fails when waits are left'][@result='Error']""
+//    get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
+//}
+//")]
+//    public 
+    class waitUntil_waits_for_a_condition : NJasmineFixture
     {
         public int WaitsLeft;
 
