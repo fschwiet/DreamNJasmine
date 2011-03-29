@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading;
+using NJasmine.Core;
+using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
-    public abstract class SpecificationFixture
+    public abstract class SpecificationFixture 
     {
-        protected SkeleFixture _skeleFixture;
+        internal TestPosition CurrentPosition { get; set; }
+        internal ISpecPositionVisitor Visitor { get; set; }
 
         public SpecificationFixture()
         {
-            _skeleFixture = new SkeleFixture(this.Specify);
         }
 
-        protected SpecificationFixture(SkeleFixture fixture)
+        public void Run()
         {
-            _skeleFixture = fixture;
+            this.Specify();
         }
 
         public abstract void Specify();
-
-        //  Making this static so people don't run across it generally
-        public static SkeleFixture GetUnderlyingSkelefixture(SpecificationFixture fixture)
-        {
-            return fixture._skeleFixture;
-        }
 
         public void expect(Expression<Func<bool>> expectation)
         {

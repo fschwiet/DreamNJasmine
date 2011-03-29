@@ -13,10 +13,10 @@ namespace NJasmine.Core
     public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
         readonly TestPosition _position;
-        readonly Func<ISpecificationRunner> _fixtureFactory;
+        readonly Func<SpecificationFixture> _fixtureFactory;
         readonly PerFixtureSetupContext _fixtureSetupContext;
 
-        public NJasmineTestMethod(Func<ISpecificationRunner> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext)
             : base(new Action(delegate() { }).Method)
         {
             _position = position;
@@ -66,8 +66,8 @@ namespace NJasmine.Core
         {
             var executionContext = new NJasmineTestRunContext(Position, _fixtureSetupContext);
             var runner = new NJasmineTestRunner(executionContext);
-            
-            ISpecificationRunner fixture = this._fixtureFactory();
+
+            SpecificationFixture fixture = this._fixtureFactory();
 
             fixture.CurrentPosition = new TestPosition(0);
             fixture.Visitor = runner;

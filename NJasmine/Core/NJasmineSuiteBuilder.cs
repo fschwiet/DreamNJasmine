@@ -33,10 +33,10 @@ namespace NJasmine.Core
         {
             var constructor = type.GetConstructor(new Type[0]);
 
-            Func<ISpecificationRunner> fixtureFactory = delegate()
+            Func<SpecificationFixture> fixtureFactory = delegate()
             {
                 var fixture = constructor.Invoke(new object[0]) as SpecificationFixture;
-                return SpecificationFixture.GetUnderlyingSkelefixture(fixture);
+                return fixture;
             };
             
             var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, type);

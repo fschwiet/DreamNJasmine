@@ -15,7 +15,7 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         private PerFixtureSetupContext _perFixtureSetupContext;
 
-        public static Test CreateRootNJasmineSuite(Func<ISpecificationRunner> fixtureFactory, Type type)
+        public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
         {
             AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 

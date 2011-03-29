@@ -4,11 +4,11 @@ namespace NJasmine.Core.Discovery
 {
     internal class AllSuitesBuildContext
     {
-        public Func<ISpecificationRunner> _fixtureFactory;
-        public ISpecificationRunner _fixtureInstanceForDiscovery;
+        public Func<SpecificationFixture> _fixtureFactory;
+        public SpecificationFixture _fixtureInstanceForDiscovery;
         public NameGenerator _nameGenator;
 
-        public AllSuitesBuildContext(Func<ISpecificationRunner> fixtureFactory, NameGenerator nameGenerator, ISpecificationRunner fixtureInstanceForDiscovery)
+        public AllSuitesBuildContext(Func<SpecificationFixture> fixtureFactory, NameGenerator nameGenerator, SpecificationFixture fixtureInstanceForDiscovery)
         {
             _fixtureFactory = fixtureFactory;
             _nameGenator = nameGenerator;

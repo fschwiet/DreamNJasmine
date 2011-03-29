@@ -83,7 +83,6 @@
     <Compile Include="GivenWhenThenFixture.cs" />
     <Compile Include="ISpecificationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SkeleFixture.cs" />
     <Compile Include="SpecificationFixture.cs" />
   </ItemGroup>
   <ItemGroup />

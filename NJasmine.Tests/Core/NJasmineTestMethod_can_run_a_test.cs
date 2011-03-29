@@ -87,7 +87,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => SpecificationFixture.GetUnderlyingSkelefixture(fixture), new TestPosition(1, 3, 2), new PerFixtureSetupContext());
+            var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new PerFixtureSetupContext());
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
@@ -100,7 +100,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => SpecificationFixture.GetUnderlyingSkelefixture(fixture), new TestPosition(1, 3, 2), new PerFixtureSetupContext());
+            var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new PerFixtureSetupContext());
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
