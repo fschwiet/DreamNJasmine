@@ -14,9 +14,6 @@ namespace NJasmine
 {
     public abstract class NJasmineFixture : SpecificationFixture
     {
-        private int _totalWaitMs;
-        private int _incrementMs;
-
         public NJasmineFixture()
         {}
 
@@ -91,32 +88,6 @@ namespace NJasmine
         public void arrange(Action action)
         {
             _skeleFixture.ExtendSpec(s => s.visitBeforeEach(SpecElement.arrange, delegate() { action(); return (string)null; }));
-        }
-
-        public void expect(Expression<Func<bool>> expectation)
-        {
-            PowerAssert.PAssert.IsTrue(expectation);
-        }
-
-        public void setWaitTimeouts(int totalWaitMs, int incrementMs)
-        {
-            _totalWaitMs = totalWaitMs;
-            _incrementMs = incrementMs;
-        }
-
-        public void waitUntil(Expression<Func<bool>> expectation)
-        {
-            var expectationChecker = expectation.Compile();
-
-            int waitLeft = _totalWaitMs;
-
-            while (!(expectationChecker()) && waitLeft > 0)
-            {
-                Thread.Sleep(_incrementMs);
-                waitLeft -= _incrementMs;
-            }
-
-            PowerAssert.PAssert.IsTrue(expectation);
         }
     }
 }

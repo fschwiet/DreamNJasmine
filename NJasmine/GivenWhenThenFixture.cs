@@ -52,11 +52,6 @@ namespace NJasmine
             return result;
         }
 
-        public void expect(Expression<Func<bool>> expectation)
-        {
-            PowerAssert.PAssert.IsTrue(expectation);
-        }
-
         public void beforeAll(Action action)
         {
             _skeleFixture.ExtendSpec(s =>s.visitBeforeAll<string>(SpecElement.beforeAll, delegate {
