@@ -5,7 +5,7 @@ using NJasmine.Extras;
 
 namespace NJasmine
 {
-    public class SkeleFixture : ISpecificationRunner, ISpecificationContext
+    public class SkeleFixture : ISpecificationRunner
     {
         private readonly Action _specification;
         public TestPosition CurrentPosition { get; set; }
@@ -13,7 +13,6 @@ namespace NJasmine
 
         public SkeleFixture(Action specification)
         {
-            Visitor = new DoNothingFixtureVisitor();
             _specification = specification;
         }
 
