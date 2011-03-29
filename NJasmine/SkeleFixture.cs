@@ -21,7 +21,7 @@ namespace NJasmine
             _specification();
         }
 
-        public virtual RunsActionOnDispose UseVisitor(ISpecVisitor visitor)
+        public RunsActionOnDispose UseVisitor(ISpecVisitor visitor)
         {
             var currentVisitor = Visitor;
 
