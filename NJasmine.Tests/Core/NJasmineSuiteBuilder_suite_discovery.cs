@@ -17,7 +17,7 @@ namespace NJasmineTests.Core
             sut.CanBuildFrom(typeof (Object)).Should().Equal(false);
         }
 
-        public class SomeNestedClass : NJasmineFixture
+        public class SomeNestedClass : GivenWhenThenFixture
         {
             public override void Specify() { }
         }
@@ -32,7 +32,7 @@ namespace NJasmineTests.Core
             sut.CanBuildFrom(typeof(SampleTest)).Should().Equal(true);
         }
 
-        public abstract class SomeAbstractClass : NJasmineFixture
+        public abstract class SomeAbstractClass : GivenWhenThenFixture
         {
         }
 
@@ -44,7 +44,7 @@ namespace NJasmineTests.Core
             sut.CanBuildFrom(typeof(SomeAbstractClass)).Should().Equal(false);
         }
 
-        protected class ANonpublicFixture : NJasmineFixture
+        protected class ANonpublicFixture : GivenWhenThenFixture
         {
             public override void Specify()
             {

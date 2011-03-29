@@ -12,7 +12,7 @@ namespace NJasmineTests.FailingFixtures
         ExpectedStrings = new string[] {
                 "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_beforeEach",
                 "System.InvalidOperationException : Called it() within beforeEach()."})]
-    public class cannot_reenter_during_beforeEach : NJasmineFixture
+    public class cannot_reenter_during_beforeEach : GivenWhenThenFixture
     {
         public override void Specify()
         {

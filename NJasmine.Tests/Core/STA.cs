@@ -7,7 +7,7 @@ using Should.Fluent;
 namespace NJasmineTests.Core
 {
     [RequiresSTA]
-    public class STA : NJasmineFixture
+    public class STA : GivenWhenThenFixture
     {
         public override void Specify()
         {

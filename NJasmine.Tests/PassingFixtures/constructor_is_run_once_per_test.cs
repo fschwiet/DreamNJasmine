@@ -8,7 +8,7 @@ using Should.Fluent;
 
 namespace NJasmineTests.PassingFixtures
 {
-    public class constructor_is_run_once_per_test : NJasmineFixture
+    public class constructor_is_run_once_per_test : GivenWhenThenFixture
     {
         public int? LastValue;
         public constructor_is_run_once_per_test LastInstance;

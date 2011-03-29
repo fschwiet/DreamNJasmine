@@ -9,7 +9,7 @@ namespace NJasmineTests.PassingFixtures
         @"NJasmineTests.PassingFixtures.test_name_joins_specification, simple test",
         @"NJasmineTests.PassingFixtures.test_name_joins_specification, simple describe, simple test",
     })]
-    public class test_name_joins_specification : NJasmineFixture
+    public class test_name_joins_specification : GivenWhenThenFixture
     {
         public override void Specify()
         {

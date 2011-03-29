@@ -1,9 +1,10 @@
 ﻿using System;
+using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine
 {
     public interface ISpecificationContext
     {
-        ISpecVisitor Visitor { get; }
+        ISpecPositionVisitor Visitor { get; set; }
     }
 }

@@ -79,7 +79,6 @@
     <Compile Include="PassingFixtures\arrange_operations_can_be_nested.cs" />
     <Compile Include="PassingFixtures\beforeAll.cs" />
     <Compile Include="PassingFixtures\beforeAll_can_return_a_value.cs" />
-    <Compile Include="PassingFixtures\Can_mix_runtime_models.cs" />
     <Compile Include="PassingFixtures\can_mark_tests_as_ignored.cs" />
     <Compile Include="PassingFixtures\constructor_is_run_once_per_test.cs" />
     <Compile Include="PassingFixtures\GivenWhenThenFixture_supports_the_Basics.cs" />

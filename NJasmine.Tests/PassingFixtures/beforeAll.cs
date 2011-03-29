@@ -44,67 +44,67 @@ DISPOSING BEFORE ALL
         {
             beforeAll(ResetTracing);
 
-            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
+            beforeAll(delegate
             {
                 Trace("BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING BEFORE ALL"));
-            }));
+            });
 
-            ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
+            afterAll(delegate
             {
                 Trace("AFTER ALL");
-            })); 
+            }); 
             
-            ExtendSpec(s => s.visitTest(SpecElement.it, "first teest", delegate
+            it("first test", delegate
             {
                 Trace("first test");
-            }));
+            });
 
-            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
+            beforeAll(delegate
             {
                 Trace("SECOND BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING SECOND BEFORE ALL"));
-            }));
+            });
 
-            ExtendSpec(s =>s.visitAfterAll(SpecElement.afterAll, delegate
+            afterAll(delegate
             {
                 Trace("SECOND AFTER ALL");
-            }));
+            });
 
-            ExtendSpec(r => r.visitFork(SpecElement.describe, "in some context", delegate
+            describe("in some context", delegate
             {
-                ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
+                beforeAll(delegate
                 {
                     Trace("INNER BEFORE ALL");
                     return new RunOnDispose(() => Trace("DISPOSING INNER BEFORE ALL"));
-                }));
+                });
 
-                ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
+                afterAll(delegate
                 {
                     Trace("INNER AFTER ALL");
-                }));
+                });
 
-                ExtendSpec(s => s.visitTest(SpecElement.it, "second teest", delegate
+                it("second teest", delegate
                 {
                     Trace("second test");
-                }));
+                });
 
-                ExtendSpec(s => s.visitTest(SpecElement.it, "third teest", delegate
+                it("third teest", delegate
                 {
                     Trace("third test");
-                }));
-            }));
+                });
+            });
 
-            ExtendSpec(s => s.visitBeforeAll(SpecElement.beforeAll, delegate
+            beforeAll(delegate
             {
                 Trace("FINAL BEFORE ALL");
                 return new RunOnDispose(() => Trace("DISPOSING FINAL BEFORE ALL"));
-            }));
+            });
 
-            ExtendSpec(s => s.visitAfterAll(SpecElement.afterAll, delegate
+            afterAll(delegate
             {
                 Trace("FINAL AFTER ALL");
-            })); 
+            }); 
         }
     }
 }

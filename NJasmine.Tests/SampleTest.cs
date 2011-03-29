@@ -9,7 +9,7 @@ using Should.Fluent;
 
 namespace NJasmineTests
 {
-    public class SampleTest : NJasmineFixture
+    public class SampleTest : GivenWhenThenFixture
     {
         public override void Specify()
         {

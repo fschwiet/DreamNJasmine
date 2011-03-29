@@ -5,13 +5,8 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Core
 {
-    public abstract class TraceableNJasmineFixture : NJasmineFixture
+    public abstract class TraceableNJasmineFixture : GivenWhenThenFixture
     {
-        public void ExtendSpec(Action<ISpecVisitor> specVisitor)
-        {
-            specVisitor(GetUnderlyingSkelefixture(this).Visitor);
-        }
-
         public static void Trace(string value)
         {
             Console.WriteLine("<<{{" + value + "}}>>");

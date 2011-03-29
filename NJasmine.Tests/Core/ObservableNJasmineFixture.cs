@@ -3,7 +3,7 @@ using NJasmine;
 
 namespace NJasmineTests.Core
 {
-    public abstract class ObservableNJasmineFixture : NJasmineFixture
+    public abstract class ObservableNJasmineFixture : GivenWhenThenFixture
     {
         List<string> _observations = new List<string>();
 

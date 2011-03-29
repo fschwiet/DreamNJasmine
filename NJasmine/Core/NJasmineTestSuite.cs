@@ -50,7 +50,14 @@ namespace NJasmine.Core
             
             Exception exception = null;
 
-            using (builder.VisitSuiteFromPosition(_position.GetFirstChildPosition()))
+
+            var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
+
+            buildContext._fixtureInstanceForDiscovery.CurrentPosition = _position;
+            buildContext._fixtureInstanceForDiscovery.CurrentPosition = buildContext._fixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
+            buildContext._fixtureInstanceForDiscovery.Visitor = builder;
+
+            try
             {
                 try
                 {
@@ -78,6 +85,11 @@ namespace NJasmine.Core
                         return nJasmineInvalidTestSuite;
                     }
                 }
+            }
+            finally
+            {
+                //buildContext._fixtureInstanceForDiscovery.CurrentPosition = nextPosition;
+                buildContext._fixtureInstanceForDiscovery.Visitor = originalVisitor;
             }
 
             return this;

@@ -8,7 +8,7 @@ using Should.Fluent.Model;
 
 namespace NJasmineTests.Extras
 {
-    public class ZipDeployToolsTest : NJasmineFixture
+    public class ZipDeployToolsTest : GivenWhenThenFixture
     {
         public override void Specify()
         {

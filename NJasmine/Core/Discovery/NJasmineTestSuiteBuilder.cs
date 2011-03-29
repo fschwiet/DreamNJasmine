@@ -25,11 +25,6 @@ namespace NJasmine.Core.Discovery
             _ignoreReason = null;
         }
 
-        public RunsActionOnDispose VisitSuiteFromPosition(TestPosition position)
-        {
-            return _buildContext._fixtureInstanceForDiscovery.UseVisitor(new VisitorPositionAdapter(position, this));
-        }
-
         public void VisitAccumulatedTests(Action<Test> action)
         {
             foreach (var descendant in _accumulatedDescendants)

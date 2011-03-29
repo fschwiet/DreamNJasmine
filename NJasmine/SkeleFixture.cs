@@ -8,7 +8,8 @@ namespace NJasmine
     public class SkeleFixture : ISpecificationRunner, ISpecificationContext
     {
         private readonly Action _specification;
-        public ISpecVisitor Visitor { get; protected set; }
+        public TestPosition CurrentPosition { get; set; }
+        public ISpecPositionVisitor Visitor { get; set; }
 
         public SkeleFixture(Action specification)
         {
@@ -19,15 +20,6 @@ namespace NJasmine
         public void Run()
         {
             _specification();
-        }
-
-        public RunsActionOnDispose UseVisitor(ISpecVisitor visitor)
-        {
-            var currentVisitor = Visitor;
-
-            Visitor = visitor;
-
-            return new RunsActionOnDispose(() => Visitor = currentVisitor);
         }
     }
 }

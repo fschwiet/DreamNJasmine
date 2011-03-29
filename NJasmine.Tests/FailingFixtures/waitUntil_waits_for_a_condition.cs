@@ -20,7 +20,7 @@ update-xml $xmlFile {
     $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
 }
 ")]
-    public class waitUntil_waits_for_a_condition : NJasmineFixture
+    public class waitUntil_waits_for_a_condition : GivenWhenThenFixture
     {
         public int WaitsLeft;
 

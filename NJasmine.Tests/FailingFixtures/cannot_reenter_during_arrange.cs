@@ -15,7 +15,7 @@ namespace NJasmineTests.FailingFixtures
                 "System.InvalidOperationException : Called it() within arrange().",
                 "System.InvalidOperationException : Called it() within arrange()."
         })]
-    public class cannot_reenter_during_arrange : NJasmineFixture
+    public class cannot_reenter_during_arrange : GivenWhenThenFixture
     {
         public override void Specify()
         {

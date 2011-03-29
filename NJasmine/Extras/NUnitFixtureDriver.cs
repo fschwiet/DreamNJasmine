@@ -6,30 +6,30 @@ namespace NJasmine.Extras
 {
     public class NUnitFixtureDriver
     {
-        public static T IncludeFixture<T>(SkeleFixture specificationBuilder) where T : new()
+        public static T IncludeFixture<T>(GivenWhenThenFixture specBuilder) where T : new()
         {
             T fixtureDuringDiscovery = default(T);
             T fixture = default(T);
 
-            fixture = specificationBuilder.Visitor.visitBeforeAll(SpecElement.importNUnit, delegate
+            fixture = specBuilder.beforeAll(delegate
             {
                 fixtureDuringDiscovery = new T();
                 RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureSetUpAttribute);
                 return fixtureDuringDiscovery;
             });
 
-            specificationBuilder.Visitor.visitBeforeEach(SpecElement.importNUnit, delegate
+            specBuilder.arrange(delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.SetUpAttribute);
                 return fixtureDuringDiscovery;
             });
 
-            specificationBuilder.Visitor.visitAfterEach(SpecElement.importNUnit, delegate
+            specBuilder.afterEach(delegate
             {
                 RunMethodsWithAttribute(fixture, NUnitFramework.TearDownAttribute);
             });
 
-            specificationBuilder.Visitor.visitAfterAll(SpecElement.importNUnit, delegate
+            specBuilder.afterAll(delegate
             {
                 RunMethodsWithAttribute(fixtureDuringDiscovery, NUnitFramework.FixtureTearDownAttribute);
             });

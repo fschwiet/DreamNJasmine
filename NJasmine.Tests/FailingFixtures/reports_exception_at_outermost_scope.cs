@@ -6,7 +6,7 @@ namespace NJasmineTests.FailingFixtures
     [Explicit, RunExternal(false, ExpectedStrings = new []{
             "Test Failure : NJasmineTests.FailingFixtures.reports_exception_at_outermost_scope",
             "Attempted to divide by zero."})]
-    public class reports_exception_at_outermost_scope : NJasmineFixture
+    public class reports_exception_at_outermost_scope : GivenWhenThenFixture
     {
         public override void Specify()
         {

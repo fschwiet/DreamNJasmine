@@ -3,34 +3,34 @@ using System.Collections.Generic;
 
 namespace NJasmine.Core.FixtureVisitor
 {
-    public class DoNothingFixtureVisitor : ISpecVisitor
+    public class DoNothingFixtureVisitor : ISpecPositionVisitor
     {
-        public void visitFork(SpecElement origin, string description, Action action)
+        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
         }
 
-        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action)
+        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
             return default(TArranged);
         }
 
-        public void visitAfterAll(SpecElement origin, Action action)
+        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
         }
 
-        public virtual void visitAfterEach(SpecElement origin, Action action)
+        public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
         {
         }
 
-        public virtual void visitTest(SpecElement origin, string description, Action action)
+        public virtual void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
         }
 
-        public void visitIgnoreBecause(string reason)
+        public void visitIgnoreBecause(string reason, TestPosition position)
         {
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory)
+        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             return default(TArranged);
         }
