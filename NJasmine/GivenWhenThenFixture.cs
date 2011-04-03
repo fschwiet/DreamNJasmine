@@ -34,7 +34,7 @@ namespace NJasmine
             }
         }
 
-        private PositionContext SetPositionForNestedReentry_then_Restore_then_NextSibling()
+        private PositionContext SetPositionForNestedReentry_then_Restore_and_Advance_for_Next()
         {
             var position = base.CurrentPosition;
             var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
@@ -47,7 +47,7 @@ namespace NJasmine
 
         public void describe(string description, Action specification)
         {
-            using(var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using(var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitFork(SpecElement.describe, description, specification, context.Position);
             }
@@ -55,7 +55,7 @@ namespace NJasmine
 
         public void given(string givenPhrase, Action specification)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification, context.Position);
             }
@@ -63,7 +63,7 @@ namespace NJasmine
 
         public void when(string whenPhrase, Action specification)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification, context.Position);
             }
@@ -71,7 +71,7 @@ namespace NJasmine
 
         public void then(string thenPhrase, Action test)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, test, context.Position);
             }
@@ -79,7 +79,7 @@ namespace NJasmine
 
         public void then(string thenPhrase)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, null, context.Position);
             }
@@ -87,7 +87,7 @@ namespace NJasmine
 
         public void it(string itPhrase, Action action)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitTest(SpecElement.it, itPhrase, action, context.Position);
             }
@@ -95,7 +95,7 @@ namespace NJasmine
 
         public void it(string itPhrase)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitTest(SpecElement.it, itPhrase, null, context.Position);
             }
@@ -103,7 +103,7 @@ namespace NJasmine
 
         public void afterEach(Action cleanup)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitAfterEach(SpecElement.afterEach, cleanup, context.Position);
             }
@@ -111,7 +111,7 @@ namespace NJasmine
 
         public void cleanup(Action cleanup)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitAfterEach(SpecElement.cleanup, cleanup, context.Position);
             }
@@ -119,7 +119,7 @@ namespace NJasmine
 
         public void beforeEach(Action action)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitBeforeEach(SpecElement.beforeEach, delegate()
                     {
@@ -132,7 +132,7 @@ namespace NJasmine
 
         public void arrange(Action arrangeAction)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
                     {
@@ -145,7 +145,7 @@ namespace NJasmine
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 return base.Visitor.visitBeforeEach(SpecElement.arrange, arrangeAction, context.Position);
             }
@@ -153,7 +153,7 @@ namespace NJasmine
 
         public TArranged arrange<TArranged>() where TArranged : class, new()
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 Func<TArranged> factory = delegate { return new TArranged(); };
 
@@ -164,7 +164,7 @@ namespace NJasmine
 
         public void beforeAll(Action action)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitBeforeAll<string>(SpecElement.beforeAll, delegate
                     {
@@ -177,7 +177,7 @@ namespace NJasmine
 
         public T beforeAll<T>(Func<T> action)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 return base.Visitor.visitBeforeAll(SpecElement.beforeAll, action, context.Position);
             }
@@ -185,7 +185,7 @@ namespace NJasmine
 
         public void afterAll(Action action)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitAfterAll(SpecElement.afterAll, action, context.Position);
             }
@@ -198,7 +198,7 @@ namespace NJasmine
 
         public void ignoreBecause(string reason)
         {
-            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitIgnoreBecause(reason, context.Position);
             }
