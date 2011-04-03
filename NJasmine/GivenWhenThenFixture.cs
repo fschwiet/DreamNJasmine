@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 
@@ -8,177 +9,186 @@ namespace NJasmine
     [NUnit.Framework.Explicit]
     public abstract class GivenWhenThenFixture : SpecificationFixture
     {
-        public void describe(string description, Action specification)
+        //
+        //  When a test failure occurs, the developer must consider the callstack 
+        //  to find the error.  Every layer of nesting makes that more difficult.
+        //  So I go to extra effort to reduce the callstack during re-entry, using
+        //  PositionContext to keep things DRY.
+        //
+
+        public class PositionContext : IDisposable
+        {
+            public readonly TestPosition Position;
+
+            private readonly Action _onFinish;
+
+            public PositionContext(TestPosition position, Action onFinish)
+            {
+                Position = position;
+                _onFinish = onFinish;
+            }
+
+            public void Dispose()
+            {
+                _onFinish();
+            }
+        }
+
+        private PositionContext SetPositionForNestedReentry_then_Restore_then_NextSibling()
         {
             var position = base.CurrentPosition;
             var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
             base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitFork(SpecElement.describe, description, specification, position);
-            base.CurrentPosition = nextPosition;
+            return new PositionContext(position,delegate
+            {
+                base.CurrentPosition = nextPosition;
+            });
+        }
+
+        public void describe(string description, Action specification)
+        {
+            using(var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitFork(SpecElement.describe, description, specification, context.Position);
+            }
         }
 
         public void given(string givenPhrase, Action specification)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification, context.Position);
+            }
         }
 
         public void when(string whenPhrase, Action specification)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification, context.Position);
+            }
         }
 
         public void then(string thenPhrase, Action test)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, test, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, test, context.Position);
+            }
         }
 
         public void then(string thenPhrase)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, null, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, null, context.Position);
+            }
         }
 
         public void it(string itPhrase, Action action)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitTest(SpecElement.it, itPhrase, action, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitTest(SpecElement.it, itPhrase, action, context.Position);
+            }
         }
 
         public void it(string itPhrase)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitTest(SpecElement.it, itPhrase, null, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitTest(SpecElement.it, itPhrase, null, context.Position);
+            }
         }
 
         public void afterEach(Action cleanup)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitAfterEach(SpecElement.afterEach, cleanup, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitAfterEach(SpecElement.afterEach, cleanup, context.Position);
+            }
         }
 
         public void cleanup(Action cleanup)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitAfterEach(SpecElement.cleanup, cleanup, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitAfterEach(SpecElement.cleanup, cleanup, context.Position);
+            }
         }
 
         public void beforeEach(Action action)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            base.Visitor.visitBeforeEach(SpecElement.beforeEach, delegate()
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
             {
-                action();
-                return (string)null;
-            }, position);
-
-            base.CurrentPosition = nextPosition;
+                base.Visitor.visitBeforeEach(SpecElement.beforeEach, delegate()
+                    {
+                        action();
+                        return (string)null;
+                    }, 
+                    context.Position);
+            }
         }
 
         public void arrange(Action arrangeAction)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            base.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
             {
-                arrangeAction();
-                return (string)null;
-            }, position);
-
-            base.CurrentPosition = nextPosition;
+                base.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
+                    {
+                        arrangeAction();
+                        return (string)null;
+                    }, 
+                    context.Position);
+            }
         }
 
         public T arrange<T>(Func<T> arrangeAction)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            T result = base.Visitor.visitBeforeEach(SpecElement.arrange, arrangeAction, position);
-
-            base.CurrentPosition = nextPosition;
-
-            return result;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                return base.Visitor.visitBeforeEach(SpecElement.arrange, arrangeAction, context.Position);
+            }
         }
 
-        public TArranged arrange<TArranged>() where TArranged : class, new()        {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            Func<TArranged> factory = delegate { return new TArranged(); };            var result = base.Visitor.visitBeforeEach(SpecElement.arrange, factory, position);
+        public TArranged arrange<TArranged>() where TArranged : class, new()
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                Func<TArranged> factory = delegate { return new TArranged(); };
 
-            base.CurrentPosition = nextPosition;
+                return base.Visitor.visitBeforeEach(SpecElement.arrange, factory, context.Position);
+            }
+        }
 
-            return result;
-        }
 
         public void beforeAll(Action action)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            base.Visitor.visitBeforeAll<string>(SpecElement.beforeAll, delegate
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
             {
-                action();
-                return (string) null;
-            }, position);
-
-            base.CurrentPosition = nextPosition;
+                base.Visitor.visitBeforeAll<string>(SpecElement.beforeAll, delegate
+                    {
+                        action();
+                        return (string)null;
+                    }, 
+                    context.Position);
+            }
         }
 
         public T beforeAll<T>(Func<T> action)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            var result = base.Visitor.visitBeforeAll(SpecElement.beforeAll, action, position);
-
-            base.CurrentPosition = nextPosition;
-
-            return result;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                return base.Visitor.visitBeforeAll(SpecElement.beforeAll, action, context.Position);
+            }
         }
 
         public void afterAll(Action action)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            base.Visitor.visitAfterAll(SpecElement.afterAll, action, position);
-
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitAfterAll(SpecElement.afterAll, action, context.Position);
+            }
         }
 
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
@@ -188,12 +198,10 @@ namespace NJasmine
 
         public void ignoreBecause(string reason)
         {
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-
-            base.Visitor.visitIgnoreBecause(reason, position);
-            base.CurrentPosition = nextPosition;
+            using (var context = SetPositionForNestedReentry_then_Restore_then_NextSibling())
+            {
+                base.Visitor.visitIgnoreBecause(reason, context.Position);
+            }
         }
     }
 }
