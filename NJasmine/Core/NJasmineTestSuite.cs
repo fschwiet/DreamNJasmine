@@ -88,7 +88,6 @@ namespace NJasmine.Core
             }
             finally
             {
-                //buildContext._fixtureInstanceForDiscovery.CurrentPosition = nextPosition;
                 buildContext._fixtureInstanceForDiscovery.Visitor = originalVisitor;
             }
 
