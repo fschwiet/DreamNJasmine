@@ -52,6 +52,8 @@ update-xml $xmlFile {
                     WaitsLeft = 1;
 
                     waitUntil(() => Ready());
+
+                    waitUntil(() => Ready(), 2000);
                 });
             });
 

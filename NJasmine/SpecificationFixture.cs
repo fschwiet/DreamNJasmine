@@ -36,11 +36,11 @@ namespace NJasmine
             _incrementMs = incrementMs;
         }
 
-        public void waitUntil(Expression<Func<bool>> expectation)
+        public void waitUntil(Expression<Func<bool>> expectation, int? msMaxWait = null)
         {
             var expectationChecker = expectation.Compile();
 
-            int waitLeft = _totalWaitMs;
+            int waitLeft = msMaxWait ?? _totalWaitMs;
 
             while (!(expectationChecker()) && waitLeft > 0)
             {
