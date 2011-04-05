@@ -42,7 +42,7 @@ namespace NJasmine
 
             DateTime finishTime = DateTime.UtcNow.AddMilliseconds(msMaxWait ?? _totalWaitMs);
 
-            while (!(expectationChecker()) && DateTime.Now < finishTime)
+            while (!(expectationChecker()) && DateTime.UtcNow < finishTime)
             {
                 Thread.Sleep(_incrementMs);
             }
