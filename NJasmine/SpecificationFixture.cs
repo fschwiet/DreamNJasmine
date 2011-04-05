@@ -27,25 +27,24 @@ namespace NJasmine
             PowerAssert.PAssert.IsTrue(expectation);
         }
 
-        private int _totalWaitMs;
-        private int _incrementMs;
+        private int _totalWaitMs = 1000;
+        private int _incrementMs = 250;
 
         public void setWaitTimeouts(int totalWaitMs, int incrementMs)
         {
             _totalWaitMs = totalWaitMs;
-            _incrementMs = incrementMs;
+            _incrementMs = Math.Min(incrementMs, 1);
         }
 
         public void waitUntil(Expression<Func<bool>> expectation, int? msMaxWait = null)
         {
             var expectationChecker = expectation.Compile();
 
-            int waitLeft = msMaxWait ?? _totalWaitMs;
+            DateTime finishTime = DateTime.UtcNow.AddMilliseconds(msMaxWait ?? _totalWaitMs);
 
-            while (!(expectationChecker()) && waitLeft > 0)
+            while (!(expectationChecker()) && DateTime.Now < finishTime)
             {
                 Thread.Sleep(_incrementMs);
-                waitLeft -= _incrementMs;
             }
 
             PowerAssert.PAssert.IsTrue(expectation);
