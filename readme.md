@@ -29,9 +29,9 @@ For given/when/then style tests, given() and when() behave like describe().  Lik
 
 Assertions can be expressed as expect() or waitUntil().
 
-The outer scope of each specification is ran once to discover what tests are defined, and then again once again for each contained test.  Test code must not block if its directly within a describe(), given, or when() expression.  Such code will cause test discovery to stall.  Exceptions thrown within test discovery will show as failures to the test runner, but the test runner will not discover all tests.
+The outer scope of each specification is ran once to discover what tests are defined, and then again once again for each contained test.  Test code must not block if its directly within a describe(), given, or when() expression.  Such code will cause test discovery to stall.  Exceptions thrown within test discovery will show as failures to the test runner and the test runner will complete without discovering the remaining tests.
 
-Unlike Jasmine or RSpec, in NJasmine each level of scope for a test runs for every test run.  If you really want some setup code to run once for multiple tests, you must use beforeAll().  The expression passed to beforeAll() is invoked once then the value it returns is passed to each test.
+Unlike Jasmine or RSpec, in NJasmine each level of scope for a test runs for every test run.  If you really want some setup code to run once for multiple tests, you must use beforeAll().  The expression passed to beforeAll() is invoked once then the value it returns is passed to all following tests.
 
 If you would like to reuse test setup code made for NUnit, consider importNUnit<>().  importNUnit<>() supports classes that use [SetUp], [TestFixtureSetUp], [TearDown] or [TestFixtureTeardown].  NJasmine will let you include multiple setup fixtures in the same specification.
 
