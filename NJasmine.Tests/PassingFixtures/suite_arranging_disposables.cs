@@ -17,13 +17,13 @@ creating some_observable_D
 creating some_observable_E
 creating some_observable_F
 ")]
-    public class suite_arranging_nondisposables : TraceableNJasmineFixture
+    public class suite_arranging_nondisposables : GivenWhenThenFixtureTracingToConsole
     {
         public class ObservableNondisposable
         {
             public ObservableNondisposable()
             {
-                TraceableNJasmineFixture.Trace("creating " + TraceableNJasmineFixture.GetTypeShortName(this.GetType()));
+                GivenWhenThenFixtureTracingToConsole.Trace("creating " + GivenWhenThenFixtureTracingToConsole.GetTypeShortName(this.GetType()));
             }
         }
 

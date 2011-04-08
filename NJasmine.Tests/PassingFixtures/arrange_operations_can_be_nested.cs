@@ -17,7 +17,7 @@ four
 -two
 -one
 ")]
-    public class arrange_operations_can_be_nested : TraceableNJasmineFixture
+    public class arrange_operations_can_be_nested : GivenWhenThenFixtureTracingToConsole
     {
         public override void Specify()
         {

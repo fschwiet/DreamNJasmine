@@ -8,7 +8,7 @@ namespace NJasmineTests.FailingFixtures
     [Explicit, RunExternal(false, ExpectedTraceSequence = @"
 failure_in_setup_doesnt_prevent_cleanup_in_same_scope
 failure_in_setup_doesnt_prevent_cleanup")]
-    public class runs_teardown_even_after_setup_failure : TraceableNJasmineFixture
+    public class runs_teardown_even_after_setup_failure : GivenWhenThenFixtureTracingToConsole
     {
         public override void Specify()
         {

@@ -22,7 +22,7 @@ DISPOSING SECOND BEFORE ALL
 AFTER ALL
 DISPOSING BEFORE ALL
 ")]
-    public class beforeAll : TraceableNJasmineFixture
+    public class beforeAll : GivenWhenThenFixtureTracingToConsole
     {
         public class RunOnDispose : IDisposable
         {

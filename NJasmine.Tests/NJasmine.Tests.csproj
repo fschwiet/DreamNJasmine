@@ -59,7 +59,7 @@
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
     <Compile Include="Core\STA.cs" />
-    <Compile Include="Core\TraceableNJasmineFixture.cs" />
+    <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
     <Compile Include="FailingFixtures\cannot_reenter_during_arrange.cs" />
     <Compile Include="FailingFixtures\duplicate_test_names_are_fine.cs" />

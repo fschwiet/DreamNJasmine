@@ -9,7 +9,7 @@ namespace NJasmineTests.FailingFixtures
 failure_in_test_doesnt_prevent_cleanup_in_same_scope
 failure_in_test_doesnt_prevent_cleanup")]
 
-    public class runs_teardown_even_after_test_failure : TraceableNJasmineFixture
+    public class runs_teardown_even_after_test_failure : GivenWhenThenFixtureTracingToConsole
     {
         public override void Specify()
         {

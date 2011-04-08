@@ -25,7 +25,7 @@ repeated inner it 3
         "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated describe`3, repeated inner describe"
     }
 )]
-    public class duplicate_test_names_are_fine : TraceableNJasmineFixture
+    public class duplicate_test_names_are_fine : GivenWhenThenFixtureTracingToConsole
     {
         public override void Specify()
         {

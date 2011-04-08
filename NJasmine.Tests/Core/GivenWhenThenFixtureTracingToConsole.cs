@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Core
 {
-    public abstract class TraceableNJasmineFixture : GivenWhenThenFixture
+    public abstract class GivenWhenThenFixtureTracingToConsole : GivenWhenThenFixture
     {
         public static void Trace(string value)
         {

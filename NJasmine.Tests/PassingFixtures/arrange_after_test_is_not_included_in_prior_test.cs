@@ -13,7 +13,7 @@ Second test
 Second cleanup
 First cleanup
 ")]
-    public class arrange_after_test_is_not_included_in_prior_test : TraceableNJasmineFixture
+    public class arrange_after_test_is_not_included_in_prior_test : GivenWhenThenFixtureTracingToConsole
     {
         public override void Specify()
         {
