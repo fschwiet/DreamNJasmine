@@ -1,5 +1,5 @@
 
-NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/).
+NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
 
     given("some preconditions", () => {
 
