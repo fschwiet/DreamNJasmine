@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		default.ps1 = default.ps1
 		ForXml.ps1 = ForXml.ps1
-		README.TXT = README.TXT
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NJasine.TestLoader", "NJasine.TestLoader\NJasine.TestLoader.csproj", "{FD95671F-83A9-4C94-848C-3834745E72BD}"
