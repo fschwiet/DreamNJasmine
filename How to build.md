@@ -1,6 +1,6 @@
 
 In order to build this project, you need to execute the psake build script from the PowerShell console.
-You do this using the following command from the root project directory:
+You do this using the following command from the root project directory (putting the build result in .\build):
 
 	.\psake.ps1 default.ps1
 	
@@ -8,17 +8,11 @@ You may need to allow script execution by running the following command as admin
 
 	Set-ExecutionPolicy unrestricted
 	
+	
+If you want to deploy the addin to the local install of NUnit 2.5.x:
 
+    .\psake.ps1 .\default.ps1 Deploy
+	
+With it installed locally, you still need to run NUnit from c:\program files(x86)\nunit*\bin\net-2.0\addins.  The 'Deploy' task is not well supported, you may need to copy from the build result to your addins directory.
 
-To build and deploy the addin, you can run:
-    .\psake.ps1 .\default.ps1 TestDeploy
-	
-    This will install the addon to the copy of nunit at .\NJasmine\packages\NUnit.2.5.7.10213.  The addin is only available when running NUnit from that path.
-	
-If you'd be willing to run all tests, :)
-	.\psake.ps1
-	
-If you want to deploy the addin to the local install of NUnit on a Windows machine:
-    .\psake.ps1 .\default.ps1 LocalDeploy
-	
-    With it installed locally, you still need to run NUnit from c:\program files(x86)\nunit*\bin\net-2.0\addins
+To work, NJasmine needs to be in the path .\addins\ relative to the nunit executeable.
