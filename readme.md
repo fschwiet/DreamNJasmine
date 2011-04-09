@@ -37,6 +37,6 @@ If you would like to reuse test setup code made for NUnit, consider importNUnit<
 
 You can use existing NUnit test attributes [RequiresSTA] and [Explict] with the GivenWhenThenFixture.
 
-See "how to build.txt" for information on how to build and install NJasmine.
+See "how to build.md" for information on how to build and install NJasmine.
 
 Currently only built against NUnit 2.5.9.  If you would use something else let me know.
