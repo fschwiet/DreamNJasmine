@@ -13,7 +13,7 @@ properties {
     $msbuild_Configuration = "Debug"
 	$deploySource = "$buildDir"
 	$testDll = "$buildDir\NJasmine.Tests.dll"
-    $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "Should.Fluent.dll")
+    $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "PowerAssert.dll")
     $integrationTestLoader = "$buildDir\NJasine.TestLoader.exe"
     $integrationTestRunPattern = "*"
 }
