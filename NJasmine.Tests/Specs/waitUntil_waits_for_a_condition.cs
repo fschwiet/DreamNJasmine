@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
+﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, VerificationScript = @"
 
@@ -15,9 +11,9 @@ import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
 
 update-xml $xmlFile {
 
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect works when no waits are left'][@result='Success']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect fails when waits are left'][@result='Error']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.FailingFixtures.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
+    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect works when no waits are left'][@result='Success']""
+    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect fails when waits are left'][@result='Error']""
+    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
 }
 ")]
     public class waitUntil_waits_for_a_condition : GivenWhenThenFixture

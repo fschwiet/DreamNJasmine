@@ -1,10 +1,10 @@
 ﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, ExpectedStrings = new[] {
-        "Test Failure : NJasmineTests.FailingFixtures.reports_exception_within_describe, broken describe", 
+        "Test Failure : NJasmineTests.Specs.reports_exception_within_describe, broken describe", 
         "Attempted to divide by zero."})]
     public class reports_exception_within_describe : GivenWhenThenFixture
     {

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit]
     [RunExternal(false,
         ExpectedStrings = new string[] {
-                "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail",
-                "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail",
+                "Test Error : NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail",
+                "Test Error : NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail",
                 "System.InvalidOperationException : Called it() within arrange().",
                 "System.InvalidOperationException : Called it() within arrange()."
         })]

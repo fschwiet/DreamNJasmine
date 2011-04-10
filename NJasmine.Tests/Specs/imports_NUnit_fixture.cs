@@ -1,7 +1,7 @@
 ﻿using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, TestFixture]
     public class some_Nunit_fixture_a

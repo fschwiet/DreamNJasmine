@@ -1,7 +1,7 @@
 ﻿using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(true, ExpectedTraceSequence = @"
 First setup

@@ -1,13 +1,13 @@
 ﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit]
     [RunExternal(true, ExpectedStrings = new string[]
     {
-        @"NJasmineTests.PassingFixtures.test_name_joins_specification, simple test",
-        @"NJasmineTests.PassingFixtures.test_name_joins_specification, simple describe, simple test",
+        @"NJasmineTests.Specs.test_name_joins_specification, simple test",
+        @"NJasmineTests.Specs.test_name_joins_specification, simple describe, simple test",
     })]
     public class test_name_joins_specification : GivenWhenThenFixture
     {

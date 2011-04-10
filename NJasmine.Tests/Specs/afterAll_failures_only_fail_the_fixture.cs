@@ -1,6 +1,6 @@
 ﻿using NJasmine;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
 
     //

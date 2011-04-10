@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine.Core.FixtureVisitor;
 using NJasmineTests.Core;
-using NUnit.Framework;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [RunExternal(true, ExpectedTraceSequence = @"
 BEFORE ALL

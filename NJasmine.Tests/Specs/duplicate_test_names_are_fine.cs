@@ -3,7 +3,7 @@ using System.Linq;
 using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, ExpectedTraceSequence = @"
 outer it 1
@@ -14,15 +14,15 @@ outer it 3
 repeated inner it 3
 ", ExpectedStrings = new [ ]
     {
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated outer test",
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated outer test`2",
-        "Test Error : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated outer test`3",
-        "NotRunnable : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated unimplemented outer test",
-        "NotRunnable : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated unimplemented outer test`2",
-        "NotRunnable : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated unimplemented outer test`3",
-        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated describe, repeated inner describe",
-        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated describe`2, repeated inner describe",
-        "Test Failure : NJasmineTests.FailingFixtures.duplicate_test_names_are_fine, repeated describe`3, repeated inner describe"
+        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test",
+        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2",
+        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3",
+        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test",
+        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2",
+        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3",
+        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe",
+        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe`2, repeated inner describe",
+        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe`3, repeated inner describe"
     }
 )]
     public class duplicate_test_names_are_fine : GivenWhenThenFixtureTracingToConsole

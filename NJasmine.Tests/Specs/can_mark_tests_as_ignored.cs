@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
+﻿using NJasmine;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [RunExternal(true, VerificationScript = @"
 
@@ -26,7 +22,7 @@ update-xml $xmlFile {
         Assert ((get-xml ""@result"") -eq 'Success') 'Expected when statement with non-ignored test to have succeeded.';
 
         for-xml -exactlyOnce ""./results/test-case"" {
-            Assert ((get-xml ""@name"") -eq 'NJasmineTests.PassingFixtures.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs') `
+            Assert ((get-xml ""@name"") -eq 'NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs') `
                 'Expected when statement with non-ignored test to contain the non-ignored test'
 
             Assert ((get-xml ""@result"") -eq 'Success') 'Expected non-ignored test to have passed';

@@ -2,11 +2,11 @@
 using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures.error_during_nunit_fixture_calls
+namespace NJasmineTests.Specs.error_during_nunit_fixture_calls
 {
     [Explicit, RunExternal(false, ExpectedStrings = new []
     {
-        "NJasmineTests.FailingFixtures.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text",
+        "NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text",
         "System.TimeZoneNotFoundException : no time!"
     })]
     public class fixture_setup_has_useful_errors : GivenWhenThenFixture

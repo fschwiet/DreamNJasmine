@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
-using NJasmineTests.Core;
+﻿using NJasmineTests.Core;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [RunExternal(true, ExpectedTraceSequence = @"
 one

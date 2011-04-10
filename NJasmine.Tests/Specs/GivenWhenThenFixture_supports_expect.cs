@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
+﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, ExpectedStrings = new[] { "IsTrue failed, expression was:" })]
     public class GivenWhenThenFixture_supports_expect : GivenWhenThenFixture

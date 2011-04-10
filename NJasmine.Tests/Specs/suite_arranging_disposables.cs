@@ -1,8 +1,7 @@
-﻿using System;
-using NJasmineTests.Core;
+﻿using NJasmineTests.Core;
 using Should.Fluent;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     [RunExternal(true, ExpectedTraceSequence = @"
 creating some_observable_A

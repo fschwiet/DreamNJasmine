@@ -1,9 +1,8 @@
 ﻿using System;
-using NJasmine;
 using NJasmineTests.Core;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, ExpectedTraceSequence = @"
 failure_in_test_doesnt_prevent_cleanup_in_same_scope

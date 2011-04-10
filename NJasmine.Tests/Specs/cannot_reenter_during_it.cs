@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
+﻿using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.FailingFixtures
+namespace NJasmineTests.Specs
 {
     [Explicit, RunExternal(false, ExpectedStrings = new[]{
-        "Test Error : NJasmineTests.FailingFixtures.cannot_reenter_during_it",
+        "Test Error : NJasmineTests.Specs.cannot_reenter_during_it",
         "System.InvalidOperationException : Called it() within it()."})]
     public class cannot_reenter_during_it : GivenWhenThenFixture
     {

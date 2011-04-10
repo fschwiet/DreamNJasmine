@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
-using NJasmineTests.Core;
+﻿using NJasmineTests.Core;
 using NUnit.Framework;
 using Should.Fluent;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     namespace WithNamespaceSetup
     {

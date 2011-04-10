@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine;
-using NUnit.Framework;
+﻿using NJasmine;
 using Should.Fluent;
 
-namespace NJasmineTests.PassingFixtures
+namespace NJasmineTests.Specs
 {
     public class constructor_is_run_once_per_test : GivenWhenThenFixture
     {
