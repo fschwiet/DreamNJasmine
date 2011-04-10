@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 using NUnit.Core;
@@ -121,6 +122,14 @@ namespace NJasmine.Core.Discovery
                 this._test.RunState = RunState.Explicit;
                 this._test.IgnoreReason = reason;
             }
+        }
+
+        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        {
+        }
+
+        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        {
         }
     }
 }

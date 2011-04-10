@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Threading;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 
@@ -51,6 +53,25 @@ namespace NJasmine.Core.Execution
 
         public void visitIgnoreBecause(string reason, TestPosition position)
         {
+        }
+
+        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        {
+            PowerAssert.PAssert.IsTrue(expectation);
+        }
+
+        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        {
+            var expectationChecker = expectation.Compile();
+
+            DateTime finishTime = DateTime.UtcNow.AddMilliseconds(totalWaitMs);
+
+            while (!(expectationChecker()) && DateTime.UtcNow < finishTime)
+            {
+                Thread.Sleep(waitIncrementMs);
+            }
+
+            PowerAssert.PAssert.IsTrue(expectation);
         }
 
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)

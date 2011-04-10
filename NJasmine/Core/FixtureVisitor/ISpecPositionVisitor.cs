@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace NJasmine.Core.FixtureVisitor
 {
@@ -15,5 +16,8 @@ namespace NJasmine.Core.FixtureVisitor
 
         void visitTest(SpecElement origin, string description, Action action, TestPosition position);
         void visitIgnoreBecause(string reason, TestPosition position);
+
+        void visitExpect(Expression<Func<bool>> expectation, TestPosition position);
+        void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position);
     }
 }

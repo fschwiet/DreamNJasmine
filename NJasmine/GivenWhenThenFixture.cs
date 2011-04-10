@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading;
 using NJasmine.Core;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
@@ -201,6 +202,40 @@ namespace NJasmine
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitIgnoreBecause(reason, context.Position);
+            }
+        }
+
+        public void expect(Expression<Func<bool>> expectation)
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
+            {
+                base.Visitor.visitExpect(expectation, context.Position);
+            }
+        }
+
+        private int _msWaitMax = 1000;
+        private int _msWaitIncrement = 250;
+
+        public void setWaitTimeouts(int msWaitMax, int msWaitIncrement)
+        {
+            var originalWaitMax = msWaitMax;
+            var originalWaitIncrement = msWaitIncrement;
+
+            _msWaitMax = msWaitMax;
+            _msWaitIncrement = Math.Min(msWaitIncrement, 1);
+
+            cleanup(delegate
+            {
+                _msWaitMax = originalWaitMax;
+                _msWaitIncrement = originalWaitIncrement;
+            });
+        }
+
+        public void waitUntil(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
+            {
+                base.Visitor.visitWaitUntil(expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
             }
         }
     }

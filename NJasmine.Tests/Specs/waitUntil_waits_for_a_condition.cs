@@ -3,7 +3,8 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(false, VerificationScript = @"
+    [Explicit]
+    [RunExternal(false, VerificationScript = @"
 
 param ($consoleOutput, $xmlFile);
 
@@ -14,6 +15,7 @@ update-xml $xmlFile {
     $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect works when no waits are left'][@result='Success']""
     $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, a normal expect fails when waits are left'][@result='Error']""
     $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given a condition that eventually evalutes to true, waitUntil will try multiple times'][@result='Success']""
+    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, waitUntil can be called during discovery, doesnt prevent discovery'][@result='Error']""
 }
 ")]
     public class waitUntil_waits_for_a_condition : GivenWhenThenFixture
@@ -53,9 +55,18 @@ update-xml $xmlFile {
                 });
             });
 
-            it("fails", delegate
+            describe("waitUntil can be called during discovery", delegate
             {
-                expect(() => false);
+                setWaitTimeouts(5, 3);
+
+                waitUntil(() => true);
+                waitUntil(() => false);
+
+                it("doesnt prevent discovery", delegate
+                {
+                    
+                });
+                
             });
         }
     }

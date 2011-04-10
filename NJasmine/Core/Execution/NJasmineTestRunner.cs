@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
@@ -45,6 +46,16 @@ namespace NJasmine.Core.Execution
         public void visitIgnoreBecause(string reason, TestPosition position)
         {
             _runContext.State.visitIgnoreBecause(reason, position);
+        }
+
+        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        {
+            _runContext.State.visitExpect(expectation, position);
+        }
+
+        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        {
+            _runContext.State.visitWaitUntil(expectation, totalWaitMs, waitIncrementMs, position);
         }
     }
 }
