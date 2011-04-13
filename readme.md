@@ -1,5 +1,4 @@
-
-NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
+NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.  Add a reference to the NJasmine.DLL, then inherit from GivenWhenThenFixture.  Override the method Specify with something like:
 
     given("some preconditions", () => {
 
