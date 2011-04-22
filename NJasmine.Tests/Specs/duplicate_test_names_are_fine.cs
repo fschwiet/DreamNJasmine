@@ -21,8 +21,8 @@ repeated inner it 3
         "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2",
         "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3",
         "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe",
-        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe`2, repeated inner describe",
-        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe`3, repeated inner describe"
+        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2",
+        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3"
     }
 )]
     public class duplicate_test_names_are_fine : GivenWhenThenFixtureTracingToConsole
@@ -41,6 +41,14 @@ repeated inner it 3
                 });
 
                 it("repeated unimplemented outer test");
+
+                describe("repeated describe", delegate
+                {
+                });
+
+                describe("repeated describe", delegate
+                {
+                });
 
                 describe("repeated describe", delegate
                 {

@@ -57,11 +57,18 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuite = new NJasmineTestSuite(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, subSuite);
+                bool reusedName;
+
+                _buildContext._nameGenator.NameFork(_fullName, description, subSuite, out reusedName);
 
                 ApplyIgnoreIfSet(subSuite);
 
                 var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
+
+                if (!actualSuite.IsSuite && reusedName)
+                {
+                    _buildContext._nameGenator.MakeNameUnique(actualSuite);
+                }
 
                 _accumulatedDescendants.Add(actualSuite);
             }
