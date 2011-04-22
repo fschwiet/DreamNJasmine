@@ -64,6 +64,8 @@ task IntegrationTests {
 
     $global:t = $tests;
 
+    "If an integation test fails, `$global:actual should have the actual output.  There may be other output files mentioned in the error text." | write-host
+
     foreach($test in $tests)  { 
 
         $testName = $test.Name;
@@ -93,6 +95,9 @@ task IntegrationTests {
 
             $verificationCommand = "{" + $test.VerificationScript + "}"
             $verificationCommand = invoke-expression $verificationCommand
+
+            $global:actual = $testoutput
+            $global:actualError = $testOutputTarget
 
             & $verificationCommand $testoutput $testOutputTarget
 
