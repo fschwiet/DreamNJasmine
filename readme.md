@@ -26,7 +26,7 @@ If a setup method returns a value that supports IDisposeable, the value is dispo
 
 For given/when/then style tests, given() and when() behave like describe().  Likewise, then() behaves like it().
 
-Assertions can be expressed as expect() or waitUntil().
+Assertions can be expressed as expect(), expectEventually() or waitUntil().  expect() checks the assertion immediately.  expectEventually() and waitUntil() will recheck the assertion until it passes or times out.
 
 The outer scope of each specification is ran once to discover what tests are defined, and then again once again for each contained test.  Test code must not block if its directly within a describe(), given, or when() expression.  Such code will cause test discovery to stall.  Exceptions thrown within test discovery will show as failures to the test runner and the test runner will complete without discovering the remaining tests.
 

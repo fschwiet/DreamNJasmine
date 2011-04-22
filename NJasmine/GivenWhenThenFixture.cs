@@ -231,6 +231,14 @@ namespace NJasmine
             });
         }
 
+        public void expectEventually(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
+            {
+                base.Visitor.visitWaitUntil(expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
+            }
+        }
+
         public void waitUntil(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
