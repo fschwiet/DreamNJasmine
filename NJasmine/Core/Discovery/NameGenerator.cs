@@ -5,7 +5,13 @@ namespace NJasmine.Core.Discovery
 {
     class NameGenerator
     {
-        readonly List<string> _globallyAccumulatedTestNames = new List<string>();
+        enum NameIs
+        {
+            Available,
+            Reserved
+        }
+
+        readonly Dictionary<string, NameIs> _globallyAccumulatedTestNames = new Dictionary<string, NameIs>();
 
         public void NameTest(Test parentTest, string testShortName, Test test)
         {
@@ -23,7 +29,7 @@ namespace NJasmine.Core.Discovery
         {
             var name = test.TestName.FullName;
 
-            if (_globallyAccumulatedTestNames.Contains(name))
+            if (_globallyAccumulatedTestNames.ContainsKey(name))
             {
                 var nextIndex = 1;
                 string suffix;
@@ -33,14 +39,14 @@ namespace NJasmine.Core.Discovery
                 {
                     suffix = "`" + ++nextIndex;
                     nextName = name + suffix;
-                } while (_globallyAccumulatedTestNames.Contains(nextName));
+                } while (_globallyAccumulatedTestNames.ContainsKey(nextName));
 
 
                 test.TestName.Name = test.TestName.Name + suffix;
                 test.TestName.FullName = test.TestName.FullName + suffix;
             }
 
-            _globallyAccumulatedTestNames.Add(test.TestName.FullName);
+            _globallyAccumulatedTestNames[test.TestName.FullName] = NameIs.Reserved;
         }
     }
 }
