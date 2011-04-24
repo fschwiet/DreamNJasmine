@@ -66,12 +66,15 @@ namespace NJasmine.Core.Execution
 
             DateTime finishTime = DateTime.UtcNow.AddMilliseconds(totalWaitMs);
 
-            while (!(expectationChecker()) && DateTime.UtcNow < finishTime)
+            bool passing;
+
+            while (!(passing = expectationChecker()) && DateTime.UtcNow < finishTime)
             {
                 Thread.Sleep(waitIncrementMs);
             }
 
-            PowerAssert.PAssert.IsTrue(expectation);
+            if (!passing)
+                PowerAssert.PAssert.IsTrue(expectation);
         }
 
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)

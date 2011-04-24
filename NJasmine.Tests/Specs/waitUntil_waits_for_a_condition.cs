@@ -61,7 +61,8 @@ update-xml $xmlFile {
 
                         it(delayedAssertionName + " will try multiple times", delegate
                         {
-                            setWaitTimeouts(100, 5);
+                            setWaitTimeout(100);
+                            setWaitIncrement(5);
 
                             WaitsLeft = 1;
 
@@ -73,7 +74,8 @@ update-xml $xmlFile {
 
                     describe(delayedAssertionName + " can be called during discovery", delegate
                     {
-                        setWaitTimeouts(5, 3);
+                        setWaitTimeout(5);
+                        setWaitIncrement(3);
 
                         delayedAssertionImplementation(() => true, null, null);
                         delayedAssertionImplementation(() => false, null, null);

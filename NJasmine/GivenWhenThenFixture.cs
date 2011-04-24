@@ -216,17 +216,26 @@ namespace NJasmine
         private int _msWaitMax = 1000;
         private int _msWaitIncrement = 250;
 
-        public void setWaitTimeouts(int msWaitMax, int msWaitIncrement)
+        public void setWaitTimeout(int msWaitMax)
         {
             var originalWaitMax = msWaitMax;
-            var originalWaitIncrement = msWaitIncrement;
 
             _msWaitMax = msWaitMax;
-            _msWaitIncrement = Math.Min(msWaitIncrement, 1);
 
             cleanup(delegate
             {
                 _msWaitMax = originalWaitMax;
+            });
+        }
+
+        public void setWaitIncrement(int msWaitIncrement)
+        {
+            var originalWaitIncrement = msWaitIncrement;
+
+            _msWaitIncrement = Math.Min(msWaitIncrement, 1);
+
+            cleanup(delegate
+            {
                 _msWaitIncrement = originalWaitIncrement;
             });
         }
