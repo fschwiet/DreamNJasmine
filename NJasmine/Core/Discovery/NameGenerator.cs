@@ -22,10 +22,11 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public void NameFork(string parentFullName, string testShortName, Test test, out bool reusedName)
+        public void NameFork(string testShortName, INJasmineTest parentTest, INJasmineTest test, out bool reusedName)
         {
-            test.TestName.FullName = parentFullName + ", " + testShortName;
             test.TestName.Name = testShortName;
+            test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
+            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
             IncrementTestNameUntilItsNot(test, IsReserved);
 
@@ -34,21 +35,22 @@ namespace NJasmine.Core.Discovery
             _globallyAccumulatedTestNames[test.TestName.FullName] = NameIs.Available;
         }
 
-        public void NameTest(string parentFullName, string testShortName, Test test)
+        public void NameTest(string testShortName, INJasmineTest parentTest, INJasmineTest test)
         {
-            test.TestName.FullName = parentFullName + ", " + testShortName;
             test.TestName.Name = testShortName;
+            test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
+            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
             MakeNameUnique(test);
         }
 
-        public void MakeNameUnique(Test test)
+        public void MakeNameUnique(INJasmineTest test)
         {
             IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name));
             _globallyAccumulatedTestNames[test.TestName.FullName] = NameIs.Reserved;
         }
 
-        private void IncrementTestNameUntilItsNot(Test test, Func<string, bool> condition)
+        private void IncrementTestNameUntilItsNot(INJasmineTest test, Func<string, bool> condition)
         {
             var name = test.TestName.FullName;
 
@@ -67,6 +69,7 @@ namespace NJasmine.Core.Discovery
 
                 test.TestName.Name = test.TestName.Name + suffix;
                 test.TestName.FullName = test.TestName.FullName + suffix;
+                test.MultilineName = test.MultilineName + suffix;
             }
         }
     }

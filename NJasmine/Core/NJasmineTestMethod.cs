@@ -12,22 +12,20 @@ namespace NJasmine.Core
 {
     public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
-        readonly TestPosition _position;
         readonly Func<SpecificationFixture> _fixtureFactory;
         readonly PerFixtureSetupContext _fixtureSetupContext;
 
         public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext)
             : base(new Action(delegate() { }).Method)
         {
-            _position = position;
+            Position = position;
             _fixtureFactory = fixtureFactory;
             _fixtureSetupContext = fixtureSetupContext;
         }
 
-        public TestPosition Position
-        {
-            get { return _position; }
-        }
+        public TestPosition Position { get; private set; }
+
+        public string MultilineName { get; set; }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
         {

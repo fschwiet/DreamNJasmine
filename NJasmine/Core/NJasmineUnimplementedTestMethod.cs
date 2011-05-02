@@ -27,5 +27,6 @@ namespace NJasmine.Core
         }
 
         public TestPosition Position { get; private set; }
+        public string MultilineName { get; set; }
     }
 }

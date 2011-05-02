@@ -9,7 +9,6 @@ namespace NJasmine.Core.Discovery
 {
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
-        string _fullName;
         private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
         PerFixtureSetupContext _fixtureSetupContext;
@@ -18,7 +17,6 @@ namespace NJasmine.Core.Discovery
 
         public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
         {
-            _fullName = test.TestName.FullName;
             _test = test;
             _buildContext = buildContext;
             _fixtureSetupContext = fixtureSetupContext;
@@ -47,7 +45,7 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuiteAsFailedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, subSuiteAsFailedTest);
+                _buildContext._nameGenator.NameTest(description, _test, subSuiteAsFailedTest);
 
                 ApplyIgnoreIfSet(subSuiteAsFailedTest);
 
@@ -59,7 +57,7 @@ namespace NJasmine.Core.Discovery
 
                 bool reusedName;
 
-                _buildContext._nameGenator.NameFork(_fullName, description, subSuite, out reusedName);
+                _buildContext._nameGenator.NameFork(description, _test, subSuite, out reusedName);
 
                 ApplyIgnoreIfSet(subSuite);
 
@@ -67,7 +65,7 @@ namespace NJasmine.Core.Discovery
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
-                    _buildContext._nameGenator.MakeNameUnique(actualSuite);
+                    _buildContext._nameGenator.MakeNameUnique((INJasmineTest)actualSuite);
                 }
 
                 _accumulatedDescendants.Add(actualSuite);
@@ -100,7 +98,7 @@ namespace NJasmine.Core.Discovery
             {
                 var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, unimplementedTest);
+                _buildContext._nameGenator.NameTest(description, _test, unimplementedTest);
 
                 ApplyIgnoreIfSet(unimplementedTest);
 
@@ -110,7 +108,7 @@ namespace NJasmine.Core.Discovery
             {
                 var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext);
 
-                _buildContext._nameGenator.NameTest(_fullName, description, test);
+                _buildContext._nameGenator.NameTest(description, _test, test);
 
                 ApplyIgnoreIfSet(test);
 

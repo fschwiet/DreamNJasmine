@@ -12,7 +12,6 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest
     {
-        readonly TestPosition _position;
         private PerFixtureSetupContext _perFixtureSetupContext;
 
         public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
@@ -29,15 +28,12 @@ namespace NJasmine.Core
         public NJasmineTestSuite(TestPosition position)
             : base("thistestname", "willbeoverwritten")
         {
-            _position = position;
-
+            Position = position;
             maintainTestOrder = true;
         }
 
-        public TestPosition Position
-        {
-            get { return _position; }
-        }
+        public TestPosition Position { get; private set; }
+        public string MultilineName { get; set; }
 
         public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, Action action, bool isOuterScopeOfSpecification)
         {
@@ -53,7 +49,7 @@ namespace NJasmine.Core
 
             var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
 
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = _position;
+            buildContext._fixtureInstanceForDiscovery.CurrentPosition = Position;
             buildContext._fixtureInstanceForDiscovery.CurrentPosition = buildContext._fixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
             buildContext._fixtureInstanceForDiscovery.Visitor = builder;
 
@@ -74,7 +70,7 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(this.TestName, exception, _position);
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(this.TestName, exception, Position);
 
                     if (isOuterScopeOfSpecification)
                     {
