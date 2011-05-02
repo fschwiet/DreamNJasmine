@@ -53,7 +53,7 @@ namespace NJasmine.Core
             }
             catch (Exception e)
             {
-                testResult.Error(e);
+                TestResultUtil.Error(testResult, e);
             }
 
             double num3 = ((double)(DateTime.Now.Ticks - ticks)) / 10000000.0;
