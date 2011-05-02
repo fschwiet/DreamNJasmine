@@ -26,7 +26,7 @@ namespace NJasmine.Core.Discovery
         {
             test.TestName.Name = testShortName;
             test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
-            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
+            test.SetMultilineName(parentTest.GetMultilineName() + ",\n" + testShortName);
 
             IncrementTestNameUntilItsNot(test, IsReserved);
 
@@ -39,7 +39,7 @@ namespace NJasmine.Core.Discovery
         {
             test.TestName.Name = testShortName;
             test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
-            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
+            test.SetMultilineName(parentTest.GetMultilineName() + ",\n" + testShortName);
 
             MakeNameUnique(test);
         }
@@ -69,7 +69,7 @@ namespace NJasmine.Core.Discovery
 
                 test.TestName.Name = test.TestName.Name + suffix;
                 test.TestName.FullName = test.TestName.FullName + suffix;
-                test.MultilineName = test.MultilineName + suffix;
+                test.SetMultilineName(test.GetMultilineName() + suffix);
             }
         }
     }

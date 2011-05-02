@@ -9,15 +9,12 @@ namespace NJasmine.Core
         readonly string _reason;
         string _stackTrace;
 
-        public NJasmineInvalidTestSuite(TestName name, Exception e, TestPosition position)
+        public NJasmineInvalidTestSuite(Exception e, TestPosition position)
             : base(((Action)delegate() { }).Method)
         {
             _reason = e.Message;
             _stackTrace = e.StackTrace;
             Position = position;
-
-            TestName.FullName = name.FullName;
-            TestName.Name = name.Name;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
@@ -33,6 +30,5 @@ namespace NJasmine.Core
         }
 
         public TestPosition Position { get; private set; }
-        public string MultilineName { get; set; }
     }
 }

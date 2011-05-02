@@ -75,6 +75,7 @@
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
+    <Compile Include="Core\TestExtensions.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />

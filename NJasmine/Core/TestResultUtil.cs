@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NJasmine.Core.Discovery;
 using NUnit.Core;
 
 namespace NJasmine.Core
@@ -17,13 +18,13 @@ namespace NJasmine.Core
         {
             if (resultState == ResultState.Cancelled)
             {
-                testResult.SetResult(resultState, "Test cancelled by user", BuildStackTrace(ex), failureSite);
+                testResult.SetResult(resultState, "Test cancelled by user", BuildStackTrace(ex, testResult.Test), failureSite);
             }
             else
             {
                 if (resultState == ResultState.Error)
                 {
-                    testResult.SetResult(resultState, BuildMessage(ex), BuildStackTrace(ex), failureSite);
+                    testResult.SetResult(resultState, BuildMessage(ex), BuildStackTrace(ex, testResult.Test), failureSite);
                 }
                 else
                 {
@@ -32,16 +33,16 @@ namespace NJasmine.Core
             }
         }
 
-        private static string BuildStackTrace(Exception exception)
+        private static string BuildStackTrace(Exception exception, ITest test)
         {
-            StringBuilder stringBuilder = new StringBuilder(GetStackTrace(exception));
+            StringBuilder stringBuilder = new StringBuilder(GetStackTrace(exception, test));
             for (Exception innerException = exception.InnerException; innerException != null; innerException = innerException.InnerException)
             {
                 stringBuilder.Append(Environment.NewLine);
                 stringBuilder.Append("--");
                 stringBuilder.Append(innerException.GetType().Name);
                 stringBuilder.Append(Environment.NewLine);
-                stringBuilder.Append(GetStackTrace(innerException));
+                stringBuilder.Append(GetStackTrace(innerException, test));
             }
             return stringBuilder.ToString();
         }
@@ -50,6 +51,7 @@ namespace NJasmine.Core
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat("{0} : {1}", exception.GetType().ToString(), exception.Message);
+
             for (Exception innerException = exception.InnerException; innerException != null; innerException = innerException.InnerException)
             {
                 stringBuilder.Append(Environment.NewLine);
@@ -58,18 +60,30 @@ namespace NJasmine.Core
             return stringBuilder.ToString();
         }
 
-        private static string GetStackTrace(Exception exception)
+        private static string GetStackTrace(Exception exception, ITest test)
         {
-            string result;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("SPECIFICATION:");
+            if (test.Properties.Contains(TestExtensions.MultilineNameProperty))
+            {
+                foreach (var line in ((string)test.Properties[TestExtensions.MultilineNameProperty]).Split('\n'))
+                    sb.AppendLine("    " + line);
+            }
+
+            sb.AppendLine();
+
             try
             {
-                result = exception.StackTrace;
+                sb.AppendLine("STACKTRACE:");
+                sb.Append(exception.StackTrace);
             }
             catch (Exception)
             {
-                result = "No stack trace available";
+                sb.Append("No stack trace available");
             }
-            return result;
+
+            return sb.ToString();
         }
     }
 }

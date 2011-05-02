@@ -13,7 +13,7 @@ update-xml $xmlFile {
     for-xml -exactlyOnce ""//test-suite[@name='given an outer block']"" {
         Assert ((get-xml ""@result"") -eq 'Inconclusive') 'Expected first outer block to be inconclusive';
 
-        for-xml ""./*"" {
+        for-xml ""./results"" {
             Assert $false 'Expected first outer block to not have any subresults'
         }
     }

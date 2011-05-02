@@ -9,7 +9,5 @@ namespace NJasmine.Core
     public interface INJasmineTest : ITest
     {
         TestPosition Position { get; }
-
-        string MultilineName { get; set; }
     }
 }

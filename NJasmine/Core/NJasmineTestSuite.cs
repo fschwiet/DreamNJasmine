@@ -33,7 +33,6 @@ namespace NJasmine.Core
         }
 
         public TestPosition Position { get; private set; }
-        public string MultilineName { get; set; }
 
         public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, Action action, bool isOuterScopeOfSpecification)
         {
@@ -70,7 +69,12 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(this.TestName, exception, Position);
+                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, Position);
+
+                    nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
+                    nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
+
+                    nJasmineInvalidTestSuite.SetMultilineName(this.GetMultilineName());
 
                     if (isOuterScopeOfSpecification)
                     {

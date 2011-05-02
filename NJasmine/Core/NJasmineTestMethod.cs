@@ -25,8 +25,6 @@ namespace NJasmine.Core
 
         public TestPosition Position { get; private set; }
 
-        public string MultilineName { get; set; }
-
         public override TestResult Run(EventListener listener, ITestFilter filter)
         {
             listener.TestStarted(base.TestName);
