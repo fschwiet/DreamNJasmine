@@ -37,7 +37,7 @@ namespace NJasmine.Core
             }
             catch (Exception e)
             {
-                testResult.Error(new Exception(
+                TestResultUtil.Error(testResult, new Exception(
                         "Exception thrown during cleanup of previous test, see inner exception for details", 
                         e));
             }

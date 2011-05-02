@@ -9,9 +9,9 @@ namespace NJasmine.Core
 {
     public class TestResultUtil
     {
-        public static void Error(TestResult testResult, Exception exception)
+        public static void Error(TestResult testResult, Exception exception, FailureSite failureSite = FailureSite.Test)
         {
-            SetResult(testResult, ResultState.Error, exception, FailureSite.Test);
+            SetResult(testResult, ResultState.Error, exception, failureSite);
         }
 
         private static void SetResult(TestResult testResult, ResultState resultState, Exception ex, FailureSite failureSite)

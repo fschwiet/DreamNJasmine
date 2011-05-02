@@ -107,7 +107,8 @@ namespace NJasmine.Core
                 {
                     innerException = exception2.InnerException;
                 }
-                suiteResult.Failure(innerException.Message, innerException.StackTrace, FailureSite.TearDown);
+
+                TestResultUtil.Error(suiteResult, innerException, FailureSite.TearDown);
             }
         }
     }
