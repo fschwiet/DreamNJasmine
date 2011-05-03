@@ -35,16 +35,28 @@ namespace NJasmine.Core
 
         private static string BuildStackTrace(Exception exception, ITest test)
         {
-            StringBuilder stringBuilder = new StringBuilder(GetStackTrace(exception, test));
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("SPECIFICATION:");
+            if (test.Properties.Contains(TestExtensions.MultilineNameProperty))
+            {
+                foreach (var line in ((string)test.Properties[TestExtensions.MultilineNameProperty]).Split('\n'))
+                    sb.AppendLine("    " + line);
+            }
+
+            sb.AppendLine();
+
+            sb.AppendLine(GetStackTrace(exception));
+
             for (Exception innerException = exception.InnerException; innerException != null; innerException = innerException.InnerException)
             {
-                stringBuilder.Append(Environment.NewLine);
-                stringBuilder.Append("--");
-                stringBuilder.Append(innerException.GetType().Name);
-                stringBuilder.Append(Environment.NewLine);
-                stringBuilder.Append(GetStackTrace(innerException, test));
+                sb.Append(Environment.NewLine);
+                sb.Append("--");
+                sb.Append(innerException.GetType().Name);
+                sb.Append(Environment.NewLine);
+                sb.Append(GetStackTrace(innerException));
             }
-            return stringBuilder.ToString();
+            return sb.ToString();
         }
 
         private static string BuildMessage(Exception exception)
@@ -60,23 +72,19 @@ namespace NJasmine.Core
             return stringBuilder.ToString();
         }
 
-        private static string GetStackTrace(Exception exception, ITest test)
+        private static string GetStackTrace(Exception exception)
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("SPECIFICATION:");
-            if (test.Properties.Contains(TestExtensions.MultilineNameProperty))
-            {
-                foreach (var line in ((string)test.Properties[TestExtensions.MultilineNameProperty]).Split('\n'))
-                    sb.AppendLine("    " + line);
-            }
-
-            sb.AppendLine();
-
             try
             {
-                sb.AppendLine("STACKTRACE:");
-                sb.Append(exception.StackTrace);
+                string stackTraceToTrim = "at NJasmine.Core";
+
+                foreach(var line in exception.StackTrace.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (!line.Trim().StartsWith(stackTraceToTrim))
+                        sb.AppendLine(line);
+                }
             }
             catch (Exception)
             {
