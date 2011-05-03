@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+	<NUnitLibPath>..\lib\NUnit-2.5.9.10348\net-2.0\lib</NUnitLibPath>
+	<NUnitFrameworkPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework</NUnitFrameworkPath>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -35,17 +39,14 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\NUnit-2.5.9.10348\net-2.0\lib\nunit.core.dll</HintPath>
+    <Reference Include="nunit.core">
+      <HintPath>$(NUnitLibPath)\nunit.core.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core.interfaces, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\NUnit-2.5.9.10348\net-2.0\lib\nunit.core.interfaces.dll</HintPath>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>$(NUnitLibPath)\nunit.core.interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>$(NUnitFrameworkPath)\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PowerAssert">
       <HintPath>..\lib\PowerAssert\PowerAssert.dll</HintPath>
