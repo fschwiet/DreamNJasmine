@@ -3,16 +3,19 @@ properties {
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
 
+    $NUnitLibPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\lib"
+    $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
+
     # to build/test against another install of NUnit, override the following {{
     $wipeDeployTarget = $true
-	$deployTarget = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\addins"
+    $deployTarget = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\addins"
     $nunitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\nunit-console.exe"
     # }}
 
     $solution = "$base_dir\NJasmine.sln"
     $msbuild_Configuration = "Debug"
-	$deploySource = "$buildDir"
-	$testDll = "$buildDir\NJasmine.Tests.dll"
+    $deploySource = "$buildDir"
+    $testDll = "$buildDir\NJasmine.Tests.dll"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "PowerAssert.dll")
     $integrationTestLoader = "$buildDir\NJasine.TestLoader.exe"
     $integrationTestRunPattern = "*"
@@ -26,24 +29,23 @@ task Build {
         rmdir $buildDir -recurse
     }
 
-	$v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
-    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /property:Configuration=$msbuild_Configuration /target:Clean }
-    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /property:Configuration=$msbuild_Configuration }
+    $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
+    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /property:Configuration=$msbuild_Configuration /property:NUnitLibPath=$NUnitLibPath /property:NUnitFrameworkPath=$NUnitFrameworkPath }
 }
 
 task DeployForTest -depends Build {
 
     "Deploying to $deployTarget." | write-host
 
-	if ($wipeDeployTarget -and (test-path $deployTarget)) {
-		rm $deployTarget -recurse
-	}
-
-    if (-not (test-path $deployTarget)) {
-	    $null = mkdir $deployTarget
+    if ($wipeDeployTarget -and (test-path $deployTarget)) {
+        rm $deployTarget -recurse
     }
 
-	$filesToDeploy | % { cp (join-path $deploySource $_) $deployTarget -recurse -force }
+    if (-not (test-path $deployTarget)) {
+        $null = mkdir $deployTarget
+    }
+
+    $filesToDeploy | % { cp (join-path $deploySource $_) $deployTarget -recurse -force }
 }
 
 task UnitTests {
@@ -171,7 +173,7 @@ task AllTests -depends Build, DeployForTest, UnitTests, IntegrationTests {
 task Deploy {
 
     GetAllNUnits | % {
-	    
+        
         $rootPath = $_.rootPath;   
         $addinPath = $_.addinPath;
         $binPath = $_.binPath;
