@@ -2,6 +2,7 @@
 properties {
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
+    $packageDir = "$base_dir\package\"
 
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
@@ -172,6 +173,9 @@ task Build_2_5_9 {
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0"
+
+    $script:packages["NJasmine_for_NUnit-2.5.9.zip"] = $buildDir;
+
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath}    
 }
 
@@ -181,6 +185,9 @@ task Build_2_5_10 {
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0"
+
+    $script:packages["NJasmine_for_NUnit-2.5.10 (stable).zip"] = $buildDir;
+
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
 
@@ -190,9 +197,32 @@ task Build_2_6_0 {
     $NUnitLibPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
+
+    $script:packages["NJasmine_for_NUnit-2.5.10 (unstable).zip"] = $buildDir;
+
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
 
-task BuildAll -depends Build_2_5_9, Build_2_5_10, Build_2_6_0 {
+task CleanPackages {
+
+    if (test-path $packageDir) {
+        rm $packageDir -recurse
+    }
+
+    $null = mkdir $packageDir
+
+    $script:packages = @{}
+}
+
+task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
+
+    $script:packages.GetEnumerator() | % {
+        $zipFile = (join-path $packageDir $_.Key)
+        $buildResult = $_.Value;
+
+        "packaging '$zipFile' from $buildResult"
+
+        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll")
+    }
 }
 
