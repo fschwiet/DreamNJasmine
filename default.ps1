@@ -5,7 +5,7 @@ properties {
 
     $NUnitLibPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\nunit-console.exe"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0"
 
     # to build/test against another install of NUnit, override the following {{
     $wipeDeployTarget = $true
@@ -30,29 +30,32 @@ task Build {
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
 }
 
-task DeployForTest -depends Build {
+task CopyNUnitToBuild -depends Build {
 
-    "Deploying to $deployTarget." | write-host
+    $requiredNUnitFiles = @("nunit-agent.exe*", "nunit-console.exe*", "nunit.exe*", "lib", "nunit.framework.dll");
+    $targetForNUnitFiles = (join-path $buildDir "nunit\")
+    $targetForNUnitAddins = (join-path $targetForNUnitFiles "addins\")
 
-    if ($wipeDeployTarget -and (test-path $deployTarget)) {
-        rm $deployTarget -recurse
+    $null = mkdir $targetForNUnitFiles
+    $null = mkdir $targetForNUnitAddins
+
+    foreach($required in $requiredNUnitFiles) {
+        cp (join-path $NUnitBinPath $required) $targetForNUnitFiles -rec
     }
 
-    if (-not (test-path $deployTarget)) {
-        $null = mkdir $deployTarget
-    }
+    cp (join-path $buildDir "njasmine.dll") $targetForNUnitAddins
+    cp (join-path $buildDir "powerassert.dll") $targetForNUnitAddins
+}
 
-    $filesToDeploy | % { cp (join-path $buildDir $_) $deployTarget -recurse -force }
+function get-nunit-console {
+    (join-path $buildDir "nunit\nunit-console.exe")
 }
 
 task UnitTests {
 
     $testOutputTarget = (join-path $buildDir "UnitTests.xml")
 
-    exec { & $NUnitBinPath "$buildDir\NJasmine.tests.dll" /xml=$testOutputTarget}
-}
-
-task CICommit -depends DeployForTest, UnitTests {
+    exec { & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /xml=$testOutputTarget}
 }
 
 task IntegrationTests {
@@ -77,13 +80,13 @@ task IntegrationTests {
 
         if ($test.TestPasses -eq "true") {
 
-            $testoutput = & $NUnitBinPath "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
+            $testoutput = & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
             
             Assert ($lastexitcode -eq 0) "Expected test $testName to pass, actual exit code: $lastexitcode."
 
         } else {
 
-            $testoutput = & $NUnitBinPath "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
+            $testoutput = & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
             
             Assert ($lastexitcode -ne 0) "Expected test $testName to fail."
         }
@@ -163,8 +166,7 @@ task IntegrationTests {
     }
 }
 
-task AllTests -depends Build, DeployForTest, UnitTests, IntegrationTests {
-    "Ran NUnit at $NUnitBinPath." | write-host
+task AllTests -depends Build, CopyNUnitToBuild, UnitTests, IntegrationTests {
 }
 
 task Build_2_5_9 {
@@ -172,7 +174,7 @@ task Build_2_5_9 {
     $buildDir = "$base_dir\build_2_5_9\"
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\nunit-console.exe"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0"
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath}    
 }
 
@@ -181,7 +183,7 @@ task Build_2_5_10 {
     $buildDir = "$base_dir\build_2_5_10\"
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\nunit-console.exe"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0"
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
 
