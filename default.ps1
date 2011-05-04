@@ -39,6 +39,13 @@ task CopyNUnitToBuild -depends Build {
     $null = mkdir $targetForNUnitFiles
     $null = mkdir $targetForNUnitAddins
 
+    $NUnitLicensePath = (join-path $NUnitBinPath "..\license.txt");
+    if (-not (test-path $NUnitLicensePath)) {
+        $NUnitLicensePath = (join-path $NUnitBinPath "..\..\license.txt");
+    }
+
+    cp $NUnitLicensePath (join-path $targetForNUnitFiles "license-NUnit.txt")
+
     foreach($required in $requiredNUnitFiles) {
         cp (join-path $NUnitBinPath $required) $targetForNUnitFiles -rec
     }
@@ -219,12 +226,13 @@ task CleanPackages {
 task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
     $script:packages.GetEnumerator() | % {
+
         $zipFile = (join-path $packageDir $_.Key)
         $buildResult = $_.Value;
 
         "packaging '$zipFile' from $buildResult"
 
-        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "license-PowerAssert.txt")
+        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "license-*.txt")
     }
 }
 
