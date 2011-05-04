@@ -26,6 +26,8 @@ task Build {
 
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:BaseIntermediateOutputPath="obj.build\" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
+
+    cp .\lib\PowerAssert\license-PowerAssert.txt $buildDir
 }
 
 task CopyNUnitToBuild -depends Build {
@@ -222,7 +224,7 @@ task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
         "packaging '$zipFile' from $buildResult"
 
-        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll")
+        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "license-PowerAssert.txt")
     }
 }
 
