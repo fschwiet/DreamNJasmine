@@ -3,9 +3,9 @@ properties {
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
 
-    $NUnitLibPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\lib"
-    $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0"
+    $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\lib"
+    $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0"
 
     $solution = "$base_dir\NJasmine.sln"
     $msbuild_Configuration = "Debug"
@@ -169,9 +169,9 @@ task AllTests -depends Build, CopyNUnitToBuild, UnitTests, IntegrationTests {
 task Build_2_5_9 {
 
     $buildDir = "$base_dir\build_2_5_9\"
-    $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\lib"
-    $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0"
+    $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\lib"
+    $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0"
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath}    
 }
 
@@ -186,7 +186,7 @@ task Build_2_5_10 {
 
 task Build_2_6_0 {
 
-    $buildDir = "$base_dir\build_2_5_0\"
+    $buildDir = "$base_dir\build_2_6_0\"
     $NUnitLibPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
