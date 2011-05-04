@@ -7,11 +7,6 @@ properties {
     $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\net-2.0\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0"
 
-    # to build/test against another install of NUnit, override the following {{
-    $wipeDeployTarget = $true
-    $deployTarget = "$base_dir\lib\NUnit-2.5.9.10348\net-2.0\addins"
-    # }}
-
     $solution = "$base_dir\NJasmine.sln"
     $msbuild_Configuration = "Debug"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "PowerAssert.dll")
@@ -188,54 +183,5 @@ task Build_2_5_10 {
 }
 
 task BuildAll -depends Build_2_5_9, Build_2_5_10 {
-}
-
-task Deploy {
-
-    GetAllNUnits | % {
-        
-        $rootPath = $_.rootPath;   
-        $addinPath = $_.addinPath;
-        $binPath = $_.binPath;
-     
-        try {
-
-            SetAllProjectsToUseNUnitAt $rootPath
-            
-            invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ deployTarget=$addinPath; NUnitBinPath=$binPath; wipeDeployTarget=$false}
-        } finally {
-            SetAllProjectsToUseNUnitAt
-        }
-    }
-}
-
-function GetAllNUnits {
-    (get-item 'C:\Program Files (x86)\NUnit 2.*\bin\net-2.0\framework') | 
-    % { @{ 
-        rootPath = (resolve-path (join-path $_ "..")); 
-        addinPath = (join-path (resolve-path (join-path $_ "..")) "addins") 
-        binPath = (resolve-path (join-path $_ "..\nunit-console.exe"))
-    } };
-}
-
-function SetAllProjectsToUseNUnitAt($path = "..\lib\NUnit-2.5.9.10348\net-2.0\") {
-
-    (".\NJasmine\NJasmine.csproj", ".\NJasmine.Tests\NJasmine.Tests.csproj") | % {
-        .\ForXml.ps1 (resolve-path $_) { 
-            
-            add-xmlnamespace "ns" "http://schemas.microsoft.com/developer/msbuild/2003";  
-            
-            @("nunit.core", "nunit.core.interfaces", "nunit.framework") | % {
-                $dll = $_;
-                $filepath = @(get-childitem $path ($dll + ".dll") -recurse)[0].fullname
-
-                if (-not (test-path $filepath)) {
-                    write-error "Unable to find $dll.dll for target NUnit deployment at $path"
-                }
-
-                set-xml "//ns:Reference[@Include='$dll']" "<HintPath>$filepath</HintPath>"
-            }
-        }
-    }
 }
 
