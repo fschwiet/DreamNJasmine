@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<NUnitLibPath>..\lib\NUnit-2.5.9.10348\net-2.0\lib</NUnitLibPath>
-	<NUnitFrameworkPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework</NUnitFrameworkPath>
+    <NUnitLibPath>..\lib\NUnit-2.5.9.10348\net-2.0\lib</NUnitLibPath>
+    <NUnitFrameworkPath>..\lib\NUnit-2.5.9.10348\net-2.0\framework</NUnitFrameworkPath>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -45,8 +45,8 @@
     <Reference Include="nunit.framework">
       <HintPath>$(NUnitFrameworkPath)\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Should.Fluent">
-      <HintPath>..\lib\ShouldFluent\Should.Fluent.dll</HintPath>
+    <Reference Include="PowerAssert">
+      <HintPath>..\lib\PowerAssert\PowerAssert.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,6 +59,7 @@
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
+    <Compile Include="Core\PowerAssertFixture.cs" />
     <Compile Include="Core\STA.cs" />
     <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />

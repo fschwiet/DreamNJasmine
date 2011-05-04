@@ -6,12 +6,11 @@ using NJasmine;
 using NJasmine.Core;
 using NUnit.Core;
 using NUnit.Framework;
-using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineTestMethod_can_run_a_test
+    public class NJasmineTestMethod_can_run_a_test : PowerAssertFixture
     {
         private class AFixture : ObservableNJasmineFixture
         {
@@ -91,8 +90,7 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            fixture.Observations.ToArray().Should().Equal(
-                Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());
+            Assert.That(fixture.Observations, Is.EquivalentTo(Enumerable.Range(1, 8).Select(i => i.ToString())));
         }
 
         [Test]
@@ -108,8 +106,7 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            fixture.Observations.ToArray().Should().Equal(
-                Enumerable.Range(1, 8).Select(i => i.ToString()).ToArray());
+            Assert.That(fixture.Observations, Is.EquivalentTo(Enumerable.Range(1, 8).Select(i => i.ToString())));
         }
 
     }

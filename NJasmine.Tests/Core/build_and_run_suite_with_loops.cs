@@ -6,12 +6,11 @@ using NJasmine;
 using NJasmine.Core;
 using NUnit.Core;
 using NUnit.Framework;
-using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class build_and_run_suite_with_loops
+    public class build_and_run_suite_with_loops : PowerAssertFixture
     {
         public class has_test_in_loop : ObservableNJasmineFixture
         {
@@ -62,13 +61,13 @@ namespace NJasmineTests.Core
         {
             var elements = NJasmineSuiteBuilder.LoadElementsByPosition<has_test_in_loop>();
 
-            elements[new TestPosition(0)].TestName.Name.Should().Equal("a1");
-            elements[new TestPosition(1)].TestName.Name.Should().Equal("a2");
-            elements[new TestPosition(2)].TestName.Name.Should().Equal("a3");
-            elements[new TestPosition(3)].TestName.Name.Should().Equal("nested");
-            elements[new TestPosition(3, 0)].TestName.Name.Should().Equal("b1");
-            elements[new TestPosition(3, 1)].TestName.Name.Should().Equal("b2");
-            elements[new TestPosition(3, 2)].TestName.Name.Should().Equal("b3");
+            expect(() => elements[new TestPosition(0)].TestName.Name == "a1");
+            expect(() => elements[new TestPosition(1)].TestName.Name == "a2");
+            expect(() => elements[new TestPosition(2)].TestName.Name == "a3");
+            expect(() => elements[new TestPosition(3)].TestName.Name == "nested");
+            expect(() => elements[new TestPosition(3, 0)].TestName.Name == "b1");
+            expect(() => elements[new TestPosition(3, 1)].TestName.Name == "b2");
+            expect(() => elements[new TestPosition(3, 2)].TestName.Name == "b3");
         }
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
@@ -79,9 +78,9 @@ namespace NJasmineTests.Core
             TestResult result = new TestResult(method);
             method.RunTestMethod(result);
 
-            result.IsSuccess.Should().Equal(true);
+            expect(() => result.IsSuccess);
 
-            fixture.Observations.Should().Equal(expected);
+            Assert.That(fixture.Observations, Is.EquivalentTo(expected));
         }
 
         [Test]

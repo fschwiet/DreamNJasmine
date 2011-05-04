@@ -5,18 +5,12 @@ using System.Text;
 using NJasmine;
 using NJasmine.Core;
 using NUnit.Framework;
-using Should.Fluent;
 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class TestPositionTests
+    public class TestPositionTests : PowerAssertFixture
     {
-        public void expectPositionsEqual(TestPosition a, TestPosition b)
-        {
-            a.Coordinates.Should().Equal(b.Coordinates);
-        }
-
         [Test]
         public void can_be_used_with_dictionaries()
         {
@@ -24,7 +18,7 @@ namespace NJasmineTests.Core
             var position2 = new TestPosition(4, 5, 6);
             var position3 = new TestPosition(7, 8, 9);
 
-            position1.Equals(new TestPosition(1, 2, 3)).Should().Equal(true);
+            expect(() => position1.Equals(new TestPosition(1, 2, 3)));
 
             Dictionary<TestPosition, int> dictionary = new Dictionary<TestPosition, int>();
 
@@ -32,9 +26,9 @@ namespace NJasmineTests.Core
             dictionary[position2] = 2;
             dictionary[position3] = 3;
 
-            dictionary[new TestPosition(1,2,3)].Should().Equal(1);
-            dictionary[new TestPosition(4,5,6)].Should().Equal(2);
-            dictionary[new TestPosition(7,8,9)].Should().Equal(3);
+            expect(() => dictionary[new TestPosition(1,2,3)] == 1);
+            expect(() => dictionary[new TestPosition(4,5,6)] == 2);
+            expect(() => dictionary[new TestPosition(7, 8, 9)] == 3);
         }
 
         [Test]
@@ -42,7 +36,7 @@ namespace NJasmineTests.Core
         {
             var position = new TestPosition(1, 2, 3);
 
-            position.Parent.Should().Equal(new TestPosition(1, 2));
+            expect(() => position.Parent.Equals(new TestPosition(1, 2)));
         }
 
         [Test]
@@ -50,23 +44,23 @@ namespace NJasmineTests.Core
         {
             var position = new TestPosition(1, 2, 3);
 
-            position.IsParentOf(new TestPosition(1, 2, 3, 4)).Should().Be.True();
-            position.IsParentOf(new TestPosition(1, 2)).Should().Be.False();
-            position.IsParentOf(new TestPosition(3, 2, 1, 4)).Should().Be.False();
+            expect(() => position.IsParentOf(new TestPosition(1, 2, 3, 4)));
+            expect(() => !position.IsParentOf(new TestPosition(1, 2)));
+            expect(() => !position.IsParentOf(new TestPosition(3, 2, 1, 4)));
         }
 
         [Test]
         public void GetFirstChildPosition()
         {
-            expectPositionsEqual(new TestPosition(0).GetFirstChildPosition(), new TestPosition(0, 0));
-            expectPositionsEqual(new TestPosition(3, 1, 0, 10, 93).GetFirstChildPosition(), new TestPosition(3, 1, 0, 10, 93, 0));
+            expect(() => new TestPosition(0).GetFirstChildPosition().Equals(new TestPosition(0, 0)));
+            expect(() => new TestPosition(3, 1, 0, 10, 93).GetFirstChildPosition().Equals(new TestPosition(3, 1, 0, 10, 93, 0)));
         }
 
         [Test]
         public void GetNextSiblingPosition()
         {
-            expectPositionsEqual(new TestPosition(0).GetNextSiblingPosition(), new TestPosition(1));
-            expectPositionsEqual(new TestPosition(3, 1, 0, 10, 93).GetNextSiblingPosition(), new TestPosition(3, 1, 0, 10, 94));
+            expect(() => new TestPosition(0).GetNextSiblingPosition().Equals(new TestPosition(1)));
+            expect(() => new TestPosition(3, 1, 0, 10, 93).GetNextSiblingPosition().Equals(new TestPosition(3, 1, 0, 10, 94)));
         }
 
         /*

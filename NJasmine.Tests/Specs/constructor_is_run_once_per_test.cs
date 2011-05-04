@@ -1,5 +1,4 @@
 ﻿using NJasmine;
-using Should.Fluent;
 
 namespace NJasmineTests.Specs
 {
@@ -13,9 +12,9 @@ namespace NJasmineTests.Specs
         {
             for (var i = 0; i < 10; i++)
             {
-                it("no state is saved from a previous run", () => LastValue.HasValue.Should().Be.False());
+                it("no state is saved from a previous run", () => expect(() => !LastValue.HasValue));
 
-                it("new instance is created per test", () => LastInstance.Should().Be.Null());
+                it("new instance is created per test", () => expect(() => LastInstance == null));
 
                 it("writes state in some tests", delegate
                 {

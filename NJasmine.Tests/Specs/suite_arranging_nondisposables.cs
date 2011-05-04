@@ -1,6 +1,5 @@
 ﻿using System;
 using NJasmineTests.Core;
-using Should.Fluent;
 
 namespace NJasmineTests.Specs
 {
@@ -63,9 +62,9 @@ disposing some_observable_A
                 
                 it("a test", delegate
                 {
-                    a.Should().Not.Be.Null();
-                    b.Should().Not.Be.Null();
-                    c.Should().Not.Be.Null();
+                    expect(() => a != null);
+                    expect(() => b != null);
+                    expect(() => c != null);
                 });
             });
 
@@ -79,9 +78,9 @@ disposing some_observable_A
                     {
                         it("a test", delegate
                         {
-                            a.Should().Not.Be.Null();
-                            b.Should().Not.Be.Null();
-                            d.Should().Not.Be.Null();
+                            expect(() => a != null);
+                            expect(() => b != null);
+                            expect(() => d != null);
                         });
 
                         it("inline using", delegate
@@ -89,8 +88,8 @@ disposing some_observable_A
                             var e = arrange<some_observable_E>();
                             var f = arrange(() => new some_observable_F());
 
-                            e.Should().Not.Be.Null();
-                            f.Should().Not.Be.Null();
+                            expect(() => e != null);
+                            expect(() => f != null);
                         });
                     });
                 });

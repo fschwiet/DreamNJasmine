@@ -2,19 +2,19 @@
 using NJasmine;
 using NJasmine.Core;
 using NUnit.Framework;
-using Should.Fluent;
 
+ 
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineSuiteBuilder_suite_discovery
+    public class NJasmineSuiteBuilder_suite_discovery : PowerAssertFixture
     {
         [Test]
         public void doesnt_handle_most_test_fixtures()
         {
             var sut = new NJasmineSuiteBuilder();
 
-            sut.CanBuildFrom(typeof (Object)).Should().Equal(false);
+            expect(() => !sut.CanBuildFrom(typeof(Object)));
         }
 
         public class SomeNestedClass : GivenWhenThenFixture
@@ -28,8 +28,8 @@ namespace NJasmineTests.Core
         {
             var sut = new NJasmineSuiteBuilder();
 
-            sut.CanBuildFrom(typeof(SomeNestedClass)).Should().Equal(true);
-            sut.CanBuildFrom(typeof(SampleTest)).Should().Equal(true);
+            expect(() => sut.CanBuildFrom(typeof(SomeNestedClass)));
+            expect(() => sut.CanBuildFrom(typeof(SampleTest)));
         }
 
         public abstract class SomeAbstractClass : GivenWhenThenFixture
@@ -41,7 +41,7 @@ namespace NJasmineTests.Core
         {
             var sut = new NJasmineSuiteBuilder();
 
-            sut.CanBuildFrom(typeof(SomeAbstractClass)).Should().Equal(false);
+            expect(() => !sut.CanBuildFrom(typeof(SomeAbstractClass)));
         }
 
         protected class ANonpublicFixture : GivenWhenThenFixture
@@ -57,7 +57,7 @@ namespace NJasmineTests.Core
         {
             var sut = new NJasmineSuiteBuilder();
 
-            sut.CanBuildFrom(typeof(ANonpublicFixture)).Should().Not.Equal(true);
+            expect(() => !sut.CanBuildFrom(typeof(ANonpublicFixture)));
         }
     }
 }

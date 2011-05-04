@@ -3,8 +3,6 @@ using System.IO;
 using NJasmine;
 using NJasmine.Extras;
 using NUnit.Framework;
-using Should.Fluent;
-using Should.Fluent.Model;
 
 namespace NJasmineTests.Extras
 {
@@ -27,13 +25,13 @@ namespace NJasmineTests.Extras
             {
                 string unpacked = ZipDeployTools.UnzipBinDeployedToTempDirectory("Extras\\Sample.zip", "NJasmine.Extras");
 
-                Directory.Exists(unpacked).Should().Be.True();
-                unpacked.ToLower().Should().Contain("temp");
+                expect(() => Directory.Exists(unpacked));
+                expect(() => unpacked.ToLower().Contains("temp"));
                 
                 string expectedFixtureMember = Path.Combine(unpacked, "success.txt");
-                
-                File.Exists(expectedFixtureMember).Should().Be.True();
-                File.ReadAllText(expectedFixtureMember).Should().Equal("Hello, World\r\n");
+
+                expect(() => File.Exists(expectedFixtureMember));
+                expect(() => File.ReadAllText(expectedFixtureMember) == "Hello, World\r\n");
             });
 
             it("decompressed zip includes empty folders", delegate
@@ -41,7 +39,7 @@ namespace NJasmineTests.Extras
                 string unpacked = ZipDeployTools.UnzipBinDeployedToTempDirectory("Extras\\Sample.zip", "NJasmine.Extras");
                 string expectedDirectory = Path.Combine(unpacked, "empty");
 
-                Directory.Exists(expectedDirectory).Should().Be.True();
+                expect(() => Directory.Exists(expectedDirectory));
             });
         }
     }

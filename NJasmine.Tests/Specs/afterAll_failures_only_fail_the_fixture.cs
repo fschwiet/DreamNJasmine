@@ -8,6 +8,8 @@ namespace NJasmineTests.Specs
     // I can do as NUnit ignores fixture failures
     //
 
+    // Note: it looks like NUnit.2.5.10 will report these...
+
     public class afterAll_failures_only_fail_the_fixture : GivenWhenThenFixture
     {
         public override void Specify()

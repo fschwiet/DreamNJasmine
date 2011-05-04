@@ -1,6 +1,5 @@
 ﻿using NJasmineTests.Core;
 using NUnit.Framework;
-using Should.Fluent;
 
 namespace NJasmineTests.Specs
 {
@@ -22,16 +21,16 @@ TearDown NamespaceSetupB
                     
                     Trace("running test 1");
 
-                    NamespaceSetupA.SetupCount.Should().Equal(0);
-                    NamespaceSetupB.SetupCount.Should().Equal(1);
+                    expect(() => NamespaceSetupA.SetupCount == 0);
+                    expect(() => NamespaceSetupB.SetupCount == 1);
                 });
 
                 it("should only run setup once", delegate
                 {
                     Trace("running test 2");
 
-                    NamespaceSetupA.SetupCount.Should().Equal(0);
-                    NamespaceSetupB.SetupCount.Should().Equal(1);
+                    expect(() => NamespaceSetupA.SetupCount == 0);
+                    expect(() => NamespaceSetupB.SetupCount == 1);
                 });
             }
         }

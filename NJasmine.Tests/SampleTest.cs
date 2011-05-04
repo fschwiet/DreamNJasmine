@@ -5,7 +5,6 @@ using System.Text;
 using NJasmine;
 using NJasmine.Tests.TestDomain;
 using NUnit.Framework;
-using Should.Fluent;
 
 namespace NJasmineTests
 {
@@ -27,9 +26,9 @@ describe("player", delegate()
 
     it("should be able to play the song", delegate()
     {
-        player.IsPlaying.Should().Equal(true);
-        player.CurrentSong.Should().Equal(song);
-        player.CurrentSong.Should().Not.Equal(new Song());
+        expect(() => player.IsPlaying);
+        expect(() => player.CurrentSong.Equals(song));
+        expect(() => !player.CurrentSong.Equals(new Song()));
     });
 
     describe("when song has been paused", delegate()
@@ -38,8 +37,8 @@ describe("player", delegate()
 
         it("should indicate the song is not currently paused", delegate
         {
-            player.IsPlaying.Should().Equal(false);
-            player.CurrentSong.Should().Be.Null();
+            expect(() => !player.IsPlaying);
+            expect(() => player.CurrentSong == null);
         });
 
         describe("Resume", delegate
@@ -47,8 +46,8 @@ describe("player", delegate()
             it("should indicate the song is playing", delegate()
             {
                 player.Resume();
-                player.CurrentSong.Should().Equal(song);
-                player.CurrentSong.Should().Not.Equal(new Song());
+                expect(() => player.CurrentSong.Equals(song));
+                expect(() => !player.CurrentSong.Equals(new Song()));
             });
         });
     });
