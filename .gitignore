@@ -1,5 +1,6 @@
 bin/
 obj/
+obj.build/
 build/
 build_*/
 build/

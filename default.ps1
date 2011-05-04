@@ -20,9 +20,11 @@ task Build {
     if (test-path $buildDir) {
         rmdir $buildDir -recurse
     }
+    
+    gci $base_dir "obj.build" -rec | rm -recurse
 
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
-    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
+    exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:BaseIntermediateOutputPath="obj.build\" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
 }
 
 task CopyNUnitToBuild -depends Build {
