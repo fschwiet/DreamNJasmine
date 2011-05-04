@@ -184,6 +184,15 @@ task Build_2_5_10 {
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
 
-task BuildAll -depends Build_2_5_9, Build_2_5_10 {
+task Build_2_6_0 {
+
+    $buildDir = "$base_dir\build_2_5_0\"
+    $NUnitLibPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\lib"
+    $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
+    invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
+}
+
+task BuildAll -depends Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 }
 
