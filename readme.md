@@ -38,4 +38,4 @@ You can use existing NUnit test attributes [RequiresSTA] and [Explict] with the 
 
 See "how to build.md" for information on how to build and install NJasmine.
 
-Currently only built against NUnit 2.5.9 and 2.5.10.  If you would use something else let me know.
+Currently only built against NUnit 2.5.9, 2.5.10 and 2.6.0.  If you would use something else let me know.
