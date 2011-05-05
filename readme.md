@@ -1,4 +1,6 @@
-NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.  Add a reference to the NJasmine.DLL, then inherit from GivenWhenThenFixture.  Override the method Specify with something like:
+### Introducing NJasmine
+
+NJasmine is a RSpec-ish test language inspired by the javasscript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
 
     given("some preconditions", () => {
 
@@ -16,6 +18,19 @@ NJasmine is a RSpec-ish test language inspired by the javasscript test library J
             });
         });
     });
+
+### Why another .Net BDD testing framework?  
+
+I classify the existing frameworks into two categories: frameworks like Rail's Cucumber test framework, and frameworks like Rail's RSpec test framework.
+
+The cucumber test frameworks for .NET (SpecFlow, NBehave) are a different beast entirely.  I honestly just haven't gone that far into BDD.  The cucumber style tests do a good job of producing specs that are human readable, but there is a good amount of overhead before you actually write code.  I just haven't been interested in going there, I see such tools as complementary to the RSpec style frameworks.
+
+Of the .NET RSpec style test frameworks, none that I've seen are what I'd really consider a DSL, as RSpec was.  They mostly rely on inheritance to accumulate specification context.  I don't like this as it breaks simple tests into multiple classes, and I find friction reusing test code because C# classes can only inherit from a single class.
+
+NJasmine, like RSpec, is actually a DSL.  It reads easier [at least, it reads well for me :)], and the code feels more malleable to refactoring techniques.
+
+
+### A birds-eye view of the NJasmine test language
 
 Like Jasmine, NJasmine supports the describe() and it() test constructs.
 
@@ -36,6 +51,10 @@ If you would like to reuse test setup code made for NUnit, consider importNUnit<
 
 You can use existing NUnit test attributes [RequiresSTA] and [Explict] with the GivenWhenThenFixture.
 
-See "how to build.md" for information on how to build and install NJasmine.
+### Getting started
 
-Currently only built against NUnit 2.5.9, 2.5.10 and 2.6.0.  If you would use something else let me know.
+The download link has NJasmine binaries for download, with instructions on how to start a test project.
+
+See "how to build.md" for information on how to build NJasmine from source.
+
+Currently only built against NUnit 2.5.9, 2.5.10 and 2.6.0.  If you would use something else let me know.  I use 2.5.10.  If you use a different version of the NUnit test runner then what NJasmine was built against, NUnit won't see your tests.
