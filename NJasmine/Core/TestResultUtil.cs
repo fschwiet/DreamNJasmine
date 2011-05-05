@@ -7,7 +7,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class TestResultUtil
+    class TestResultUtil
     {
         public static void Error(TestResult testResult, Exception exception, FailureSite failureSite = FailureSite.Test)
         {

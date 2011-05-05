@@ -4,7 +4,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
 {
-    public class CleanupState : ArrangeState
+    class CleanupState : ArrangeState
     {
         public CleanupState(NJasmineTestRunContext runContext, SpecElement specElement)
             : base(runContext, specElement)

@@ -6,7 +6,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
 {
-    public class DescribeState : ISpecPositionVisitor
+    class DescribeState : ISpecPositionVisitor
     {
         private NJasmineTestRunContext _runContext;
 

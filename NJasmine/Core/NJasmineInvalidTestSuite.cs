@@ -4,7 +4,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
+    class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
     {
         readonly string _reason;
         string _stackTrace;

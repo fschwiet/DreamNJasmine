@@ -8,7 +8,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public static class TestExtensions
+    static class TestExtensions
     {
         public static string GetMultilineName(this ITest test)
         {

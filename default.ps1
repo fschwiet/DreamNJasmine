@@ -27,6 +27,7 @@ task Build {
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:BaseIntermediateOutputPath="obj.build\" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
 
+    cp "$base_dir\getting started.txt" $buildDir
     cp "$base_dir\license.txt" "$buildDir\license-NJasmine.txt"
     cp "$base_dir\lib\PowerAssert\license-PowerAssert.txt" $buildDir
 }
@@ -229,8 +230,6 @@ task CleanPackages {
     }
 
     $null = mkdir $packageDir
-
-    $script:packages = @{}
 }
 
 task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
@@ -241,8 +240,12 @@ task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
         $buildResult = $_.Value;
 
         "packaging '$zipFile' from $buildResult"
+        
+        $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt") | % {
+            (join-path $buildResult $_)
+        }
 
-        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "nunit.framework.dll") (join-path $buildResult "license-*.txt") "$base_dir\getting started.txt"
+        .\lib\7-Zip\7za.exe a $zipFile $filesToDeploy
     }
 }
 

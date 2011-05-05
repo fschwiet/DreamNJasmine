@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace NJasmine.Core.FixtureVisitor
 {
-    public class DoNothingFixtureVisitor : ISpecPositionVisitor
+    class DoNothingFixtureVisitor : ISpecPositionVisitor
     {
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
