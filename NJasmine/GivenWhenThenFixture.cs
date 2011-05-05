@@ -17,7 +17,7 @@ namespace NJasmine
         //  PositionContext to keep things DRY.
         //
 
-        public class PositionContext : IDisposable
+        private class PositionContext : IDisposable
         {
             public readonly TestPosition Position;
 
@@ -46,6 +46,11 @@ namespace NJasmine
             });
         }
 
+        /// <summary>
+        /// Branches the current test specification
+        /// </summary>
+        /// <param name="description">Description text used to name the test branch.</param>
+        /// <param name="specification">The branched portion of the specification.</param>
         public void describe(string description, Action specification)
         {
             using(var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -54,54 +59,86 @@ namespace NJasmine
             }
         }
 
-        public void given(string givenPhrase, Action specification)
+        /// <summary>
+        /// Branches the current test specification
+        /// </summary>
+        /// <param name="description">Description text used to name the test branch -- will be prefixed with 'given'.</param>
+        /// <param name="specification">The branched portion of the specification.</param>
+        public void given(string description, Action specification)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitFork(SpecElement.given, "given " + givenPhrase, specification, context.Position);
+                base.Visitor.visitFork(SpecElement.given, "given " + description, specification, context.Position);
             }
         }
 
-        public void when(string whenPhrase, Action specification)
+        /// <summary>
+        /// Branches the current test specification.
+        /// </summary>
+        /// <param name="description">Description text used to name the test branch -- will be prefixed with 'when'.</param>
+        /// <param name="specification">The branched portion of the specification.</param>
+        public void when(string description, Action specification)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitFork(SpecElement.when, "when " + whenPhrase, specification, context.Position);
+                base.Visitor.visitFork(SpecElement.when, "when " + description, specification, context.Position);
             }
         }
 
-        public void then(string thenPhrase, Action test)
+        /// <summary>
+        /// Adds a test.
+        /// </summary>
+        /// <param name="description">The description that names the test -- will be prefixed with 'then'.</param>
+        /// <param name="test">The test implementation.</param>
+        public void then(string description, Action test)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, test, context.Position);
+                base.Visitor.visitTest(SpecElement.then, "then " + description, test, context.Position);
             }
         }
 
-        public void then(string thenPhrase)
+        /// <summary>
+        /// Adds an unimplemented test.
+        /// </summary>
+        /// <param name="description">The description that names the test -- will be prefixed with 'then'.</param>
+        public void then(string description)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitTest(SpecElement.then, "then " + thenPhrase, null, context.Position);
+                base.Visitor.visitTest(SpecElement.then, "then " + description, null, context.Position);
             }
         }
 
-        public void it(string itPhrase, Action action)
+        /// <summary>
+        /// Adds a test
+        /// </summary>
+        /// <param name="description">The description that names the test.</param>
+        /// <param name="action">The test implementation.</param>
+        public void it(string description, Action action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitTest(SpecElement.it, itPhrase, action, context.Position);
+                base.Visitor.visitTest(SpecElement.it, description, action, context.Position);
             }
         }
 
-        public void it(string itPhrase)
+        /// <summary>
+        /// Adds an unimplemented test.
+        /// </summary>
+        /// <param name="description">The description that names the test.</param>
+        public void it(string description)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitTest(SpecElement.it, itPhrase, null, context.Position);
+                base.Visitor.visitTest(SpecElement.it, description, null, context.Position);
             }
         }
 
+        /// <summary>
+        /// Adds cleanup code to be ran after each test in the following context.
+        /// </summary>
+        /// <param name="cleanup">The cleanup code.</param>
         public void afterEach(Action cleanup)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -110,6 +147,10 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Adds cleanup code to be ran after each test in the following context.
+        /// </summary>
+        /// <param name="cleanup">The cleanup code.</param>
         public void cleanup(Action cleanup)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -118,6 +159,10 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Adds initialization code to be before after each test in the following context.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
         public void beforeEach(Action action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -131,19 +176,30 @@ namespace NJasmine
             }
         }
 
-        public void arrange(Action arrangeAction)
+        /// <summary>
+        /// Adds initialization code to be before after each test in the following context.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
+        public void arrange(Action action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
                     {
-                        arrangeAction();
+                        action();
                         return (string)null;
                     }, 
                     context.Position);
             }
         }
 
+        /// <summary>
+        /// Adds initialization code to be before after each test in the following context.
+        /// A return value can be used in the remainder of the test.
+        /// If that return value supports IDisposable, it will be disposed when the test is done.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
+        /// <returns>The result of the initialization code.</returns>
         public T arrange<T>(Func<T> arrangeAction)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -152,6 +208,12 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Adds initialization code to instantiate a class before after each test in the following context.
+        /// If that class supports IDisposable, it will be disposed when the test is done.
+        /// </summary>
+        /// <typeparam name="TArranged">The class to be created.</typeparam>
+        /// <returns>The class instance created.</returns>
         public TArranged arrange<TArranged>() where TArranged : class, new()
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -162,7 +224,10 @@ namespace NJasmine
             }
         }
 
-
+        /// <summary>
+        /// Adds initialization code to be ran once before all tests in the following context.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
         public void beforeAll(Action action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -176,6 +241,14 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Adds initialization code to be ran once before all tests in the following context.
+        /// The initialization code can return a value, which will be made available to every test
+        /// in the following context.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action">The initialization code.</param>
+        /// <returns>The return value of the initialization code.</returns>
         public T beforeAll<T>(Func<T> action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -184,6 +257,10 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Adds cleanup code to be ran once after all tests in the following context.
+        /// </summary>
+        /// <param name="action">The cleanup code.</param>
         public void afterAll(Action action)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -192,11 +269,22 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Imports an NUnit fixture, running its setup and teardown functions.
+        /// </summary>
+        /// <typeparam name="TFixture">The type of the NUnit fixture</typeparam>
+        /// <returns>The NUnit fixture instance.</returns>
         public TFixture importNUnit<TFixture>() where TFixture : class, new()
         {
             return NUnitFixtureDriver.IncludeFixture<TFixture>(this);
         }
 
+        /// <summary>
+        /// Indicates that the tests in the following specification context should not
+        /// be ran unless the user explicitly asks for them to be ran.  Similar to
+        /// NUnit's ExplicitAttribute.
+        /// </summary>
+        /// <param name="reason"></param>
         public void ignoreBecause(string reason)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -205,6 +293,10 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Verifies a particular expecation when the tests run.
+        /// </summary>
+        /// <param name="expectation">The expectation.</param>
         public void expect(Expression<Func<bool>> expectation)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -216,6 +308,10 @@ namespace NJasmine
         private int _msWaitMax = 1000;
         private int _msWaitIncrement = 250;
 
+        /// <summary>
+        /// Modifies the default timeouts used by waitUntil and expectEventually.
+        /// </summary>
+        /// <param name="msWaitMax">The maximum time to wait, in milliseconds.</param>
         public void setWaitTimeout(int msWaitMax)
         {
             var originalWaitMax = msWaitMax;
@@ -228,6 +324,10 @@ namespace NJasmine
             });
         }
 
+        /// <summary>
+        /// Modifies the default polling interval used by waitUntil and expectEventually.
+        /// </summary>
+        /// <param name="msWaitIncrement">The polling interval, in seconds.</param>
         public void setWaitIncrement(int msWaitIncrement)
         {
             var originalWaitIncrement = msWaitIncrement;
@@ -240,6 +340,13 @@ namespace NJasmine
             });
         }
 
+        /// <summary>
+        /// Verifies a particular expectation is true as the test runs.  Will wait for a timeout
+        /// if the expectation is not initially true.
+        /// </summary>
+        /// <param name="expectation">The expectation.</param>
+        /// <param name="msWaitMax">The time to wait, in milliseconds.</param>
+        /// <param name="msWaitIncrement">The polling interval, in milliseconds.</param>
         public void expectEventually(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
@@ -248,6 +355,13 @@ namespace NJasmine
             }
         }
 
+        /// <summary>
+        /// Verifies a particular expectation is true as the test runs.  Will wait for a timeout
+        /// if the expectation is not initially true.
+        /// </summary>
+        /// <param name="expectation">The expectation.</param>
+        /// <param name="msWaitMax">The time to wait, in milliseconds.</param>
+        /// <param name="msWaitIncrement">The polling interval, in milliseconds.</param>
         public void waitUntil(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
