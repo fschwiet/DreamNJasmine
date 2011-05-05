@@ -208,7 +208,7 @@ task Build_2_6_0 {
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
 
-    $script:packages["NJasmine_for_NUnit-2.5.10 (unstable).zip"] = $buildDir;
+    $script:packages["NJasmine_for_NUnit-2.6.0 (preview).zip"] = $buildDir;
 
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
