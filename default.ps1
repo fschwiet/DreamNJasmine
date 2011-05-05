@@ -254,14 +254,16 @@ task Install -depends Build_2_5_10 {
     $target = "C:\Program Files\NUnit 2.5.10\bin";
 
     if (-not (test-path $target)) {
-        $target = "C:\Program Files (x86)\NUnit 2.5.10\bin";
+        $target = "C:\Program Files (x86)\NUnit 2.5.10\bin\net-2.0";
     }
 
     assert (test-path $target) "Install task could not find NUnit 2.5.10 installed."
 
     $target = (join-path $target "addins")
 
-    mkdir $target
+	if (-not (test-path $target)) {
+		$null = mkdir $target
+	}
 
     cp (join-path "$base_dir\build_2_5_10\" NJasmine.dll) $target
     cp (join-path "$base_dir\build_2_5_10\" PowerAssert.dll) $target
