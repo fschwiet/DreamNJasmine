@@ -1,0 +1,24 @@
+Getting started with NJasmine:
+
+1)  Reference NJasmine.dll, PowerAssert.dll, and 
+NUnit.framework.dll from your test project.
+
+2)  Copy NJasmine.dll and PowerAssert.dll to the addins 
+folder of your NUnit binaries.
+
+Suppose you're running nunit.exe at 
+"c:\Program Files (x86)\NUnit 2.5.9\bin\net-2.0".  Then 
+you need to put NJasmine.dll and PowerAssert.dll at path 
+"c:\Program Files (x86)\NUnit 2.5.9\bin\net-2.0\addins"
+
+3)  Create a class in your test project and inherit from 
+GivenWhenThenFixture.
+
+4)  Override GivenWhenThenFixture.Specify() in your derived
+class.
+
+5)  Start writing tests.
+
+
+For more information, see the projecgt homepage at
+http://github.com/fschwiet/dreamnjasmine

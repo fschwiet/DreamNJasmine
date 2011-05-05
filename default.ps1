@@ -233,7 +233,7 @@ task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
         "packaging '$zipFile' from $buildResult"
 
-        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "license-*.txt")
+        .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "license-*.txt") "$base_dir\getting started.txt"
     }
 }
 
