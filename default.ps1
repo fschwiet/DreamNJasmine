@@ -27,7 +27,8 @@ task Build {
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:BaseIntermediateOutputPath="obj.build\" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
 
-    cp .\lib\PowerAssert\license-PowerAssert.txt $buildDir
+    cp "$base_dir\license.txt" "$buildDir\license-NJasmine.txt"
+    cp "$base_dir\lib\PowerAssert\license-PowerAssert.txt" $buildDir
 }
 
 task CopyNUnitToBuild -depends Build {
@@ -44,7 +45,7 @@ task CopyNUnitToBuild -depends Build {
         $NUnitLicensePath = (join-path $NUnitBinPath "..\..\license.txt");
     }
 
-    cp $NUnitLicensePath (join-path $targetForNUnitFiles "license-NUnit.txt")
+    cp $NUnitLicensePath (join-path $buildDir "license-NUnit.txt")
 
     foreach($required in $requiredNUnitFiles) {
         cp (join-path $NUnitBinPath $required) $targetForNUnitFiles -rec
