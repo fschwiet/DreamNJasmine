@@ -177,6 +177,15 @@ task IntegrationTests {
 task AllTests -depends Build, CopyNUnitToBuild, UnitTests, IntegrationTests {
 }
 
+function TrackPackage($zipFile, $buildLocation) {
+
+    if (-not $script:packages) {
+        $script:packages = @{};
+    }
+
+    $script:packages[$zipFile] = $buildLocation
+}
+
 task Build_2_5_9 {
 
     $buildDir = "$base_dir\build_2_5_9\"
@@ -184,7 +193,7 @@ task Build_2_5_9 {
     $NUnitFrameworkPath = "$base_dir\\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0"
 
-    $script:packages["NJasmine_for_NUnit-2.5.9.zip"] = $buildDir;
+    TrackPackage "NJasmine_for_NUnit-2.5.9.zip" $buildDir
 
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath}    
 }
@@ -196,7 +205,7 @@ task Build_2_5_10 {
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.5.10.11092\bin\net-2.0"
 
-    $script:packages["NJasmine_for_NUnit-2.5.10 (stable).zip"] = $buildDir;
+    TrackPackage "NJasmine_for_NUnit-2.5.10 (stable).zip" $buildDir
 
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
@@ -208,7 +217,7 @@ task Build_2_6_0 {
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
     $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
 
-    $script:packages["NJasmine_for_NUnit-2.6.0 (preview).zip"] = $buildDir;
+    TrackPackage "NJasmine_for_NUnit-2.6.0 (preview).zip"] $buildDir
 
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
@@ -235,5 +244,23 @@ task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
         .\lib\7-Zip\7za.exe a $zipFile (join-path $buildResult "NJasmine.dll") (join-path $buildResult "PowerAssert.dll") (join-path $buildResult "nunit.framework.dll") (join-path $buildResult "license-*.txt") "$base_dir\getting started.txt"
     }
+}
+
+task Install -depends Build_2_5_10 {
+
+    $target = "C:\Program Files\NUnit 2.5.10\bin";
+
+    if (-not (test-path $target)) {
+        $target = "C:\Program Files (x86)\NUnit 2.5.10\bin";
+    }
+
+    assert (test-path $target) "Install task could not find NUnit 2.5.10 installed."
+
+    $target = (join-path $target "addins")
+
+    mkdir $target
+
+    cp (join-path "$base_dir\build_2_5_10\" NJasmine.dll) $target
+    cp (join-path "$base_dir\build_2_5_10\" PowerAssert.dll) $target
 }
 
