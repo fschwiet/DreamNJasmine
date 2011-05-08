@@ -57,5 +57,10 @@ namespace NJasmine.Core.Execution
         {
             _runContext.State.visitWaitUntil(expectation, totalWaitMs, waitIncrementMs, position);
         }
+
+        public void visitWithCategory(string category, TestPosition position)
+        {
+            _runContext.State.visitWithCategory(category, position);
+        }
     }
 }

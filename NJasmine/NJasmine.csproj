@@ -73,6 +73,7 @@
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
+    <Compile Include="Core\NUnitFrameworkUtil.cs" />
     <Compile Include="Core\PerFixtureSetupContext.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />

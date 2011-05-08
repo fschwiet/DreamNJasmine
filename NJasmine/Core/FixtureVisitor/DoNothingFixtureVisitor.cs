@@ -39,6 +39,10 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
+        public void visitWithCategory(string category, TestPosition position)
+        {
+        }
+
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             return default(TArranged);

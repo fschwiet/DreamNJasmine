@@ -369,5 +369,13 @@ namespace NJasmine
                 base.Visitor.visitWaitUntil(expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
             }
         }
+
+        public void withCategory(string category)
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
+            {
+                base.Visitor.visitWithCategory(category, context.Position);
+            }
+        }
     }
 }

@@ -77,6 +77,10 @@ namespace NJasmine.Core.Execution
                 PowerAssert.PAssert.IsTrue(expectation);
         }
 
+        public void visitWithCategory(string category, TestPosition position)
+        {
+        }
+
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             TArranged result = default(TArranged);

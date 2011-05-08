@@ -19,5 +19,6 @@ namespace NJasmine.Core.FixtureVisitor
 
         void visitExpect(Expression<Func<bool>> expectation, TestPosition position);
         void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position);
+        void visitWithCategory(string category, TestPosition position);
     }
 }

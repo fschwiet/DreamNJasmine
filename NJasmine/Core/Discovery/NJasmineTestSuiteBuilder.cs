@@ -136,5 +136,10 @@ namespace NJasmine.Core.Discovery
         public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
         }
+
+        public void visitWithCategory(string category, TestPosition position)
+        {
+            NUnitFrameworkUtil.ApplyCategoryToTest(category, _test);
+        }
     }
 }
