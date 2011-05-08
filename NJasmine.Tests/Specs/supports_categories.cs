@@ -11,21 +11,26 @@ import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
 
 update-xml $xmlFile {
 
-    Assert (""//test-suite[@name='when using category Foo']/categories"" -eq $null) `
+    function xpathShouldBe($xpath, $expected, $message) {
+        Assert ((get-xml $xpath) -eq $expected) `
+            $message
+    }
+
+    xpathShouldBe ""//test-suite[@name='when using category Foo']/categories"" $null `
         ""The category shouldn't be assigned to the containing block""
 
-    Assert (""//test-suite[@name='when using category Foo, then tests have that category']/categories/category/@name"" -eq ""Foo"") `
+    xpathShouldBe ""//test-suite[@name='when using category Foo, then tests have that category']/categories/category/@name"" ""Foo"" `
         ""test should have category Foo""
 
     $expectedFooBar = ""Foo+Bar""
 
-    Assert (""//test-suite[@name='when using category Foo, then tests have both categories']/categories/category/@name"" -eq $expectedFooBar) `
+    xpathShouldBe ""//test-suite[@name='when using category Foo, then tests have both categories']/categories/category/@name"" -$expectedFooBar `
         ""test should have category Foo+Bar""
 
-    Assert (""//test-suite[@name='when using category Foo, when in a nested block and using a category']/categories/category/@name"" -eq $expectedFooBar) `
+    xpathShouldBe ""//test-suite[@name='when using category Foo, when in a nested block and using a category']/categories/category/@name"" -$expectedFooBar `
         ""discovery block should have category Foo+Bar""
 
-    Assert (""//test-suite[@name='when using category Foo, when in a nested block and using a category, then the test only has category Baz']/categories/category/@name"" -eq ""Baz"") `
+    xpathShouldBe ""//test-suite[@name='when using category Foo, when in a nested block and using a category, then the test only has category Baz']/categories/category/@name"" ""Baz"" `
         ""Test should have category Baz""
 }
 ")]
