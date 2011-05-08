@@ -11,11 +11,6 @@ import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
 
 update-xml $xmlFile {
 
-    function xpathShouldBe($xpath, $expected, $message) {
-        Assert ((get-xml $xpath) -eq $expected) `
-            $message
-    }
-
     function assertShouldHaveCategories($typeName, $name, $expectedCategories) {
 
         $nonempty = $expectedCategories.length -gt 0
@@ -61,19 +56,19 @@ update-xml $xmlFile {
             {
                 withCategory(Categories.Foo);
 
-                then("tests have Foo");
+                then("tests have Foo", delegate { });
 
                 withCategory(Categories.Bar);
 
-                then("tests have For and Bar");
+                then("tests have For and Bar", delegate { });
 
                 when("in a nested block and using a category", delegate
                 {
                     withCategory(Categories.Baz);
 
-                    then("the nested block has category Foo, Bar");
+                    then("the nested block has category Foo, Bar", delegate { });
 
-                    then("the test only has category Baz");
+                    then("the test only has category Baz", delegate { });
                 });
             });
         }
