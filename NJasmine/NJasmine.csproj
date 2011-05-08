@@ -65,7 +65,7 @@
     <Compile Include="Core\Execution\ActState.cs" />
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />
-    <Compile Include="Core\Execution\DescribeState.cs" />
+    <Compile Include="Core\Execution\DiscoveryState.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunContext.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunner.cs" />
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />

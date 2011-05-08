@@ -17,7 +17,7 @@ namespace NJasmine.Core.Execution
             _position = position;
             _fixtureSetupTeardown = fixtureSetupContext;
             _allTeardowns = new List<Action>();
-            State = new DescribeState(this);
+            State = new DiscoveryState(this);
         }
 
         public bool TestIsAncestorOfPosition(TestPosition position)

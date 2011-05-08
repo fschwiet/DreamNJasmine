@@ -6,11 +6,11 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
 {
-    class DescribeState : ISpecPositionVisitor
+    class DiscoveryState : ISpecPositionVisitor
     {
         private NJasmineTestRunContext _runContext;
 
-        public DescribeState(NJasmineTestRunContext runContext)
+        public DiscoveryState(NJasmineTestRunContext runContext)
         {
             _runContext = runContext;
         }

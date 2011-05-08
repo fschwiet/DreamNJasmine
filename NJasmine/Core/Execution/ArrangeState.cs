@@ -4,7 +4,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
 {
-    class ArrangeState : DescribeState
+    class ArrangeState : DiscoveryState
     {
         protected readonly SpecElement SpecElement;
 
