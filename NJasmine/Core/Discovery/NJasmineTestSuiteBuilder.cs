@@ -13,6 +13,7 @@ namespace NJasmine.Core.Discovery
         readonly AllSuitesBuildContext _buildContext;
         PerFixtureSetupContext _fixtureSetupContext;
         List<Test> _accumulatedDescendants;
+        List<string> _accumulatedCategories;
         string _ignoreReason;
 
         public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
@@ -21,6 +22,7 @@ namespace NJasmine.Core.Discovery
             _buildContext = buildContext;
             _fixtureSetupContext = fixtureSetupContext;
             _accumulatedDescendants = new List<Test>();
+            _accumulatedCategories = new List<string>();
             _ignoreReason = null;
         }
 
@@ -30,12 +32,17 @@ namespace NJasmine.Core.Discovery
                 action(descendant);
         }
 
-        private void ApplyIgnoreIfSet(Test test)
+        private void ApplyCategoryAndIgnoreIfSet(Test test)
         {
             if (_ignoreReason != null)
             {
                 test.RunState = RunState.Explicit;
                 test.IgnoreReason = _ignoreReason;
+            }
+
+            foreach (var category in _accumulatedCategories)
+            {
+                NUnitFrameworkUtil.ApplyCategoryToTest(category, test);
             }
         }
 
@@ -47,7 +54,7 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext._nameGenator.NameTest(description, _test, subSuiteAsFailedTest);
 
-                ApplyIgnoreIfSet(subSuiteAsFailedTest);
+                ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
 
                 _accumulatedDescendants.Add(subSuiteAsFailedTest);
             }
@@ -59,7 +66,7 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext._nameGenator.NameFork(description, _test, subSuite, out reusedName);
 
-                ApplyIgnoreIfSet(subSuite);
+                ApplyCategoryAndIgnoreIfSet(subSuite);
 
                 var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
 
@@ -100,7 +107,7 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext._nameGenator.NameTest(description, _test, unimplementedTest);
 
-                ApplyIgnoreIfSet(unimplementedTest);
+                ApplyCategoryAndIgnoreIfSet(unimplementedTest);
 
                 _accumulatedDescendants.Add(unimplementedTest);
             }
@@ -110,7 +117,7 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext._nameGenator.NameTest(description, _test, test);
 
-                ApplyIgnoreIfSet(test);
+                ApplyCategoryAndIgnoreIfSet(test);
 
                 _accumulatedDescendants.Add(test);
             }
@@ -139,7 +146,7 @@ namespace NJasmine.Core.Discovery
 
         public void visitWithCategory(string category, TestPosition position)
         {
-            NUnitFrameworkUtil.ApplyCategoryToTest(category, _test);
+            _accumulatedCategories.Add(category);
         }
     }
 }

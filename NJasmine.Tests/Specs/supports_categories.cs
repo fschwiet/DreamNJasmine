@@ -16,22 +16,34 @@ update-xml $xmlFile {
             $message
     }
 
-    xpathShouldBe ""//test-suite[@name='when using category Foo']/categories"" $null `
-        ""The category shouldn't be assigned to the containing block""
+    function assertShouldHaveCategories($typeName, $name, $expectedCategories) {
 
-    xpathShouldBe ""//test-suite[@name='when using category Foo, then tests have that category']/categories/category/@name"" ""Foo"" `
-        ""test should have category Foo""
+        $nonempty = $expectedCategories.length -gt 0
 
-    $expectedFooBar = ""Foo+Bar""
+        for-xml -exactlyOnce:$nonempty ""//$typeName[@name='$name']/categories"" {
 
-    xpathShouldBe ""//test-suite[@name='when using category Foo, then tests have both categories']/categories/category/@name"" -$expectedFooBar `
-        ""test should have category Foo+Bar""
+            foreach($expectedCategory in $expectedCategories) {
+                Assert ((get-xml ""category[@name='$expectedCategory']"") -ne  $null) `
+                    ""Expected '$test' to have category $expectedCategory""
+            }
 
-    xpathShouldBe ""//test-suite[@name='when using category Foo, when in a nested block and using a category']/categories/category/@name"" -$expectedFooBar `
-        ""discovery block should have category Foo+Bar""
+            for-xml ""category"" {
 
-    xpathShouldBe ""//test-suite[@name='when using category Foo, when in a nested block and using a category, then the test only has category Baz']/categories/category/@name"" ""Baz"" `
-        ""Test should have category Baz""
+                $otherCategoryName = get-xml ""@name""
+                Assert ($expectedCategories -contains $otherCategoryName) ""Expected '$test' to NOT have category $otherCategoryName""
+            }
+        }
+    }
+
+    assertShouldHaveCategories 'test-suite' 'when using category Foo then Bar' @()
+
+    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo' @(""Foo"")
+
+    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have For and Bar' @('Foo', 'Bar')
+
+    assertShouldHaveCategories 'test-suite' 'when in a nested block and using a category' @('Foo', 'Bar')
+
+    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz' @('Baz')
 }
 ")]
     public class supports_categories : GivenWhenThenFixture
@@ -51,7 +63,7 @@ update-xml $xmlFile {
 
                 then("tests have Foo");
 
-                withCategory(Categories.Foo);
+                withCategory(Categories.Bar);
 
                 then("tests have For and Bar");
 
