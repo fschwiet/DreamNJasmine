@@ -17,7 +17,7 @@ DISPOSING SECOND BEFORE ALL
 AFTER ALL
 DISPOSING BEFORE ALL
 ")]
-    public class beforeAll : GivenWhenThenFixtureTracingToConsole
+    public class beforeAll_and_afterAll_are_applied_to_the_correct_scope : GivenWhenThenFixtureTracingToConsole
     {
         public class RunOnDispose : IDisposable
         {

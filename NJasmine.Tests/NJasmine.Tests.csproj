@@ -63,6 +63,7 @@
     <Compile Include="Core\STA.cs" />
     <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
+    <Compile Include="Specs\beforeAll_doesnt_reexecute.cs" />
     <Compile Include="Specs\cannot_reenter_during_arrange.cs" />
     <Compile Include="Specs\duplicate_test_names_are_fine.cs" />
     <Compile Include="Specs\error_during_nunit_fixture_calls\fixture_setup_has_useful_errors.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Specs\afterAll_failures_only_fail_the_fixture.cs" />
     <Compile Include="Specs\arrange_after_test_is_not_included_in_prior_test.cs" />
     <Compile Include="Specs\arrange_operations_can_be_nested.cs" />
-    <Compile Include="Specs\beforeAll.cs" />
+    <Compile Include="Specs\beforeAll_and_afterAll_are_applied_to_the_correct_scope.cs" />
     <Compile Include="Specs\beforeAll_can_return_a_value.cs" />
     <Compile Include="Specs\can_mark_tests_as_ignored.cs" />
     <Compile Include="Specs\constructor_is_run_once_per_test.cs" />
