@@ -1,7 +1,7 @@
 ﻿using System;
 using NJasmineTests.Core;
 
-namespace NJasmineTests.Specs
+namespace NJasmineTests.Specs.beforeAll
 {
     [RunExternal(true, ExpectedTraceSequence = @"
 BEFORE ALL
@@ -49,7 +49,7 @@ DISPOSING BEFORE ALL
             {
                 Trace("AFTER ALL");
             }); 
-            
+
             it("first test", delegate
             {
                 Trace("first test");

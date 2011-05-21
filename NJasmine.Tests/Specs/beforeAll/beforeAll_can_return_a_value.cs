@@ -1,6 +1,6 @@
 ﻿using NJasmine;
 
-namespace NJasmineTests.Specs
+namespace NJasmineTests.Specs.beforeAll
 {
     public class beforeAll_can_return_a_value : GivenWhenThenFixture
     {

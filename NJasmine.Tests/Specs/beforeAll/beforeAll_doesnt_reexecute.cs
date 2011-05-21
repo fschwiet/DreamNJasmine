@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NJasmine;
 using NUnit.Framework;
 
-namespace NJasmineTests.Specs
+namespace NJasmineTests.Specs.beforeAll
 {
     [Explicit]
     [RunExternal(false, VerificationScript = @"
@@ -26,10 +23,10 @@ update-xml $xmlFile {
         }
     }
 
-    assertTestHasMessage 'NJasmineTests.Specs.beforeAll_doesnt_reexecute, then reports the test with the correct count'   'Failed with TotalRuns: 1'
-    assertTestHasMessage 'NJasmineTests.Specs.beforeAll_doesnt_reexecute, then reports the test with the correct count`2' 'Failed with TotalRuns: 1'
-    assertTestHasMessage 'NJasmineTests.Specs.beforeAll_doesnt_reexecute, then reports the test with the correct count`3' 'Failed with TotalRuns: 1'
-    assertTestHasMessage 'NJasmineTests.Specs.beforeAll_doesnt_reexecute, then reports the test with the correct count`4' 'Failed with TotalRuns: 1'
+    assertTestHasMessage 'NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count'   'Failed with TotalRuns: 1'
+    assertTestHasMessage 'NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`2' 'Failed with TotalRuns: 1'
+    assertTestHasMessage 'NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`3' 'Failed with TotalRuns: 1'
+    assertTestHasMessage 'NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`4' 'Failed with TotalRuns: 1'
 }
 
 ")]
