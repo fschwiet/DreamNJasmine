@@ -9,6 +9,7 @@ namespace NJasmine.Core
     {
         readonly PerFixtureSetupContext _parent;
         Dictionary<TestPosition, Func<object>> _fixtureSetupMethods = new Dictionary<TestPosition, Func<object>>();
+        Dictionary<TestPosition, Exception> _fixtureSetupExceptions = new Dictionary<TestPosition, Exception>();
         Dictionary<TestPosition, object> _fixtureSetupResults = new Dictionary<TestPosition, object>();
         Dictionary<TestPosition, Action> _fixtureTeardownMethods = new Dictionary<TestPosition, Action>();
 
@@ -28,9 +29,23 @@ namespace NJasmine.Core
         {
             if (_fixtureSetupMethods.ContainsKey(position))
             {
+                if (_fixtureSetupExceptions.ContainsKey(position))
+                {
+                    throw _fixtureSetupExceptions[position];
+                }
+
                 if (!_fixtureSetupResults.ContainsKey(position))
                 {
-                    _fixtureSetupResults[position] = _fixtureSetupMethods[position]();
+                    try
+                    {
+                        _fixtureSetupResults[position] = _fixtureSetupMethods[position]();
+                    }
+                    catch (Exception e)
+                    {
+                        _fixtureSetupExceptions[position] = e;
+                        
+                        throw;
+                    }
                 }
 
                 return _fixtureSetupResults[position];
@@ -100,16 +115,18 @@ namespace NJasmine.Core
 
             AddFixtureTearDown(position, delegate
             {
-                // setup won't have run if there is a prior error
-                if (!_fixtureSetupResults.ContainsKey(position))
-                    return;
+                _fixtureSetupExceptions.Remove(position);
 
-                var disposeable = _fixtureSetupResults[position] as IDisposable;
+                // setup won't have run if there is a prior error)
+                if (_fixtureSetupResults.ContainsKey(position))
+                {
+                    var disposeable = _fixtureSetupResults[position] as IDisposable;
 
-                if (disposeable != null)
-                    disposeable.Dispose();
+                    if (disposeable != null)
+                        disposeable.Dispose();
 
-                _fixtureSetupResults.Remove(position);
+                    _fixtureSetupResults.Remove(position);
+                }
             });
         }
 
@@ -119,22 +136,6 @@ namespace NJasmine.Core
                 throw new InvalidOperationException();
 
             _fixtureTeardownMethods[position] = action;
-        }
-
-        public object GetSetupResult(TestPosition position)
-        {
-            if (_fixtureSetupMethods.ContainsKey(position))
-            {
-                return _fixtureSetupResults[position];
-            }
-            else if (_parent != null)
-            {
-                return _parent.GetSetupResult(position);
-            }
-            else
-            {
-                throw new InvalidOperationException("Attempted to find undefined setup result.");
-            }
         }
     }
 }
