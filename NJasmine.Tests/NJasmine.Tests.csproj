@@ -65,6 +65,7 @@
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
     <Compile Include="Specs\beforeAll\beforeAll_can_use_expectations.cs" />
     <Compile Include="Specs\beforeAll\beforeAll_doesnt_reexecute.cs" />
+    <Compile Include="Specs\beforeAll\beforeAll_has_access_to_other_beforeAll_results.cs" />
     <Compile Include="Specs\cannot_reenter_during_arrange.cs" />
     <Compile Include="Specs\duplicate_test_names_are_fine.cs" />
     <Compile Include="Specs\error_during_nunit_fixture_calls\fixture_setup_has_useful_errors.cs" />
