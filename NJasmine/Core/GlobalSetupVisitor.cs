@@ -50,33 +50,31 @@ namespace NJasmine.Core
         {
             if (position.IsAncestorOf(_targetPosition))
             {
-                try
+                action();
+            }
+        }
+
+        private void BackupCleanupForState(TestPosition position)
+        {
+            for (var i = _cleanupResults.Count() - 1; i >= 0; i--)
+            {
+                var kvp = _cleanupResults[i];
+
+                if (!kvp.Key.IsOnPathTo(position))
                 {
-                    action();
+                    Action toRun = kvp.Value;
+                    _cleanupResults.RemoveAt(i);
+                    toRun();
                 }
-                finally
+            }
+
+            for(var i = _setupResults.Count() - 1; i >= 0; i--)
+            {
+                var kvp = _setupResults[i];
+
+                if (!kvp.Key.IsOnPathTo(position))
                 {
-                    for (var i = _cleanupResults.Count() - 1; i >= 0; i--)
-                    {
-                        var kvp = _cleanupResults[i];
-
-                        if (!kvp.Key.IsOnPathTo(position))
-                        {
-                            Action toRun = kvp.Value;
-                            _cleanupResults.RemoveAt(i);
-                            toRun();
-                        }
-                    }
-
-                    for(var i = _setupResults.Count() - 1; i >= 0; i--)
-                    {
-                        var kvp = _setupResults[i];
-
-                        if (!kvp.Key.IsOnPathTo(position))
-                        {
-                            _setupResults.RemoveAt(i);
-                        }
-                    }
+                    _setupResults.RemoveAt(i);
                 }
             }
         }
@@ -146,6 +144,7 @@ namespace NJasmine.Core
             {
                 _threadAtTargetPosition.Set();
                 _threadWaitingForTargetPosition.WaitOne(-1);
+                BackupCleanupForState(_targetPosition);
             }
         }
 
@@ -180,7 +179,15 @@ namespace NJasmine.Core
             if (!position.IsOnPathTo(_targetPosition))
                 throw new InvalidProgramException();
 
-            return _setupResults.Where(kvp => kvp.Key.Equals(position)).Select(kvp => kvp.Value).Single();
+            try
+            {
+                return _setupResults.First(kvp => kvp.Key != null && kvp.Key.Equals(position)).Value;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidProgramException(String.Format("Could not find setup result for position {0}, had results for {1}.",
+                    position.ToString() ?? "null", String.Join(", ", _setupResults.Select(sr => sr.Key.ToString()).ToArray())), e);
+            }
         }
     }
 }
