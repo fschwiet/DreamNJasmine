@@ -25,7 +25,7 @@ namespace NJasmine.Core.Execution
             return position.IsAncestorOf(_position);
         }
 
-        public TArranged IncludeOneTimeSetup<TArranged>(TestPosition position)
+        public TArranged GetSetupResultAt<TArranged>(TestPosition position)
         {
             return _globalSetup.GetSetupResultAt<TArranged>(position);
         }

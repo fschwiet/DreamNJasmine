@@ -9,24 +9,23 @@ namespace NJasmine.Core
         SpecificationFixture _fixture;
         Thread _thread;
         GlobalSetupVisitor _visitor;
-        AutoResetEvent _threadReady;
-        AutoResetEvent _threadWaiting;
-        bool _exit;
+        AutoResetEvent _threadAtTargetPosition;
+        AutoResetEvent _threadWaitingForTargetPosition;
+        private TestPosition _targetPosition;
 
         public void Initialize(SpecificationFixture fixture)
         {
             _fixture = fixture;
             _thread = null;
-            _threadReady = new AutoResetEvent(false);
-            _threadWaiting = new AutoResetEvent(false);
-            _visitor = new GlobalSetupVisitor(_threadReady, _threadWaiting);
+            _threadAtTargetPosition = new AutoResetEvent(false);
+            _threadWaitingForTargetPosition = new AutoResetEvent(false);
+            _visitor = new GlobalSetupVisitor(_threadAtTargetPosition, _threadWaitingForTargetPosition);
         }
 
         public void Cleanup()
         {
             if (_thread != null)
             {
-                _exit = true;
                 PrepareForTestPosition(new TestPosition());
                 _thread = null;
             }
@@ -34,6 +33,7 @@ namespace NJasmine.Core
 
         public void PrepareForTestPosition(TestPosition position)
         {
+            _targetPosition = position;
             _visitor.SetTargetPosition(position);
 
             if (_thread == null)
@@ -42,7 +42,12 @@ namespace NJasmine.Core
                 _thread.Start();
             }
 
-            _threadWaiting.Set();
+            _threadWaitingForTargetPosition.Set();
+            
+            if (!_threadAtTargetPosition.WaitOne(3000))
+            {
+                throw new Exception("failed to prepare for a test in time");
+            }
         }
 
         public T GetSetupResultAt<T>(TestPosition position)
@@ -52,15 +57,17 @@ namespace NJasmine.Core
 
         public void ThreadProc()
         {
-            while(!_exit)
+            while(true)
             {
-                _threadWaiting.WaitOne(-1);
-
-                if (_exit)
-                    break;
+                if (_targetPosition.Equals(_fixture.CurrentPosition))
+                {
+                    _threadAtTargetPosition.Set();
+                    _threadWaitingForTargetPosition.WaitOne(-1);
+                }
 
                 try
                 {
+                    _fixture.CurrentPosition = new TestPosition(0);
                     _fixture.Visitor = _visitor;
                     _fixture.Run();
                 }

@@ -10,17 +10,17 @@ namespace NJasmine.Core
 {
     public class GlobalSetupVisitor : ISpecPositionVisitor
     {
-        private readonly AutoResetEvent _threadReady;
-        private readonly AutoResetEvent _threadWaiting;
+        private readonly AutoResetEvent _threadAtTargetPosition;
+        private readonly AutoResetEvent _threadWaitingForTargetPosition;
         private TestPosition _targetPosition;
         private SpecElement? _executingPastDiscovery;
         List<KeyValuePair<TestPosition, Action>> _cleanupResults;
         List<KeyValuePair<TestPosition, object>> _setupResults;
 
-        public GlobalSetupVisitor(AutoResetEvent threadReady, AutoResetEvent threadWaiting)
+        public GlobalSetupVisitor(AutoResetEvent threadAtTargetPosition, AutoResetEvent threadWaitingForTargetPosition)
         {
-            _threadReady = threadReady;
-            _threadWaiting = threadWaiting;
+            _threadAtTargetPosition = threadAtTargetPosition;
+            _threadWaitingForTargetPosition = threadWaitingForTargetPosition;
             _executingPastDiscovery = null;
             _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
@@ -140,10 +140,12 @@ namespace NJasmine.Core
 
         public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
         {
+            CheckNotAlreadyPastDiscovery(origin);
+
             while (position == _targetPosition)
             {
-                _threadReady.Set();
-                _threadWaiting.WaitOne(-1);
+                _threadAtTargetPosition.Set();
+                _threadWaitingForTargetPosition.WaitOne(-1);
             }
         }
 

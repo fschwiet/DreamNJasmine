@@ -25,12 +25,11 @@ namespace NJasmine.Core.Execution
 
         public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            return _runContext.IncludeOneTimeSetup<TArranged>(position);
+            return _runContext.GetSetupResultAt<TArranged>(position);
         }
 
         public virtual void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _runContext.IncludeOneTimeCleanup(position);
         }
 
         public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
