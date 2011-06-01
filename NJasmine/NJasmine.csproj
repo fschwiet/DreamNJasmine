@@ -71,6 +71,7 @@
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
+    <Compile Include="Core\GlobalSetupManager.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\NUnitFrameworkUtil.cs" />

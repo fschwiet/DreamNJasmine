@@ -12,36 +12,42 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest
     {
+        public TestPosition Position { get; private set; }
+
         private PerFixtureSetupContext _perFixtureSetupContext;
+        private GlobalSetupManager _setupManager;
 
         public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
         {
             AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition());
+            var globalSetup = new GlobalSetupManager();
+
+            globalSetup.Initialize(fixtureFactory());
+
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, new PerFixtureSetupContext(), buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, new PerFixtureSetupContext(), globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true);
         }
 
-        public NJasmineTestSuite(TestPosition position)
+        public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
             : base("thistestname", "willbeoverwritten")
         {
             Position = position;
+            _setupManager = setupManager;
             maintainTestOrder = true;
         }
 
-        public TestPosition Position { get; private set; }
-
-        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
             if (_perFixtureSetupContext != null)
                 throw new NotSupportedException();
 
             _perFixtureSetupContext = new PerFixtureSetupContext(fixtureSetupContext);
 
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, _perFixtureSetupContext);
+            var builder = new NJasmineTestSuiteBuilder(this, buildContext, _perFixtureSetupContext, globalSetup);
             
             Exception exception = null;
 
@@ -98,6 +104,8 @@ namespace NJasmine.Core
         {
             try
             {
+                _setupManager.Cleanup();
+
                 _perFixtureSetupContext.DoAllCleanup();
             }
             catch (Exception innerException)

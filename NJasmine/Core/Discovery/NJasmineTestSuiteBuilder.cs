@@ -12,15 +12,17 @@ namespace NJasmine.Core.Discovery
         private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
         PerFixtureSetupContext _fixtureSetupContext;
+        private readonly GlobalSetupManager _globalSetup;
         List<Test> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup)
         {
             _test = test;
             _buildContext = buildContext;
             _fixtureSetupContext = fixtureSetupContext;
+            _globalSetup = globalSetup;
             _accumulatedDescendants = new List<Test>();
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
@@ -60,7 +62,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(position);
+                var subSuite = new NJasmineTestSuite(position, _globalSetup);
 
                 bool reusedName;
 
@@ -68,7 +70,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuite);
 
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, action, false);
+                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, _globalSetup, action, false);
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
@@ -113,7 +115,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext);
+                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext, _globalSetup);
 
                 _buildContext._nameGenator.NameTest(description, _test, test);
 

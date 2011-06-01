@@ -14,13 +14,15 @@ namespace NJasmine.Core
     {
         readonly Func<SpecificationFixture> _fixtureFactory;
         readonly PerFixtureSetupContext _fixtureSetupContext;
+        readonly GlobalSetupManager _globalSetup;
 
-        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup)
             : base(new Action(delegate() { }).Method)
         {
             Position = position;
             _fixtureFactory = fixtureFactory;
             _fixtureSetupContext = fixtureSetupContext;
+            _globalSetup = globalSetup;
         }
 
         public TestPosition Position { get; private set; }
@@ -30,6 +32,8 @@ namespace NJasmine.Core
             listener.TestStarted(base.TestName);
             long ticks = DateTime.Now.Ticks;
             TestResult testResult = new TestResult(this);
+
+            _globalSetup.PrepareForTestPosition(Position);
 
             try
             {
