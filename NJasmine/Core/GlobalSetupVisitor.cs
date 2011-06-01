@@ -142,7 +142,7 @@ namespace NJasmine.Core
         {
             CheckNotAlreadyPastDiscovery(origin);
 
-            while (position == _targetPosition)
+            while (position.Equals(_targetPosition))
             {
                 _threadAtTargetPosition.Set();
                 _threadWaitingForTargetPosition.WaitOne(-1);
