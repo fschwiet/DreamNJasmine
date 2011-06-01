@@ -289,7 +289,7 @@ namespace NJasmine
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitIgnoreBecause(reason, context.Position);
+                base.Visitor.visitIgnoreBecause(SpecElement.ignore, reason, context.Position);
             }
         }
 
@@ -301,7 +301,7 @@ namespace NJasmine
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitExpect(expectation, context.Position);
+                base.Visitor.visitExpect(SpecElement.expect, expectation, context.Position);
             }
         }
 
@@ -351,7 +351,7 @@ namespace NJasmine
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitWaitUntil(expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
+                base.Visitor.visitWaitUntil(SpecElement.expectEventually, expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
             }
         }
 
@@ -366,7 +366,7 @@ namespace NJasmine
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitWaitUntil(expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
+                base.Visitor.visitWaitUntil(SpecElement.waitUntil, expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, context.Position);
             }
         }
 
@@ -374,7 +374,7 @@ namespace NJasmine
         {
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
-                base.Visitor.visitWithCategory(category, context.Position);
+                base.Visitor.visitWithCategory(SpecElement.withCategory, category, context.Position);
             }
         }
     }

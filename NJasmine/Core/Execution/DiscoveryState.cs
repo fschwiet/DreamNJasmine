@@ -17,7 +17,7 @@ namespace NJasmine.Core.Execution
 
         public virtual void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            if (_runContext.TestIsAncestorOfPosition(position))
+            if (_runContext.PositionIsAncestorOfContext(position))
             {
                 action();
             }
@@ -51,16 +51,16 @@ namespace NJasmine.Core.Execution
             }
         }
 
-        public void visitIgnoreBecause(string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
         {
         }
 
-        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
             PowerAssert.PAssert.IsTrue(expectation);
         }
 
-        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
             var expectationChecker = expectation.Compile();
 
@@ -77,7 +77,7 @@ namespace NJasmine.Core.Execution
                 PowerAssert.PAssert.IsTrue(expectation);
         }
 
-        public void visitWithCategory(string category, TestPosition position)
+        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
         {
         }
 

@@ -43,24 +43,24 @@ namespace NJasmine.Core.Execution
             _runContext.State.visitTest(origin, description, action, position);
         }
 
-        public void visitIgnoreBecause(string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
         {
-            _runContext.State.visitIgnoreBecause(reason, position);
+            _runContext.State.visitIgnoreBecause(origin, reason, position);
         }
 
-        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
-            _runContext.State.visitExpect(expectation, position);
+            _runContext.State.visitExpect(origin, expectation, position);
         }
 
-        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
-            _runContext.State.visitWaitUntil(expectation, totalWaitMs, waitIncrementMs, position);
+            _runContext.State.visitWaitUntil(origin, expectation, totalWaitMs, waitIncrementMs, position);
         }
 
-        public void visitWithCategory(string category, TestPosition position)
+        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
         {
-            _runContext.State.visitWithCategory(category, position);
+            _runContext.State.visitWithCategory(origin, category, position);
         }
     }
 }

@@ -11,17 +11,15 @@ namespace NJasmine.Core.Discovery
     {
         private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
-        PerFixtureSetupContext _fixtureSetupContext;
         private readonly GlobalSetupManager _globalSetup;
         List<Test> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup)
         {
             _test = test;
             _buildContext = buildContext;
-            _fixtureSetupContext = fixtureSetupContext;
             _globalSetup = globalSetup;
             _accumulatedDescendants = new List<Test>();
             _accumulatedCategories = new List<string>();
@@ -70,7 +68,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuite);
 
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _fixtureSetupContext, _globalSetup, action, false);
+                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false);
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
@@ -83,13 +81,11 @@ namespace NJasmine.Core.Discovery
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
-            _fixtureSetupContext.AddFixtureSetup(position, action);
             return default(TArranged);
         }
 
         public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
         {
-            _fixtureSetupContext.AddFixtureTearDown(position, action);
         }
 
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
@@ -115,7 +111,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _fixtureSetupContext, _globalSetup);
+                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _globalSetup);
 
                 _buildContext._nameGenator.NameTest(description, _test, test);
 
@@ -125,7 +121,7 @@ namespace NJasmine.Core.Discovery
             }
         }
 
-        public void visitIgnoreBecause(string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
         {
             if (_accumulatedDescendants.Count > 0)
             {
@@ -138,15 +134,15 @@ namespace NJasmine.Core.Discovery
             }
         }
 
-        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
         }
 
-        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
         }
 
-        public void visitWithCategory(string category, TestPosition position)
+        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
         {
             _accumulatedCategories.Add(category);
         }

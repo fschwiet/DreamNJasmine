@@ -24,7 +24,7 @@ namespace NJasmine.Core
             }
         }
 
-        public bool IsParentOf(TestPosition position)
+        public bool IsAncestorOf(TestPosition position)
         {
             if (Coordinates.Count() < position.Coordinates.Count())
             {
@@ -54,8 +54,7 @@ namespace NJasmine.Core
             };
         }
 
-        /*
-        public bool IsInScopeFor(TestPosition testPosition)
+        public bool IsOnPathTo(TestPosition testPosition)
         {
             var thisCoordinateCount = this.Coordinates.Count();
 
@@ -78,7 +77,6 @@ namespace NJasmine.Core
 
             return true;
         }
-        */
 
         public override string ToString()
         {

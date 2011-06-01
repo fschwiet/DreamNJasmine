@@ -27,19 +27,19 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public void visitIgnoreBecause(string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
         {
         }
 
-        public void visitExpect(Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
         }
 
-        public void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
         }
 
-        public void visitWithCategory(string category, TestPosition position)
+        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
         {
         }
 

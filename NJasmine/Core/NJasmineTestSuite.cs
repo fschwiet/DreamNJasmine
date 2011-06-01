@@ -14,7 +14,6 @@ namespace NJasmine.Core
     {
         public TestPosition Position { get; private set; }
 
-        private PerFixtureSetupContext _perFixtureSetupContext;
         private GlobalSetupManager _setupManager;
 
         public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
@@ -29,7 +28,7 @@ namespace NJasmine.Core
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, new PerFixtureSetupContext(), globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true);
         }
 
         public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
@@ -40,14 +39,9 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
-            if (_perFixtureSetupContext != null)
-                throw new NotSupportedException();
-
-            _perFixtureSetupContext = new PerFixtureSetupContext(fixtureSetupContext);
-
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, _perFixtureSetupContext, globalSetup);
+            var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
             
             Exception exception = null;
 
@@ -105,8 +99,6 @@ namespace NJasmine.Core
             try
             {
                 _setupManager.Cleanup();
-
-                _perFixtureSetupContext.DoAllCleanup();
             }
             catch (Exception innerException)
             {

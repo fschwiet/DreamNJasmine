@@ -40,13 +40,14 @@ namespace NJasmineTests.Core
         }
 
         [Test]
-        public void test_IsParentOf()
+        public void test_IsAncestorOf()
         {
             var position = new TestPosition(1, 2, 3);
 
-            expect(() => position.IsParentOf(new TestPosition(1, 2, 3, 4)));
-            expect(() => !position.IsParentOf(new TestPosition(1, 2)));
-            expect(() => !position.IsParentOf(new TestPosition(3, 2, 1, 4)));
+            expect(() => position.IsAncestorOf(new TestPosition(1, 2, 3, 4)));
+            expect(() => position.IsAncestorOf(new TestPosition(1, 2, 3, 4, 0, 1, 2)));
+            expect(() => !position.IsAncestorOf(new TestPosition(1, 2)));
+            expect(() => !position.IsAncestorOf(new TestPosition(3, 2, 1, 4)));
         }
 
         [Test]
@@ -63,30 +64,28 @@ namespace NJasmineTests.Core
             expect(() => new TestPosition(3, 1, 0, 10, 93).GetNextSiblingPosition().Equals(new TestPosition(3, 1, 0, 10, 94)));
         }
 
-        /*
         [Test]
         public void IsInScopeFor()
         {
-            expect(new TestPosition(0).IsInScopeFor(new TestPosition(0, 1))).to.Equal(true);
-            expect(new TestPosition(0).IsInScopeFor(new TestPosition(1, 2))).to.Equal(true);
-            expect(new TestPosition(0).IsInScopeFor(new TestPosition(5))).to.Equal(true);
-            expect(new TestPosition(0).IsInScopeFor(new TestPosition(5,123))).to.Equal(true);
+            expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(0, 1)));
+            expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(1, 2)));
+            expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(5)));
+            expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(5, 123)));
 
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 2))).to.Equal(false);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5))).to.Equal(true);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5, 0))).to.Equal(true);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 5, 3))).to.Equal(true);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7))).to.Equal(true);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7, 0))).to.Equal(true);
-            expect(new TestPosition(0, 5).IsInScopeFor(new TestPosition(0, 7, 3))).to.Equal(true);
+            expect(() => !new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 2)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 5)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 5, 0)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 5, 3)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 7)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 7, 0)));
+            expect(() => new TestPosition(0, 5).IsOnPathTo(new TestPosition(0, 7, 3)));
 
-            expect(new TestPosition(1,2,3).IsInScopeFor(new TestPosition(0))).to.Equal(false);
-            expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(0, 2, 3))).to.Equal(false);
-            expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(2, 2, 3))).to.Equal(false);
-            expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(1, 0, 3))).to.Equal(false);
-            expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(1, 3, 3))).to.Equal(false);
-            expect(new TestPosition(1, 2, 3).IsInScopeFor(new TestPosition(2, 2, 2, 10))).to.Equal(false);
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(0)));
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(0, 2, 3)));
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(2, 2, 3)));
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(1, 0, 3)));
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(1, 3, 3)));
+            expect(() => !new TestPosition(1, 2, 3).IsOnPathTo(new TestPosition(2, 2, 2, 10)));
         }
-         */
     }
 }

@@ -15,10 +15,10 @@ namespace NJasmine.Core.FixtureVisitor
         void visitAfterEach(SpecElement origin, Action action, TestPosition position);
 
         void visitTest(SpecElement origin, string description, Action action, TestPosition position);
-        void visitIgnoreBecause(string reason, TestPosition position);
+        void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position);
 
-        void visitExpect(Expression<Func<bool>> expectation, TestPosition position);
-        void visitWaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position);
-        void visitWithCategory(string category, TestPosition position);
+        void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position);
+        void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position);
+        void visitWithCategory(SpecElement origin, string category, TestPosition position);
     }
 }

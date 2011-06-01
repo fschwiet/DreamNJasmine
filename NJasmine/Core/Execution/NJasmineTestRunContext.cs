@@ -9,34 +9,29 @@ namespace NJasmine.Core.Execution
         public ISpecPositionVisitor State { get; private set; }
 
         private readonly TestPosition _position;
-        private PerFixtureSetupContext _fixtureSetupTeardown;
+        private readonly IGlobalSetupManager _globalSetup;
         private readonly List<Action> _allTeardowns;
 
-        public NJasmineTestRunContext(TestPosition position, PerFixtureSetupContext fixtureSetupContext)
+        public NJasmineTestRunContext(TestPosition position, IGlobalSetupManager globalSetup)
         {
             _position = position;
-            _fixtureSetupTeardown = fixtureSetupContext;
+            _globalSetup = globalSetup;
             _allTeardowns = new List<Action>();
             State = new DiscoveryState(this);
         }
 
-        public bool TestIsAncestorOfPosition(TestPosition position)
+        public bool PositionIsAncestorOfContext(TestPosition position)
         {
-            return _position.ToString().StartsWith(position.ToString());
+            return position.IsAncestorOf(_position);
         }
 
         public TArranged IncludeOneTimeSetup<TArranged>(TestPosition position)
         {
-            var result = (TArranged)_fixtureSetupTeardown.DoOnetimeSetup(position);
-
-            _fixtureSetupTeardown.IncludeCleanupFor(position);
-
-            return result;
+            return _globalSetup.GetSetupResultAt<TArranged>(position);
         }
 
         public void IncludeOneTimeCleanup(TestPosition position)
         {
-            _fixtureSetupTeardown.IncludeCleanupFor(position);
         }
 
         public void AddTeardownAction(Action action)

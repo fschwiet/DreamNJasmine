@@ -13,15 +13,13 @@ namespace NJasmine.Core
     public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
         readonly Func<SpecificationFixture> _fixtureFactory;
-        readonly PerFixtureSetupContext _fixtureSetupContext;
-        readonly GlobalSetupManager _globalSetup;
+        readonly IGlobalSetupManager _globalSetup;
 
-        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, PerFixtureSetupContext fixtureSetupContext, GlobalSetupManager globalSetup)
+        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, IGlobalSetupManager globalSetup)
             : base(new Action(delegate() { }).Method)
         {
             Position = position;
             _fixtureFactory = fixtureFactory;
-            _fixtureSetupContext = fixtureSetupContext;
             _globalSetup = globalSetup;
         }
 
@@ -34,17 +32,6 @@ namespace NJasmine.Core
             TestResult testResult = new TestResult(this);
 
             _globalSetup.PrepareForTestPosition(Position);
-
-            try
-            {
-                _fixtureSetupContext.DoCleanupFor(Position);
-            }
-            catch (Exception e)
-            {
-                TestResultUtil.Error(testResult, new Exception(
-                        "Exception thrown during cleanup of previous test, see inner exception for details", 
-                        e));
-            }
 
             try
             {
@@ -64,7 +51,7 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult)
         {
-            var executionContext = new NJasmineTestRunContext(Position, _fixtureSetupContext);
+            var executionContext = new NJasmineTestRunContext(Position, _globalSetup);
             var runner = new NJasmineTestRunner(executionContext);
 
             SpecificationFixture fixture = this._fixtureFactory();

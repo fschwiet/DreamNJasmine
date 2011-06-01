@@ -13,6 +13,11 @@
         then,
         cleanup,
         beforeAll,
-        afterAll
+        afterAll,
+        ignore,
+        expect,
+        expectEventually,
+        waitUntil,
+        withCategory
     }
 }
