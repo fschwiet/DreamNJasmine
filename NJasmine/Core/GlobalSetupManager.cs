@@ -6,16 +6,16 @@ namespace NJasmine.Core
 {
     public class GlobalSetupManager : IGlobalSetupManager
     {
-        SpecificationFixture _fixture;
+        Func<SpecificationFixture> _fixtureFactory;
         Thread _thread;
         GlobalSetupVisitor _visitor;
         AutoResetEvent _threadAtTargetPosition;
         AutoResetEvent _threadWaitingForTargetPosition;
         private TestPosition _targetPosition;
 
-        public void Initialize(SpecificationFixture fixture)
+        public void Initialize(Func<SpecificationFixture> fixtureFactory)
         {
-            _fixture = fixture;
+            _fixtureFactory = fixtureFactory;
             _thread = null;
             _threadAtTargetPosition = new AutoResetEvent(false);
             _threadWaitingForTargetPosition = new AutoResetEvent(false);
@@ -33,6 +33,9 @@ namespace NJasmine.Core
 
         public void PrepareForTestPosition(TestPosition position)
         {
+            if (position == null)
+                throw new ArgumentException("Parameter is required", "position");
+
             _targetPosition = position;
             _visitor.SetTargetPosition(position);
 
@@ -59,7 +62,7 @@ namespace NJasmine.Core
         {
             while(true)
             {
-                if (_targetPosition.Equals(_fixture.CurrentPosition))
+                if (_targetPosition.Coordinates.Count() == 0)
                 {
                     _threadAtTargetPosition.Set();
                     _threadWaitingForTargetPosition.WaitOne(-1);
@@ -67,9 +70,9 @@ namespace NJasmine.Core
 
                 try
                 {
-                    _fixture.CurrentPosition = new TestPosition(0);
-                    _fixture.Visitor = _visitor;
-                    _fixture.Run();
+                    var fixture = _fixtureFactory();
+                    fixture.CurrentPosition = new TestPosition(0);
+                    fixture.Run();
                 }
                 catch (NJasmineTestMethod.TestFinishedException e)
                 {

@@ -22,7 +22,7 @@ namespace NJasmine.Core
 
             var globalSetup = new GlobalSetupManager();
 
-            globalSetup.Initialize(fixtureFactory());
+            globalSetup.Initialize(fixtureFactory);
 
             NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
