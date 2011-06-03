@@ -47,7 +47,7 @@ namespace NJasmine.Core
 
             _threadWaitingForTargetPosition.Set();
             
-            if (!_threadAtTargetPosition.WaitOne(3000))
+            if (!_threadAtTargetPosition.WaitOne(-1))
             {
                 throw new Exception("failed to prepare for a test in time");
             }
@@ -68,10 +68,11 @@ namespace NJasmine.Core
                     _threadWaitingForTargetPosition.WaitOne(-1);
                 }
 
+                var fixture = _fixtureFactory();
+                fixture.CurrentPosition = new TestPosition(0);
                 try
                 {
-                    var fixture = _fixtureFactory();
-                    fixture.CurrentPosition = new TestPosition(0);
+                    fixture.Visitor = _visitor;
                     fixture.Run();
                 }
                 catch (NJasmineTestMethod.TestFinishedException e)
