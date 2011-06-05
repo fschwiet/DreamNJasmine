@@ -185,10 +185,27 @@ namespace NJasmine
             using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
             {
                 base.Visitor.visitBeforeEach(SpecElement.arrange, delegate()
-                    {
-                        action();
-                        return (string)null;
-                    }, 
+                {
+                    action();
+                    return (string)null;
+                },
+                    context.Position);
+            }
+        }
+
+        /// <summary>
+        /// Functionally the same as arrange(), has the semantics of exercising the sut.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
+        public void act(Action action)
+        {
+            using (var context = SetPositionForNestedReentry_then_Restore_and_Advance_for_Next())
+            {
+                base.Visitor.visitBeforeEach(SpecElement.act, delegate()
+                {
+                    action();
+                    return (string)null;
+                },
                     context.Position);
             }
         }

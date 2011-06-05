@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Core\build_and_run_suite_with_loops.cs" />
     <Compile Include="Core\FakeGlobalSetupManager.cs" />
+    <Compile Include="Core\GlobalSetupManagerTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />

@@ -10,25 +10,26 @@ namespace NJasmine.Core
 {
     public class GlobalSetupVisitor : ISpecPositionVisitor
     {
-        private readonly AutoResetEvent _threadAtTargetPosition;
-        private readonly AutoResetEvent _threadWaitingForTargetPosition;
-        private TestPosition _targetPosition;
-        private SpecElement? _executingPastDiscovery;
+        private readonly AutoResetEvent _runningLock;
+        TestPosition _targetPosition;
+        SpecElement? _executingPastDiscovery;
+        TestPosition _currentTestPosition;
         List<KeyValuePair<TestPosition, Action>> _cleanupResults;
         List<KeyValuePair<TestPosition, object>> _setupResults;
 
-        public GlobalSetupVisitor(AutoResetEvent threadAtTargetPosition, AutoResetEvent threadWaitingForTargetPosition)
+        public GlobalSetupVisitor(AutoResetEvent runningLock)
         {
-            _threadAtTargetPosition = threadAtTargetPosition;
-            _threadWaitingForTargetPosition = threadWaitingForTargetPosition;
+            _runningLock = runningLock;
             _executingPastDiscovery = null;
             _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
-        public void SetTargetPosition(TestPosition position)
+
+        public bool SetTargetPosition(TestPosition position)
         {
             _targetPosition = position;
+            return _targetPosition.Equals(_currentTestPosition);
         }
 
         public void FinishCleanup()
@@ -44,6 +45,8 @@ namespace NJasmine.Core
             }
 
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
+
+            _currentTestPosition = new TestPosition();
         }
 
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
@@ -54,19 +57,23 @@ namespace NJasmine.Core
             }
         }
 
-        private void BackupCleanupForState(TestPosition position)
+        private void CleanupToPrepareFor(TestPosition position)
         {
+            List<Action> toRun = new List<Action>();
+
             for (var i = _cleanupResults.Count() - 1; i >= 0; i--)
             {
                 var kvp = _cleanupResults[i];
 
                 if (!kvp.Key.IsOnPathTo(position))
                 {
-                    Action toRun = kvp.Value;
+                    toRun.Add(kvp.Value);
                     _cleanupResults.RemoveAt(i);
-                    toRun();
                 }
             }
+
+            foreach (var action in toRun)
+                action();
 
             for(var i = _setupResults.Count() - 1; i >= 0; i--)
             {
@@ -140,12 +147,15 @@ namespace NJasmine.Core
         {
             CheckNotAlreadyPastDiscovery(origin);
 
+            _currentTestPosition = position;
+
             while (position.Equals(_targetPosition))
             {
-                _threadAtTargetPosition.Set();
-                _threadWaitingForTargetPosition.WaitOne(-1);
-                BackupCleanupForState(_targetPosition);
+                _runningLock.Set();
+                Thread.Sleep(0);
+                _runningLock.WaitOne(-1);
             }
+            CleanupToPrepareFor(_targetPosition);
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)

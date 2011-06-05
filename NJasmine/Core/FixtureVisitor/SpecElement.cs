@@ -8,6 +8,7 @@
         it,
         importNUnit,
         arrange,
+        act,
         given,
         when,
         then,
@@ -18,6 +19,6 @@
         expect,
         expectEventually,
         waitUntil,
-        withCategory
+        withCategory,
     }
 }

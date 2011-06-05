@@ -9,17 +9,15 @@ namespace NJasmine.Core
         Func<SpecificationFixture> _fixtureFactory;
         Thread _thread;
         GlobalSetupVisitor _visitor;
-        AutoResetEvent _threadAtTargetPosition;
-        AutoResetEvent _threadWaitingForTargetPosition;
+        AutoResetEvent _runningLock;
         private TestPosition _targetPosition;
 
         public void Initialize(Func<SpecificationFixture> fixtureFactory)
         {
             _fixtureFactory = fixtureFactory;
             _thread = null;
-            _threadAtTargetPosition = new AutoResetEvent(false);
-            _threadWaitingForTargetPosition = new AutoResetEvent(false);
-            _visitor = new GlobalSetupVisitor(_threadAtTargetPosition, _threadWaitingForTargetPosition);
+            _runningLock = new AutoResetEvent(false);
+            _visitor = new GlobalSetupVisitor(_runningLock);
         }
 
         public void Cleanup()
@@ -37,20 +35,22 @@ namespace NJasmine.Core
                 throw new ArgumentException("Parameter is required", "position");
 
             _targetPosition = position;
-            _visitor.SetTargetPosition(position);
+
+            if (_visitor.SetTargetPosition(position))
+                return;
 
             if (_thread == null)
             {
                 _thread = new Thread(ThreadProc);
                 _thread.Start();
             }
-
-            _threadWaitingForTargetPosition.Set();
             
-            if (!_threadAtTargetPosition.WaitOne(-1))
+            do
             {
-                throw new Exception("failed to prepare for a test in time");
-            }
+                _runningLock.Set();
+                Thread.Sleep(0);
+                _runningLock.WaitOne(-1);
+            } while (!_visitor.SetTargetPosition(position));
         }
 
         public T GetSetupResultAt<T>(TestPosition position)
@@ -60,28 +60,36 @@ namespace NJasmine.Core
 
         public void ThreadProc()
         {
-            while(true)
-            {
-                if (_targetPosition.Coordinates.Count() == 0)
-                {
-                    _threadAtTargetPosition.Set();
-                    _threadWaitingForTargetPosition.WaitOne(-1);
-                }
+            _runningLock.WaitOne(-1);
 
-                var fixture = _fixtureFactory();
-                fixture.CurrentPosition = new TestPosition(0);
-                try
+            try
+            {
+                while (true)
                 {
-                    fixture.Visitor = _visitor;
-                    fixture.Run();
+                    if (_targetPosition.Coordinates.Count() == 0)
+                    {
+                        return;
+                    }
+
+                    var fixture = _fixtureFactory();
+                    fixture.CurrentPosition = new TestPosition(0);
+                    try
+                    {
+                        fixture.Visitor = _visitor;
+                        fixture.Run();
+                    }
+                    catch (NJasmineTestMethod.TestFinishedException e)
+                    {
+                    }
+                    finally
+                    {
+                        _visitor.FinishCleanup();
+                    }
                 }
-                catch (NJasmineTestMethod.TestFinishedException e)
-                {
-                }
-                finally
-                {
-                    _visitor.FinishCleanup();
-                }
+            }
+            finally 
+            {
+                _runningLock.Set();
             }
         }
     }
