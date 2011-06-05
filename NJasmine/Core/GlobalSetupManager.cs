@@ -25,7 +25,6 @@ namespace NJasmine.Core
             if (_thread != null)
             {
                 PrepareForTestPosition(new TestPosition());
-                _thread = null;
             }
         }
 
@@ -39,14 +38,14 @@ namespace NJasmine.Core
             if (_visitor.SetTargetPosition(position))
                 return;
 
-            if (_thread == null)
-            {
-                _thread = new Thread(ThreadProc);
-                _thread.Start();
-            }
-            
             do
             {
+                if (_thread == null)
+                {
+                    _thread = new Thread(ThreadProc);
+                    _thread.Start();
+                }
+
                 _runningLock.Set();
                 Thread.Sleep(0);
                 _runningLock.WaitOne(-1);
@@ -89,6 +88,8 @@ namespace NJasmine.Core
             }
             finally 
             {
+                _thread = null;
+
                 _runningLock.Set();
             }
         }
