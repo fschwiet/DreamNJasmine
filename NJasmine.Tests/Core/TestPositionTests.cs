@@ -67,6 +67,8 @@ namespace NJasmineTests.Core
         [Test]
         public void IsInScopeFor()
         {
+            expect(() => !new TestPosition(0).IsOnPathTo(new TestPosition()));
+
             expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(0, 1)));
             expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(1, 2)));
             expect(() => new TestPosition(0).IsOnPathTo(new TestPosition(5)));

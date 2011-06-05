@@ -60,7 +60,9 @@ namespace NJasmineTests.Core
 
                 when("a test is going to be run", delegate
                 {
-                    act(() => sut.PrepareForTestPosition(new TestPosition(2)));
+                    Exception ignored;
+
+                    act(() => sut.PrepareForTestPosition(new TestPosition(2), out ignored));
                     
                     then("the global setup has ran", delegate
                     {
@@ -73,8 +75,8 @@ namespace NJasmineTests.Core
                     });
 
                     when("a later nested test is going to be ran", delegate {
-                        
-                        act(() => sut.PrepareForTestPosition(new TestPosition(3, 2)));
+
+                        act(() => sut.PrepareForTestPosition(new TestPosition(3, 2), out ignored));
 
                         then("the global setup has ran", delegate
                         {
@@ -90,11 +92,7 @@ namespace NJasmineTests.Core
                             Assert.That(recording.First(), Is.EqualTo("beforeAll 0"));
                         });
                     });
-                    
-                    
                 });
-
-                
             });
         }
 

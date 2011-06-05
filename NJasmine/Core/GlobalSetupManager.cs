@@ -24,18 +24,21 @@ namespace NJasmine.Core
         {
             if (_thread != null)
             {
-                PrepareForTestPosition(new TestPosition());
+                Exception ignored;
+                PrepareForTestPosition(new TestPosition(), out ignored);
             }
         }
 
-        public void PrepareForTestPosition(TestPosition position)
+        public void PrepareForTestPosition(TestPosition position, out Exception existingError)
         {
+            existingError = null;
+
             if (position == null)
                 throw new ArgumentException("Parameter is required", "position");
 
             _targetPosition = position;
 
-            if (_visitor.SetTargetPosition(position))
+            if (_visitor.SetTargetPosition(position, out existingError))
                 return;
 
             do
@@ -49,7 +52,7 @@ namespace NJasmine.Core
                 _runningLock.Set();
                 Thread.Sleep(0);
                 _runningLock.WaitOne(-1);
-            } while (!_visitor.SetTargetPosition(position));
+            } while (!_visitor.SetTargetPosition(position, out existingError));
         }
 
         public T GetSetupResultAt<T>(TestPosition position)

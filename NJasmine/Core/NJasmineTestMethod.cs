@@ -31,16 +31,24 @@ namespace NJasmine.Core
             long ticks = DateTime.Now.Ticks;
             TestResult testResult = new TestResult(this);
 
-            _globalSetup.PrepareForTestPosition(Position);
+            Exception existingError = null;
 
-            try
+            _globalSetup.PrepareForTestPosition(Position, out existingError);
+
+            if (existingError != null)
             {
-                if (!testResult.HasResults)
-                    RunTestMethod(testResult);
+                TestResultUtil.Error(testResult, existingError, FailureSite.Parent);
             }
-            catch (Exception e)
+            else
             {
-                TestResultUtil.Error(testResult, e);
+                try
+                {
+                    RunTestMethod(testResult);
+                }
+                catch (Exception e)
+                {
+                    TestResultUtil.Error(testResult, e);
+                }
             }
 
             double num3 = ((double)(DateTime.Now.Ticks - ticks)) / 10000000.0;

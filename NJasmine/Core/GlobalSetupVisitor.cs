@@ -17,6 +17,9 @@ namespace NJasmine.Core
         List<KeyValuePair<TestPosition, Action>> _cleanupResults;
         List<KeyValuePair<TestPosition, object>> _setupResults;
 
+        TestPosition _existingErrorPosition;
+        Exception _existingError;
+
         public GlobalSetupVisitor(AutoResetEvent runningLock)
         {
             _runningLock = runningLock;
@@ -26,10 +29,15 @@ namespace NJasmine.Core
         }
 
 
-        public bool SetTargetPosition(TestPosition position)
+        public bool SetTargetPosition(TestPosition position, out Exception existingError)
         {
+            existingError = null;
+
+            if (_existingError != null && _executingPastDiscovery != null && _existingErrorPosition.IsOnPathTo(position))
+                existingError = _existingError;
+
             _targetPosition = position;
-            return _targetPosition.Equals(_currentTestPosition);
+            return existingError != null || _targetPosition.Equals(_currentTestPosition);
         }
 
         public void FinishCleanup()
@@ -41,7 +49,16 @@ namespace NJasmine.Core
 
             foreach(var kvp in toCleanup)
             {
-                kvp.Value();
+                try
+                {
+                    kvp.Value();
+                }
+                catch (Exception e)
+                {
+                    _existingError = e;
+                    _existingErrorPosition = new TestPosition(0);
+                    ReportError();
+                }
             }
 
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
@@ -53,7 +70,16 @@ namespace NJasmine.Core
         {
             if (position.IsAncestorOf(_targetPosition))
             {
-                action();
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    _existingError = e;
+                    _existingErrorPosition = position;
+                    ReportError();
+                }
             }
         }
 
@@ -72,8 +98,17 @@ namespace NJasmine.Core
                 }
             }
 
-            foreach (var action in toRun)
-                action();
+            try
+            {
+                foreach (var action in toRun)
+                    action();
+            }
+            catch (Exception e)
+            {
+                _existingError = e;
+                _existingErrorPosition = new TestPosition(0);
+                ReportError();
+            }
 
             for(var i = _setupResults.Count() - 1; i >= 0; i--)
             {
@@ -98,7 +133,16 @@ namespace NJasmine.Core
 
                 try
                 {
-                    result = action();
+                    try
+                    {
+                        result = action();
+                    }
+                    catch (Exception e)
+                    {
+                        _existingError = e;
+                        _existingErrorPosition = position;
+                        ReportError();
+                    }
 
                     if (result is IDisposable)
                     {
@@ -197,6 +241,18 @@ namespace NJasmine.Core
             {
                 throw new InvalidProgramException(String.Format("Could not find setup result for position {0}, had results for {1}.",
                     position.ToString() ?? "null", String.Join(", ", _setupResults.Select(sr => sr.Key.ToString()).ToArray())), e);
+            }
+        }
+
+        void ReportError()
+        {
+            while(_existingError != null 
+                && _existingErrorPosition != null
+                && _existingErrorPosition.IsOnPathTo(_targetPosition))
+            {
+                _runningLock.Set();
+                Thread.Sleep(0);
+                _runningLock.WaitOne(-1);
             }
         }
     }
