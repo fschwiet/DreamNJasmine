@@ -5,14 +5,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(false, ExpectedTraceSequence = @"
-outer it 1
-repeated inner it 1
-outer it 2
-repeated inner it 2
-outer it 3
-repeated inner it 3
-", ExpectedStrings = new [ ]
+    [Explicit, RunExternal(false, ExpectedStrings = new [ ]
     {
         "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test",
         "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2",

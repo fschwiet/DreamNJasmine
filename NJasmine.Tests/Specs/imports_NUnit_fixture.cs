@@ -44,15 +44,22 @@ namespace NJasmineTests.Specs
     [RunExternal(true, ExpectedTraceSequence = @"
 test started, before include of a
 FixtureSetup some_Nunit_fixture_a
-SetUp some_Nunit_fixture_a
 after include of a
 first describe, before include of b
 FixtureSetup some_Nunit_fixture_b
+after include of b
+test started, before include of a
+SetUp some_Nunit_fixture_a
+after include of a
+first describe, before include of b
 SetUp some_Nunit_fixture_b
 after include of b
 first test
 TearDown some_Nunit_fixture_b
 TearDown some_Nunit_fixture_a
+before include of c
+FixtureSetup some_Nunit_fixture_c
+after include of c
 test started, before include of a
 SetUp some_Nunit_fixture_a
 after include of a
@@ -60,7 +67,6 @@ first describe, before include of b
 SetUp some_Nunit_fixture_b
 after include of b
 before include of c
-FixtureSetup some_Nunit_fixture_c
 SetUp some_Nunit_fixture_c
 after include of c
 second test test

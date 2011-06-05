@@ -8,7 +8,7 @@ namespace NJasmineTests.Core
 {
     class FakeGlobalSetupManager : IGlobalSetupManager
     {
-        public void Cleanup()
+        public void Cleanup(TestPosition position)
         {
         }
 

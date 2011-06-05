@@ -98,7 +98,7 @@ namespace NJasmine.Core
         {
             try
             {
-                _setupManager.Cleanup();
+                _setupManager.Cleanup(Position);
             }
             catch (Exception innerException)
             {

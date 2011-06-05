@@ -81,6 +81,15 @@ namespace NJasmine.Core
                     ReportError();
                 }
             }
+
+            while (position.Equals(_targetPosition))
+            {
+                _currentTestPosition = position;
+                _runningLock.Set();
+                Thread.Sleep(0);
+                _runningLock.WaitOne(-1);
+            }
+            CleanupToPrepareFor(_targetPosition);
         }
 
         private void CleanupToPrepareFor(TestPosition position)

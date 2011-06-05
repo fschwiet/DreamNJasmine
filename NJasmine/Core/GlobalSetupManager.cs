@@ -20,12 +20,13 @@ namespace NJasmine.Core
             _visitor = new GlobalSetupVisitor(_runningLock);
         }
 
-        public void Cleanup()
+        public void Cleanup(TestPosition position)
         {
             if (_thread != null)
             {
                 Exception ignored;
-                PrepareForTestPosition(new TestPosition(), out ignored);
+
+                PrepareForTestPosition(position, out ignored);
             }
         }
 

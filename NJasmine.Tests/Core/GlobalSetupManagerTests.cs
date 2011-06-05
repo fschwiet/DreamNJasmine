@@ -51,6 +51,14 @@ namespace NJasmineTests.Core
                                 int i = 0;
                             });
                         });
+
+                        f.describe("more nested tests", delegate
+                        {
+                            f.it("has a test", delegate
+                            {
+                                
+                            });
+                        });
                     }
                 };
 
@@ -80,16 +88,26 @@ namespace NJasmineTests.Core
 
                         then("the global setup has ran", delegate
                         {
-                            Thread.Sleep(0);
-                            
-                            //recording.First();
                             Assert.That(recording, Is.EquivalentTo(new[]
                             {
                                 "beforeAll 0", 
                                 "nested beforeAll 2",
                             }));
+                        });
 
-                            Assert.That(recording.First(), Is.EqualTo("beforeAll 0"));
+                        when("a later test nested in another block is going to be ran", delegate
+                        {
+                            act(() => sut.PrepareForTestPosition(new TestPosition(4, 0), out ignored));
+
+                            then("the global setup has ran", delegate
+                            {
+                                Assert.That(recording, Is.EquivalentTo(new[]
+                                {
+                                    "beforeAll 0", 
+                                    "nested beforeAll 2",
+                                    "nested afterAll 3"
+                                }));
+                            });
                         });
                     });
                 });
