@@ -236,12 +236,18 @@ namespace NJasmine.Core
 
         public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            if (_executingPastDiscovery.HasValue)
+            {
+                ExpectationChecker.Expect(expectation);
+            }
         }
 
         public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            if (_executingPastDiscovery.HasValue)
+            {
+                ExpectationChecker.WaitUntil(expectation, totalWaitMs, waitIncrementMs);
+            }
         }
 
         public void visitWithCategory(SpecElement origin, string category, TestPosition position)

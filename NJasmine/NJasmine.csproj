@@ -68,6 +68,7 @@
     <Compile Include="Core\Execution\DiscoveryState.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunContext.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunner.cs" />
+    <Compile Include="Core\ExpectationChecker.cs" />
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />

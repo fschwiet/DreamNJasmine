@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs.beforeAll
 {
-    [Explicit]
     public class beforeAll_can_use_expectations : GivenWhenThenFixture
     {
         public override void Specify()

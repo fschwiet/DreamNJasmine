@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Threading;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 
@@ -56,24 +55,12 @@ namespace NJasmine.Core.Execution
 
         public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
-            PowerAssert.PAssert.IsTrue(expectation);
+            ExpectationChecker.Expect(expectation);
         }
 
         public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
-            var expectationChecker = expectation.Compile();
-
-            DateTime finishTime = DateTime.UtcNow.AddMilliseconds(totalWaitMs);
-
-            bool passing;
-
-            while (!(passing = expectationChecker()) && DateTime.UtcNow < finishTime)
-            {
-                Thread.Sleep(waitIncrementMs);
-            }
-
-            if (!passing)
-                PowerAssert.PAssert.IsTrue(expectation);
+            ExpectationChecker.WaitUntil(expectation, totalWaitMs, waitIncrementMs);
         }
 
         public void visitWithCategory(SpecElement origin, string category, TestPosition position)
