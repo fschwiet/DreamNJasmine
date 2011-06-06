@@ -82,7 +82,8 @@ namespace NJasmineTests.Core
                         expect(() => "beforeAll result 1" == sut.GetSetupResultAt<string>(new TestPosition(0)));
                     });
 
-                    when("a later nested test is going to be ran", delegate {
+                    when("a later nested test is going to be ran", delegate
+                    {
 
                         act(() => sut.PrepareForTestPosition(new TestPosition(3, 2), out ignored));
 
@@ -90,7 +91,7 @@ namespace NJasmineTests.Core
                         {
                             Assert.That(recording, Is.EquivalentTo(new[]
                             {
-                                "beforeAll 0", 
+                                "beforeAll 0",
                                 "nested beforeAll 2",
                             }));
                         });
@@ -103,10 +104,31 @@ namespace NJasmineTests.Core
                             {
                                 Assert.That(recording, Is.EquivalentTo(new[]
                                 {
-                                    "beforeAll 0", 
+                                    "beforeAll 0",
                                     "nested beforeAll 2",
                                     "nested afterAll 3"
                                 }));
+                            });
+                        });
+
+                        when("we're done running tests", delegate
+                        {
+                            act(() => sut.Cleanup(new TestPosition()));
+
+                            then("expected cleanup runs", delegate
+                            {
+                                Assert.That(recording, Is.EquivalentTo(new[]
+                                {
+                                    "beforeAll 0", 
+                                    "nested beforeAll 2", 
+                                    "nested afterAll 3", 
+                                    "first setup was: beforeAll result 1"
+                                }));
+                            });
+
+                            then("expected cleanup runs", delegate
+                            {
+                                expect(() => !sut.HasThread());
                             });
                         });
                     });

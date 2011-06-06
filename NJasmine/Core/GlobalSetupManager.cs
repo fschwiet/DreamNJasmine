@@ -97,5 +97,10 @@ namespace NJasmine.Core
                 _runningLock.Set();
             }
         }
+
+        public bool HasThread()
+        {
+            return _thread != null;
+        }
     }
 }
