@@ -99,5 +99,10 @@ namespace NJasmine.Core
         {
             return _thread != null;
         }
+
+        public void Close()
+        {
+            Cleanup(new TestPosition());
+        }
     }
 }

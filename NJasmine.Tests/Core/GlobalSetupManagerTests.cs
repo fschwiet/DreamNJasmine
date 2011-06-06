@@ -66,6 +66,8 @@ namespace NJasmineTests.Core
 
                 arrange(() => sut.Initialize(() => fixture));
 
+                cleanup(() => sut.Close());
+
                 when("a test is going to be run", delegate
                 {
                     Exception ignored;
@@ -154,6 +156,8 @@ namespace NJasmineTests.Core
                 var sut = arrange(() => new GlobalSetupManager());
 
                 arrange(() => sut.Initialize(() => fixture));
+
+                cleanup(() => sut.Close());
 
                 when("a test is to be ran", delegate
                 {
