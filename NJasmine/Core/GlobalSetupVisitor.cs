@@ -18,6 +18,7 @@ namespace NJasmine.Core
         List<KeyValuePair<TestPosition, object>> _setupResults;
 
         TestPosition _existingErrorPosition;
+
         Exception _existingError;
 
         public GlobalSetupVisitor(AutoResetEvent runningLock)
@@ -28,12 +29,29 @@ namespace NJasmine.Core
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
+        public void RunFixture(Func<SpecificationFixture> fixtureFactory)
+        {
+            var fixture = fixtureFactory();
+            fixture.CurrentPosition = new TestPosition(0);
+            fixture.Visitor = this;
+            try
+            {
+                fixture.Run();
+            }
+            catch (Exception e)
+            {
+                _existingError = e;
+                _existingErrorPosition = new TestPosition(0);
+                ReportError();
+            }
+        }
+
 
         public bool SetTargetPosition(TestPosition position, out Exception existingError)
         {
             existingError = null;
 
-            if (_existingError != null && _executingPastDiscovery != null && _existingErrorPosition.IsOnPathTo(position))
+            if (_existingError != null && _existingErrorPosition != null && _existingErrorPosition.IsOnPathTo(position))
                 existingError = _existingError;
 
             _targetPosition = position;

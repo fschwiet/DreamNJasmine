@@ -56,7 +56,7 @@ namespace NJasmineTests.Core
                         {
                             f.it("has a test", delegate
                             {
-                                
+
                             });
                         });
                     }
@@ -71,10 +71,10 @@ namespace NJasmineTests.Core
                     Exception ignored;
 
                     act(() => sut.PrepareForTestPosition(new TestPosition(2), out ignored));
-                    
+
                     then("the global setup has ran", delegate
                     {
-                        Assert.That(recording, Is.EquivalentTo(new [] {"beforeAll 0"}));
+                        Assert.That(recording, Is.EquivalentTo(new[] {"beforeAll 0"}));
                     });
 
                     then("the global setup result is available", delegate
@@ -119,9 +119,9 @@ namespace NJasmineTests.Core
                             {
                                 Assert.That(recording, Is.EquivalentTo(new[]
                                 {
-                                    "beforeAll 0", 
-                                    "nested beforeAll 2", 
-                                    "nested afterAll 3", 
+                                    "beforeAll 0",
+                                    "nested beforeAll 2",
+                                    "nested afterAll 3",
                                     "first setup was: beforeAll result 1"
                                 }));
                             });
@@ -130,6 +130,50 @@ namespace NJasmineTests.Core
                             {
                                 expect(() => !sut.HasThread());
                             });
+                        });
+                    });
+                });
+            });
+
+            given("a fixture with an error at its outer scope", delegate
+            {
+                var fixture = new LambdaFixture()
+                {
+                    LambdaSpecify = f =>
+                    {
+                        int i = 0;
+                        int j = 100 / i;
+
+                        it("has a test", delegate
+                        {
+
+                        });
+                    }
+                };
+
+                var sut = arrange(() => new GlobalSetupManager());
+
+                arrange(() => sut.Initialize(() => fixture));
+
+                when("a test is to be ran", delegate
+                {
+                    Exception exception = null;
+
+                    act(() => sut.PrepareForTestPosition(new TestPosition(0), out exception));
+
+                    then("the exception is reported", delegate
+                    {
+                        expect(() => exception != null);
+                    });
+
+                    when("we're done running tests", delegate
+                    {
+                        expect(() => sut.HasThread());
+                        act(() => sut.Cleanup(new TestPosition()));
+
+                        then("the thread is stopped", delegate
+                        {
+                            expect(() => !sut.HasThread());
                         });
                     });
                 });

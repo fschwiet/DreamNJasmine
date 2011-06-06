@@ -74,12 +74,9 @@ namespace NJasmine.Core
                         return;
                     }
 
-                    var fixture = _fixtureFactory();
-                    fixture.CurrentPosition = new TestPosition(0);
                     try
                     {
-                        fixture.Visitor = _visitor;
-                        fixture.Run();
+                        this._visitor.RunFixture(_fixtureFactory);
                     }
                     catch (NJasmineTestMethod.TestFinishedException e)
                     {
