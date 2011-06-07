@@ -128,7 +128,7 @@ namespace NJasmineTests.Core
                                 }));
                             });
 
-                            then("expected cleanup runs", delegate
+                            then("the setup thread finishes", delegate
                             {
                                 expect(() => !sut.HasThread());
                             });
@@ -175,7 +175,7 @@ namespace NJasmineTests.Core
                         expect(() => sut.HasThread());
                         act(() => sut.Cleanup(new TestPosition()));
 
-                        then("the thread is stopped", delegate
+                        then("the setup thread finishes", delegate
                         {
                             expect(() => !sut.HasThread());
                         });
