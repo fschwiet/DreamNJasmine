@@ -37,7 +37,7 @@ namespace NJasmine.Core
 
             if (existingError != null)
             {
-                TestResultUtil.Error(testResult, existingError, FailureSite.Parent);
+                TestResultUtil.Error(testResult, existingError, FailureSite.SetUp);
             }
             else
             {
