@@ -32,14 +32,14 @@ NJasmine, like RSpec, is actually a DSL.  It reads easier [at least, it reads we
 
 ### A birds-eye view of the NJasmine test language
 
-Like Jasmine, NJasmine supports the describe() and it() test constructs.
+Like Jasmine, NJasmine supports the describe() and it() test constructs.  Most test constructs in NJasmine have synonyms which are functionally equivalent but allow the test author to express different semantics.  For instance, one can using when() or given() in place of describe() to distinguish whether something is part of test setup or the test itself.  Some synonyms do affect the test name as well, for instance describe("when foo",...) will create a test with the same name as when("foo",...).
 
-Arrange can be carried out with beforeEach(), afterEach(), beforeAll() and afterAll().  
-arrange() and cleanup() behave the same as beforeEach() and afterEach().  
-The setup arrange methods can return a value to be used during the test.  
-If a setup method returns a value that supports IDisposeable, the value is dispose()d when it leaves scope.
+Arrange operations can be carried out with beforeEach(), afterEach(), beforeAll() and afterAll().  
+arrange() and act() are synonyms for beforeEach().
+beforeAll(), beforeEach() and synonyms can return a value which will be passed on to the test.  If the value returned supports IDisposeable, the value is dispose()d when it leaves scope.
+cleanup() is a synonym for afterEach().
 
-For given/when/then style tests, given() and when() behave like describe().  Likewise, then() behaves like it().
+For given/when/then style tests, given() and when() are synonyms for describe().  Likewise, then() is a synonym for it().
 
 Assertions can be expressed as expect(), expectEventually() or waitUntil().  expect() checks the assertion immediately.  expectEventually() and waitUntil() will recheck the assertion until it passes or times out.
 
