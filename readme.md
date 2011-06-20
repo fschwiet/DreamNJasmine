@@ -49,6 +49,8 @@ Unlike Jasmine or RSpec, in NJasmine each level of scope for a test runs for eve
 
 If you would like to reuse test setup code made for NUnit, consider importNUnit<>().  importNUnit<>() supports classes that use [SetUp], [TestFixtureSetUp], [TearDown] or [TestFixtureTeardown].  NJasmine will let you include multiple setup fixtures in the same specification.
 
+Tests can be categorized using withCategory(<name>).  The NUnit test runners allow you to exclude or include tests by category.
+
 You can use existing NUnit test attributes [RequiresSTA] and [Explict] with the GivenWhenThenFixture.
 
 ### Getting started
