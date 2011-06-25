@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NJasmine")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An NUnit extension to support BDD style testing with a DSL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Frank Schwieterman")]
 [assembly: AssemblyProduct("NJasmine")]

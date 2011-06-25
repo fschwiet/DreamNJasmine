@@ -14,6 +14,8 @@ properties {
     $integrationTestRunPattern = "*"
 }
 
+import-module .\tools\PSUpdateXml.psm1
+
 task default -depends AllTests
 
 task Build {
@@ -23,8 +25,6 @@ task Build {
     }
     
     if (gci $base_dir "obj.build" -rec) {
-        $global:p = (join-path $base_dir obj.build)
-        "removing $base_dir obj.build" | write-host -fore green
         
         #gci $base_dir "obj.build" -rec | rm  -recurse  #fails in VS Nuget console...
 
@@ -278,8 +278,32 @@ task Install -depends Build_2_5_10 {
     cp (join-path "$base_dir\build_2_5_10\" PowerAssert.dll) $target
 }
 
-task BuildNuget -depends Build_2_5_10 {
-    
-    #nuget spec 
+task BuildNuget -depends Build {
+
+    $old = pwd
+    cd $buildDir
+
+    ..\tools\nuget.exe spec -a "NJasmine.dll"
+
+    update-xml "NJasmine.nuspec" {
+
+        add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
+
+        set-xml -exactlyOnce "//ns:owners" "fschwiet"
+
+        set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
+        set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
+        remove-xml -exactlyOnce "//ns:iconUrl"
+        set-xml -exactlyOnce "//ns:tags" "BDD, NUnit"
+
+        set-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+    }
+
+    copy-item "NJasmine.nuspec" "NJasmine.nuspec.prepack"
+
+    ..\tools\nuget pack "NJasmine.nuspec"
+
+    cd $old
 }
+
 
