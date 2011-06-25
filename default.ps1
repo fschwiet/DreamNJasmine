@@ -2,7 +2,7 @@
 properties {
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
-    $packageDir = "$base_dir\package\"
+    $zipsDir = "$base_dir\zips\"
 
     $NUnitLibPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\lib"
     $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.5.9.10348\bin\net-2.0\framework"
@@ -223,20 +223,20 @@ task Build_2_6_0 {
     invoke-psake -buildFile default.ps1 -taskList @("AllTests") -properties @{ buildDir=$buildDir; NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}    
 }
 
-task CleanPackages {
+task CleanZips {
 
-    if (test-path $packageDir) {
-        rm $packageDir -recurse
+    if (test-path $zipsDir) {
+        rm $zipsDir -recurse
     }
 
-    $null = mkdir $packageDir
+    $null = mkdir $zipsDir
 }
 
-task PackageAll -depends CleanPackages, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
+task ZipAll -depends CleanZips, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
     $script:packages.GetEnumerator() | % {
 
-        $zipFile = (join-path $packageDir $_.Key)
+        $zipFile = (join-path $zipsDir $_.Key)
         $buildResult = $_.Value;
 
         "packaging '$zipFile' from $buildResult"
@@ -267,5 +267,10 @@ task Install -depends Build_2_5_10 {
 
     cp (join-path "$base_dir\build_2_5_10\" NJasmine.dll) $target
     cp (join-path "$base_dir\build_2_5_10\" PowerAssert.dll) $target
+}
+
+task BuildNuget -depends Build_2_5_10 {
+    
+    #nuget spec 
 }
 
