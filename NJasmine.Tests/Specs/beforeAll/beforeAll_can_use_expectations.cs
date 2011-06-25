@@ -11,7 +11,7 @@ namespace NJasmineTests.Specs.beforeAll
 
 param ($consoleOutput, $xmlFile);
 
-import-module .\lib\PSUpdateXML\PSUpdateXML.psm1
+import-module .\tools\PSUpdateXML.psm1
 
 update-xml $xmlFile {
 

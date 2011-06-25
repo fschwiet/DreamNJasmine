@@ -148,7 +148,7 @@ function append-xml([string] $xpath,
     [switch]$atleastonce = $false, 
     [switch]$atmostonce = $false) {
 
-    $nodes = @($currentNode.SelectNodes($xpath))
+    $nodes = @($currentNode.SelectNodes($xpath, $currentNamespaceManager))
      
     check-quantifier-against-nodes $nodes $exactlyonce $atleastonce $atmostonce
 
@@ -168,7 +168,7 @@ function for-xml([string] $xpath,
     $originalNode = $currentNode
     
     try {
-        $nodes = @($currentNode.SelectNodes($xpath))
+        $nodes = @($currentNode.SelectNodes($xpath, $currentNamespaceManager))
 
         check-quantifier-against-nodes $nodes $exactlyonce $atleastonce $atmostonce
 
