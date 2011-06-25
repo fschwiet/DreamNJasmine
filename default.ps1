@@ -278,10 +278,10 @@ task Install -depends Build_2_5_10 {
     cp (join-path "$base_dir\build_2_5_10\" PowerAssert.dll) $target
 }
 
-task BuildNuget -depends Build {
+task BuildNuget -depends Build_2_5_10 {
 
     $old = pwd
-    cd $buildDir
+    cd "build_2_5_10"
 
     ..\tools\nuget.exe spec -a "NJasmine.dll"
 
