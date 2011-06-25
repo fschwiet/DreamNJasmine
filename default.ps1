@@ -22,7 +22,16 @@ task Build {
         rmdir $buildDir -recurse
     }
     
-    gci $base_dir "obj.build" -rec | rm -recurse
+    if (gci $base_dir "obj.build" -rec) {
+        $global:p = (join-path $base_dir obj.build)
+        "removing $base_dir obj.build" | write-host -fore green
+        
+        #gci $base_dir "obj.build" -rec | rm  -recurse  #fails in VS Nuget console...
+
+        foreach($dir in (gci $base_dir "obj.build" -rec)) {
+            $dir | rm -rec
+        }
+    }
 
     $v4_net_version = (ls "$env:windir\Microsoft.NET\Framework\v4.0*").Name
     exec { &"C:\Windows\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe" "$sln_file" /p:BaseIntermediateOutputPath="obj.build\" /p:OutDir="$buildDir" /p:Configuration="$msbuild_Configuration" /p:NUnitLibPath="$NUnitLibPath" /p:NUnitFrameworkPath="$NUnitFrameworkPath" }
