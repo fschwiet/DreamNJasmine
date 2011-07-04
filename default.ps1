@@ -280,10 +280,19 @@ task Install -depends Build_2_5_10 {
 
 task BuildNuget -depends Build_2_5_10 {
 
-    $old = pwd
-    cd "build_2_5_10"
+    $build = "$base_dir\build_2_5_10"
+    $nugetTarget = "$base_dir\build_2_5_10\nuget"
 
-    ..\tools\nuget.exe spec -a "NJasmine.dll"
+    $null = mkdir "$nugetTarget\lib\"
+
+    cp "$build\NJasmine.dll" "$nugetTarget\lib\"
+    cp "$build\NJasmine.pdb" "$nugetTarget\lib\"
+    cp "$base_dir\lib\PackageDependencies\*" $build
+
+    $old = pwd
+    cd $nugetTarget
+
+    ..\..\tools\nuget.exe spec -a ".\lib\NJasmine.dll"
 
     update-xml "NJasmine.nuspec" {
 
@@ -296,12 +305,12 @@ task BuildNuget -depends Build_2_5_10 {
         remove-xml -exactlyOnce "//ns:iconUrl"
         set-xml -exactlyOnce "//ns:tags" "BDD, NUnit"
 
-        set-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+        set-xml -exactlyOnce "//ns:dependencies" ""
+        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
     }
 
-    copy-item "NJasmine.nuspec" "NJasmine.nuspec.prepack"
-
-    ..\tools\nuget pack "NJasmine.nuspec"
+    ..\..\tools\nuget pack "NJasmine.nuspec"
 
     cd $old
 }
