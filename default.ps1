@@ -284,10 +284,11 @@ task BuildNuget -depends Build_2_5_10 {
     $nugetTarget = "$base_dir\build_2_5_10\nuget"
 
     $null = mkdir "$nugetTarget\lib\"
+    $null = mkdir "$nugetTarget\tools\"
 
     cp "$build\NJasmine.dll" "$nugetTarget\lib\"
     cp "$build\NJasmine.pdb" "$nugetTarget\lib\"
-    cp "$base_dir\lib\PackageDependencies\*" $build
+    cp "$base_dir\nuget.install.ps1" "$nugetTarget\tools\install.ps1"
 
     $old = pwd
     cd $nugetTarget
