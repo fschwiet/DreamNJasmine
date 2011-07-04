@@ -1,5 +1,8 @@
 
 properties {
+
+    $version = "0.1.0"
+
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
     $zipsDir = "$base_dir\zips\"
@@ -14,11 +17,36 @@ properties {
     $integrationTestRunPattern = "*"
 }
 
+. .\psake_ext.ps1
 import-module .\tools\PSUpdateXml.psm1
 
 task default -depends AllTests
 
-task Build {
+task GenerateAssemblyInfo {
+	
+	$projectFiles = ls -path $base_dir -include *.csproj -recurse
+
+    $projectFiles | write-host
+	foreach($projectFile in $projectFiles) {
+		
+		$projectDir = [System.IO.Path]::GetDirectoryName($projectFile)
+		$projectName = [System.IO.Path]::GetFileName($projectDir)
+		$asmInfo = [System.IO.Path]::Combine($projectDir, [System.IO.Path]::Combine("Properties", "AssemblyInfo.cs"))
+				
+		Generate-Assembly-Info `
+			-file $asmInfo `
+			-title "$projectName $version.0" `
+			-description "An extension for NUnit supporting a DSL for Given/when/then type tests." `
+			-company "n/a" `
+			-product "NJasmine $version.0" `
+			-version "$version.0" `
+			-fileversion "$version.0" `
+			-copyright "Copyright © Frank Schwieterman 2010-2011" `
+			-clsCompliant "false"
+	}
+}
+
+task Build -depends GenerateAssemblyInfo {
 
     if (test-path $buildDir) {
         rmdir $buildDir -recurse
@@ -299,6 +327,7 @@ task BuildNuget -depends Build_2_5_10 {
 
         add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
 
+        set-xml -exactlyOnce "//ns:version" "$version.0"
         set-xml -exactlyOnce "//ns:owners" "fschwiet"
 
         set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
