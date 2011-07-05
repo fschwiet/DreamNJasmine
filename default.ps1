@@ -36,7 +36,7 @@ task GenerateAssemblyInfo {
 		Generate-Assembly-Info `
 			-file $asmInfo `
 			-title "$projectName $version.0" `
-			-description "An extension for NUnit supporting a DSL for Given/when/then type tests." `
+			-description "An extension for NUnit to allow writing given/when/then type tests." `
 			-company "n/a" `
 			-product "NJasmine $version.0" `
 			-version "$version.0" `
