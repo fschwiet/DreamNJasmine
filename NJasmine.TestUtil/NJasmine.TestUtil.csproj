@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NJasmineTestLoader</RootNamespace>
-    <AssemblyName>NJasine.TestLoader</AssemblyName>
+    <AssemblyName>NJasmine.TestUtil</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

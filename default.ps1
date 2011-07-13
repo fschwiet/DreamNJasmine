@@ -80,7 +80,7 @@ task IntegrationTests {
 
     $testResults = @();
 
-    $tests = ([xml](& "$buildDir\NJasine.TestLoader.exe")).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
+    $tests = ([xml](& "$buildDir\NJasmine.TestUtil.exe")).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
 
     $global:t = $tests;
 
