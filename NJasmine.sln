@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6ADCDDDC-A666-471C-932A-B8039D568798}"
 	ProjectSection(SolutionItems) = preProject
 		default.ps1 = default.ps1
+		nuget.install.ps1 = nuget.install.ps1
 		readme.md = readme.md
 	EndProjectSection
 EndProject

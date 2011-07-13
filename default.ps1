@@ -1,5 +1,8 @@
 
 properties {
+
+    $version = "0.1.0"
+
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
     $zipsDir = "$base_dir\zips\"
@@ -14,11 +17,36 @@ properties {
     $integrationTestRunPattern = "*"
 }
 
+. .\psake_ext.ps1
 import-module .\tools\PSUpdateXml.psm1
 
 task default -depends AllTests
 
-task Build {
+task GenerateAssemblyInfo {
+	
+	$projectFiles = ls -path $base_dir -include *.csproj -recurse
+
+    $projectFiles | write-host
+	foreach($projectFile in $projectFiles) {
+		
+		$projectDir = [System.IO.Path]::GetDirectoryName($projectFile)
+		$projectName = [System.IO.Path]::GetFileName($projectDir)
+		$asmInfo = [System.IO.Path]::Combine($projectDir, [System.IO.Path]::Combine("Properties", "AssemblyInfo.cs"))
+				
+		Generate-Assembly-Info `
+			-file $asmInfo `
+			-title "$projectName $version.0" `
+			-description "An extension for NUnit to allow writing given/when/then type tests." `
+			-company "n/a" `
+			-product "NJasmine $version.0" `
+			-version "$version.0" `
+			-fileversion "$version.0" `
+			-copyright "Copyright © Frank Schwieterman 2010-2011" `
+			-clsCompliant "false"
+	}
+}
+
+task Build -depends GenerateAssemblyInfo {
 
     if (test-path $buildDir) {
         rmdir $buildDir -recurse
@@ -280,15 +308,26 @@ task Install -depends Build_2_5_10 {
 
 task BuildNuget -depends Build_2_5_10 {
 
-    $old = pwd
-    cd "build_2_5_10"
+    $build = "$base_dir\build_2_5_10"
+    $nugetTarget = "$base_dir\build_2_5_10\nuget"
 
-    ..\tools\nuget.exe spec -a "NJasmine.dll"
+    $null = mkdir "$nugetTarget\lib\"
+    $null = mkdir "$nugetTarget\tools\"
+
+    cp "$build\NJasmine.dll" "$nugetTarget\lib\"
+    cp "$build\NJasmine.pdb" "$nugetTarget\lib\"
+    cp "$base_dir\nuget.install.ps1" "$nugetTarget\tools\install.ps1"
+
+    $old = pwd
+    cd $nugetTarget
+
+    ..\..\tools\nuget.exe spec -a ".\lib\NJasmine.dll"
 
     update-xml "NJasmine.nuspec" {
 
         add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
 
+        set-xml -exactlyOnce "//ns:version" "$version.0"
         set-xml -exactlyOnce "//ns:owners" "fschwiet"
 
         set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
@@ -296,10 +335,12 @@ task BuildNuget -depends Build_2_5_10 {
         remove-xml -exactlyOnce "//ns:iconUrl"
         set-xml -exactlyOnce "//ns:tags" "BDD, NUnit"
 
-        set-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+        set-xml -exactlyOnce "//ns:dependencies" ""
+        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
     }
 
-    ..\tools\nuget pack "NJasmine.nuspec"
+    ..\..\tools\nuget pack "NJasmine.nuspec"
 
     cd $old
 }
