@@ -1,14 +1,12 @@
-﻿using NJasmine;
+﻿using System;
+using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
     [Explicit]
-    [RunExternal(false, 
-        ExpectedStrings = new string[] {
-                "Test Error : NJasmineTests.Specs.cannot_reenter_during_beforeEach",
-                "System.InvalidOperationException : Called it() within beforeEach()."})]
-    public class cannot_reenter_during_beforeEach : GivenWhenThenFixture
+    public class cannot_reenter_during_beforeEach : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -20,6 +18,14 @@ namespace NJasmineTests.Specs
             it("has a valid test", delegate()
             {
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_beforeEach").thatErrors()
+                .withMessage("System.InvalidOperationException : Called it() within beforeEach().");
         }
     }
 }

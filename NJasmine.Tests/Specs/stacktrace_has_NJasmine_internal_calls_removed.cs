@@ -3,26 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
     [Explicit]
-    [RunExternal(false, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\tools\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    $stackTrace = get-xml -exactlyonce ""//stack-trace"";
-    
-    assert (-not ($stackTrace -like '*NJasmine.Core*')) 'Expected NJasmine.Core stack elements to be removed';
-
-}
-")]
-    public class stacktrace_has_NJasmine_internal_calls_removed : GivenWhenThenFixture
+    public class stacktrace_has_NJasmine_internal_calls_removed : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -36,6 +23,13 @@ update-xml $xmlFile {
                     });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasStackTracesThat(s => !s.Contains("NJasmine.Core"));
         }
     }
 }

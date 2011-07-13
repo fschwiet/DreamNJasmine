@@ -1,21 +1,10 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, ExpectedTraceSequence = @"
-creating some_observable_A
-creating some_observable_B
-creating some_observable_C
-creating some_observable_A
-creating some_observable_B
-creating some_observable_D
-creating some_observable_A
-creating some_observable_B
-creating some_observable_D
-creating some_observable_E
-creating some_observable_F
-")]
-    public class suite_arranging_nondisposables : GivenWhenThenFixtureTracingToConsole
+    public class suite_arranging_nondisposables : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public class ObservableNondisposable
         {
@@ -80,6 +69,25 @@ creating some_observable_F
                     });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.containsTrace(@"
+creating some_observable_A
+creating some_observable_B
+creating some_observable_C
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+creating some_observable_E
+creating some_observable_F
+");
         }
     }
 }

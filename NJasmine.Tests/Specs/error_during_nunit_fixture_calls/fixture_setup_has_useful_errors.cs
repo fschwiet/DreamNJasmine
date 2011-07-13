@@ -1,15 +1,12 @@
 ﻿using System;
 using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs.error_during_nunit_fixture_calls
 {
-    [Explicit, RunExternal(false, ExpectedStrings = new []
-    {
-        "NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text",
-        "System.TimeZoneNotFoundException : no time!"
-    })]
-    public class fixture_setup_has_useful_errors : GivenWhenThenFixture
+    [Explicit]
+    public class fixture_setup_has_useful_errors : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -33,6 +30,14 @@ namespace NJasmineTests.Specs.error_during_nunit_fixture_calls
             {
                 throw new TimeZoneNotFoundException("no time!");
             }
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+            testResult.hasTest("NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text")
+                .withMessage("System.TimeZoneNotFoundException : no time!")
+                .thatFailsInAnUnspecifiedManner();
         }
     }
 }

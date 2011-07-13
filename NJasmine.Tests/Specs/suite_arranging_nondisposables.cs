@@ -1,33 +1,10 @@
 ﻿using System;
 using NJasmineTests.Core;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, ExpectedTraceSequence = @"
-creating some_observable_A
-creating some_observable_B
-creating some_observable_C
-disposing some_observable_C
-disposing some_observable_B
-disposing some_observable_A
-creating some_observable_A
-creating some_observable_B
-creating some_observable_D
-disposing some_observable_D
-disposing some_observable_B
-disposing some_observable_A
-creating some_observable_A
-creating some_observable_B
-creating some_observable_D
-creating some_observable_E
-creating some_observable_F
-disposing some_observable_F
-disposing some_observable_E
-disposing some_observable_D
-disposing some_observable_B
-disposing some_observable_A
-")]
-    public class suite_arranging_disposables : GivenWhenThenFixtureTracingToConsole
+    public class suite_arranging_disposables : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public class ObservableDisposable : IDisposable
         {
@@ -94,6 +71,36 @@ disposing some_observable_A
                     });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.containsTrace(@"
+creating some_observable_A
+creating some_observable_B
+creating some_observable_C
+disposing some_observable_C
+disposing some_observable_B
+disposing some_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
+creating some_observable_A
+creating some_observable_B
+creating some_observable_D
+creating some_observable_E
+creating some_observable_F
+disposing some_observable_F
+disposing some_observable_E
+disposing some_observable_D
+disposing some_observable_B
+disposing some_observable_A
+");
         }
     }
 }

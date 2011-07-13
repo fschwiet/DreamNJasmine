@@ -3,25 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs.beforeAll
 {
-    [Explicit, RunExternal(false, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\tools\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works'][@result='Success']"" 
-
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails'][@result='Error']"" 
-
-}
-")]
-    public class beforeAll_can_use_expectations : GivenWhenThenFixture
+    [Explicit]
+    public class beforeAll_can_use_expectations : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -47,6 +35,13 @@ update-xml $xmlFile {
 
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works").thatSucceeds();
+            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails").thatErrors();
         }
     }
 }

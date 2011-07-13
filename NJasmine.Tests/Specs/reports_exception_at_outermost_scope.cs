@@ -1,12 +1,12 @@
-﻿using NJasmine;
+﻿using System;
+using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(false, ExpectedStrings = new []{
-            "Test Failure : NJasmineTests.Specs.reports_exception_at_outermost_scope",
-            "Attempted to divide by zero."})]
-    public class reports_exception_at_outermost_scope : GivenWhenThenFixture
+    [Explicit]
+    public class reports_exception_at_outermost_scope : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -23,6 +23,14 @@ namespace NJasmineTests.Specs
 
             int j = 5;
             int i = 1 / (j - 5);
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.reports_exception_at_outermost_scope").thatFails()
+                .withMessage("Attempted to divide by zero.");
         }
     }
 }

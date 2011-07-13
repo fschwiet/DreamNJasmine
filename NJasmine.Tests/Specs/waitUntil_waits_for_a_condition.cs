@@ -2,28 +2,13 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
     [Explicit]
-    [RunExternal(false, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\tools\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left'][@result='Success']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left'][@result='Error']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times'][@result='Success']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times'][@result='Success']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery'][@result='Error']""
-    $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery'][@result='Error']""
-}
-")]
-    public class waitUntil_waits_for_a_condition : GivenWhenThenFixture
+    public class waitUntil_waits_for_a_condition : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public int WaitsLeft;
 
@@ -87,6 +72,29 @@ update-xml $xmlFile {
                     });
                 }
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left")
+                .thatSucceeds();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left")
+                .thatErrors();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times")
+                .thatSucceeds();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times")
+                .thatSucceeds();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery")
+                .thatErrors();
+
+            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery")
+                .thatErrors();
         }
     }
 }

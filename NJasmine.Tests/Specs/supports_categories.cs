@@ -1,47 +1,10 @@
 ﻿using System;
 using NJasmine;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\tools\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    function assertShouldHaveCategories($typeName, $name, $expectedCategories) {
-
-        $nonempty = $expectedCategories.length -gt 0
-
-        for-xml -exactlyOnce:$nonempty ""//$typeName[@name='$name']/categories"" {
-
-            foreach($expectedCategory in $expectedCategories) {
-                Assert ((get-xml ""category[@name='$expectedCategory']"") -ne  $null) `
-                    ""Expected '$test' to have category $expectedCategory""
-            }
-
-            for-xml ""category"" {
-
-                $otherCategoryName = get-xml ""@name""
-                Assert ($expectedCategories -contains $otherCategoryName) ""Expected '$test' to NOT have category $otherCategoryName""
-            }
-        }
-    }
-
-    assertShouldHaveCategories 'test-suite' 'when using category Foo then Bar' @()
-
-    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo' @(""Foo"")
-
-    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have For and Bar' @('Foo', 'Bar')
-
-    assertShouldHaveCategories 'test-suite' 'when in a nested block and using a category' @('Foo', 'Bar')
-
-    assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz' @('Baz')
-}
-")]
-    public class supports_categories : GivenWhenThenFixture
+    public class supports_categories : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public class Categories
         {
@@ -71,6 +34,28 @@ update-xml $xmlFile {
                     then("the test only has category Baz", delegate { });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.hasSuite("when using category Foo then Bar").withCategories();
+
+            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
+                .withCategories("Foo");
+
+            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
+                .withCategories("Foo");
+
+            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have For and Bar")
+                .withCategories("Foo", "Bar");
+
+            testResult.hasSuite("when in a nested block and using a category")
+                .withCategories("Foo", "Bar");
+
+            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz")
+                .withCategories("Baz");
         }
     }
 }

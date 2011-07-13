@@ -1,12 +1,12 @@
-﻿using NJasmine;
+﻿using System;
+using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(false, ExpectedStrings = new[]{
-        "Test Error : NJasmineTests.Specs.cannot_reenter_during_it",
-        "System.InvalidOperationException : Called it() within it()."})]
-    public class cannot_reenter_during_it : GivenWhenThenFixture
+    [Explicit]
+    public class cannot_reenter_during_it : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -14,6 +14,14 @@ namespace NJasmineTests.Specs
             {
                 it("inner test", delegate() { });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_it").thatFailsInAnUnspecifiedManner()
+                .withMessage("System.InvalidOperationException : Called it() within it().");
         }
     }
 }

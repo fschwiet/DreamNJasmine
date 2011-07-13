@@ -1,18 +1,12 @@
 ﻿using System;
 using NJasmine;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
     [Explicit]
-    [RunExternal(false,
-        ExpectedStrings = new string[] {
-                "Test Error : NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail",
-                "Test Error : NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail",
-                "System.InvalidOperationException : Called it() within arrange().",
-                "System.InvalidOperationException : Called it() within arrange()."
-        })]
-    public class cannot_reenter_during_arrange : GivenWhenThenFixture
+    public class cannot_reenter_during_arrange : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -52,6 +46,19 @@ namespace NJasmineTests.Specs
             {
                 _action();
             }
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail")
+                .thatErrors()
+                .withMessage("System.InvalidOperationException : Called it() within arrange().");
+
+            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail")
+                .thatErrors()
+                .withMessage("System.InvalidOperationException : Called it() within arrange().");
         }
     }
 }

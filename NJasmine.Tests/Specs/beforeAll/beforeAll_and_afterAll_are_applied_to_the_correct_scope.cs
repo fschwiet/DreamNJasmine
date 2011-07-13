@@ -1,23 +1,10 @@
 ﻿using System;
 using NJasmineTests.Core;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs.beforeAll
 {
-    [RunExternal(true, ExpectedTraceSequence = @"
-BEFORE ALL
-first test
-SECOND BEFORE ALL
-INNER BEFORE ALL
-second test
-third test
-INNER AFTER ALL
-DISPOSING INNER BEFORE ALL
-SECOND AFTER ALL
-DISPOSING SECOND BEFORE ALL
-AFTER ALL
-DISPOSING BEFORE ALL
-")]
-    public class beforeAll_and_afterAll_are_applied_to_the_correct_scope : GivenWhenThenFixtureTracingToConsole
+    public class beforeAll_and_afterAll_are_applied_to_the_correct_scope : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public class RunOnDispose : IDisposable
         {
@@ -100,6 +87,25 @@ DISPOSING BEFORE ALL
             {
                 Trace("FINAL AFTER ALL");
             }); 
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+            testResult.containsTrace(@"
+BEFORE ALL
+first test
+SECOND BEFORE ALL
+INNER BEFORE ALL
+second test
+third test
+INNER AFTER ALL
+DISPOSING INNER BEFORE ALL
+SECOND AFTER ALL
+DISPOSING SECOND BEFORE ALL
+AFTER ALL
+DISPOSING BEFORE ALL
+");
         }
     }
 }

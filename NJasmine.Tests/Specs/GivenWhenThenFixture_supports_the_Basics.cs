@@ -1,17 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NJasmine;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, ExpectedTestNames = new[]
-    {
-        "NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected", 
-        "NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then another result is expected",
-        "NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then yet another result is expected",
-    })]
-
-
-    public class GivenWhenThenFixture_supports_the_Basics : GivenWhenThenFixture
+    public class GivenWhenThenFixture_supports_the_Basics : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -68,6 +62,15 @@ namespace NJasmineTests.Specs
                     });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected");
+            testResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then another result is expected");
+            testResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then yet another result is expected");
         }
     }
 }

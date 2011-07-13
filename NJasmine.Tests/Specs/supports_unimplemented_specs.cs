@@ -1,11 +1,10 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, ExpectedStrings = new string[] {
-"1) NotRunnable : NJasmineTests.Specs.supports_unimplemented_specs, an unimplemented test() block",
-"2) NotRunnable : NJasmineTests.Specs.supports_unimplemented_specs, nested too of course, an unimplemented test() block" })]
-    public class supports_unimplemented_specs : GivenWhenThenFixtureTracingToConsole
+    public class supports_unimplemented_specs : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -17,6 +16,15 @@ namespace NJasmineTests.Specs
             {
                 it("an unimplemented test() block");
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, an unimplemented test() block").thatIsNotRunnable();
+
+            testResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, nested too of course, an unimplemented test() block").thatIsNotRunnable();
         }
     }
 }

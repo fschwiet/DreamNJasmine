@@ -1,4 +1,6 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
@@ -41,43 +43,7 @@ namespace NJasmineTests.Specs
     {
     }
 
-    [RunExternal(true, ExpectedTraceSequence = @"
-test started, before include of a
-FixtureSetup some_Nunit_fixture_a
-after include of a
-first describe, before include of b
-FixtureSetup some_Nunit_fixture_b
-after include of b
-test started, before include of a
-SetUp some_Nunit_fixture_a
-after include of a
-first describe, before include of b
-SetUp some_Nunit_fixture_b
-after include of b
-first test
-TearDown some_Nunit_fixture_b
-TearDown some_Nunit_fixture_a
-before include of c
-FixtureSetup some_Nunit_fixture_c
-after include of c
-test started, before include of a
-SetUp some_Nunit_fixture_a
-after include of a
-first describe, before include of b
-SetUp some_Nunit_fixture_b
-after include of b
-before include of c
-SetUp some_Nunit_fixture_c
-after include of c
-second test test
-TearDown some_Nunit_fixture_c
-TearDown some_Nunit_fixture_b
-TearDown some_Nunit_fixture_a
-FixtureTearDown some_Nunit_fixture_c
-FixtureTearDown some_Nunit_fixture_b
-FixtureTearDown some_Nunit_fixture_a
-")]
-    public class imports_NUnit_fixture : GivenWhenThenFixtureTracingToConsole
+    public class imports_NUnit_fixture : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -117,6 +83,48 @@ FixtureTearDown some_Nunit_fixture_a
                     });
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.containsTrace(@"
+test started, before include of a
+FixtureSetup some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+FixtureSetup some_Nunit_fixture_b
+after include of b
+test started, before include of a
+SetUp some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp some_Nunit_fixture_b
+after include of b
+first test
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+before include of c
+FixtureSetup some_Nunit_fixture_c
+after include of c
+test started, before include of a
+SetUp some_Nunit_fixture_a
+after include of a
+first describe, before include of b
+SetUp some_Nunit_fixture_b
+after include of b
+before include of c
+SetUp some_Nunit_fixture_c
+after include of c
+second test test
+TearDown some_Nunit_fixture_c
+TearDown some_Nunit_fixture_b
+TearDown some_Nunit_fixture_a
+FixtureTearDown some_Nunit_fixture_c
+FixtureTearDown some_Nunit_fixture_b
+FixtureTearDown some_Nunit_fixture_a
+");
         }
     }
 

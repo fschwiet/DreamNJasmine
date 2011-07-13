@@ -1,19 +1,11 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(true, ExpectedTraceSequence = @"
-First setup
-First test
-First cleanup
-First setup
-Second setup
-Second test
-Second cleanup
-First cleanup
-")]
-    public class arrange_after_test_is_not_included_in_prior_test : GivenWhenThenFixtureTracingToConsole
+    public class arrange_after_test_is_not_included_in_prior_test : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -28,6 +20,21 @@ First cleanup
             afterEach(() => Trace("Second cleanup"));
 
             it("runs another test", () => Trace("Second test"));
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+            testResult.containsTrace(@"
+First setup
+First test
+First cleanup
+First setup
+Second setup
+Second test
+Second cleanup
+First cleanup
+");
         }
     }
 }

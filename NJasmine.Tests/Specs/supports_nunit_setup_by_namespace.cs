@@ -1,17 +1,14 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
     namespace WithNamespaceSetup
     {
-        [RunExternal(true, ExpectedTraceSequence = @"
-running test 1
-running test 2
-TearDown NamespaceSetupB
-")]
         [Explicit("Stateful nature of this test prevents it from running more than once in the GUI runner")]
-        public class supports_nunit_setup_by_namespace : GivenWhenThenFixtureTracingToConsole
+        public class supports_nunit_setup_by_namespace : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
         {
             public override void Specify()
             {
@@ -32,6 +29,17 @@ TearDown NamespaceSetupB
                     expect(() => NamespaceSetupA.SetupCount == 0);
                     expect(() => NamespaceSetupB.SetupCount == 1);
                 });
+            }
+
+            public void Verify(TestResult testResult)
+            {
+                testResult.succeeds();
+
+                testResult.containsTrace(@"
+running test 1
+running test 2
+TearDown NamespaceSetupB
+");
             }
         }
 

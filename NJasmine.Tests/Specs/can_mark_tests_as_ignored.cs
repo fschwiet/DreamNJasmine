@@ -1,36 +1,10 @@
-﻿using NJasmine;
+﻿using System;
+using NJasmine;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, VerificationScript = @"
-
-param ($consoleOutput, $xmlFile);
-
-import-module .\tools\PSUpdateXML.psm1
-
-update-xml $xmlFile {
-
-    for-xml -exactlyOnce ""//test-suite[@name='given an outer block']"" {
-        Assert ((get-xml ""@result"") -eq 'Inconclusive') 'Expected first outer block to be inconclusive';
-
-        for-xml ""./results"" {
-            Assert $false 'Expected first outer block to not have any subresults'
-        }
-    }
-    
-    for-xml -exactlyOnce ""//test-suite[@name='when ignore is set after a test']"" {
-        Assert ((get-xml ""@result"") -eq 'Success') 'Expected when statement with non-ignored test to have succeeded.';
-
-        for-xml -exactlyOnce ""./results/test-case"" {
-            Assert ((get-xml ""@name"") -eq 'NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs') `
-                'Expected when statement with non-ignored test to contain the non-ignored test'
-
-            Assert ((get-xml ""@result"") -eq 'Success') 'Expected non-ignored test to have passed';
-        }
-    }
-}
-")]
-    public class can_mark_tests_as_ignored : GivenWhenThenFixture
+    public class can_mark_tests_as_ignored : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -58,6 +32,18 @@ update-xml $xmlFile {
                 {
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+
+            testResult.hasSuite("given an outer block").thatsInconclusive().thatHasNoResults();
+
+            testResult.hasSuite("when ignore is set after a test").thatSucceeds()
+                .thatHasOneResult()
+                .ShouldHaveTest("NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs")
+                .thatSucceeds();
         }
     }
 }

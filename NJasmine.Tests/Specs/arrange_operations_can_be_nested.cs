@@ -1,18 +1,10 @@
-﻿using NJasmineTests.Core;
+﻿using System;
+using NJasmineTests.Core;
+using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs
 {
-    [RunExternal(true, ExpectedTraceSequence = @"
-one
-two
-three
-four
--four
--three
--two
--one
-")]
-    public class arrange_operations_can_be_nested : GivenWhenThenFixtureTracingToConsole
+    public class arrange_operations_can_be_nested : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -56,6 +48,21 @@ four
                     afterEach(() => Trace("-four"));
                 });
             });
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.succeeds();
+            testResult.containsTrace(@"
+one
+two
+three
+four
+-four
+-three
+-two
+-one
+");
         }
     }
 }

@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Linq;
 using NJasmineTests.Core;
+using NJasmineTests.Export;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    [Explicit, RunExternal(false, ExpectedStrings = new [ ]
-    {
-        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test",
-        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2",
-        "Test Error : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3",
-        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test",
-        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2",
-        "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3",
-        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe",
-        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2",
-        "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3"
-    }
-)]
-    public class duplicate_test_names_are_fine : GivenWhenThenFixtureTracingToConsole
+    [Explicit]
+    public class duplicate_test_names_are_fine : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -58,6 +47,23 @@ namespace NJasmineTests.Specs
                     });
                 });
             }
+        }
+
+        public void Verify(TestResult testResult)
+        {
+            testResult.failed();
+
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test").thatErrors();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2").thatErrors();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3").thatErrors();
+
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test").thatIsNotRunnable();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2").thatIsNotRunnable();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3").thatIsNotRunnable();
+
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe").thatFails();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2").thatFails();
+            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3").thatFails();
         }
     }
 }
