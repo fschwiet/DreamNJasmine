@@ -30,7 +30,7 @@ update-xml $xmlFile {
 }
 
 ")]
-    public class beforeAll_doesnt_reexecute : GivenWhenThenFixture
+    public class beforeAll_doesnt_reexecute : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public static int TotalRuns = 0;
 
@@ -47,6 +47,11 @@ update-xml $xmlFile {
             it("then reports the test with the correct count", delegate { });
             it("then reports the test with the correct count", delegate { });
             it("then reports the test with the correct count", delegate { });
+        }
+
+        public void Verify(bool testPassed, string outputFile, string xmlOutputFile)
+        {
+            throw new NotImplementedException();
         }
     }
 }
