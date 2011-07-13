@@ -80,9 +80,5 @@ namespace NJasmine.Core
             }
             testResult.Success();
         }
-
-        public class TestFinishedException : Exception
-        {
-        }
     }
 }

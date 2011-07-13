@@ -45,7 +45,7 @@ namespace NJasmine.Core.Execution
             {
                 _runContext.whileInState(new ActState(_runContext, origin), action);
 
-                throw new NJasmineTestMethod.TestFinishedException();
+                throw new TestFinishedException();
             }
         }
 

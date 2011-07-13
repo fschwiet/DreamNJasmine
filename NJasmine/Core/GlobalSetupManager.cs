@@ -78,7 +78,7 @@ namespace NJasmine.Core
                     {
                         this._visitor.RunFixture(_fixtureFactory);
                     }
-                    catch (NJasmineTestMethod.TestFinishedException e)
+                    catch (TestFinishedException e)
                     {
                     }
                     finally

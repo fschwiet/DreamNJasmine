@@ -299,8 +299,6 @@ task BuildNuget -depends Build_2_5_10 {
         set-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
     }
 
-    copy-item "NJasmine.nuspec" "NJasmine.nuspec.prepack"
-
     ..\tools\nuget pack "NJasmine.nuspec"
 
     cd $old
