@@ -32,10 +32,10 @@ namespace NJasmineTests.Specs.error_during_nunit_fixture_calls
             }
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
-            testResult.hasTest("NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text")
+            fixtureResult.failed();
+            fixtureResult.hasTest("NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text")
                 .withMessage("System.TimeZoneNotFoundException : no time!")
                 .thatFailsInAnUnspecifiedManner();
         }

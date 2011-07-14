@@ -5,13 +5,13 @@ using System.Text;
 
 namespace NJasmineTests.Export
 {
-    public class TestResult
+    public class FixtureResult
     {
         private readonly bool _passed;
         private readonly string _output;
         private readonly string _xmlOutput;
 
-        public TestResult(bool passed, string output, string xmlOutput)
+        public FixtureResult(bool passed, string output, string xmlOutput)
         {
             _passed = passed;
             _output = output;

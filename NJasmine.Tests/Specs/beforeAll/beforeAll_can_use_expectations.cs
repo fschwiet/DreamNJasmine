@@ -37,11 +37,11 @@ namespace NJasmineTests.Specs.beforeAll
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works").thatSucceeds();
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails").thatErrors();
+            fixtureResult.failed();
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works").thatSucceeds();
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails").thatErrors();
         }
     }
 }

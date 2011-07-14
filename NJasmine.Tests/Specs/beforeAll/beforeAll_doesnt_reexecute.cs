@@ -25,20 +25,20 @@ namespace NJasmineTests.Specs.beforeAll
             it("then reports the test with the correct count", delegate { });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count")
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count")
                 .withMessage("Failed with TotalRuns: 1");
 
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`2")
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`2")
                 .withMessage("Failed with TotalRuns: 1");
 
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`3")
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`3")
                 .withMessage("Failed with TotalRuns: 1");
 
-            testResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`4")
+            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`4")
                 .withMessage("Failed with TotalRuns: 1");
         }
     }

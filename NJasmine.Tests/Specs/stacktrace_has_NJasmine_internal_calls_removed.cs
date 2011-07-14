@@ -25,11 +25,11 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasStackTracesThat(s => !s.Contains("NJasmine.Core"));
+            fixtureResult.hasStackTracesThat(s => !s.Contains("NJasmine.Core"));
         }
     }
 }

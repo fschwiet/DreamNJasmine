@@ -85,11 +85,11 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.containsTrace(@"
+            fixtureResult.containsTrace(@"
 test started, before include of a
 FixtureSetup some_Nunit_fixture_a
 after include of a

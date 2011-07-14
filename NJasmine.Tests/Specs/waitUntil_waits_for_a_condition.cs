@@ -74,26 +74,26 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left")
                 .thatSucceeds();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left")
                 .thatErrors();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times")
                 .thatSucceeds();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times")
                 .thatSucceeds();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery")
                 .thatErrors();
 
-            testResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery")
+            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery")
                 .thatErrors();
         }
     }

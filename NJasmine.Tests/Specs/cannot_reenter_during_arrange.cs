@@ -48,15 +48,15 @@ namespace NJasmineTests.Specs
             }
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail")
+            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail")
                 .thatErrors()
                 .withMessage("System.InvalidOperationException : Called it() within arrange().");
 
-            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail")
+            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail")
                 .thatErrors()
                 .withMessage("System.InvalidOperationException : Called it() within arrange().");
         }

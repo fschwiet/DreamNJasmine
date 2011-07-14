@@ -2,6 +2,6 @@
 {
     public interface INJasmineInternalRequirement
     {
-        void Verify(TestResult testResult);
+        void Verify(FixtureResult fixtureResult);
     }
 }

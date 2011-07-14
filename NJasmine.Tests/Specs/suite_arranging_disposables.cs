@@ -71,11 +71,11 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.containsTrace(@"
+            fixtureResult.containsTrace(@"
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C

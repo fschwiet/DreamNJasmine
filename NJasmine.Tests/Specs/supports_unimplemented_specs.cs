@@ -18,13 +18,13 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, an unimplemented test() block").thatIsNotRunnable();
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, an unimplemented test() block").thatIsNotRunnable();
 
-            testResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, nested too of course, an unimplemented test() block").thatIsNotRunnable();
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, nested too of course, an unimplemented test() block").thatIsNotRunnable();
         }
     }
 }

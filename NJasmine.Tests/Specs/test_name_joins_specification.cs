@@ -17,12 +17,12 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple test");
-            testResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple describe, simple test");
+            fixtureResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple test");
+            fixtureResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple describe, simple test");
         }
     }
 }

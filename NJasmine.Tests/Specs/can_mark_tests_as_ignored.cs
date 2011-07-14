@@ -34,13 +34,13 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.hasSuite("given an outer block").thatsInconclusive().thatHasNoResults();
+            fixtureResult.hasSuite("given an outer block").thatsInconclusive().thatHasNoResults();
 
-            testResult.hasSuite("when ignore is set after a test").thatSucceeds()
+            fixtureResult.hasSuite("when ignore is set after a test").thatSucceeds()
                 .thatHasOneResult()
                 .ShouldHaveTest("NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs")
                 .thatSucceeds();

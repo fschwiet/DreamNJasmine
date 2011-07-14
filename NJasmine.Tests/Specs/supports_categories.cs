@@ -36,25 +36,25 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
+            fixtureResult.succeeds();
 
-            testResult.hasSuite("when using category Foo then Bar").withCategories();
+            fixtureResult.hasSuite("when using category Foo then Bar").withCategories();
 
-            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
                 .withCategories("Foo");
 
-            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo")
                 .withCategories("Foo");
 
-            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have For and Bar")
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have For and Bar")
                 .withCategories("Foo", "Bar");
 
-            testResult.hasSuite("when in a nested block and using a category")
+            fixtureResult.hasSuite("when in a nested block and using a category")
                 .withCategories("Foo", "Bar");
 
-            testResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz")
+            fixtureResult.hasTest("NJasmineTests.Specs.supports_categories, when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz")
                 .withCategories("Baz");
         }
     }

@@ -25,11 +25,11 @@ namespace NJasmineTests.Specs
             it("last test", delegate() { });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.reports_exception_within_describe, broken describe").thatFails()
+            fixtureResult.hasTest("NJasmineTests.Specs.reports_exception_within_describe, broken describe").thatFails()
                 .withMessage("Attempted to divide by zero.");
         }
     }

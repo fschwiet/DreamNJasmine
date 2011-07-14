@@ -40,10 +40,10 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
-            testResult.containsTrace(@"
+            fixtureResult.failed();
+            fixtureResult.containsTrace(@"
 failure_in_setup_doesnt_prevent_cleanup_in_same_scope
 failure_in_setup_doesnt_prevent_cleanup");
         }

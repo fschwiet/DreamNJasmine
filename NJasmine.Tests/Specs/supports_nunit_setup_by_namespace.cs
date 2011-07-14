@@ -31,11 +31,11 @@ namespace NJasmineTests.Specs
                 });
             }
 
-            public void Verify(TestResult testResult)
+            public void Verify(FixtureResult fixtureResult)
             {
-                testResult.succeeds();
+                fixtureResult.succeeds();
 
-                testResult.containsTrace(@"
+                fixtureResult.containsTrace(@"
 running test 1
 running test 2
 TearDown NamespaceSetupB

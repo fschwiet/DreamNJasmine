@@ -89,10 +89,10 @@ namespace NJasmineTests.Specs.beforeAll
             }); 
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.succeeds();
-            testResult.containsTrace(@"
+            fixtureResult.succeeds();
+            fixtureResult.containsTrace(@"
 BEFORE ALL
 first test
 SECOND BEFORE ALL

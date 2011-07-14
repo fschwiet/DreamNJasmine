@@ -20,11 +20,11 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_beforeEach").thatErrors()
+            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_beforeEach").thatErrors()
                 .withMessage("System.InvalidOperationException : Called it() within beforeEach().");
         }
     }

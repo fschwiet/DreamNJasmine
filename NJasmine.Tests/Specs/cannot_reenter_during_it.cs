@@ -16,11 +16,11 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_it").thatFailsInAnUnspecifiedManner()
+            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_it").thatFailsInAnUnspecifiedManner()
                 .withMessage("System.InvalidOperationException : Called it() within it().");
         }
     }

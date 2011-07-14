@@ -49,21 +49,21 @@ namespace NJasmineTests.Specs
             }
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test").thatErrors();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2").thatErrors();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3").thatErrors();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test").thatErrors();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2").thatErrors();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3").thatErrors();
 
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test").thatIsNotRunnable();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2").thatIsNotRunnable();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3").thatIsNotRunnable();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test").thatIsNotRunnable();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2").thatIsNotRunnable();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3").thatIsNotRunnable();
 
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe").thatFails();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2").thatFails();
-            testResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3").thatFails();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe").thatFails();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2").thatFails();
+            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3").thatFails();
         }
     }
 }

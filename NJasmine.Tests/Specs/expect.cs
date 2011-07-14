@@ -31,13 +31,13 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(TestResult testResult)
+        public void Verify(FixtureResult fixtureResult)
         {
-            testResult.failed();
+            fixtureResult.failed();
 
-            testResult.hasTest("NJasmineTests.Specs.expect, can pass tests").thatSucceeds();
-            testResult.hasTest("NJasmineTests.Specs.expect, can fail tests").thatErrors();
-            testResult.hasTest("NJasmineTests.Specs.expect, expect can be called during discovery, doesnt prevent discovery").thatErrors();
+            fixtureResult.hasTest("NJasmineTests.Specs.expect, can pass tests").thatSucceeds();
+            fixtureResult.hasTest("NJasmineTests.Specs.expect, can fail tests").thatErrors();
+            fixtureResult.hasTest("NJasmineTests.Specs.expect, expect can be called during discovery, doesnt prevent discovery").thatErrors();
         }
     }
 }
