@@ -66,6 +66,8 @@
     <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
     <Compile Include="Export\INJasmineInternalRequirement.cs" />
     <Compile Include="Export\FixtureResult.cs" />
+    <Compile Include="Export\SuiteResult.cs" />
+    <Compile Include="Export\TestResult.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
     <Compile Include="Specs\beforeAll\beforeAll_can_use_expectations.cs" />
     <Compile Include="Specs\beforeAll\beforeAll_doesnt_reexecute.cs" />
