@@ -64,6 +64,7 @@
     <Compile Include="Core\PowerAssertFixture.cs" />
     <Compile Include="Core\STA.cs" />
     <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
+    <Compile Include="Export\FixtureResultTest.cs" />
     <Compile Include="Export\INJasmineInternalRequirement.cs" />
     <Compile Include="Export\FixtureResult.cs" />
     <Compile Include="Export\SuiteResult.cs" />
