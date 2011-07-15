@@ -147,8 +147,8 @@ THREE
             describe("hasTest", delegate
             {
                 var expectedTestName = "one_two_test";
-                
-                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName:expectedTestName);
+
+                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName: expectedTestName);
 
                 var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
 
@@ -167,6 +167,32 @@ THREE
                     });
 
                     expect(() => exception.Message.Contains("Expected test not found, expected test named " + wrongTestName));
+                });
+            });
+
+            describe("hasSuite", delegate
+            {
+                var expectedSuiteName = "one_two_test";
+
+                var xmlOutput = FixtureResult.GetSampleXmlResult(aSuiteName: expectedSuiteName);
+
+                var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
+
+                it("returns a test suite by name", delegate
+                {
+                    expect(() => sut.hasSuite(expectedSuiteName) != null);
+                });
+
+                it("gives a useful error message if the test suite is not found", delegate
+                {
+                    string wrongSuiteName = "9vasjf9d";
+
+                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    {
+                        sut.hasSuite(wrongSuiteName);
+                    });
+
+                    expect(() => exception.Message.Contains("Expected test suite not found, expected suite named " + wrongSuiteName));
                 });
             });
         }

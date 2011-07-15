@@ -73,17 +73,11 @@ namespace NJasmineTests.Export
 
         public SuiteResult hasSuite(string name)
         {
-            /*
-            for-xml -exactlyOnce ""//test-suite[@name='given an outer block']"" {
-                Assert ((get-xml ""@result"") -eq 'Inconclusive') 'Expected first outer block to be inconclusive';
+            var suites = _doc.Descendants("test-suite").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
-                for-xml ""./results"" {
-                    Assert $false 'Expected first outer block to not have any subresults'
-                }
-            }
-            */
+            Assert.AreEqual(1, suites.Count(), "Expected test suite not found, expected suite named " + name);
 
-            throw new NotImplementedException();
+            return new SuiteResult();
         }
 
         public void hasStackTracesThat(Func<string, bool> expectation)
@@ -106,7 +100,8 @@ namespace NJasmineTests.Export
         public static string GetSampleXmlResult(
             int totalCount = 0
             , int errorCount = 0, 
-            int failureCount = 0, 
+            int failureCount = 0,
+            string aSuiteName = "NJasmineTests",
             string aTestName = "NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests")
         {
             var result = @"<?xml version=""1.0"" encoding=""utf-8"" standalone=""no""?>
@@ -116,7 +111,7 @@ namespace NJasmineTests.Export
   <culture-info current-culture=""en-US"" current-uiculture=""en-US"" />
   <test-suite type=""Assembly"" name=""C:\src\NJasmine\build\NJasmine.tests.dll"" executed=""True"" result=""Success"" success=""True"" time=""0.805"" asserts=""0"">
     <results>
-      <test-suite type=""Namespace"" name=""NJasmineTests"" executed=""True"" result=""Success"" success=""True"" time=""0.783"" asserts=""0"">
+      <test-suite type=""Namespace"" name=""$aSuiteName"" executed=""True"" result=""Success"" success=""True"" time=""0.783"" asserts=""0"">
         <results>
           <test-suite type=""Namespace"" name=""Core"" executed=""True"" result=""Success"" success=""True"" time=""0.491"" asserts=""0"">
             <results>
@@ -139,6 +134,7 @@ namespace NJasmineTests.Export
                 .Replace("$errorCount", errorCount.ToString())
                 .Replace("$failureCount", failureCount.ToString())
                 .Replace("$totalCount", totalCount.ToString())
+                .Replace("$aSuiteName", aSuiteName)
                 .Replace("$aTestName", aTestName);
 
             return result;
