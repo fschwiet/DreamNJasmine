@@ -30,7 +30,7 @@ namespace NJasmineTests.Specs
             fixtureResult.failed();
 
             var stackTrace = fixtureResult.withStackTraces().Single();
-            Assert.That(stackTrace, Is.EqualTo("NJasmine.Core"));
+            Assert.That(stackTrace, Is.Not.StringContaining("NJasmine.Core"));
         }
     }
 }

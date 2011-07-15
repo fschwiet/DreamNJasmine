@@ -39,7 +39,7 @@ namespace NJasmineTests.Export
         {
             var actualCategories = new List<string>();
 
-            var categoriesXml = _xml.Elements("categories").Single();
+            var categoriesXml = _xml.Elements("categories");
 
             if (categoriesXml != null)
             {

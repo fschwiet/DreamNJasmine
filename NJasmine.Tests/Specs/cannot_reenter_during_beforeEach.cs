@@ -24,7 +24,7 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_beforeEach").thatErrors()
+            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_beforeEach, has a valid test").thatErrors()
                 .withFailureMessage("System.InvalidOperationException : Called it() within beforeEach().");
         }
     }

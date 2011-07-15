@@ -11,9 +11,16 @@ namespace NJasmineTests.Export
         {
         }
 
-        public TestResult withFailureMessage(string message)
+        public TestResult withFailureMessage(string expectedMessage)
         {
-            throw new NotImplementedException();
+            var failure = _xml.Element("failure");
+
+            if (failure != null)
+                failure = failure.Element("message");
+
+            Assert.That(failure.Value, Is.StringContaining(expectedMessage));
+
+            return this;
         }
 
         public TestResult thatSucceeds()

@@ -20,8 +20,6 @@ namespace NJasmineTests.Specs
 
         public void Verify(FixtureResult fixtureResult)
         {
-            fixtureResult.succeeds();
-
             fixtureResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, an unimplemented test() block").thatIsNotRunnable();
 
             fixtureResult.hasTest("NJasmineTests.Specs.supports_unimplemented_specs, nested too of course, an unimplemented test() block").thatIsNotRunnable();

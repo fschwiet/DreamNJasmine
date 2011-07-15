@@ -99,116 +99,32 @@ function get-nunit-console {
 
 task UnitTests {
 
-    $testOutputTarget = (join-path $buildDir "UnitTests.xml")
+    $testXmlTarget = (join-path $buildDir "UnitTests.xml")
 
-    exec { & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /xml=$testOutputTarget}
+    exec { & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /xml=$testXmlTarget}
 }
 
 task IntegrationTests {
 
     $testResults = @();
 
-    $tests = ([xml](& "$buildDir\NJasmine.TestUtil.exe")).ArrayOfTestDefinition.TestDefinition | ? { $_.Name -like $integrationTestRunPattern }
+    $tests = ([xml](exec {& "$buildDir\NJasmine.TestUtil.exe" "list-tests"})).ArrayOfTestDefinition.TestDefinition | 
+        ? { $_.Name -like $integrationTestRunPattern };
 
     $global:t = $tests;
-
-    "If an integation test fails, `$global:actual should have the actual output.  There may be other output files mentioned in the error text." | write-host
 
     foreach($test in $tests)  { 
 
         $testName = $test.Name;
-        $expectedStrings = $test.ExpectedStrings.string;
 
         "Running integration test $testName." | write-host
-        $testResults = $testResults + "Running integration test $testName."
 
-        $testOutputTarget = (join-path $buildDir "IntegrationTest.xml")
+        $testXmlTarget = (join-path $buildDir "IntegrationTest.xml")
+        $testConsoleTarget = (join-path $buildDir "IntegrationTest.txt")
 
-        if ($test.TestPasses -eq "true") {
+        & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testXmlTarget > $testConsoleTarget
 
-            $testoutput = & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
-            
-            Assert ($lastexitcode -eq 0) "Expected test $testName to pass, actual exit code: $lastexitcode."
-
-        } else {
-
-            $testoutput = & (& get-nunit-console) "$buildDir\NJasmine.tests.dll" /run=$testName /xml=$testOutputTarget
-            
-            Assert ($lastexitcode -ne 0) "Expected test $testName to fail."
-        }
-
-        $hasExpectation = $false;
-
-        if ($test.VerificationScript) {
-
-            $verificationCommand = "{" + $test.VerificationScript + "}"
-            $verificationCommand = invoke-expression $verificationCommand
-
-            $global:actual = $testoutput
-            $global:actualError = $testOutputTarget
-
-            & $verificationCommand $testoutput $testOutputTarget
-
-            $hasExpectation = $true;
-        }
-
-        if ($test.ExpectedExtraction) {
-            $expectedExtraction = $test.ExpectedExtraction.Split("`n") | % { $_.Trim() } | ? { -not $_.length -eq 0 }
-
-            $actual = @()
-            
-            switch -r ($testoutput) { "`{`{<<RESET>>`}`}" { $actual = @(); } "<<{{(.*)}}>>" { $actual += $matches[1] } }
-
-            $comparison = compare-object $expectedExtraction $actual
-            if ($comparison) {
-                $global:expected = $expectedExtraction;
-                $global:actual = $actual;
-                $global:fullActual = $testoutput;
-                $error = "Unexpected extraction results for `"$testName`".  Expected written to `$global:expected, actual written to `$global:actual and `$global:fullActual."
-                write-error $error
-                $testResults = $testResults + $error
-            }
-
-            $hasExpectation = $true;
-        } 
-        
-        $expectedStrings | % {
-
-            if (-not [String]::Join("\n", $testoutput).Contains($_)) {
-                $global:expected = $_;
-                $global:fullExpected = $expectedStrings;
-                $global:actual = $testoutput;
-                $error = "Unexpected contains results for `"$testName`".  Expected written to `$global:expected and `$global:fullExpected, actual written to `$global:actual."
-                write-error $error
-                $testResults = $testResults + $error
-            }
-
-            $hasExpectation = $true;
-        }
-        
-        if ($test.ExpectedTestNames.length -gt 0) {
-
-            $allExpected = $test.ExpectedTestNames | % { $_.string };
-
-            $testResults = [xml] (get-content $testOutputTarget)
-
-            $testNames = $testResults.SelectNodes("//test-results/descendant::test-case/@name") | % { $_."#text" }
-
-            $global:actual = $testNames
-
-            foreach($expectedTestName in $allExpected) {
-
-                $global:expected = $expectedTestName;
-
-                Assert ($testNames -contains $expectedTestName) "Did not find expected test name.  Expected name stored in `$global:expected, actual stored in `$global:actual."
-
-                $hasExpectation = $true;
-            }
-        }
-
-        if (-not $hasExpectation) {
-            "Test Skipped: No expectation found for $testName" | write-host
-        }   
+        exec { & "$buildDir\NJasmine.TestUtil.exe" "verify-test" """$testName""" """$testXmlTarget""" """$testConsoleTarget""" }
     }
 }
 
