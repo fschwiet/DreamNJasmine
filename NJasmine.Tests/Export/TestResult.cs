@@ -1,72 +1,55 @@
 ﻿using System;
+using System.Linq;
+using System.Xml.Linq;
+using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class TestResult
+    public class TestResult : BaseResult
     {
-        public TestResult withMessage(string message)
+        public TestResult(XElement element) : base("test", element)
+        {
+        }
+
+        public TestResult withFailureMessage(string message)
         {
             throw new NotImplementedException();
         }
 
         public TestResult thatSucceeds()
         {
-            // $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works'][@result='Success']"" 
-            throw new NotImplementedException();
+            thatHasResult("Success");
+            return this;
         }
 
         public TestResult thatErrors()
         {
-            // $null = get-xml -exactlyOnce ""//test-case[@name='NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails'][@result='Error']"" 
-            throw new NotImplementedException();
-        }
-
-        public TestResult thatFailsInAnUnspecifiedManner()
-        {
-            throw new NotImplementedException();
+            thatHasResult("Error");
+            return this;
         }
 
         public TestResult thatIsNotRunnable()
         {
-            // console output:  "NotRunnable : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test",
-            throw new NotImplementedException();
+            thatHasResult("NotRunnable");
+            return this;
         }
 
         public TestResult thatFails()
         {
-            // console output: "Test Failure : NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe",
-            throw new NotImplementedException();
+            thatHasResult("Failure");
+            return this;
         }
 
-        public TestResult withCategories(params string[] categories)
+        public TestResult thatFailsInAnUnspecifiedManner()
         {
-            /*
-                    update-xml $xmlFile {
+            var result = GetResult();
 
-                        function assertShouldHaveCategories($typeName, $name, $expectedCategories) {
+            var possibleFailures = new[] {"Failure", "Error"};
 
-                            $nonempty = $expectedCategories.length -gt 0
+            Assert.True(possibleFailures.Contains(result),
+                String.Format("Expected test {0} to have failure result, actual was {1}.", _name, result));
 
-                            for-xml -exactlyOnce:$nonempty ""//$typeName[@name='$name']/categories"" {
-
-                                foreach($expectedCategory in $expectedCategories) {
-                                    Assert ((get-xml ""category[@name='$expectedCategory']"") -ne  $null) `
-                                        ""Expected '$test' to have category $expectedCategory""
-                                }
-
-                                for-xml ""category"" {
-
-                                    $otherCategoryName = get-xml ""@name""
-                                    Assert ($expectedCategories -contains $otherCategoryName) ""Expected '$test' to NOT have category $otherCategoryName""
-                                }
-                            }
-                        }
-
-                        assertShouldHaveCategories 'test-suite' 'when using category Foo then Bar' @()
-
-                        assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo' @(""Foo"")                 */
-
-            throw new NotImplementedException();
+            return this;
         }
     }
 }

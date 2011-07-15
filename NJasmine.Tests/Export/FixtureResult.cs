@@ -69,7 +69,7 @@ namespace NJasmineTests.Export
 
             Assert.AreEqual(1, tests.Count(), "Expected test not found, expected test named " + name);
 
-            return new TestResult();
+            return new TestResult(tests.Single());
         }
 
         public SuiteResult hasSuite(string name)

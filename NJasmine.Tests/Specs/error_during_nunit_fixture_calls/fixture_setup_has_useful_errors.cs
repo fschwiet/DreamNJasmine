@@ -36,7 +36,7 @@ namespace NJasmineTests.Specs.error_during_nunit_fixture_calls
         {
             fixtureResult.failed();
             fixtureResult.hasTest("NJasmineTests.Specs.error_during_nunit_fixture_calls.fixture_setup_has_useful_errors, when in some context, then there is some text")
-                .withMessage("System.TimeZoneNotFoundException : no time!")
+                .withFailureMessage("System.TimeZoneNotFoundException : no time!")
                 .thatFailsInAnUnspecifiedManner();
         }
     }

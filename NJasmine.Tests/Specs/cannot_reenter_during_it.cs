@@ -21,7 +21,7 @@ namespace NJasmineTests.Specs
             fixtureResult.failed();
 
             fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_it").thatFailsInAnUnspecifiedManner()
-                .withMessage("System.InvalidOperationException : Called it() within it().");
+                .withFailureMessage("System.InvalidOperationException : Called it() within it().");
         }
     }
 }

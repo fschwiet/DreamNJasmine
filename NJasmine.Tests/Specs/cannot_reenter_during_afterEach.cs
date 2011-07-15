@@ -27,7 +27,7 @@ namespace NJasmineTests.Specs
 
             fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_afterEach")
                 .thatErrors()
-                .withMessage("System.InvalidOperationException : Called it() within afterEach().");
+                .withFailureMessage("System.InvalidOperationException : Called it() within afterEach().");
         }
     }
 }
