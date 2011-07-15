@@ -195,6 +195,19 @@ THREE
                     expect(() => exception.Message.Contains("Expected test suite not found, expected suite named " + wrongSuiteName));
                 });
             });
+
+            describe("withStackTraces()", delegate
+            {
+                string fullTrace = "foo bar baz";
+
+                it("it returns the stacktraces in a fixture result", delegate
+                {
+                    var sut = arrange(() => new FixtureResult(_expectedFixtureName,
+                                                FixtureResult.GetSampleXmlResult(aStackTrace: fullTrace)));
+
+                    expect(() => sut.withStackTraces().Single() == fullTrace);
+                });
+            });
         }
 
         private void CheckScenario(string scenarioName, TestDelegate scenarioAction, string expectedMessage)

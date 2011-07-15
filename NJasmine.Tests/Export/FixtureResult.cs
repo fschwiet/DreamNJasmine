@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -80,11 +81,9 @@ namespace NJasmineTests.Export
             return new SuiteResult();
         }
 
-        public void hasStackTracesThat(Func<string, bool> expectation)
+        public string[] withStackTraces()
         {
-            /*
-                update-xml $xmlFile {                    $stackTrace = get-xml -exactlyonce ""//stack-trace"";                    assert (-not ($stackTrace -like '*NJasmine.Core*')) 'Expected NJasmine.Core stack elements to be removed';            */
-            throw new NotImplementedException();
+            return _doc.Descendants("stack-trace").Select(s => s.Value).ToArray();
         }
 
         private int GetErrorCount()
@@ -102,7 +101,17 @@ namespace NJasmineTests.Export
             , int errorCount = 0, 
             int failureCount = 0,
             string aSuiteName = "NJasmineTests",
-            string aTestName = "NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests")
+            string aTestName = "NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests", 
+            string aStackTrace = @"SPECIFICATION:
+NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations,
+when using expect within beforeAll,
+fails
+
+at PowerAssert.PAssert.IsTrue(Expression`1 expression)
+at NJasmine.GivenWhenThenFixture.expect(Expression`1 expectation) in c:\src\NJasmine\NJasmine\GivenWhenThenFixture.cs:line 321
+at NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations.<Specify>b__3() in c:\src\NJasmine\NJasmine.Tests\Specs\beforeAll\beforeAll_can_use_expectations.cs:line 42
+at NJasmine.GivenWhenThenFixture.<>c__DisplayClass13.<beforeAll>b__11() in c:\src\NJasmine\NJasmine\GivenWhenThenFixture.cs:line 254
+")
         {
             var result = @"<?xml version=""1.0"" encoding=""utf-8"" standalone=""no""?>
 <!--This file represents the results of running a test suite-->
@@ -126,6 +135,18 @@ namespace NJasmineTests.Export
           </test-suite>
         </results>
       </test-suite>
+        <test-case name=""NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails"" executed=""True"" result=""Error"" success=""False"" time=""0.060"" asserts=""0"">
+        <properties>
+          <property name=""MultilineName"" value=""NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations,&#xA;when using expect within beforeAll,&#xA;fails"" />
+        </properties>
+        <failure>
+          <message><![CDATA[SetUp : System.Exception : IsTrue failed, expression was:
+
+False]]></message>
+                              <stack-trace><![CDATA[$aStackTrace]]></stack-trace>
+        </failure>
+      </test-case>
+
     </results>
   </test-suite>
 </test-results>
@@ -135,7 +156,8 @@ namespace NJasmineTests.Export
                 .Replace("$failureCount", failureCount.ToString())
                 .Replace("$totalCount", totalCount.ToString())
                 .Replace("$aSuiteName", aSuiteName)
-                .Replace("$aTestName", aTestName);
+                .Replace("$aTestName", aTestName)
+                .Replace("$aStackTrace", aStackTrace);
 
             return result;
         }
