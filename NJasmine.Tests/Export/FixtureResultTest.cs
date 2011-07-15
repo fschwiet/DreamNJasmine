@@ -14,57 +14,146 @@ namespace NJasmineTests.Export
 
         public override void Specify()
         {
-            describe("succeeds", delegate
+            describe("succeeds()", delegate
             {
                 it("allows a passing test result", delegate
                 {
-                    new FixtureResult("hello", GetSampleXmlResult(1)).succeeds();
+                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1)).succeeds();
                 });
 
                 var cases = new Dictionary<string, TestDelegate>();
                 
                 cases.Add("running against error", delegate
                 {
-                    var result = new FixtureResult("hello", GetSampleXmlResult(1, 1));
+                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 1));
                     result.succeeds();
                 });
 
                 cases.Add("running against failure", delegate
                 {
-                    var result = new FixtureResult("hello", GetSampleXmlResult(1, 0, 1));
+                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 0, 1));
                     result.succeeds();
                 });
 
                 cases.Add("running against no tests", delegate
                 {
-                    var result = new FixtureResult("hello", GetSampleXmlResult(0));
+                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(0));
                     result.succeeds();
                 });
 
                 CheckScenariosCauseErrorWithMessageContaining(cases, "hello");
             });
 
-            describe("failed", delegate
+            describe("failed()", delegate
             {
                 it("allows test results with errors or failures", delegate
                 {
-                    new FixtureResult("hello", GetSampleXmlResult(1, 1)).failed();
-                    new FixtureResult("hello", GetSampleXmlResult(1, 0, 1)).failed();
+                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 1)).failed();
+                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
                 });
 
-                var cases = new Dictionary<string, TestDelegate>();
-
-                cases.Add("running against no tests", delegate
+                CheckScenario("running against no tests", delegate
                 {
-                    var result = new FixtureResult("hello", GetSampleXmlResult(0));
+                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(0), "");
                     result.failed();
+                }, "hello");
+            });
+
+            describe("containsTrace", delegate
+            {
+                var originalXml = "<xml></xml>";
+                    
+                string originalConsole = @"
+NUnit version 2.5.9.10348
+Copyright (C) 2002-2009 Charlie Poole.
+Copyright (C) 2002-2004 James W. Newkirk, Michael C. Two, Alexei A. Vorontsov.
+Copyright (C) 2000-2002 Philip Craig.
+All Rights Reserved.
+
+Runtime Environment -
+   OS Version: Microsoft Windows NT 6.1.7601 Service Pack 1
+  CLR Version: 2.0.50727.5446 ( Net 2.0 )
+
+ProcessModel: Default    DomainUsage: Single
+Execution Runtime: Default
+<<{{test started, before include of a}}>>
+<<{{after include of a}}>>
+<<{{first describe, before include of b}}>>
+<<{{after include of b}}>>
+<<{{before include of c}}>>
+<<{{after include of c}}>>
+Selected test(s): NJasmineTests.Specs.beforeAll.beforeAll_and_afterAll_are_applied_to_the_correct_scope
+.{{<<RESET>>}}
+<<{{BEFORE ALL}}>>
+<<{{first test}}>>
+.<<{{SECOND BEFORE ALL}}>>
+<<{{INNER BEFORE ALL}}>>
+<<{{second test}}>>
+.<<{{third test}}>>
+<<{{INNER AFTER ALL}}>>
+<<{{DISPOSING INNER BEFORE ALL}}>>
+<<{{SECOND AFTER ALL}}>>
+<<{{DISPOSING SECOND BEFORE ALL}}>>
+<<{{AFTER ALL}}>>
+<<{{DISPOSING BEFORE ALL}}>>
+
+Tests run: 3, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.0820047 seconds
+";
+                
+                it("allows tests with the expected trace", delegate
+                {
+                    var result = new FixtureResult("hello", originalXml, originalConsole);
+
+                    result.containsTrace(@"
+BEFORE ALL
+first test
+SECOND BEFORE ALL
+INNER BEFORE ALL
+second test
+third test
+INNER AFTER ALL
+DISPOSING INNER BEFORE ALL
+SECOND AFTER ALL
+DISPOSING SECOND BEFORE ALL
+AFTER ALL
+DISPOSING BEFORE ALL
+");
                 });
 
-                CheckScenariosCauseErrorWithMessageContaining(cases, "hello");
+                it("fails tests without the expected trace", delegate
+                {
+                    var result = new FixtureResult("hello", originalXml, originalConsole);
+
+                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    {
+                        result.containsTrace(@"
+ONE
+TWO
+THREE
+");
+                    });
+
+                    var message = exception.Message;
+
+                    expect(() => message.IndexOf("ONE") < message.IndexOf("TWO"));
+                    expect(() => message.IndexOf("TWO") < message.IndexOf("THREE"));
+
+                    expect(() => message.IndexOf("BEFORE ALL") < message.IndexOf("INNER AFTER ALL"));
+                    expect(() => message.IndexOf("INNER AFTER ALL") < message.IndexOf("DISPOSING BEFORE ALL"));
+
+                    expect(() => message.Contains("hello"));
+                });
             });
+
+
         }
 
-        private void CheckScenariosCauseErrorWithMessageContaining(Dictionary<string, TestDelegate> cases, string expected)
+        private void CheckScenario(string scenarioName, TestDelegate scenarioAction, string expectedMessage)
+        {
+            CheckScenariosCauseErrorWithMessageContaining(new [] {new KeyValuePair<string, TestDelegate>(scenarioName, scenarioAction)}, expectedMessage);
+        }
+
+        private void CheckScenariosCauseErrorWithMessageContaining(IEnumerable<KeyValuePair<string, TestDelegate>> cases, string expected)
         {
             foreach (var scenario in cases)
             {
@@ -75,43 +164,6 @@ namespace NJasmineTests.Export
                     Assert.That(exception.Message, Is.StringContaining(expected));
                 });
             }
-        }
-
-        static string GetSampleXmlResult(int totalCount = 0, int errorCount = 0, int failureCount = 0)
-        {
-            var result =
-                @"<?xml version=""1.0"" encoding=""utf-8"" standalone=""no""?>
-<!--This file represents the results of running a test suite-->
-<test-results name=""C:\src\NJasmine\build\NJasmine.tests.dll"" total=""$totalCount"" errors=""$errorCount"" failures=""$failureCount"" not-run=""2"" inconclusive=""0"" ignored=""0"" skipped=""0"" invalid=""2"" date=""2011-07-13"" time=""21:33:22"">
-  <environment nunit-version=""2.5.9.10348"" clr-version=""2.0.50727.5446"" os-version=""Microsoft Windows NT 6.1.7601 Service Pack 1"" platform=""Win32NT"" cwd=""C:\src\NJasmine"" machine-name=""NZNZNZ6"" user=""user"" user-domain=""nznznz6"" />
-  <culture-info current-culture=""en-US"" current-uiculture=""en-US"" />
-  <test-suite type=""Assembly"" name=""C:\src\NJasmine\build\NJasmine.tests.dll"" executed=""True"" result=""Success"" success=""True"" time=""0.805"" asserts=""0"">
-    <results>
-      <test-suite type=""Namespace"" name=""NJasmineTests"" executed=""True"" result=""Success"" success=""True"" time=""0.783"" asserts=""0"">
-        <results>
-          <test-suite type=""Namespace"" name=""Core"" executed=""True"" result=""Success"" success=""True"" time=""0.491"" asserts=""0"">
-            <results>
-              <test-suite type=""TestFixture"" name=""build_and_run_suite_with_loops"" executed=""True"" result=""Success"" success=""True"" time=""0.271"" asserts=""0"">
-                <results>
-                  <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests"" executed=""True"" result=""Success"" success=""True"" time=""0.222"" asserts=""0"" />
-                  <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a1"" executed=""True"" result=""Success"" success=""True"" time=""0.019"" asserts=""1"" />
-                  <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a3"" executed=""True"" result=""Success"" success=""True"" time=""0.001"" asserts=""1"" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-    </results>
-  </test-suite>
-</test-results>
- ";
-            result = result
-                .Replace("$errorCount", errorCount.ToString())
-                .Replace("$failureCount", failureCount.ToString())
-                .Replace("$totalCount", totalCount.ToString());
-
-            return result;
         }
     }
 }
