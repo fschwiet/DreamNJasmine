@@ -1,22 +1,31 @@
 ﻿using System;
+using System.Xml.Linq;
+using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
     public class SuiteResult
     {
+        private readonly string _name;
+        private readonly XElement _xml;
+
+        public SuiteResult(XElement xml)
+        {
+            _xml = xml;
+
+            if (xml.Attribute("name") != null)
+                _name = xml.Attribute("name").Value;
+            else
+                _name = "unknown";
+        }
+
         public SuiteResult thatsInconclusive()
         {
-            /*
-                for-xml -exactlyOnce ""//test-suite[@name='given an outer block']"" {
-                    Assert ((get-xml ""@result"") -eq 'Inconclusive') 'Expected first outer block to be inconclusive';
+            var result = _xml.Attribute("result").Value;
 
-                    for-xml ""./results"" {
-                        Assert $false 'Expected first outer block to not have any subresults'
-                    }
-                }
-                */
+            Assert.AreEqual("Inconclusive", result, "Expected suite named " + _name + " to be Inconclusive.");
 
-            throw new NotImplementedException();
+            return this;
         }
 
         public SuiteResult thatHasNoResults()
@@ -49,11 +58,6 @@ namespace NJasmineTests.Export
                 }
                 */
 
-            throw new NotImplementedException();
-        }
-
-        public SuiteResult thatHasOneResult()
-        {
             throw new NotImplementedException();
         }
 

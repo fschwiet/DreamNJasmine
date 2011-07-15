@@ -10,8 +10,8 @@ namespace NJasmineTests.Export
     [Explicit]
     public class FixtureResultTest : GivenWhenThenFixture
     {
+        public static Type ExpectedAssertionType = typeof(AssertionException);
         private const string _expectedFixtureName = "hello";
-        Type expectedAssertionType = typeof(AssertionException);
 
         public override void Specify()
         {
@@ -123,7 +123,7 @@ DISPOSING BEFORE ALL
                 {
                     var sut = new FixtureResult(_expectedFixtureName, originalXml, originalConsole);
 
-                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
                         sut.containsTrace(@"
 ONE
@@ -161,7 +161,7 @@ THREE
                 {
                     string wrongTestName = "fsadf325m";
 
-                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
                         sut.hasTest(wrongTestName);
                     });
@@ -187,7 +187,7 @@ THREE
                 {
                     string wrongSuiteName = "9vasjf9d";
 
-                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
                         sut.hasSuite(wrongSuiteName);
                     });
@@ -221,7 +221,7 @@ THREE
             {
                 it("asserts when " + scenario.Key, delegate
                 {
-                    var exception = Assert.Throws(expectedAssertionType, scenario.Value);
+                    var exception = Assert.Throws(ExpectedAssertionType, scenario.Value);
 
                     Assert.That(exception.Message, Is.StringContaining(expected));
                 });

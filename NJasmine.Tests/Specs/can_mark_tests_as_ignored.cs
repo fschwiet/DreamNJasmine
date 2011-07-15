@@ -41,7 +41,6 @@ namespace NJasmineTests.Specs
             fixtureResult.hasSuite("given an outer block").thatsInconclusive().thatHasNoResults();
 
             fixtureResult.hasSuite("when ignore is set after a test").thatSucceeds()
-                .thatHasOneResult()
                 .ShouldHaveTest("NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs")
                 .thatSucceeds();
         }

@@ -78,7 +78,7 @@ namespace NJasmineTests.Export
 
             Assert.AreEqual(1, suites.Count(), "Expected test suite not found, expected suite named " + name);
 
-            return new SuiteResult();
+            return new SuiteResult(suites.Single());
         }
 
         public string[] withStackTraces()
@@ -101,6 +101,7 @@ namespace NJasmineTests.Export
             , int errorCount = 0, 
             int failureCount = 0,
             string aSuiteName = "NJasmineTests",
+            string aSuiteResult = "Success",
             string aTestName = "NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests", 
             string aStackTrace = @"SPECIFICATION:
 NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations,
@@ -120,7 +121,7 @@ at NJasmine.GivenWhenThenFixture.<>c__DisplayClass13.<beforeAll>b__11() in c:\sr
   <culture-info current-culture=""en-US"" current-uiculture=""en-US"" />
   <test-suite type=""Assembly"" name=""C:\src\NJasmine\build\NJasmine.tests.dll"" executed=""True"" result=""Success"" success=""True"" time=""0.805"" asserts=""0"">
     <results>
-      <test-suite type=""Namespace"" name=""$aSuiteName"" executed=""True"" result=""Success"" success=""True"" time=""0.783"" asserts=""0"">
+      <test-suite type=""Namespace"" name=""$aSuiteName"" executed=""True"" result=""$aSuiteResult"" success=""True"" time=""0.783"" asserts=""0"">
         <results>
           <test-suite type=""Namespace"" name=""Core"" executed=""True"" result=""Success"" success=""True"" time=""0.491"" asserts=""0"">
             <results>
@@ -156,6 +157,7 @@ False]]></message>
                 .Replace("$failureCount", failureCount.ToString())
                 .Replace("$totalCount", totalCount.ToString())
                 .Replace("$aSuiteName", aSuiteName)
+                .Replace("$aSuiteResult", aSuiteResult)
                 .Replace("$aTestName", aTestName)
                 .Replace("$aStackTrace", aStackTrace);
 
