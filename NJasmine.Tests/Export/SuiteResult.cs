@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
@@ -48,39 +49,34 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult ShouldHaveTest(string testName)
+        public TestResult ShouldHaveTest(string name)
         {
-            throw new NotImplementedException();
+            var tests = _xml.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+            Assert.AreEqual(1, tests.Count(),
+                String.Format("Expected test not found in suite {0}, expected test named {1}", _name, name));
+
+            return new TestResult();
         }
 
         public void withCategories(params string[] categories)
         {
-            /*
-                                 function assertShouldHaveCategories($typeName, $name, $expectedCategories) {
+            var actualCategories = new List<string>();
 
-                    $nonempty = $expectedCategories.length -gt 0
+            var categoriesXml = _xml.Elements("categories").Single();
 
-                    for-xml -exactlyOnce:$nonempty ""//$typeName[@name='$name']/categories"" {
-
-                        foreach($expectedCategory in $expectedCategories) {
-                            Assert ((get-xml ""category[@name='$expectedCategory']"") -ne  $null) `
-                                ""Expected '$test' to have category $expectedCategory""
-                        }
-
-                        for-xml ""category"" {
-
-                            $otherCategoryName = get-xml ""@name""
-                            Assert ($expectedCategories -contains $otherCategoryName) ""Expected '$test' to NOT have category $otherCategoryName""
-                        }
-                    }
+            if (categoriesXml != null)
+            {
+                foreach(var category in categoriesXml.Elements("category").Select(c => c.Attribute("name").Value))
+                {
+                    actualCategories.Add(category);
                 }
+            }
 
-                assertShouldHaveCategories 'test-suite' 'when using category Foo then Bar' @()
+            categories = categories.OrderBy(c => c).ToArray();
+            actualCategories = actualCategories.OrderBy(c => c).ToList();
 
-                assertShouldHaveCategories 'test-case' 'NJasmineTests.Specs.supports_categories, when using category Foo then Bar, then tests have Foo' @(""Foo"")* 
-                 */
-
-            throw new NotImplementedException();
+            Assert.That(categories, Is.EquivalentTo(actualCategories));
         }
     }
 }
