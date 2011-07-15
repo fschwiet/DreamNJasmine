@@ -37,6 +37,23 @@ namespace NJasmineTests.Export
                     expect(() => exception.Message.Contains("OtherResult"));
                 });
             });
+
+            describe("thatHasNoResults()", delegate
+            {
+                it("fails if the suite has results", delegate
+                {
+                    var sut = new FixtureResult("ignored",
+                        FixtureResult.GetSampleXmlResult(aSuiteName: "someSuiteHello"))
+                        .hasSuite("someSuiteHello");
+
+                    var exception = Assert.Throws(FixtureResultTest.ExpectedAssertionType, delegate
+                    {
+                        sut.thatHasNoResults();
+                    });
+
+                    expect(() => exception.Message.Contains("someSuiteHello"));
+                });
+            });
         }
     }
 }

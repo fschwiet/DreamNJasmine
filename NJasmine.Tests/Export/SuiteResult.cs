@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
 
@@ -21,44 +22,30 @@ namespace NJasmineTests.Export
 
         public SuiteResult thatsInconclusive()
         {
+            return thatHasResult("Inconclusive");
+        }
+
+        public SuiteResult thatSucceeds()
+        {
+            return thatHasResult("Success");
+        }
+
+        private SuiteResult thatHasResult(string inconclusive)
+        {
             var result = _xml.Attribute("result").Value;
 
-            Assert.AreEqual("Inconclusive", result, "Expected suite named " + _name + " to be Inconclusive.");
+            Assert.AreEqual(inconclusive, result, String.Format("Expected suite named {0} to be {1}.", _name, inconclusive));
 
             return this;
         }
 
         public SuiteResult thatHasNoResults()
         {
-            /*
-                for-xml -exactlyOnce ""//test-suite[@name='given an outer block']"" {
-                    Assert ((get-xml ""@result"") -eq 'Inconclusive') 'Expected first outer block to be inconclusive';
+            var results = _xml.Descendants("results");
 
-                    for-xml ""./results"" {
-                        Assert $false 'Expected first outer block to not have any subresults'
-                    }
-                }
-                */
+            Assert.AreEqual(0, results.Count(), "Expected suite " + _name + " to not have any results.");
 
-            throw new NotImplementedException();
-        }
-
-        public SuiteResult thatSucceeds()
-        {
-            /*
-                for-xml -exactlyOnce ""//test-suite[@name='when ignore is set after a test']"" {
-                    Assert ((get-xml ""@result"") -eq 'Success') 'Expected when statement with non-ignored test to have succeeded.';
-
-                    for-xml -exactlyOnce ""./results/test-case"" {
-                        Assert ((get-xml ""@name"") -eq 'NJasmineTests.Specs.can_mark_tests_as_ignored, when ignore is set after a test, then the earlier test runs') `
-                            'Expected when statement with non-ignored test to contain the non-ignored test'
-
-                        Assert ((get-xml ""@result"") -eq 'Success') 'Expected non-ignored test to have passed';
-                    }
-                }
-                */
-
-            throw new NotImplementedException();
+            return this;
         }
 
         public TestResult ShouldHaveTest(string testName)
