@@ -10,6 +10,7 @@ namespace NJasmineTests.Export
     [Explicit]
     public class FixtureResultTest : GivenWhenThenFixture
     {
+        private const string _expectedFixtureName = "hello";
         Type expectedAssertionType = typeof(AssertionException);
 
         public override void Specify()
@@ -18,45 +19,45 @@ namespace NJasmineTests.Export
             {
                 it("allows a passing test result", delegate
                 {
-                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1)).succeeds();
+                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1)).succeeds();
                 });
 
                 var cases = new Dictionary<string, TestDelegate>();
                 
                 cases.Add("running against error", delegate
                 {
-                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 1));
-                    result.succeeds();
+                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 1));
+                    sut.succeeds();
                 });
 
                 cases.Add("running against failure", delegate
                 {
-                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 0, 1));
-                    result.succeeds();
+                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 0, 1));
+                    sut.succeeds();
                 });
 
                 cases.Add("running against no tests", delegate
                 {
-                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(0));
-                    result.succeeds();
+                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(0));
+                    sut.succeeds();
                 });
 
-                CheckScenariosCauseErrorWithMessageContaining(cases, "hello");
+                CheckScenariosCauseErrorWithMessageContaining(cases, _expectedFixtureName);
             });
 
             describe("failed()", delegate
             {
                 it("allows test results with errors or failures", delegate
                 {
-                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 1)).failed();
-                    new FixtureResult("hello", FixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
+                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 1)).failed();
+                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
                 });
 
                 CheckScenario("running against no tests", delegate
                 {
-                    var result = new FixtureResult("hello", FixtureResult.GetSampleXmlResult(0), "");
-                    result.failed();
-                }, "hello");
+                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(0), "");
+                    sut.failed();
+                }, _expectedFixtureName);
             });
 
             describe("containsTrace", delegate
@@ -102,9 +103,7 @@ Tests run: 3, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.0820047 seconds
                 
                 it("allows tests with the expected trace", delegate
                 {
-                    var result = new FixtureResult("hello", originalXml, originalConsole);
-
-                    result.containsTrace(@"
+                    new FixtureResult(_expectedFixtureName, originalXml, originalConsole).containsTrace(@"
 BEFORE ALL
 first test
 SECOND BEFORE ALL
@@ -122,11 +121,11 @@ DISPOSING BEFORE ALL
 
                 it("fails tests without the expected trace", delegate
                 {
-                    var result = new FixtureResult("hello", originalXml, originalConsole);
+                    var sut = new FixtureResult(_expectedFixtureName, originalXml, originalConsole);
 
                     var exception = Assert.Throws(expectedAssertionType, delegate
                     {
-                        result.containsTrace(@"
+                        sut.containsTrace(@"
 ONE
 TWO
 THREE
@@ -141,11 +140,35 @@ THREE
                     expect(() => message.IndexOf("BEFORE ALL") < message.IndexOf("INNER AFTER ALL"));
                     expect(() => message.IndexOf("INNER AFTER ALL") < message.IndexOf("DISPOSING BEFORE ALL"));
 
-                    expect(() => message.Contains("hello"));
+                    expect(() => message.Contains(_expectedFixtureName));
                 });
             });
 
+            describe("hasTest", delegate
+            {
+                var expectedTestName = "one_two_test";
+                
+                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName:expectedTestName);
 
+                var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
+
+                it("returns a test by name", delegate
+                {
+                    expect(() => sut.hasTest(expectedTestName) != null);
+                });
+
+                it("gives a useful error message if the test is not found", delegate
+                {
+                    string wrongTestName = "fsadf325m";
+
+                    var exception = Assert.Throws(expectedAssertionType, delegate
+                    {
+                        sut.hasTest(wrongTestName);
+                    });
+
+                    expect(() => exception.Message.Contains("Expected test not found, expected test named " + wrongTestName));
+                });
+            });
         }
 
         private void CheckScenario(string scenarioName, TestDelegate scenarioAction, string expectedMessage)

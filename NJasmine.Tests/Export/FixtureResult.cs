@@ -64,8 +64,11 @@ namespace NJasmineTests.Export
 
         public TestResult hasTest(string name)
         {
-            // should assert the test actually exists...
-            throw new NotImplementedException();
+            var tests = _doc.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+            Assert.AreEqual(1, tests.Count(), "Expected test not found, expected test named " + name);
+
+            return new TestResult();
         }
 
         public SuiteResult hasSuite(string name)
@@ -100,7 +103,11 @@ namespace NJasmineTests.Export
             return (int)_doc.Root.Attribute("failures");
         }
 
-        public static string GetSampleXmlResult(int totalCount = 0, int errorCount = 0, int failureCount = 0)
+        public static string GetSampleXmlResult(
+            int totalCount = 0
+            , int errorCount = 0, 
+            int failureCount = 0, 
+            string aTestName = "NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests")
         {
             var result = @"<?xml version=""1.0"" encoding=""utf-8"" standalone=""no""?>
 <!--This file represents the results of running a test suite-->
@@ -115,7 +122,7 @@ namespace NJasmineTests.Export
             <results>
               <test-suite type=""TestFixture"" name=""build_and_run_suite_with_loops"" executed=""True"" result=""Success"" success=""True"" time=""0.271"" asserts=""0"">
                 <results>
-                  <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_load_tests"" executed=""True"" result=""Success"" success=""True"" time=""0.222"" asserts=""0"" />
+                  <test-case name=""$aTestName"" executed=""True"" result=""Success"" success=""True"" time=""0.222"" asserts=""0"" />
                   <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a1"" executed=""True"" result=""Success"" success=""True"" time=""0.019"" asserts=""1"" />
                   <test-case name=""NJasmineTests.Core.build_and_run_suite_with_loops.can_run_tests_a3"" executed=""True"" result=""Success"" success=""True"" time=""0.001"" asserts=""1"" />
                 </results>
@@ -131,7 +138,8 @@ namespace NJasmineTests.Export
             result = result
                 .Replace("$errorCount", errorCount.ToString())
                 .Replace("$failureCount", failureCount.ToString())
-                .Replace("$totalCount", totalCount.ToString());
+                .Replace("$totalCount", totalCount.ToString())
+                .Replace("$aTestName", aTestName);
 
             return result;
         }
