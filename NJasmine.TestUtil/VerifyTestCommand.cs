@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using NJasmineTests.Export;
-using NUnit.Core;
 
 namespace NJasmineTestLoader
 {
