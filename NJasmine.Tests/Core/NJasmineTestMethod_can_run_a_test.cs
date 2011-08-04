@@ -90,9 +90,7 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            var enumerable = Enumerable.Range(1, 7).Select(i => i.ToString()).ToList();
-            enumerable.AddRange(new [] {"-2", "-3", "-4", "8"});
-            Assert.That(fixture.Observations, Is.EquivalentTo(enumerable));
+            expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, 7, -2, -3, -4, 8);
         }
 
         [Test]
@@ -108,10 +106,12 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            var expectedResults = Enumerable.Range(1, 6).Select(i => i.ToString()).ToList();
-            expectedResults.AddRange(new[] {-2,-3,-4,7, 8}.Select(i => i.ToString()));
-            Assert.That(fixture.Observations, Is.EquivalentTo(expectedResults));
+            expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, -2, -3, -4, 7, 8);
         }
 
+        public void expect_observation_matches(IEnumerable<string> recording, params int[] expected)
+        {
+            Assert.That(recording, Is.EquivalentTo(expected.Select(e => e.ToString())));
+        }
     }
 }
