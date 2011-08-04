@@ -61,7 +61,7 @@ namespace NJasmineTests.Core
                             Observe("6");
                         });
 
-                        Observe("-1");
+                        Observe("-2");
                     });
 
                     beforeEach(delegate()
@@ -69,7 +69,7 @@ namespace NJasmineTests.Core
                         Observe("-1");
                     });
 
-                    Observe("-1");
+                    Observe("-3");
                 });
 
                 afterEach(delegate()
@@ -77,7 +77,7 @@ namespace NJasmineTests.Core
                     Observe("-1");
                 });
 
-                Observe("-1");
+                Observe("-4");
             }
         }
 
@@ -90,7 +90,9 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            Assert.That(fixture.Observations, Is.EquivalentTo(Enumerable.Range(1, 8).Select(i => i.ToString())));
+            var enumerable = Enumerable.Range(1, 7).Select(i => i.ToString()).ToList();
+            enumerable.AddRange(new [] {"-2", "-3", "-4", "8"});
+            Assert.That(fixture.Observations, Is.EquivalentTo(enumerable));
         }
 
         [Test]
@@ -106,7 +108,9 @@ namespace NJasmineTests.Core
 
             sut.RunTestMethod(new TestResult(new TestName()));
 
-            Assert.That(fixture.Observations, Is.EquivalentTo(Enumerable.Range(1, 8).Select(i => i.ToString())));
+            var expectedResults = Enumerable.Range(1, 6).Select(i => i.ToString()).ToList();
+            expectedResults.AddRange(new[] {-2,-3,-4,7, 8}.Select(i => i.ToString()));
+            Assert.That(fixture.Observations, Is.EquivalentTo(expectedResults));
         }
 
     }

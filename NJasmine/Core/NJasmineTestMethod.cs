@@ -70,10 +70,6 @@ namespace NJasmine.Core
             {
                 fixture.Run();
             }
-
-            catch (TestFinishedException)
-            {
-            }
             finally
             {
                 executionContext.RunAllPerTestTeardowns();

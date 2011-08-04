@@ -90,7 +90,11 @@ namespace NJasmineTests.Core
             {
                 "1",
                 "a1",
-                "ai1"
+                "ai1",
+                "a2",
+                "a3",
+                "2",
+                "5"
             });
         }
 
@@ -103,7 +107,9 @@ namespace NJasmineTests.Core
                 "a1",
                 "a2",
                 "a3",
-                "ai3"
+                "ai3",
+                "2",
+                "5"
             });
         }
 
@@ -119,7 +125,11 @@ namespace NJasmineTests.Core
                 "2",
                 "3",
                 "b1",
-                "bi1"
+                "bi1",
+                "b2",
+                "b3",
+                "4",
+                "5"
             });
         }
 
@@ -137,7 +147,9 @@ namespace NJasmineTests.Core
                 "b1",
                 "b2",
                 "b3",
-                "bi3"
+                "bi3",
+                "4",
+                "5"
             });
         }
         [Test]
