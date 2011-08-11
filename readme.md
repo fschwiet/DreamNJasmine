@@ -1,6 +1,6 @@
 ### Introducing NJasmine
 
-Available on Nuget: hhttp://nuget.org/List/Packages/NJasmine
+Available on Nuget: http://nuget.org/List/Packages/NJasmine
 
 NJasmine is a RSpec-ish test language inspired by the javascript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
 
