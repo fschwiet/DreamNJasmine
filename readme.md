@@ -1,5 +1,7 @@
 ### Introducing NJasmine
 
+Available on Nuget: hhttp://nuget.org/List/Packages/NJasmine
+
 NJasmine is a RSpec-ish test language inspired by the javascript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
 
     given("some preconditions", () => {
@@ -55,7 +57,7 @@ You can use existing NUnit test attributes [RequiresSTA] and [Explict] with the 
 
 ### Getting started
 
-The download link has NJasmine binaries for download, with instructions on how to start a test project.
+The preferred means to installing NJasmine is with Nuget, available at http://nuget.org/List/Packages/NJasmine.  Or, use the download link has NJasmine binaries for download, where instructions were included in the zip.
 
 See "how to build.md" for information on how to build NJasmine from source.
 
