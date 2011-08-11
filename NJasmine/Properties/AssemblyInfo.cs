@@ -8,13 +8,13 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: CLSCompliantAttribute(false )]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute("NJasmine 0.1.0.0")]
+[assembly: AssemblyTitleAttribute("NJasmine 0.1.2.0")]
 [assembly: AssemblyDescriptionAttribute("An extension for NUnit to allow writing given/when/then type tests.")]
 [assembly: AssemblyCompanyAttribute("n/a")]
-[assembly: AssemblyProductAttribute("NJasmine 0.1.0.0")]
+[assembly: AssemblyProductAttribute("NJasmine 0.1.2.0")]
 [assembly: AssemblyCopyrightAttribute("Copyright © Frank Schwieterman 2010-2011")]
-[assembly: AssemblyVersionAttribute("0.1.0.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.1.0.0 / 0000000")]
-[assembly: AssemblyFileVersionAttribute("0.1.0.0")]
+[assembly: AssemblyVersionAttribute("0.1.2.0")]
+[assembly: AssemblyInformationalVersionAttribute("0.1.2.0 / 0000000")]
+[assembly: AssemblyFileVersionAttribute("0.1.2.0")]
 [assembly: AssemblyDelaySignAttribute(false)]
 
