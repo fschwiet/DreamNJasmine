@@ -66,6 +66,7 @@
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />
     <Compile Include="Core\Execution\DiscoveryState.cs" />
+    <Compile Include="Core\Execution\FinishingState.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunContext.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunner.cs" />
     <Compile Include="Core\ExpectationChecker.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\TestExtensions.cs" />
-    <Compile Include="Core\TestFinishedException.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />

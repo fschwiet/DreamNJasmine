@@ -65,6 +65,11 @@ namespace NJasmine.Core.Execution
             }
         }
 
+        public void GotoStateFinishing()
+        {
+            State = new FinishingState();
+        }
+
         public bool TestIsAtPosition(TestPosition position)
         {
             return position.ToString() == _position.ToString();
