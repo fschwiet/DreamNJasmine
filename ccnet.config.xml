@@ -33,7 +33,7 @@
             <script>psake.ps1</script>
             <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
             <executable>powershell.exe</executable>
-            <buildArgs>.\default.ps1 CICommit -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
+            <buildArgs>.\default.ps1 -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
             <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
             <description>Commit check</description>
         </powershell>
