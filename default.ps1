@@ -1,7 +1,7 @@
 
 properties {
 
-    $version = "0.1.3"
+    $version = "0.1.4"
 
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
@@ -15,6 +15,9 @@ properties {
     $msbuild_Configuration = "Debug"
     $filesToDeploy = @("NJasmine.dll", "NJasmine.pdb", "PowerAssert.dll")
     $integrationTestRunPattern = "*"
+
+    $shortDescription = "NJasmine allows writing RSpec-like specifications."
+    $longDescription = "NJasmine is an NUnit extension for writing given/when/then style specifications or tests.  Like RSpec, NJasmine as a DSL uses nested anonymous methods to build up a specification."
 }
 
 . .\psake_ext.ps1
@@ -36,7 +39,7 @@ task GenerateAssemblyInfo {
 		Generate-Assembly-Info `
 			-file $asmInfo `
 			-title "$projectName $version.0" `
-			-description "An extension for NUnit to allow writing given/when/then type tests." `
+			-description $shortDescription `
 			-company "n/a" `
 			-product "NJasmine $version.0" `
 			-version "$version.0" `
@@ -243,17 +246,23 @@ task BuildNuget -depends Build_2_5_10 {
 
         add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
 
-        set-xml -exactlyOnce "//ns:version" "$version.0"
-        set-xml -exactlyOnce "//ns:owners" "fschwiet"
+        for-xml "//ns:package/ns:metadata" {
+            set-xml -exactlyOnce "//ns:version" "$version.0"
+            set-xml -exactlyOnce "//ns:owners" "fschwiet"
+            set-xml -exactlyOnce "//ns:authors" "Frank Schwieterman"
+            set-xml -exactlyOnce "//ns:description" $longDescription
 
-        set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
-        set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
-        remove-xml -exactlyOnce "//ns:iconUrl"
-        set-xml -exactlyOnce "//ns:tags" "BDD, NUnit"
+            set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
+            set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
+            remove-xml -exactlyOnce "//ns:iconUrl"
+            set-xml -exactlyOnce "//ns:tags" "BDD TDD NUnit"
 
-        set-xml -exactlyOnce "//ns:dependencies" ""
-        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
-        append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
+            set-xml -exactlyOnce "//ns:dependencies" ""
+            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
+
+            append-xml "." "<summary>$shortDescription</summary>"
+        }
     }
 
     ..\..\tools\nuget pack "NJasmine.nuspec"
