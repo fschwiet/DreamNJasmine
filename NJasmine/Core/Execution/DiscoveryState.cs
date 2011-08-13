@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 
 namespace NJasmine.Core.Execution
 {
@@ -55,12 +56,12 @@ namespace NJasmine.Core.Execution
 
         public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
-            ExpectationChecker.Expect(expectation);
+            Expect.That(expectation);
         }
 
         public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
-            ExpectationChecker.WaitUntil(expectation, totalWaitMs, waitIncrementMs);
+            Expect.Eventually(expectation, totalWaitMs, waitIncrementMs);
         }
 
         public void visitWithCategory(SpecElement origin, string category, TestPosition position)

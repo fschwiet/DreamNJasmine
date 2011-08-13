@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Extras;
 
 namespace NJasmine.Core
 {
@@ -238,7 +239,7 @@ namespace NJasmine.Core
         {
             if (_executingPastDiscovery.HasValue)
             {
-                ExpectationChecker.Expect(expectation);
+                Expect.That(expectation);
             }
         }
 
@@ -246,7 +247,7 @@ namespace NJasmine.Core
         {
             if (_executingPastDiscovery.HasValue)
             {
-                ExpectationChecker.WaitUntil(expectation, totalWaitMs, waitIncrementMs);
+                Expect.Eventually(expectation, totalWaitMs, waitIncrementMs);
             }
         }
 

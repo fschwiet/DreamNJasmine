@@ -2,16 +2,16 @@
 using System.Linq.Expressions;
 using System.Threading;
 
-namespace NJasmine.Core
+namespace NJasmine.Extras
 {
-    class ExpectationChecker
+    public class Expect
     {
-        public static void Expect(Expression<Func<bool>> expectation)
+        public static void That(Expression<Func<bool>> expectation)
         {
             PowerAssert.PAssert.IsTrue(expectation);
         }
 
-        public static void WaitUntil(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs)
+        public static void Eventually(Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs)
         {
             var expectationChecker = expectation.Compile();
 
