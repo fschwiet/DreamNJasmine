@@ -1,8 +1,6 @@
-﻿using NJasmine.Core;
-using NJasmine.Core.FixtureVisitor;
-using NJasmine.Extras;
+﻿using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine
+namespace NJasmine.Core
 {
     public interface ISpecificationRunner
     {

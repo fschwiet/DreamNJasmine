@@ -75,6 +75,7 @@
     <Compile Include="Core\GlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetupVisitor.cs" />
     <Compile Include="Core\IGlobalSetupManager.cs" />
+    <Compile Include="Core\ISpecificationRunner.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\NUnitFrameworkUtil.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Core\NJasmineSuiteBuilder.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuite.cs" />
+    <Compile Include="Core\SpecificationFixture.cs" />
     <Compile Include="Core\TestExtensions.cs" />
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
@@ -91,9 +93,7 @@
     <Compile Include="Extras\RunsActionOnDispose.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />
-    <Compile Include="ISpecificationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecificationFixture.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

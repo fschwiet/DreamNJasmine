@@ -10,31 +10,6 @@ namespace NJasmine
     [NUnit.Framework.Explicit]
     public abstract class GivenWhenThenFixture : SpecificationFixture
     {
-        //
-        //  Hmm, how to make sense of this?  It works.
-        //
-        private T SetPositionForNestedCall_Run_Then_SetPositionForNextSibling<T>(Func<TestPosition,T> action)
-        {
-            T result = default(T);
-
-            var position = base.CurrentPosition;
-            var nextPosition = base.CurrentPosition.GetNextSiblingPosition();
-            base.CurrentPosition = base.CurrentPosition.GetFirstChildPosition();
-            result = action(position);
-            base.CurrentPosition = nextPosition;
-
-            return result;
-        }
-
-        private void SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(Action<TestPosition> action)
-        {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling<object>(tp =>
-            {
-                action(tp);
-                return null;
-            });
-        }
-
         /// <summary>
         /// Branches the current test specification
         /// </summary>
