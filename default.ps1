@@ -1,7 +1,7 @@
 
 properties {
 
-    $version = "0.1.4"
+    $version = "0.1.5"
 
     $base_dir  = resolve-path .
     $buildDir = "$base_dir\build\"
