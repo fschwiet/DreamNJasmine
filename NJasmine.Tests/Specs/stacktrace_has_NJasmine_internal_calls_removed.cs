@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmine.Core;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -31,6 +32,8 @@ namespace NJasmineTests.Specs
 
             var stackTrace = fixtureResult.withStackTraces().Single();
             Assert.That(stackTrace, Is.Not.StringContaining("NJasmine.Core"));
+
+            Assert.That(!TestResultUtil.PatternForNJasmineAnonymousMethod.IsMatch(stackTrace));
         }
     }
 }

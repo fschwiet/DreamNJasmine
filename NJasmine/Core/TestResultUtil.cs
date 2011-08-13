@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using NJasmine.Core.Discovery;
 using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class TestResultUtil
+    public class TestResultUtil
     {
         public static void Error(TestResult testResult, Exception exception, FailureSite failureSite = FailureSite.Test)
         {
@@ -78,12 +79,17 @@ namespace NJasmine.Core
 
             try
             {
-                string stackTraceToTrim = "at NJasmine.Core";
-
                 foreach(var line in exception.StackTrace.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    if (!line.Trim().StartsWith(stackTraceToTrim))
-                        sb.AppendLine(line);
+                    var lineIsInNJasmineCore = line.Trim().StartsWith("at NJasmine.Core");
+
+                    if (lineIsInNJasmineCore)
+                        continue;
+
+                    if (PatternForNJasmineAnonymousMethod.IsMatch(line))
+                        continue;
+
+                    sb.AppendLine(line);
                 }
             }
             catch (Exception)
@@ -93,5 +99,7 @@ namespace NJasmine.Core
 
             return sb.ToString();
         }
+
+        public static Regex PatternForNJasmineAnonymousMethod = new Regex(@"NJasmine\..*\.<>");
     }
 }
