@@ -79,6 +79,10 @@
     <Compile Include="Specs\cannot_reenter_during_arrange.cs" />
     <Compile Include="Specs\duplicate_test_names_are_fine.cs" />
     <Compile Include="Specs\error_during_nunit_fixture_calls\fixture_setup_has_useful_errors.cs" />
+    <Compile Include="Specs\sharing_context\BrowserDriverContext.cs" />
+    <Compile Include="Specs\sharing_context\FutureStubs.cs" />
+    <Compile Include="Specs\sharing_context\HomepageTests.cs" />
+    <Compile Include="Specs\sharing_context\PretendBrowserDriver.cs" />
     <Compile Include="Specs\stacktrace_has_NJasmine_internal_calls_removed.cs" />
     <Compile Include="Specs\supports_categories.cs" />
     <Compile Include="Specs\waitUntil_waits_for_a_condition.cs" />
