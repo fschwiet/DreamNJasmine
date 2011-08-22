@@ -14,8 +14,11 @@ namespace NJasmine.Core.GlobalSetup
         SpecElement? _executingPastDiscovery;
         TestPosition _currentTestPosition;
 
+        protected TestPosition _targetPosition;
+        protected TestPosition _existingErrorPosition;
+        protected Exception _existingError;
+
         public GlobalSetupVisitor(LolMutex runningLock)
-            : base(runningLock)
         {
             _runningLock = runningLock;
             _executingPastDiscovery = null;
@@ -38,7 +41,6 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-
         public bool SetTargetPosition(TestPosition position, out Exception existingError)
         {
             existingError = null;
@@ -52,26 +54,12 @@ namespace NJasmine.Core.GlobalSetup
 
         public void FinishCleanup()
         {
-            var toCleanup = _cleanupResults;
-            _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
-
-            toCleanup.Reverse();
-
-            foreach(var kvp in toCleanup)
+            UnwindAccumulated(e =>
             {
-                try
-                {
-                    kvp.Value();
-                }
-                catch (Exception e)
-                {
-                    _existingError = e;
-                    _existingErrorPosition = new TestPosition(0);
-                    ReportError();
-                }
-            }
-
-            _setupResults = new List<KeyValuePair<TestPosition, object>>();
+                _existingError = e;
+                _existingErrorPosition = new TestPosition(0);
+                ReportError();
+            });
 
             _currentTestPosition = new TestPosition();
         }
@@ -98,7 +86,24 @@ namespace NJasmine.Core.GlobalSetup
 
                 _runningLock.PassAndWaitForTurn();
             }
-            CleanupToPrepareFor(_targetPosition);
+            CleanupToPrepareFor(_targetPosition, HandleError);
+        }
+
+        protected void ReportError()
+        {
+            while (_existingError != null
+                  && _existingErrorPosition != null
+                  && _existingErrorPosition.IsOnPathTo(_targetPosition))
+            {
+                _runningLock.PassAndWaitForTurn();
+            }
+        }
+
+        private void HandleError(Exception e)
+        {
+            _existingError = e;
+            _existingErrorPosition = new TestPosition(0);
+            ReportError();
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
@@ -126,16 +131,15 @@ namespace NJasmine.Core.GlobalSetup
 
                     if (result is IDisposable)
                     {
-                        _cleanupResults.Add(new KeyValuePair<TestPosition, Action>(
+                        AddCleanupAction(
                             position, 
                             delegate
                             {
                                 (result as IDisposable).Dispose();
-                            }));
-
+                            });
                     }
 
-                    _setupResults.Add(new KeyValuePair<TestPosition, object>(position, result));
+                    AddSetupResult(position, result);
                 }
                 finally
                 {
@@ -152,7 +156,7 @@ namespace NJasmine.Core.GlobalSetup
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                _cleanupResults.Add(new KeyValuePair<TestPosition, Action>(position, action));
+                AddCleanupAction(position, action);
             }
         }
 
@@ -177,7 +181,7 @@ namespace NJasmine.Core.GlobalSetup
             {
                 _runningLock.PassAndWaitForTurn();
             }
-            CleanupToPrepareFor(_targetPosition);
+            CleanupToPrepareFor(_targetPosition, HandleError);
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
@@ -221,15 +225,7 @@ namespace NJasmine.Core.GlobalSetup
             if (!position.IsOnPathTo(_targetPosition))
                 throw new InvalidProgramException();
 
-            try
-            {
-                return _setupResults.First(kvp => kvp.Key != null && kvp.Key.Equals(position)).Value;
-            }
-            catch (Exception e)
-            {
-                throw new InvalidProgramException(String.Format("Could not find setup result for position {0}, had results for {1}.",
-                    position.ToString() ?? "null", String.Join(", ", _setupResults.Select(sr => sr.Key.ToString()).ToArray())), e);
-            }
+            return InternalGetSetupResultAt(position);
         }
     }
 }

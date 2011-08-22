@@ -7,21 +7,16 @@ namespace NJasmine.Core.GlobalSetup
 {
     public class GlobalSetupVisitorBase
     {
-        LolMutex _runningLock;
-        protected TestPosition _targetPosition;
-        protected List<KeyValuePair<TestPosition, Action>> _cleanupResults;
-        protected List<KeyValuePair<TestPosition, object>> _setupResults;
-        protected TestPosition _existingErrorPosition;
-        protected Exception _existingError;
+        List<KeyValuePair<TestPosition, Action>> _cleanupResults;
+        List<KeyValuePair<TestPosition, object>> _setupResults;
 
-        protected GlobalSetupVisitorBase(LolMutex runningLock)
+        protected GlobalSetupVisitorBase()
         {
-            _runningLock = runningLock;
             _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
-        protected void CleanupToPrepareFor(TestPosition position)
+        protected void CleanupToPrepareFor(TestPosition position, Action<Exception> errorHandler)
         {
             List<Action> toRun = new List<Action>();
 
@@ -43,9 +38,7 @@ namespace NJasmine.Core.GlobalSetup
             }
             catch (Exception e)
             {
-                _existingError = e;
-                _existingErrorPosition = new TestPosition(0);
-                ReportError();
+                errorHandler(e);
             }
 
             for(var i = _setupResults.Count() - 1; i >= 0; i--)
@@ -59,13 +52,48 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        protected void ReportError()
+        protected void AddCleanupAction(TestPosition position, Action action)
         {
-            while(_existingError != null 
-                  && _existingErrorPosition != null
-                  && _existingErrorPosition.IsOnPathTo(_targetPosition))
+            _cleanupResults.Add(new KeyValuePair<TestPosition, Action>(position, action));
+        }
+
+        protected void UnwindAccumulated(Action<Exception> errorHandler)
+        {
+            var toCleanup = _cleanupResults;
+            _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
+
+            toCleanup.Reverse();
+
+            foreach(var kvp in toCleanup)
             {
-                _runningLock.PassAndWaitForTurn();
+                try
+                {
+                    kvp.Value();
+                }
+                catch (Exception e)
+                {
+                    errorHandler(e);
+                }
+            }
+
+            _setupResults = new List<KeyValuePair<TestPosition, object>>();
+        }
+
+        protected void AddSetupResult(TestPosition position, object value)
+        {
+            _setupResults.Add(new KeyValuePair<TestPosition, object>(position, value));
+        }
+
+        protected object InternalGetSetupResultAt(TestPosition position)
+        {
+            try
+            {
+                return _setupResults.First(kvp => kvp.Key != null && kvp.Key.Equals(position)).Value;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidProgramException(String.Format("Could not find setup result for position {0}, had results for {1}.",
+                    position.ToString() ?? "null", String.Join(", ", _setupResults.Select(sr => sr.Key.ToString()).ToArray())), e);
             }
         }
     }
