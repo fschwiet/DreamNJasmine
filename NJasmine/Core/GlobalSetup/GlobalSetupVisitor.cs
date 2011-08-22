@@ -38,20 +38,19 @@ namespace NJasmine.Core.GlobalSetup
             }
             catch (Exception e)
             {
-                _existingError = e;
-                _existingErrorPosition = new TestPosition(0);
-                ReportError();
+                ReportError(new TestPosition(0), e);
             }
         }
 
         public bool SetTargetPosition(TestPosition position, out Exception existingError)
         {
+            _targetPosition = position;
+
             existingError = null;
 
             if (_existingError != null && _existingErrorPosition != null && _existingErrorPosition.IsOnPathTo(position))
                 existingError = _existingError;
 
-            _targetPosition = position;
             return existingError != null || _targetPosition.Equals(_currentTestPosition);
         }
 
@@ -59,9 +58,7 @@ namespace NJasmine.Core.GlobalSetup
         {
             _setupResultAccumulator.UnwindAll(e =>
             {
-                _existingError = e;
-                _existingErrorPosition = new TestPosition(0);
-                ReportError();
+                ReportError(new TestPosition(0), e);
             });
 
             _currentTestPosition = new TestPosition();
@@ -77,9 +74,7 @@ namespace NJasmine.Core.GlobalSetup
                 }
                 catch (Exception e)
                 {
-                    _existingError = e;
-                    _existingErrorPosition = position;
-                    ReportError();
+                    ReportError(position, e);
                 }
             }
 
@@ -90,24 +85,20 @@ namespace NJasmine.Core.GlobalSetup
                 _runningLock.PassAndWaitForTurn();
             }
 
-            _setupResultAccumulator.UnwindForPosition(_targetPosition, HandleError);
+            _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(new TestPosition(0), e));
         }
 
-        protected void ReportError()
+        protected void ReportError(TestPosition position, Exception error)
         {
-            while (_existingError != null
-                  && _existingErrorPosition != null
-                  && _existingErrorPosition.IsOnPathTo(_targetPosition))
+            _existingError = error;
+            _existingErrorPosition = position;
+
+            while (error != null
+                  && position != null
+                  && position.IsOnPathTo(_targetPosition))
             {
                 _runningLock.PassAndWaitForTurn();
             }
-        }
-
-        private void HandleError(Exception e)
-        {
-            _existingError = e;
-            _existingErrorPosition = new TestPosition(0);
-            ReportError();
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
@@ -128,9 +119,7 @@ namespace NJasmine.Core.GlobalSetup
                     }
                     catch (Exception e)
                     {
-                        _existingError = e;
-                        _existingErrorPosition = position;
-                        ReportError();
+                        ReportError(position, e);
                     }
 
                     if (result is IDisposable)
@@ -186,7 +175,9 @@ namespace NJasmine.Core.GlobalSetup
                 _runningLock.PassAndWaitForTurn();
             }
 
-            _setupResultAccumulator.UnwindForPosition(_targetPosition, HandleError);
+            _setupResultAccumulator.UnwindForPosition(_targetPosition, e => {
+                                                                                ReportError(new TestPosition(0), e);
+            });
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
