@@ -19,12 +19,14 @@ namespace NJasmine.Core.GlobalSetup
         protected Exception _existingError;
 
         GlobalSetupResultAccumulator _setupResultAccumulator;
+        TraceTracker _traceTracker;
 
         public GlobalSetupVisitor(LolMutex runningLock)
         {
             _runningLock = runningLock;
             _executingPastDiscovery = null;
             _setupResultAccumulator = new GlobalSetupResultAccumulator();
+            _traceTracker = new TraceTracker();
         }
 
         public void RunFixture(Func<SpecificationFixture> fixtureFactory)
@@ -61,6 +63,8 @@ namespace NJasmine.Core.GlobalSetup
                 ReportError(new TestPosition(0), e);
             });
 
+            _traceTracker.UnwindAll();
+
             _currentTestPosition = new TestPosition();
         }
 
@@ -86,6 +90,7 @@ namespace NJasmine.Core.GlobalSetup
             }
 
             _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(new TestPosition(0), e));
+            _traceTracker.UnwindToPosition(_targetPosition);
         }
 
         protected void ReportError(TestPosition position, Exception error)
@@ -178,6 +183,8 @@ namespace NJasmine.Core.GlobalSetup
             _setupResultAccumulator.UnwindForPosition(_targetPosition, e => {
                                                                                 ReportError(new TestPosition(0), e);
             });
+
+            _traceTracker.UnwindToPosition(_targetPosition);
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
@@ -208,6 +215,10 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitTrace(SpecElement origin, string message, TestPosition position)
         {
+            if (_executingPastDiscovery.HasValue)
+            {
+                _traceTracker.AddTraceEntry(position, message);
+            }
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)
@@ -222,6 +233,11 @@ namespace NJasmine.Core.GlobalSetup
                 throw new InvalidProgramException();
 
             return _setupResultAccumulator.InternalGetSetupResultAt(position);
+        }
+
+        public IEnumerable<string> GetCurrentTraceMessages()
+        {
+            return _traceTracker.GetCurrentTraceMessages();
         }
     }
 }

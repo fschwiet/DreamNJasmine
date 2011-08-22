@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJasmine.Core
 {
@@ -7,5 +8,6 @@ namespace NJasmine.Core
         void Cleanup(TestPosition position);
         void PrepareForTestPosition(TestPosition position, out Exception existingError);
         T GetSetupResultAt<T>(TestPosition position);
+        IEnumerable<string> GetTraceMessages();
     }
 }

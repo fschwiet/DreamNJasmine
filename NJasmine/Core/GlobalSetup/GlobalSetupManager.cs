@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -58,6 +59,11 @@ namespace NJasmine.Core.GlobalSetup
         public T GetSetupResultAt<T>(TestPosition position)
         {
             return (T)_visitor.GetSetupResultAt(position);
+        }
+
+        public IEnumerable<string> GetTraceMessages()
+        {
+            return _visitor.GetCurrentTraceMessages();
         }
 
         public void ThreadProc()

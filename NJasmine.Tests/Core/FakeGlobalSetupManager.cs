@@ -21,5 +21,10 @@ namespace NJasmineTests.Core
         {
             return default(T);
         }
+
+        public IEnumerable<string> GetTraceMessages()
+        {
+            return new List<string>();
+        }
     }
 }

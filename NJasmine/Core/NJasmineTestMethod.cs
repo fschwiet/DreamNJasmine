@@ -48,7 +48,8 @@ namespace NJasmine.Core
                 }
                 catch (Exception e)
                 {
-                    TestResultUtil.Error(testResult, e, traceMessages);
+                    var globalTraceMessages = _globalSetup.GetTraceMessages();
+                    TestResultUtil.Error(testResult, e, globalTraceMessages.Concat(traceMessages));
                 }
             }
 
