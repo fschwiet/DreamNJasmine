@@ -8,7 +8,7 @@ using NJasmine.Extras;
 
 namespace NJasmine.Core.GlobalSetup
 {
-    public class GlobalSetupVisitor : GlobalSetupVisitorBase, ISpecPositionVisitor
+    public class GlobalSetupVisitor : ISpecPositionVisitor
     {
         readonly LolMutex _runningLock;
         SpecElement? _executingPastDiscovery;
@@ -18,10 +18,13 @@ namespace NJasmine.Core.GlobalSetup
         protected TestPosition _existingErrorPosition;
         protected Exception _existingError;
 
+        GlobalSetupResultAccumulator _setupResultAccumulator;
+
         public GlobalSetupVisitor(LolMutex runningLock)
         {
             _runningLock = runningLock;
             _executingPastDiscovery = null;
+            _setupResultAccumulator = new GlobalSetupResultAccumulator();
         }
 
         public void RunFixture(Func<SpecificationFixture> fixtureFactory)
@@ -54,7 +57,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void FinishCleanup()
         {
-            UnwindAccumulated(e =>
+            _setupResultAccumulator.UnwindAll(e =>
             {
                 _existingError = e;
                 _existingErrorPosition = new TestPosition(0);
@@ -86,7 +89,8 @@ namespace NJasmine.Core.GlobalSetup
 
                 _runningLock.PassAndWaitForTurn();
             }
-            CleanupToPrepareFor(_targetPosition, HandleError);
+
+            _setupResultAccumulator.UnwindForPosition(_targetPosition, HandleError);
         }
 
         protected void ReportError()
@@ -131,7 +135,7 @@ namespace NJasmine.Core.GlobalSetup
 
                     if (result is IDisposable)
                     {
-                        AddCleanupAction(
+                        _setupResultAccumulator.AddCleanupAction(
                             position, 
                             delegate
                             {
@@ -139,7 +143,7 @@ namespace NJasmine.Core.GlobalSetup
                             });
                     }
 
-                    AddSetupResult(position, result);
+                    _setupResultAccumulator.AddSetupResult(position, result);
                 }
                 finally
                 {
@@ -156,7 +160,7 @@ namespace NJasmine.Core.GlobalSetup
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                AddCleanupAction(position, action);
+                _setupResultAccumulator.AddCleanupAction(position, action);
             }
         }
 
@@ -181,7 +185,8 @@ namespace NJasmine.Core.GlobalSetup
             {
                 _runningLock.PassAndWaitForTurn();
             }
-            CleanupToPrepareFor(_targetPosition, HandleError);
+
+            _setupResultAccumulator.UnwindForPosition(_targetPosition, HandleError);
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
@@ -225,7 +230,7 @@ namespace NJasmine.Core.GlobalSetup
             if (!position.IsOnPathTo(_targetPosition))
                 throw new InvalidProgramException();
 
-            return InternalGetSetupResultAt(position);
+            return _setupResultAccumulator.InternalGetSetupResultAt(position);
         }
     }
 }

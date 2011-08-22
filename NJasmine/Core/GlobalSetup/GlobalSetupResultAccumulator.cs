@@ -5,29 +5,29 @@ using System.Threading;
 
 namespace NJasmine.Core.GlobalSetup
 {
-    public class GlobalSetupVisitorBase
+    public class GlobalSetupResultAccumulator
     {
-        List<KeyValuePair<TestPosition, Action>> _cleanupResults;
         List<KeyValuePair<TestPosition, object>> _setupResults;
+        List<KeyValuePair<TestPosition, Action>> _cleanupActions;
 
-        protected GlobalSetupVisitorBase()
+        public GlobalSetupResultAccumulator()
         {
-            _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
+            _cleanupActions = new List<KeyValuePair<TestPosition, Action>>();
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
-        protected void CleanupToPrepareFor(TestPosition position, Action<Exception> errorHandler)
+        public void UnwindForPosition(TestPosition position, Action<Exception> errorHandler)
         {
             List<Action> toRun = new List<Action>();
 
-            for (var i = _cleanupResults.Count() - 1; i >= 0; i--)
+            for (var i = _cleanupActions.Count() - 1; i >= 0; i--)
             {
-                var kvp = _cleanupResults[i];
+                var kvp = _cleanupActions[i];
 
                 if (!kvp.Key.IsOnPathTo(position))
                 {
                     toRun.Add(kvp.Value);
-                    _cleanupResults.RemoveAt(i);
+                    _cleanupActions.RemoveAt(i);
                 }
             }
 
@@ -52,15 +52,10 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        protected void AddCleanupAction(TestPosition position, Action action)
+        public void UnwindAll(Action<Exception> errorHandler)
         {
-            _cleanupResults.Add(new KeyValuePair<TestPosition, Action>(position, action));
-        }
-
-        protected void UnwindAccumulated(Action<Exception> errorHandler)
-        {
-            var toCleanup = _cleanupResults;
-            _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
+            var toCleanup = _cleanupActions;
+            _cleanupActions = new List<KeyValuePair<TestPosition, Action>>();
 
             toCleanup.Reverse();
 
@@ -79,12 +74,17 @@ namespace NJasmine.Core.GlobalSetup
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
-        protected void AddSetupResult(TestPosition position, object value)
+        public void AddCleanupAction(TestPosition position, Action action)
+        {
+            _cleanupActions.Add(new KeyValuePair<TestPosition, Action>(position, action));
+        }
+
+        public void AddSetupResult(TestPosition position, object value)
         {
             _setupResults.Add(new KeyValuePair<TestPosition, object>(position, value));
         }
 
-        protected object InternalGetSetupResultAt(TestPosition position)
+        public object InternalGetSetupResultAt(TestPosition position)
         {
             try
             {
