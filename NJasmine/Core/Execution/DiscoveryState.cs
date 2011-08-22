@@ -68,6 +68,11 @@ namespace NJasmine.Core.Execution
         {
         }
 
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+            _runContext.AddTrace(message);
+        }
+
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             TArranged result = default(TArranged);

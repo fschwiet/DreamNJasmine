@@ -11,12 +11,15 @@ namespace NJasmine.Core.Execution
         private readonly TestPosition _position;
         private readonly IGlobalSetupManager _globalSetup;
         private readonly List<Action> _allTeardowns;
+        private readonly List<string> _traces;
 
-        public NJasmineTestRunContext(TestPosition position, IGlobalSetupManager globalSetup)
+        public NJasmineTestRunContext(TestPosition position, IGlobalSetupManager globalSetup, List<string> traceMessages)
         {
             _position = position;
             _globalSetup = globalSetup;
             _allTeardowns = new List<Action>();
+            _traces = traceMessages;
+
             State = new DiscoveryState(this);
         }
 
@@ -37,6 +40,11 @@ namespace NJasmine.Core.Execution
         public void AddTeardownAction(Action action)
         {
             _allTeardowns.Add(action);
+        }
+
+        public void AddTrace(string message)
+        {
+            _traces.Add(message);
         }
 
         public void RunAllPerTestTeardowns()
@@ -67,7 +75,7 @@ namespace NJasmine.Core.Execution
 
         public void GotoStateFinishing()
         {
-            State = new FinishingState();
+            State = new FinishingState(this);
         }
 
         public bool TestIsAtPosition(TestPosition position)

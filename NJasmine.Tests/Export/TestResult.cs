@@ -58,5 +58,17 @@ namespace NJasmineTests.Export
 
             return this;
         }
+
+        public TestResult withExceptionDetail(string expectedMessage)
+        {
+            var stackTrace = _xml.Element("failure");
+
+            if (stackTrace != null)
+                stackTrace = stackTrace.Element("stack-trace");
+
+            Assert.That(stackTrace.Value, Is.StringContaining(expectedMessage));
+
+            return this;
+        }
     }
 }

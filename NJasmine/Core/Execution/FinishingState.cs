@@ -7,8 +7,15 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
 {
-    public class FinishingState : ISpecPositionVisitor
+    class FinishingState : ISpecPositionVisitor
     {
+        private readonly NJasmineTestRunContext _runContext;
+
+        public FinishingState(NJasmineTestRunContext runContext)
+        {
+            _runContext = runContext;
+        }
+
         public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
         }
@@ -49,6 +56,11 @@ namespace NJasmine.Core.Execution
 
         public void visitWithCategory(SpecElement origin, string category, TestPosition position)
         {
+        }
+
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+            _runContext.AddTrace(message);
         }
     }
 }

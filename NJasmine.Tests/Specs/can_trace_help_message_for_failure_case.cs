@@ -8,13 +8,8 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
-    public abstract class GivenWhenThenFixtureWithTrace : GivenWhenThenFixture
-    {
-        public void trace(string message) { }
-    }
-
     [Explicit]
-    public class can_trace_help_message_for_failure_case : GivenWhenThenFixtureWithTrace, INJasmineInternalRequirement
+    public class can_trace_help_message_for_failure_case : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -31,7 +26,7 @@ namespace NJasmineTests.Specs
             {
                 trace("1 2 3");
 
-                beforeEach(delegate
+                beforeAll(delegate
                 {
                     trace("d e f");
                 });
@@ -46,6 +41,7 @@ namespace NJasmineTests.Specs
                     trace("j k l");
 
                     expect(() => true == false);
+                    //throw new Exception("hi");
                 });
             });
         }
@@ -57,10 +53,10 @@ namespace NJasmineTests.Specs
 
             fixtureResult.hasTest("NJasmineTests.Specs.can_trace_help_message_for_failure_case, trace information is included on failure, is a failing test")
                 .thatErrors()
-                .withFailureMessage("1 2 3")
-                .withFailureMessage("d e f")
-                .withFailureMessage("g h i")
-                .withFailureMessage("j k l");
+                .withExceptionDetail("1 2 3")
+                .withExceptionDetail("d e f")
+                .withExceptionDetail("g h i")
+                .withExceptionDetail("j k l");
         }
     }
 }

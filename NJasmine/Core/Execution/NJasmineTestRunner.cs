@@ -62,5 +62,10 @@ namespace NJasmine.Core.Execution
         {
             _runContext.State.visitWithCategory(origin, category, position);
         }
+
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+            _runContext.State.visitTrace(origin, message, position);
+        }
     }
 }

@@ -76,7 +76,8 @@ namespace NJasmineTests.Core
             var method = new NJasmine.Core.NJasmineTestMethod(() => fixture, testPosition, new FakeGlobalSetupManager());
 
             TestResult result = new TestResult(method);
-            method.RunTestMethod(result);
+            List<string> ignored;
+            method.RunTestMethod(result, out ignored);
 
             expect(() => result.IsSuccess);
 

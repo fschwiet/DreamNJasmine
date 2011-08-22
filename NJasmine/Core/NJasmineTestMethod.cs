@@ -37,17 +37,18 @@ namespace NJasmine.Core
 
             if (existingError != null)
             {
-                TestResultUtil.Error(testResult, existingError, FailureSite.SetUp);
+                TestResultUtil.Error(testResult, existingError, null, FailureSite.SetUp);
             }
             else
             {
+                List<string> traceMessages = null;
                 try
                 {
-                    RunTestMethod(testResult);
+                    RunTestMethod(testResult, out traceMessages);
                 }
                 catch (Exception e)
                 {
-                    TestResultUtil.Error(testResult, e);
+                    TestResultUtil.Error(testResult, e, traceMessages);
                 }
             }
 
@@ -57,9 +58,11 @@ namespace NJasmine.Core
             return testResult;
         }
 
-        public void RunTestMethod(TestResult testResult)
+        public void RunTestMethod(TestResult testResult, out List<string> traceMessages)
         {
-            var executionContext = new NJasmineTestRunContext(Position, _globalSetup);
+            traceMessages = new List<string>();
+
+            var executionContext = new NJasmineTestRunContext(Position, _globalSetup, traceMessages);
             var runner = new NJasmineTestRunner(executionContext);
 
             SpecificationFixture fixture = this._fixtureFactory();

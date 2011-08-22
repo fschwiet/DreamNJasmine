@@ -10,31 +10,14 @@ namespace NJasmine.Core
 {
     public class TestResultUtil
     {
-        public static void Error(TestResult testResult, Exception exception, FailureSite failureSite = FailureSite.Test)
+        public static void Error(TestResult testResult, Exception exception, IEnumerable<string> traceMessages, FailureSite failureSite = FailureSite.Test)
         {
-            SetResult(testResult, ResultState.Error, exception, failureSite);
+            traceMessages = traceMessages ?? new List<string>();
+
+            testResult.SetResult(ResultState.Error, BuildMessage(exception), BuildStackTrace(exception, testResult.Test, traceMessages), failureSite);
         }
 
-        private static void SetResult(TestResult testResult, ResultState resultState, Exception ex, FailureSite failureSite)
-        {
-            if (resultState == ResultState.Cancelled)
-            {
-                testResult.SetResult(resultState, "Test cancelled by user", BuildStackTrace(ex, testResult.Test), failureSite);
-            }
-            else
-            {
-                if (resultState == ResultState.Error)
-                {
-                    testResult.SetResult(resultState, BuildMessage(ex), BuildStackTrace(ex, testResult.Test), failureSite);
-                }
-                else
-                {
-                    testResult.SetResult(resultState, ex.Message, ex.StackTrace, failureSite);
-                }
-            }
-        }
-
-        private static string BuildStackTrace(Exception exception, ITest test)
+        private static string BuildStackTrace(Exception exception, ITest test, IEnumerable<string> traceMessages)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -46,6 +29,14 @@ namespace NJasmine.Core
             }
 
             sb.AppendLine();
+
+            if (traceMessages.Count() > 0)
+            {
+                foreach (var line in traceMessages)
+                    sb.AppendLine(line);
+
+                sb.AppendLine();
+            }
 
             sb.AppendLine(GetStackTrace(exception));
 

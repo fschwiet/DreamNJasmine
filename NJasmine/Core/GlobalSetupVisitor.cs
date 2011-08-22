@@ -256,6 +256,10 @@ namespace NJasmine.Core
             CheckNotAlreadyPastDiscovery(origin);
         }
 
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+        }
+
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)
         {
             if (_executingPastDiscovery.HasValue)

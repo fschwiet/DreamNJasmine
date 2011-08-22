@@ -146,5 +146,9 @@ namespace NJasmine.Core.Discovery
         {
             _accumulatedCategories.Add(category);
         }
+
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+        }
     }
 }

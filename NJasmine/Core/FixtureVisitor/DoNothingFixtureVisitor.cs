@@ -43,6 +43,10 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
+        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        {
+        }
+
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             return default(TArranged);
