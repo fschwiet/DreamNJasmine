@@ -54,7 +54,7 @@ namespace NJasmineTests.Specs
             fixtureResult.hasTest("NJasmineTests.Specs.can_trace_help_message_for_failure_case, trace information is included on failure, is a failing test")
                 .thatErrors()
                 .withExceptionDetail("1 2 3")
-                .withExceptionDetail("d e f")
+                //.withExceptionDetail("d e f")
                 .withExceptionDetail("g h i")
                 .withExceptionDetail("j k l");
         }

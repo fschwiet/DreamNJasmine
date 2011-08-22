@@ -9,25 +9,14 @@ using NJasmine.Extras;
 
 namespace NJasmine.Core
 {
-    public class GlobalSetupVisitor : ISpecPositionVisitor
+    public class GlobalSetupVisitor : GlobalSetupVisitorBase, ISpecPositionVisitor
     {
-        private readonly AutoResetEvent _runningLock;
-        TestPosition _targetPosition;
         SpecElement? _executingPastDiscovery;
         TestPosition _currentTestPosition;
-        List<KeyValuePair<TestPosition, Action>> _cleanupResults;
-        List<KeyValuePair<TestPosition, object>> _setupResults;
 
-        TestPosition _existingErrorPosition;
-
-        Exception _existingError;
-
-        public GlobalSetupVisitor(AutoResetEvent runningLock)
+        public GlobalSetupVisitor(AutoResetEvent runningLock) : base(runningLock)
         {
-            _runningLock = runningLock;
             _executingPastDiscovery = null;
-            _cleanupResults = new List<KeyValuePair<TestPosition, Action>>();
-            _setupResults = new List<KeyValuePair<TestPosition, object>>();
         }
 
         public void RunFixture(Func<SpecificationFixture> fixtureFactory)
@@ -104,49 +93,10 @@ namespace NJasmine.Core
             while (position.Equals(_targetPosition))
             {
                 _currentTestPosition = position;
-                _runningLock.Set();
-                Thread.Sleep(0);
-                _runningLock.WaitOne(-1);
+
+                WaitForTurn();
             }
             CleanupToPrepareFor(_targetPosition);
-        }
-
-        private void CleanupToPrepareFor(TestPosition position)
-        {
-            List<Action> toRun = new List<Action>();
-
-            for (var i = _cleanupResults.Count() - 1; i >= 0; i--)
-            {
-                var kvp = _cleanupResults[i];
-
-                if (!kvp.Key.IsOnPathTo(position))
-                {
-                    toRun.Add(kvp.Value);
-                    _cleanupResults.RemoveAt(i);
-                }
-            }
-
-            try
-            {
-                foreach (var action in toRun)
-                    action();
-            }
-            catch (Exception e)
-            {
-                _existingError = e;
-                _existingErrorPosition = new TestPosition(0);
-                ReportError();
-            }
-
-            for(var i = _setupResults.Count() - 1; i >= 0; i--)
-            {
-                var kvp = _setupResults[i];
-
-                if (!kvp.Key.IsOnPathTo(position))
-                {
-                    _setupResults.RemoveAt(i);
-                }
-            }
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
@@ -279,18 +229,6 @@ namespace NJasmine.Core
             {
                 throw new InvalidProgramException(String.Format("Could not find setup result for position {0}, had results for {1}.",
                     position.ToString() ?? "null", String.Join(", ", _setupResults.Select(sr => sr.Key.ToString()).ToArray())), e);
-            }
-        }
-
-        void ReportError()
-        {
-            while(_existingError != null 
-                && _existingErrorPosition != null
-                && _existingErrorPosition.IsOnPathTo(_targetPosition))
-            {
-                _runningLock.Set();
-                Thread.Sleep(0);
-                _runningLock.WaitOne(-1);
             }
         }
     }
