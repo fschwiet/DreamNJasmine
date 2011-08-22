@@ -10,11 +10,14 @@ namespace NJasmine.Core.GlobalSetup
 {
     public class GlobalSetupVisitor : GlobalSetupVisitorBase, ISpecPositionVisitor
     {
+        readonly LolMutex _runningLock;
         SpecElement? _executingPastDiscovery;
         TestPosition _currentTestPosition;
 
-        public GlobalSetupVisitor(AutoResetEvent runningLock) : base(runningLock)
+        public GlobalSetupVisitor(LolMutex runningLock)
+            : base(runningLock)
         {
+            _runningLock = runningLock;
             _executingPastDiscovery = null;
         }
 
@@ -93,7 +96,7 @@ namespace NJasmine.Core.GlobalSetup
             {
                 _currentTestPosition = position;
 
-                WaitForTurn();
+                _runningLock.PassAndWaitForTurn();
             }
             CleanupToPrepareFor(_targetPosition);
         }
@@ -172,9 +175,7 @@ namespace NJasmine.Core.GlobalSetup
 
             while (position.Equals(_targetPosition))
             {
-                _runningLock.Set();
-                Thread.Sleep(0);
-                _runningLock.WaitOne(-1);
+                _runningLock.PassAndWaitForTurn();
             }
             CleanupToPrepareFor(_targetPosition);
         }

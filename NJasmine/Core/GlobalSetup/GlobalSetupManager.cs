@@ -9,15 +9,15 @@ namespace NJasmine.Core.GlobalSetup
         Func<SpecificationFixture> _fixtureFactory;
         Thread _thread;
         GlobalSetupVisitor _visitor;
-        AutoResetEvent _runningLock;
+        LolMutex _runMutex;
         private TestPosition _targetPosition;
 
         public void Initialize(Func<SpecificationFixture> fixtureFactory)
         {
             _fixtureFactory = fixtureFactory;
             _thread = null;
-            _runningLock = new AutoResetEvent(false);
-            _visitor = new GlobalSetupVisitor(_runningLock);
+            _runMutex = new LolMutex(new AutoResetEvent(false));
+            _visitor = new GlobalSetupVisitor(_runMutex);
         }
 
         public void Cleanup(TestPosition position)
@@ -50,9 +50,8 @@ namespace NJasmine.Core.GlobalSetup
                     _thread.Start();
                 }
 
-                _runningLock.Set();
-                Thread.Sleep(0);
-                _runningLock.WaitOne(-1);
+                _runMutex.PassAndWaitForTurn();
+
             } while (!_visitor.SetTargetPosition(position, out existingError));
         }
 
@@ -63,7 +62,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void ThreadProc()
         {
-            _runningLock.WaitOne(-1);
+            _runMutex.WaitForTurn();
 
             try
             {
@@ -88,7 +87,7 @@ namespace NJasmine.Core.GlobalSetup
             {
                 _thread = null;
 
-                _runningLock.Set();
+                _runMutex.PassTurn();
             }
         }
 
