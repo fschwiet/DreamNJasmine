@@ -32,9 +32,9 @@ namespace NJasmineTests.Extras
 
         public void Verify(FixtureResult fixtureResult)
         {
-            fixtureResult.hasTest("NJasmineTests.Extras.can_check_for_expected_substrings, does nothing if all substrings are present").thatSucceeds();
-            fixtureResult.hasTest("NJasmineTests.Extras.can_check_for_expected_substrings, fails if a substring is missing").thatErrors();
-            fixtureResult.hasTest("NJasmineTests.Extras.can_check_for_expected_substrings, fails if substrings are out of order").thatErrors();
+            fixtureResult.hasTest("does nothing if all substrings are present").thatSucceeds();
+            fixtureResult.hasTest("fails if a substring is missing").thatErrors();
+            fixtureResult.hasTest("fails if substrings are out of order").thatErrors();
         }
     }
 }

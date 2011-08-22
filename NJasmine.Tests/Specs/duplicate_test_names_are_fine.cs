@@ -53,17 +53,17 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test").thatErrors();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`2").thatErrors();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated outer test`3").thatErrors();
+            fixtureResult.hasTest("repeated outer test").thatErrors();
+            fixtureResult.hasTest("repeated outer test`2").thatErrors();
+            fixtureResult.hasTest("repeated outer test`3").thatErrors();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test").thatIsNotRunnable();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`2").thatIsNotRunnable();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated unimplemented outer test`3").thatIsNotRunnable();
+            fixtureResult.hasTest("repeated unimplemented outer test").thatIsNotRunnable();
+            fixtureResult.hasTest("repeated unimplemented outer test`2").thatIsNotRunnable();
+            fixtureResult.hasTest("repeated unimplemented outer test`3").thatIsNotRunnable();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe").thatFails();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`2").thatFails();
-            fixtureResult.hasTest("NJasmineTests.Specs.duplicate_test_names_are_fine, repeated describe, repeated inner describe`3").thatFails();
+            fixtureResult.hasTest("repeated describe, repeated inner describe").thatFails();
+            fixtureResult.hasTest("repeated describe, repeated inner describe`2").thatFails();
+            fixtureResult.hasTest("repeated describe, repeated inner describe`3").thatFails();
         }
     }
 }

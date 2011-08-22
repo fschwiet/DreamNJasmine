@@ -29,7 +29,7 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.reports_exception_within_describe, broken describe").thatFails()
+            fixtureResult.hasTest("broken describe").thatFails()
                 .withFailureMessage("Attempted to divide by zero.");
         }
     }

@@ -29,16 +29,16 @@ namespace NJasmineTests.Specs.beforeAll
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count")
+            fixtureResult.hasTest("then reports the test with the correct count")
                 .withFailureMessage("Failed with TotalRuns: 1");
 
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`2")
+            fixtureResult.hasTest("then reports the test with the correct count`2")
                 .withFailureMessage("Failed with TotalRuns: 1");
 
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`3")
+            fixtureResult.hasTest("then reports the test with the correct count`3")
                 .withFailureMessage("Failed with TotalRuns: 1");
 
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_doesnt_reexecute, then reports the test with the correct count`4")
+            fixtureResult.hasTest("then reports the test with the correct count`4")
                 .withFailureMessage("Failed with TotalRuns: 1");
         }
     }

@@ -52,11 +52,11 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange code tries to re-enter, has a valid test that will now fail")
+            fixtureResult.hasTest("when the arrange code tries to re-enter, has a valid test that will now fail")
                 .thatErrors()
                 .withFailureMessage("System.InvalidOperationException : Called it() within arrange().");
 
-            fixtureResult.hasTest("NJasmineTests.Specs.cannot_reenter_during_arrange, when the arrange cleanup code tries to re-enter, has a valid test that will now fail")
+            fixtureResult.hasTest("when the arrange cleanup code tries to re-enter, has a valid test that will now fail")
                 .thatErrors()
                 .withFailureMessage("System.InvalidOperationException : Called it() within arrange().");
         }

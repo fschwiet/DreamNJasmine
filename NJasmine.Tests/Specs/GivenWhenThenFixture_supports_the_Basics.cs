@@ -68,9 +68,9 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.succeeds();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected");
-            fixtureResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then another result is expected");
-            fixtureResult.hasTest("NJasmineTests.Specs.GivenWhenThenFixture_supports_the_Basics, given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then yet another result is expected");
+            fixtureResult.hasTest("given the environment is in a particular state, when the system under test is used in a particular manner, then a particular result is expected");
+            fixtureResult.hasTest("given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then another result is expected");
+            fixtureResult.hasTest("given the environment is in a particular state, given the environment is in an even more particular state, when the system is used in another manner, then yet another result is expected");
         }
     }
 }

@@ -35,9 +35,9 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.expect, can pass tests").thatSucceeds();
-            fixtureResult.hasTest("NJasmineTests.Specs.expect, can fail tests").thatErrors();
-            fixtureResult.hasTest("NJasmineTests.Specs.expect, expect can be called during discovery, doesnt prevent discovery").thatErrors();
+            fixtureResult.hasTest("can pass tests").thatSucceeds();
+            fixtureResult.hasTest("can fail tests").thatErrors();
+            fixtureResult.hasTest("expect can be called during discovery, doesnt prevent discovery").thatErrors();
         }
     }
 }

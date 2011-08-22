@@ -21,8 +21,8 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.succeeds();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple test");
-            fixtureResult.hasTest("NJasmineTests.Specs.test_name_joins_specification, simple describe, simple test");
+            fixtureResult.hasTest("simple test");
+            fixtureResult.hasTest("simple describe, simple test");
         }
     }
 }

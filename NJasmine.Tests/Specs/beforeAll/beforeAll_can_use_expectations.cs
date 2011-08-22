@@ -40,8 +40,8 @@ namespace NJasmineTests.Specs.beforeAll
         public void Verify(FixtureResult fixtureResult)
         {
             fixtureResult.failed();
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, works").thatSucceeds();
-            fixtureResult.hasTest("NJasmineTests.Specs.beforeAll.beforeAll_can_use_expectations, when using expect within beforeAll, fails").thatErrors();
+            fixtureResult.hasTest("works").thatSucceeds();
+            fixtureResult.hasTest("when using expect within beforeAll, fails").thatErrors();
         }
     }
 }

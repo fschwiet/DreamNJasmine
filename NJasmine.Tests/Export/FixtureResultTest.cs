@@ -147,7 +147,7 @@ THREE
             {
                 var expectedTestName = "one_two_test";
 
-                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName: expectedTestName);
+                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName: _expectedFixtureName + ", " + expectedTestName);
 
                 var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
 
@@ -162,7 +162,7 @@ THREE
 
                     var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
-                        sut.hasTest(wrongTestName);
+                        sut.hasTestWithFullName(wrongTestName);
                     });
 
                     expect(() => exception.Message.Contains("Expected test not found, expected test named " + wrongTestName));

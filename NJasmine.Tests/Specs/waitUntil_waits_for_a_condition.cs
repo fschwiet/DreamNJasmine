@@ -78,22 +78,22 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.failed();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect works when no waits are left")
                 .thatSucceeds();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, given a condition that eventually evaluates to true, a normal expect fails when waits are left")
                 .thatErrors();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, given a condition that eventually evaluates to true, waitUntil will try multiple times")
                 .thatSucceeds();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, given a condition that eventually evaluates to true, expectEventually will try multiple times")
                 .thatSucceeds();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, waitUntil can be called during discovery, doesnt prevent discovery")
                 .thatErrors();
 
-            fixtureResult.hasTest("NJasmineTests.Specs.waitUntil_waits_for_a_condition, given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery")
+            fixtureResult.hasTest("given either waitUntil or expectEventually, expectEventually can be called during discovery, doesnt prevent discovery")
                 .thatErrors();
         }
     }

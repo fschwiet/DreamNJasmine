@@ -65,6 +65,11 @@ namespace NJasmineTests.Export
 
         public TestResult hasTest(string name)
         {
+            return hasTestWithFullName(_name + ", " + name);
+        }
+
+        public TestResult hasTestWithFullName(string name)
+        {
             var tests = _doc.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
             Assert.AreEqual(1, tests.Count(), "Expected test not found, expected test named " + name);

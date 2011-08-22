@@ -59,14 +59,14 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult withExceptionDetail(string expectedMessage)
+        public TestResult withDetailedMessageThat(Action<string> handler)
         {
             var stackTrace = _xml.Element("failure");
 
             if (stackTrace != null)
                 stackTrace = stackTrace.Element("stack-trace");
 
-            Assert.That(stackTrace.Value, Is.StringContaining(expectedMessage));
+            handler(stackTrace.Value);
 
             return this;
         }
