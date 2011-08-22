@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 using NUnit.Framework;
 

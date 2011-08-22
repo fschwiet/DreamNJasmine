@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Core.GlobalSetup;
 using NJasmine.Extras;
 using NUnit.Core;
 

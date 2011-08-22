@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.GlobalSetup
 {
     public class GlobalSetupVisitorBase
     {

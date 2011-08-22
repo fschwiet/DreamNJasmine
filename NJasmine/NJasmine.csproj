@@ -72,9 +72,9 @@
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
-    <Compile Include="Core\GlobalSetupManager.cs" />
-    <Compile Include="Core\GlobalSetupVisitor.cs" />
-    <Compile Include="Core\GlobalSetupVisitorBase.cs" />
+    <Compile Include="Core\GlobalSetup\GlobalSetupManager.cs" />
+    <Compile Include="Core\GlobalSetup\GlobalSetupVisitor.cs" />
+    <Compile Include="Core\GlobalSetup\GlobalSetupVisitorBase.cs" />
     <Compile Include="Core\IGlobalSetupManager.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />

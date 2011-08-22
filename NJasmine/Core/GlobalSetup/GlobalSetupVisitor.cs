@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.GlobalSetup
 {
     public class GlobalSetupVisitor : GlobalSetupVisitorBase, ISpecPositionVisitor
     {

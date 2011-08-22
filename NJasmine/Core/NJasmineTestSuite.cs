@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 
 namespace NJasmine.Core
