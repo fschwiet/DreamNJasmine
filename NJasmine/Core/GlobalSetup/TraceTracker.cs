@@ -21,7 +21,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void UnwindToPosition(TestPosition position)
         {
-            while(_top != null)
+            while (_top != null)
             {
                 if (!_top.Position.IsOnPathTo(position))
                     _top = _top.Next;
