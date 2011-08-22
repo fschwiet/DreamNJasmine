@@ -12,6 +12,7 @@ namespace NJasmine.Core.GlobalSetup
     {
         readonly LolMutex _runningLock;
         SpecElement? _executingPastDiscovery;
+        SpecElement? _executingCleanup;
         TestPosition _currentTestPosition;
 
         protected TestPosition _targetPosition;
@@ -25,6 +26,7 @@ namespace NJasmine.Core.GlobalSetup
         {
             _runningLock = runningLock;
             _executingPastDiscovery = null;
+            _executingCleanup = null;
             _setupResultAccumulator = new GlobalSetupResultAccumulator();
             _traceTracker = new TraceTracker();
         }
@@ -154,7 +156,11 @@ namespace NJasmine.Core.GlobalSetup
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                _setupResultAccumulator.AddCleanupAction(position, action);
+                _setupResultAccumulator.AddCleanupAction(position, delegate {
+                    _executingCleanup = origin;
+                    action();
+                    _executingCleanup = null;
+                });
             }
         }
 
@@ -218,6 +224,11 @@ namespace NJasmine.Core.GlobalSetup
             if (_executingPastDiscovery.HasValue)
             {
                 _traceTracker.AddTraceEntry(position, message);
+            }
+
+            if (_executingCleanup.HasValue)
+            {
+                throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup.Value);
             }
         }
 

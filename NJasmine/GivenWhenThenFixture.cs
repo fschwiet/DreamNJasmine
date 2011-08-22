@@ -361,7 +361,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitTrace(SpecElement.expect, message, position);
+                base.Visitor.visitTrace(SpecElement.trace, message, position);
             });
         }
     }

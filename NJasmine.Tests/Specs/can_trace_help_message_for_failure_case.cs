@@ -64,6 +64,30 @@ namespace NJasmineTests.Specs
                     throw new Exception();
                 });
             });
+
+            describe("trace messages can be recorded during per-test cleanup", delegate
+            {
+                afterEach(() => trace("traced after test"));
+
+                it("test with cleanup", delegate
+                {
+                    throw new Exception();
+                });
+            });
+
+            describe("trace messages during global cleanup cause a failure of next test", delegate
+            {
+                afterAll(() => trace("traced after test"));
+
+                it("test with global cleanup", delegate
+                {
+                });
+            });
+
+            it("forced to fail by previous error", delegate
+            {
+                
+            });
         }
 
         public void Verify(FixtureResult fixtureResult)
@@ -87,6 +111,15 @@ namespace NJasmineTests.Specs
             fixtureResult.hasTest("globally tracked trace information only applies to the correct scope, test without trace")
                 .thatErrors().withDetailedMessageThat(message =>
                 Assert.That(message, Is.Not.StringContaining(ParticularyScopedTraceMessage)));
+
+            fixtureResult.hasTest("trace messages can be recorded during per-test cleanup, test with cleanup")
+                .thatErrors().withDetailedMessageThat(message => Assert.That(message, Is.StringContaining("traced after test")));
+
+            fixtureResult.hasTest("trace messages during global cleanup cause a failure of next test, test with global cleanup")
+                .thatSucceeds();
+
+            fixtureResult.hasTest("forced to fail by previous error")
+                .thatErrors().withFailureMessage("Attempted to call trace() from within afterAll");
         }
     }
 }

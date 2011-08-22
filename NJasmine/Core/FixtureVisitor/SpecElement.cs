@@ -20,5 +20,6 @@
         expectEventually,
         waitUntil,
         withCategory,
+        trace
     }
 }
