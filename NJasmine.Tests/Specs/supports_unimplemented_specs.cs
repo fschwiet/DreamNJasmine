@@ -18,7 +18,7 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
         {
             fixtureResult.hasTest("an unimplemented test() block").thatIsNotRunnable();
 

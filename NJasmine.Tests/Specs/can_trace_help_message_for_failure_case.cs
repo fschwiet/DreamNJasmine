@@ -90,7 +90,7 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
         {
             fixtureResult.hasTest("trace information is not included on success, is a passing test")
                 .thatSucceeds();

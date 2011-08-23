@@ -30,7 +30,7 @@ namespace NJasmineTests.Extras
             });
         }
 
-        public void Verify(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
         {
             fixtureResult.hasTest("does nothing if all substrings are present").thatSucceeds();
             fixtureResult.hasTest("fails if a substring is missing").thatErrors();

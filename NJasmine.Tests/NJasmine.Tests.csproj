@@ -73,43 +73,43 @@
     <Compile Include="Export\TestResult.cs" />
     <Compile Include="Extras\can_check_for_expected_substrings.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
-    <Compile Include="Specs\beforeAll\beforeAll_can_use_expectations.cs" />
-    <Compile Include="Specs\beforeAll\beforeAll_doesnt_reexecute.cs" />
-    <Compile Include="Specs\beforeAll\beforeAll_has_access_to_other_beforeAll_results.cs" />
-    <Compile Include="Specs\cannot_reenter_during_arrange.cs" />
+    <Compile Include="Specs\expectations\can_check_that_an_arbtirary_condition_is_true.cs" />
+    <Compile Include="Specs\expectations\can_wait_for_a_condition_to_be_true.cs" />
+    <Compile Include="Specs\cleanup_any_IDisposable\setup_results_dont_have_to_be_disposable.cs" />
+    <Compile Include="Specs\cleanup_any_IDisposable\setup_results_are_disposed_automatically.cs" />
+    <Compile Include="Specs\report_test_failures_usefully\reports_exception_at_outermost_scope.cs" />
+    <Compile Include="Specs\report_test_failures_usefully\reports_exception_within_describe.cs" />
+    <Compile Include="Specs\report_test_failures_usefully\stacktrace_has_NJasmine_internal_calls_removed.cs" />
+    <Compile Include="Specs\setup_per_test\arrange_after_test_is_not_included_in_prior_test.cs" />
+    <Compile Include="Specs\setup_per_test\arrange_operations_can_be_nested.cs" />
+    <Compile Include="Specs\setup_per_test\runs_teardown_even_after_setup_failure.cs" />
+    <Compile Include="Specs\setup_per_test\runs_teardown_even_after_test_failure.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\beforeAll_can_use_expectations.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\beforeAll_doesnt_reexecute.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\beforeAll_has_access_to_other_beforeAll_results.cs" />
     <Compile Include="Specs\can_trace_help_message_for_failure_case.cs" />
+    <Compile Include="Specs\checks_reentrancy\cannot_test_during_afterEach.cs" />
+    <Compile Include="Specs\checks_reentrancy\cannot_test_during_arrange.cs" />
+    <Compile Include="Specs\checks_reentrancy\cannot_reenter_during_beforeEach.cs" />
+    <Compile Include="Specs\checks_reentrancy\cannot_test_during_test.cs" />
     <Compile Include="Specs\duplicate_test_names_are_fine.cs" />
-    <Compile Include="Specs\error_during_nunit_fixture_calls\fixture_setup_has_useful_errors.cs" />
-    <Compile Include="Specs\sharing_context\BrowserDriverContext.cs" />
-    <Compile Include="Specs\sharing_context\FutureStubs.cs" />
-    <Compile Include="Specs\sharing_context\HomepageTests.cs" />
-    <Compile Include="Specs\sharing_context\PretendBrowserDriver.cs" />
-    <Compile Include="Specs\stacktrace_has_NJasmine_internal_calls_removed.cs" />
+    <Compile Include="Specs\report_test_failures_usefully\nunit_fixture_setup_has_useful_errors.cs" />
+    <Compile Include="Specs\proposed_specs\sharing_context\BrowserDriverContext.cs" />
+    <Compile Include="Specs\proposed_specs\sharing_context\FutureStubs.cs" />
+    <Compile Include="Specs\proposed_specs\sharing_context\HomepageTests.cs" />
+    <Compile Include="Specs\proposed_specs\sharing_context\PretendBrowserDriver.cs" />
     <Compile Include="Specs\supports_categories.cs" />
-    <Compile Include="Specs\waitUntil_waits_for_a_condition.cs" />
-    <Compile Include="Specs\expect.cs" />
-    <Compile Include="Specs\runs_teardown_even_after_setup_failure.cs" />
-    <Compile Include="Specs\runs_teardown_even_after_test_failure.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
-    <Compile Include="Specs\reports_exception_at_outermost_scope.cs" />
-    <Compile Include="Specs\reports_exception_within_describe.cs" />
-    <Compile Include="Specs\cannot_reenter_during_afterEach.cs" />
-    <Compile Include="Specs\cannot_reenter_during_beforeEach.cs" />
-    <Compile Include="Specs\cannot_reenter_during_it.cs" />
-    <Compile Include="Specs\afterAll_failures_only_fail_the_fixture.cs" />
-    <Compile Include="Specs\arrange_after_test_is_not_included_in_prior_test.cs" />
-    <Compile Include="Specs\arrange_operations_can_be_nested.cs" />
-    <Compile Include="Specs\beforeAll\beforeAll_and_afterAll_are_applied_to_the_correct_scope.cs" />
-    <Compile Include="Specs\beforeAll\beforeAll_can_return_a_value.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\afterAll_failures_only_fail_the_fixture.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\beforeAll_and_afterAll_are_applied_to_the_correct_scope.cs" />
+    <Compile Include="Specs\setup_shared_across_tests\beforeAll_can_return_a_value.cs" />
     <Compile Include="Specs\can_mark_tests_as_ignored.cs" />
     <Compile Include="Specs\constructor_is_run_once_per_test.cs" />
-    <Compile Include="Specs\GivenWhenThenFixture_supports_the_Basics.cs" />
+    <Compile Include="Specs\can_nest_contexts.cs" />
     <Compile Include="Specs\imports_NUnit_fixture.cs" />
-    <Compile Include="Specs\suite_arranging_disposables.cs" />
-    <Compile Include="Specs\suite_arranging_nondisposables.cs" />
     <Compile Include="Specs\supports_nunit_setup_by_namespace.cs" />
     <Compile Include="Specs\supports_unimplemented_specs.cs" />
-    <Compile Include="Specs\test_name_joins_specification.cs" />
+    <Compile Include="Specs\specification_text_becomes_test_name.cs" />
     <Compile Include="SampleTest.cs" />
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,6 +126,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,5 +1,4 @@
-﻿using System;
-using NJasmineTests.Core;
+﻿using NJasmineTests.Core;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -31,7 +30,7 @@ namespace NJasmineTests.Specs
                 });
             }
 
-            public void Verify(FixtureResult fixtureResult)
+            public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
             {
                 fixtureResult.succeeds();
 

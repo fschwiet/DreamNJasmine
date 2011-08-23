@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NJasmineTests.Export;
+using NJasmineTests.Specs.expectations;
 
 namespace NJasmineTestLoader
 {
@@ -30,12 +31,12 @@ namespace NJasmineTestLoader
             var xmlOutput = File.ReadAllText(XmlOutputFile);
             var consoleOutput = File.ReadAllText(ConsoleOutputFile);
 
-            var testType = typeof (NJasmineTests.Specs.expect).Assembly.GetType(TestName);
+            var testType = typeof (can_check_that_an_arbtirary_condition_is_true).Assembly.GetType(TestName);
             var test = testType.GetConstructor(new Type[0]).Invoke(new Type[0]) as INJasmineInternalRequirement;
 
             var fixtureResult = new FixtureResult(TestName, xmlOutput, consoleOutput);
 
-            test.Verify(fixtureResult);
+            test.Verify_NJasmine_implementation(fixtureResult);
 
             return 0;
         }

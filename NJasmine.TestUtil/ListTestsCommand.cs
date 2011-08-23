@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 using NJasmineTests;
 using NJasmineTests.Export;
+using NJasmineTests.Specs.expectations;
 
 namespace NJasmineTestLoader
 {
@@ -23,7 +24,7 @@ namespace NJasmineTestLoader
 
         public override int Run()
         {
-            var types = from t in typeof(NJasmineTests.Specs.expect).Assembly.GetTypes()
+            var types = from t in typeof(can_check_that_an_arbtirary_condition_is_true).Assembly.GetTypes()
                         where t.GetInterfaces().Contains(typeof(INJasmineInternalRequirement))
                    select new ListTestsCommand.TestDefinition
                    {
