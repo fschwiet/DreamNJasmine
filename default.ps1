@@ -170,9 +170,9 @@ task Build_2_5_10 {
 task Build_2_6_0 {
 
     $buildDir = "$base_dir\build_2_6_0\"
-    $NUnitLibPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\lib"
-    $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11089\bin\framework"
-    $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11089\bin"
+    $NUnitLibPath = "$base_dir\lib\NUnit-2.6.0.11240\bin\lib"
+    $NUnitFrameworkPath = "$base_dir\lib\NUnit-2.6.0.11240\bin\framework"
+    $NUnitBinPath = "$base_dir\lib\NUnit-2.6.0.11240\bin"
 
     TrackPackage "NJasmine_for_NUnit-2.6.0 (preview).zip" $buildDir
 
