@@ -31,21 +31,13 @@
         <powershell>
             <!-- http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/PowerShell%20Task.html -->
             <script>psake.ps1</script>
-            <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
+            <scriptsDirectory>c:\build\njasmine.git</scriptsDirectory>
             <executable>powershell.exe</executable>
             <buildArgs>.\default.ps1 -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
             <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
-            <description>Commit check</description>
+            <description>Build and run tests</description>
         </powershell>
-        <powershell>
-            <!-- http://ccnetlive.thoughtworks.com/ccnet/doc/CCNET/PowerShell%20Task.html -->
-            <script>psake.ps1</script>
-            <scriptsDirectory>c:\src\njasmine</scriptsDirectory>
-            <executable>powershell.exe</executable>
-            <buildArgs>.\default.ps1 AllTests -properties @{ buildDir = 'c:\build\NJasmine.msbuild\' }</buildArgs>
-            <successExitCodes>0</successExitCodes>  <!-- via powershell, $LastExitCode -->
-            <description>Run all</description>
-        </powershell>        
+       
     </tasks>
     
 </project>
