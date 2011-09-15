@@ -23,7 +23,11 @@ properties {
 . .\psake_ext.ps1
 import-module .\tools\PSUpdateXml.psm1
 
-task default -depends AllTests
+task default -depends TraceSourceControlCommit,AllTests
+
+task TraceSourceControlCommit {
+    git log -1 --oneline | % { "Current commit: " + $_ }
+}
 
 task GenerateAssemblyInfo {
 	
