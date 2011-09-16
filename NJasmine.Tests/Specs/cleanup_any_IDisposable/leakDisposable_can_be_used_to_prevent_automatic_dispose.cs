@@ -34,22 +34,22 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
 
             describe("beforeAll results can be leaked", delegate
             {
-                var leakedOnce = beforeAll(() => new DisposeTracker("leakedOnce", disposesCalled));
-                var leakedOnce2 = beforeAll(() => new DisposeTracker("leakedOnce2", disposesCalled));
-                var leakedOnce3 = beforeAll(() => new DisposeTracker("leakedOnce3", disposesCalled));
+                //var leakedOnce = beforeAll(() => new DisposeTracker("leakedOnce", disposesCalled));
+                //var leakedOnce2 = beforeAll(() => new DisposeTracker("leakedOnce2", disposesCalled));
+                //var leakedOnce3 = beforeAll(() => new DisposeTracker("leakedOnce3", disposesCalled));
                 var disposedOnce = beforeAll(() => new DisposeTracker("disposedOnce", disposesCalled));
 
-                leakDisposable(leakedOnce);
+                //leakDisposable(leakedOnce);
 
-                afterAll(() => leakDisposable(leakedOnce2));
+                //afterAll(() => leakDisposable(leakedOnce2));
 
                 it("some test", delegate()
                 {
-                    leakDisposable(leakedOnce3);
+                    //leakDisposable(leakedOnce3);
 
-                    expect(() => leakedOnce != null);
-                    expect(() => leakedOnce2 != null);
-                    expect(() => leakedOnce3 != null);
+                    //expect(() => leakedOnce != null);
+                    //expect(() => leakedOnce2 != null);
+                    //expect(() => leakedOnce3 != null);
                     expect(() => disposedOnce != null);
                 });
             });
