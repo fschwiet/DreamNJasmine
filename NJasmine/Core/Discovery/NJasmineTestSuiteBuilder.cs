@@ -151,5 +151,9 @@ namespace NJasmine.Core.Discovery
         public void visitTrace(SpecElement origin, string message, TestPosition position)
         {
         }
+
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+        }
     }
 }

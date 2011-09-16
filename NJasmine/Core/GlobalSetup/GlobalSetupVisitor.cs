@@ -129,16 +129,6 @@ namespace NJasmine.Core.GlobalSetup
                         ReportError(position, e);
                     }
 
-                    if (result is IDisposable)
-                    {
-                        _setupResultAccumulator.AddCleanupAction(
-                            position, 
-                            delegate
-                            {
-                                (result as IDisposable).Dispose();
-                            });
-                    }
-
                     _setupResultAccumulator.AddSetupResult(position, result);
                 }
                 finally
@@ -230,6 +220,11 @@ namespace NJasmine.Core.GlobalSetup
             {
                 throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup.Value);
             }
+        }
+
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+            //TODO
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)

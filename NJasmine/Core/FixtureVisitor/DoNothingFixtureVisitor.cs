@@ -47,6 +47,10 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+        }
+
         public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             return default(TArranged);

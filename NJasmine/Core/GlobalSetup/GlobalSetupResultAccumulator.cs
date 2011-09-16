@@ -81,6 +81,16 @@ namespace NJasmine.Core.GlobalSetup
 
         public void AddSetupResult(TestPosition position, object value)
         {
+            if (value is IDisposable)
+            {
+                AddCleanupAction(
+                    position,
+                    delegate
+                    {
+                        (value as IDisposable).Dispose();
+                    });
+            }
+
             _setupResults.Add(new KeyValuePair<TestPosition, object>(position, value));
         }
 

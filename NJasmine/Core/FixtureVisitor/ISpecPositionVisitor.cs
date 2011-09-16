@@ -22,5 +22,6 @@ namespace NJasmine.Core.FixtureVisitor
         void visitWithCategory(SpecElement origin, string category, TestPosition position);
 
         void visitTrace(SpecElement origin, string message, TestPosition position);
+        void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position);
     }
 }

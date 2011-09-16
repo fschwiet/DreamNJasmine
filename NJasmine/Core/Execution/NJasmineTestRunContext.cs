@@ -12,6 +12,7 @@ namespace NJasmine.Core.Execution
         private readonly IGlobalSetupManager _globalSetup;
         private readonly List<Action> _allTeardowns;
         private readonly List<string> _traces;
+        private readonly List<IDisposable> _leakedDisposables;
 
         public NJasmineTestRunContext(TestPosition position, IGlobalSetupManager globalSetup, List<string> traceMessages)
         {
@@ -19,6 +20,7 @@ namespace NJasmine.Core.Execution
             _globalSetup = globalSetup;
             _allTeardowns = new List<Action>();
             _traces = traceMessages;
+            _leakedDisposables = new List<IDisposable>();
 
             State = new DiscoveryState(this);
         }
@@ -81,6 +83,19 @@ namespace NJasmine.Core.Execution
         public bool TestIsAtPosition(TestPosition position)
         {
             return position.ToString() == _position.ToString();
+        }
+
+        public void LeakDisposable(IDisposable disposable)
+        {
+            _leakedDisposables.Add(disposable);
+        }
+
+        public void DisposeIfNotLeaked(IDisposable disposable)
+        {
+            if (disposable != null && !_leakedDisposables.Contains(disposable))
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

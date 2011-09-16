@@ -20,6 +20,7 @@
         expectEventually,
         waitUntil,
         withCategory,
-        trace
+        trace,
+        leakDisposable
     }
 }
