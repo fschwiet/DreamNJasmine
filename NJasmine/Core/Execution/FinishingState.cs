@@ -65,7 +65,7 @@ namespace NJasmine.Core.Execution
 
         public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
         {
-            // TODO
+            _runContext.LeakDisposable(disposable);
         }
     }
 }
