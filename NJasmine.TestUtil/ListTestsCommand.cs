@@ -26,6 +26,7 @@ namespace NJasmineTestLoader
         {
             var types = from t in typeof(can_check_that_an_arbtirary_condition_is_true).Assembly.GetTypes()
                         where t.GetInterfaces().Contains(typeof(INJasmineInternalRequirement))
+                        where t.IsPublic
                    select new ListTestsCommand.TestDefinition
                    {
                        Name = t.FullName

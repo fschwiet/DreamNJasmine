@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmineTests.Export;
+using NUnit.Framework;
 
 namespace NJasmineTests.Specs.proposed_specs.inline_branching
 {
+    [Explicit]
     class can_branch_inline : GivenWithThenFixtureWithInlineBranching, INJasmineInternalRequirement
     {
         public override void Specify()
