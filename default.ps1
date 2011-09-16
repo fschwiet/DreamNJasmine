@@ -244,22 +244,22 @@ task BuildNuget -depends Build_2_5_10 {
 
     update-xml "NJasmine.nuspec" {
 
-        add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
+        #add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
 
-        for-xml "//ns:package/ns:metadata" {
-            set-xml -exactlyOnce "//ns:version" "$version.0"
-            set-xml -exactlyOnce "//ns:owners" "fschwiet"
-            set-xml -exactlyOnce "//ns:authors" "Frank Schwieterman"
-            set-xml -exactlyOnce "//ns:description" $longDescription
+        for-xml "//package/metadata" {
+            set-xml -exactlyOnce "//version" "$version.0"
+            set-xml -exactlyOnce "//owners" "fschwiet"
+            set-xml -exactlyOnce "//authors" "Frank Schwieterman"
+            set-xml -exactlyOnce "//description" $longDescription
 
-            set-xml -exactlyOnce "//ns:licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
-            set-xml -exactlyOnce "//ns:projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
-            remove-xml -exactlyOnce "//ns:iconUrl"
-            set-xml -exactlyOnce "//ns:tags" "BDD TDD NUnit"
+            set-xml -exactlyOnce "//licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
+            set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
+            remove-xml -exactlyOnce "//iconUrl"
+            set-xml -exactlyOnce "//tags" "BDD TDD NUnit"
 
-            set-xml -exactlyOnce "//ns:dependencies" ""
-            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
-            append-xml -exactlyOnce "//ns:dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
+            set-xml -exactlyOnce "//dependencies" ""
+            append-xml -exactlyOnce "//dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
+            append-xml -exactlyOnce "//dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
 
             append-xml "." "<summary>$shortDescription</summary>"
         }
