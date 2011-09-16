@@ -132,11 +132,23 @@ namespace NJasmine
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
                 base.Visitor.visitBeforeEach(SpecElement.beforeEach, delegate()
-                    {
-                        action();
-                        return (string)null;
-                    }, 
+                {
+                    action();
+                    return (string)null;
+                },
                     position);
+            });
+        }
+
+        /// <summary>
+        /// Adds initialization code to be before after each test in the following context.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
+        public T beforeEach<T>(Func<T> action)
+        {
+            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                return base.Visitor.visitBeforeEach(SpecElement.beforeEach, action, position);
             });
         }
 
