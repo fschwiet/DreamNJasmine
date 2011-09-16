@@ -77,6 +77,7 @@
     <Compile Include="Specs\expectations\can_wait_for_a_condition_to_be_true.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\setup_results_dont_have_to_be_disposable.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\setup_results_are_disposed_automatically.cs" />
+    <Compile Include="Specs\proposed_specs\inline_branching\can_branch_inline.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_at_outermost_scope.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_within_describe.cs" />
     <Compile Include="Specs\report_test_failures_usefully\stacktrace_has_NJasmine_internal_calls_removed.cs" />
