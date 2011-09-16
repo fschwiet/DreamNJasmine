@@ -35,7 +35,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             describe("beforeAll results can be leaked", delegate
             {
                 var leakedOnce = beforeAll(() => new DisposeTracker("leakedOnce", disposesCalled));
-                var leakedOnce2 = beforeAll(() => new DisposeTracker("leakedOnce", disposesCalled));
+                var leakedOnce2 = beforeAll(() => new DisposeTracker("leakedOnc2e", disposesCalled));
                 var disposedOnce = beforeAll(() => new DisposeTracker("disposedOnce", disposesCalled));
 
                 leakDisposable(leakedOnce);
@@ -52,7 +52,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             describe("before results can be leaked", delegate
             {
                 var leakedEach = beforeEach(() => new DisposeTracker("leakedEach", disposesCalled));
-                var leakedEach2 = beforeEach(() => new DisposeTracker("leakedEach", disposesCalled));
+                var leakedEach2 = beforeEach(() => new DisposeTracker("leakedEach2", disposesCalled));
                 var disposedEach = beforeEach(() => new DisposeTracker("disposedEach", disposesCalled));
 
                 leakDisposable(leakedEach);
@@ -70,11 +70,6 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             {
                 Assert.That(disposesCalled, Is.EquivalentTo(new string[] { "disposedOnce", "disposedEach" }));
             });
-        }
-
-        void leakDisposable(IDisposable disposable)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

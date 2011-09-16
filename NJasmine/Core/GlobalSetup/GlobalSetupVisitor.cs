@@ -232,6 +232,11 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+            //TODO
+        }
+
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)
         {
             if (_executingPastDiscovery.HasValue)

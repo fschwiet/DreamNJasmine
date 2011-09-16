@@ -376,5 +376,13 @@ namespace NJasmine
                 base.Visitor.visitTrace(SpecElement.trace, message, position);
             });
         }
+
+        public void leakDisposable(IDisposable disposable)
+        {
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitLeakDisposable(SpecElement.leakDisposable, disposable, position);
+            });
+        }
     }
 }

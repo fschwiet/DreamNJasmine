@@ -73,6 +73,11 @@ namespace NJasmine.Core.Execution
             _runContext.AddTrace(message);
         }
 
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+            _runContext.LeakDisposable(disposable);
+        }
+
         public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
         {
             TArranged result = default(TArranged);
@@ -88,7 +93,7 @@ namespace NJasmine.Core.Execution
                 {
                     _runContext.whileInState(new CleanupState(_runContext, origin), delegate
                     {
-                        (result as IDisposable).Dispose();
+                        _runContext.DisposeIfNotLeaked(result as IDisposable);
                     });
                 });
             }

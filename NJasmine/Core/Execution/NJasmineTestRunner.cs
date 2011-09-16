@@ -67,5 +67,10 @@ namespace NJasmine.Core.Execution
         {
             _runContext.State.visitTrace(origin, message, position);
         }
+
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+            _runContext.State.visitLeakDisposable(origin, disposable, position);
+        }
     }
 }

@@ -62,5 +62,10 @@ namespace NJasmine.Core.Execution
         {
             _runContext.AddTrace(message);
         }
+
+        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        {
+            // TODO
+        }
     }
 }
