@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NJasmine.Core.Discovery
 {
@@ -9,6 +10,7 @@ namespace NJasmine.Core.Discovery
         public SpecificationFixture _fixtureInstanceForDiscovery;
         public NameGenerator _nameGenator;
         public List<PendingDiscoveryBranches> _pendingDiscoveryBranches;
+        public TestPosition _destinedPath = new TestPosition();
 
         public AllSuitesBuildContext(Func<SpecificationFixture> fixtureFactory, NameGenerator nameGenerator, SpecificationFixture fixtureInstanceForDiscovery)
         {
@@ -22,12 +24,25 @@ namespace NJasmine.Core.Discovery
         {
             foreach (var pending in _pendingDiscoveryBranches)
             {
+                _destinedPath = pending.ChosenPath;
 
+                action();
             }
+        }
+
+        public int? GetDestinedPath(TestPosition position)
+        {
+            if (position.IsAncestorOf(_destinedPath))
+            {
+                return _destinedPath.Coordinates.ToArray()[position.Coordinates.Count()];
+            }
+
+            return null;
         }
     }
 
     class PendingDiscoveryBranches
     {
+        public TestPosition ChosenPath;
     }
 }
