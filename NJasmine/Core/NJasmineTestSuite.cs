@@ -8,6 +8,7 @@ using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
+using NUnit.Framework;
 
 namespace NJasmine.Core
 {
@@ -42,7 +43,9 @@ namespace NJasmine.Core
 
         public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
+            List<Test> accumulatedTests = new List<Test>();
+
+            var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup, test => accumulatedTests.Add(test));
             
             Exception exception = null;
 
@@ -66,7 +69,8 @@ namespace NJasmine.Core
 
                 if (exception == null)
                 {
-                    builder.VisitAccumulatedTests(Add);
+                    foreach (var test in accumulatedTests)
+                        Add(test);
                 }
                 else
                 {

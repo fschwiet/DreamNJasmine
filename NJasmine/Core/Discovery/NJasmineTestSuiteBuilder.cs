@@ -13,24 +13,26 @@ namespace NJasmine.Core.Discovery
         private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
-        List<Test> _accumulatedDescendants;
+        readonly Action<Test> _testVisitor;
+        bool _haveVisitedTest;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action<Test> testVisitor)
         {
             _test = test;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
-            _accumulatedDescendants = new List<Test>();
+
+            _testVisitor = t =>
+            {
+                _haveVisitedTest = true;
+                testVisitor(t);
+            };
+
+            _haveVisitedTest = false;
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
-        }
-
-        public void VisitAccumulatedTests(Action<Test> action)
-        {
-            foreach (var descendant in _accumulatedDescendants)
-                action(descendant);
         }
 
         private void ApplyCategoryAndIgnoreIfSet(Test test)
@@ -57,7 +59,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
 
-                _accumulatedDescendants.Add(subSuiteAsFailedTest);
+                _testVisitor(subSuiteAsFailedTest);
             }
             else
             {
@@ -76,7 +78,7 @@ namespace NJasmine.Core.Discovery
                     _buildContext._nameGenator.MakeNameUnique((INJasmineTest)actualSuite);
                 }
 
-                _accumulatedDescendants.Add(actualSuite);
+                _testVisitor(actualSuite);
             }
         }
 
@@ -108,7 +110,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(unimplementedTest);
 
-                _accumulatedDescendants.Add(unimplementedTest);
+                _testVisitor(unimplementedTest);
             }
             else
             {
@@ -118,13 +120,13 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(test);
 
-                _accumulatedDescendants.Add(test);
+                _testVisitor(test);
             }
         }
 
         public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
         {
-            if (_accumulatedDescendants.Count > 0)
+            if (_haveVisitedTest)
             {
                 _ignoreReason = reason;
             }
