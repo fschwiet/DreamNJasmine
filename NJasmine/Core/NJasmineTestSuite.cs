@@ -14,9 +14,8 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest
     {
-        public TestPosition Position { get { return _position; } }
+        public TestPosition Position { get; private set; }
 
-        readonly TestPosition _position;
         GlobalSetupManager _setupManager;
 
         public static Test CreateRootNJasmineSuite(Type type)
@@ -29,23 +28,24 @@ namespace NJasmine.Core
 
             globalSetup.Initialize(fixtureFactory);
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(globalSetup);
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true, new TestPosition());
         }
 
-        public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
+        public NJasmineTestSuite(GlobalSetupManager setupManager)
             : base("thistestname", "willbeoverwritten")
         {
-            _position = position;
             _setupManager = setupManager;
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification, TestPosition position)
         {
+            Position = position;
+
             List<Test> accumulatedTests = new List<Test>();
 
             var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup, test => accumulatedTests.Add(test));
@@ -54,7 +54,7 @@ namespace NJasmine.Core
 
             var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
 
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = _position.GetFirstChildPosition();
+            buildContext._fixtureInstanceForDiscovery.CurrentPosition = Position.GetFirstChildPosition();
             buildContext._fixtureInstanceForDiscovery.Visitor = builder;
 
             try
@@ -63,7 +63,8 @@ namespace NJasmine.Core
                 {
                     action();
 
-                    buildContext.RunPendingDiscoveryBranches(action);
+                    if (isOuterScopeOfSpecification)
+                        buildContext.RunPendingDiscoveryBranches(action);
                 }
                 catch (Exception e)
                 {

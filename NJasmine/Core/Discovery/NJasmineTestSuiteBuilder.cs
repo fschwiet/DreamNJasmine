@@ -63,7 +63,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(position, _globalSetup);
+                var subSuite = new NJasmineTestSuite(_globalSetup);
 
                 bool reusedName;
 
@@ -71,7 +71,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuite);
 
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false);
+                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false, position);
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
