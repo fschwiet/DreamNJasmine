@@ -14,9 +14,10 @@ namespace NJasmine.Core
 {
     class NJasmineTestSuite : TestSuite, INJasmineTest
     {
-        public TestPosition Position { get; private set; }
+        public TestPosition Position { get { return _position; } }
 
-        private GlobalSetupManager _setupManager;
+        readonly TestPosition _position;
+        GlobalSetupManager _setupManager;
 
         public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
         {
@@ -36,7 +37,7 @@ namespace NJasmine.Core
         public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
             : base("thistestname", "willbeoverwritten")
         {
-            Position = position;
+            _position = position;
             _setupManager = setupManager;
             maintainTestOrder = true;
         }
@@ -49,11 +50,9 @@ namespace NJasmine.Core
             
             Exception exception = null;
 
-
             var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
 
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = Position;
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = buildContext._fixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
+            buildContext._fixtureInstanceForDiscovery.CurrentPosition = _position.GetFirstChildPosition();
             buildContext._fixtureInstanceForDiscovery.Visitor = builder;
 
             try
@@ -61,6 +60,8 @@ namespace NJasmine.Core
                 try
                 {
                     action();
+
+                    buildContext.RunPendingDiscoveryBranches(action);
                 }
                 catch (Exception e)
                 {
