@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 
@@ -93,6 +94,17 @@ namespace NJasmine.Core.GlobalSetup
 
             _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(new TestPosition(0), e));
             _traceTracker.UnwindToPosition(_targetPosition);
+        }
+
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        {
+            NJasmineTestSuiteBuilder.HandleInlineBranches(position, options, (branch, branchPosition) =>
+            {
+                if (branchPosition.IsAncestorOf(_targetPosition))
+                {
+                    NJasmineTestSuiteBuilder.RunBranchOption(branch);
+                }
+            });
         }
 
         protected void ReportError(TestPosition position, Exception error)

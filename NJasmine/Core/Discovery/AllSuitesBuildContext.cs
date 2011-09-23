@@ -22,7 +22,9 @@ namespace NJasmine.Core.Discovery
 
         public void RunPendingDiscoveryBranches(Action action)
         {
-            foreach (var pending in _pendingDiscoveryBranches)
+            var currentPendingBranches = _pendingDiscoveryBranches.ToArray();
+
+            foreach (var pending in currentPendingBranches)
             {
                 _destinedPath = pending.ChosenPath;
 

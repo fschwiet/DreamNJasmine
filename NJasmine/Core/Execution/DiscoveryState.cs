@@ -17,10 +17,21 @@ namespace NJasmine.Core.Execution
 
         public virtual void visitFork(SpecElement origin, string description, Action action, TestPosition position)
         {
-            if (_runContext.PositionIsAncestorOfContext(position))
+            if (_runContext.PositionIsAncestorOfIntendedTest(position))
             {
                 action();
             }
+        }
+
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        {
+            NJasmineTestSuiteBuilder.HandleInlineBranches(position, options, (branch, branchPosition) =>
+            {
+                if (_runContext.PositionIsAncestorOfIntendedTest(branchPosition))
+                {
+                    NJasmineTestSuiteBuilder.RunBranchOption(branch);
+                }
+            });
         }
 
         public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
@@ -80,6 +81,58 @@ namespace NJasmine.Core.Discovery
 
                 _testVisitor(actualSuite);
             }
+        }
+
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        {
+            var destiny = _buildContext.GetDestinedPath(position);
+
+            if (destiny.HasValue)
+            {
+                var option = options[destiny.Value];
+
+                RunBranchOption(option);
+            }
+            else
+            {
+                HandleInlineBranches(position, options, (branch, branchPosition) =>
+                {
+                    _buildContext._pendingDiscoveryBranches.Add(new PendingDiscoveryBranches()
+                    {
+                        ChosenPath = branchPosition
+                    });
+                });
+            }
+        }
+
+        public static void RunBranchOption(Action<Action> option)
+        {
+            try
+            {
+                option(() =>
+                {
+                    throw new ContinuationException();    
+                });
+            }
+            catch (ContinuationException)
+            {
+            }
+        }
+
+        public static void HandleInlineBranches(TestPosition position, Action<Action>[] options, Action<Action<Action>, TestPosition> optionHandler)
+        {
+            var eitherBranch = position.GetFirstChildPosition();
+
+            for (var i = 0; i < options.Length; i++)
+            {
+                optionHandler(options[i], eitherBranch);
+
+                eitherBranch = eitherBranch.GetNextSiblingPosition();
+            }
+        }
+
+        public class ContinuationException : Exception
+        {
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

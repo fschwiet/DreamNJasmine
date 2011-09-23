@@ -18,6 +18,11 @@ namespace NJasmine.Core.Execution
             _runContext.State.visitFork(origin, description, action, position);
         }
 
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        {
+            _runContext.State.visitEither(origin, options, position);
+        }
+
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {
             return _runContext.State.visitBeforeAll(origin, action, position);

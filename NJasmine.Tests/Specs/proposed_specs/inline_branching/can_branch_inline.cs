@@ -8,8 +8,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs.proposed_specs.inline_branching
 {
-    [Explicit]
-    class can_branch_inline : GivenWithThenFixtureWithInlineBranching, INJasmineInternalRequirement
+    public class can_branch_inline : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {
@@ -49,14 +48,6 @@ namespace NJasmineTests.Specs.proposed_specs.inline_branching
         {
             fixtureResult.hasTest("given some precondition, when the input is 0, then it runs").thatSucceeds();
             fixtureResult.hasTest("given some precondition, when the input is 1, then it runs").thatSucceeds();
-        }
-    }
-
-    public abstract class GivenWithThenFixtureWithInlineBranching : GivenWhenThenFixture
-    {
-        protected void either(params Action<Action>[] action)
-        {
-            throw new NotImplementedException();
         }
     }
 }

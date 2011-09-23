@@ -384,5 +384,13 @@ namespace NJasmine
                 base.Visitor.visitLeakDisposable(SpecElement.leakDisposable, disposable, position);
             });
         }
+
+        public void either(params Action<Action>[] options)
+        {
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitEither(SpecElement.either, options, position);
+            });
+        }
     }
 }

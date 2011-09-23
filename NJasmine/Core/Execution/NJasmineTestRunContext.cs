@@ -25,7 +25,7 @@ namespace NJasmine.Core.Execution
             State = new DiscoveryState(this);
         }
 
-        public bool PositionIsAncestorOfContext(TestPosition position)
+        public bool PositionIsAncestorOfIntendedTest(TestPosition position)
         {
             return position.IsAncestorOf(_position);
         }
