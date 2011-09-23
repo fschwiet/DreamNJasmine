@@ -18,7 +18,7 @@ namespace NJasmineTests.Specs.proposed_specs.inline_branching
                 int input = -1;
                 string expectedResult = null;
 
-                forEvery(
+                either(
                     finish => when("the input is 0", delegate
                     {
                         input = 0;
@@ -54,7 +54,7 @@ namespace NJasmineTests.Specs.proposed_specs.inline_branching
 
     public abstract class GivenWithThenFixtureWithInlineBranching : GivenWhenThenFixture
     {
-        protected void forEvery(params Action<Action>[] action)
+        protected void either(params Action<Action>[] action)
         {
             throw new NotImplementedException();
         }
