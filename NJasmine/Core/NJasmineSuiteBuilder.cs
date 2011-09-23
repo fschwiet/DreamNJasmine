@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
@@ -31,29 +32,21 @@ namespace NJasmine.Core
 
         public Test BuildFrom(Type type)
         {
-            var constructor = type.GetConstructor(new Type[0]);
-
-            Func<SpecificationFixture> fixtureFactory = delegate()
-            {
-                var fixture = constructor.Invoke(new object[0]) as SpecificationFixture;
-                return fixture;
-            };
-            
-            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, type);
+            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(type);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
 
             return rootSuite;
         }
 
-        public static void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
+        public void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
         {
-            var rootTest = new NJasmineSuiteBuilder().BuildFrom(typeof(TFixture));
+            var rootTest = BuildFrom(typeof(TFixture));
 
             VisitAllTestElements(rootTest, visitor);
         }
 
-        static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
+        void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
         {
             if (test is INJasmineTest)
             {
@@ -69,7 +62,7 @@ namespace NJasmine.Core
             }
         }
 
-        static public Dictionary<TestPosition, INJasmineTest> LoadElementsByPosition<TFixture>()
+        public Dictionary<TestPosition, INJasmineTest> LoadElementsByPosition<TFixture>()
         {
             var result = new Dictionary<TestPosition, INJasmineTest>();
             Action<INJasmineTest> visitor = t => result[t.Position] = t;

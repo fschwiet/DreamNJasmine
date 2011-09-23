@@ -59,7 +59,7 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_tests()
         {
-            var elements = NJasmineSuiteBuilder.LoadElementsByPosition<has_test_in_loop>();
+            var elements = new NJasmineSuiteBuilder().LoadElementsByPosition<has_test_in_loop>();
 
             expect(() => elements[new TestPosition(0)].TestName.Name == "a1");
             expect(() => elements[new TestPosition(1)].TestName.Name == "a2");

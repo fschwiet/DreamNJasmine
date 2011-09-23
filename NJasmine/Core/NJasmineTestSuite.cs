@@ -19,8 +19,10 @@ namespace NJasmine.Core
         readonly TestPosition _position;
         GlobalSetupManager _setupManager;
 
-        public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
+        public static Test CreateRootNJasmineSuite(Type type)
         {
+            var fixtureFactory = GetFixtureFactoryForType(type);
+
             AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
             var globalSetup = new GlobalSetupManager();
@@ -116,6 +118,17 @@ namespace NJasmine.Core
 
                 TestResultUtil.Error(suiteResult, innerException, null, FailureSite.TearDown);
             }
+        }
+
+        public static Func<SpecificationFixture> GetFixtureFactoryForType(Type type)
+        {
+            var constructor = type.GetConstructor(new Type[0]);
+
+            return delegate()
+            {
+                var fixture = constructor.Invoke(new object[0]) as SpecificationFixture;
+                return fixture;
+            };
         }
     }
 }
