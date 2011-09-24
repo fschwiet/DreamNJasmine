@@ -4,7 +4,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core.Discovery
 {
-    class NameGenerator
+    public class NameGenerator
     {
         enum NameIs
         {

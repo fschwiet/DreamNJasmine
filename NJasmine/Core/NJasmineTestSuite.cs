@@ -12,7 +12,7 @@ using NUnit.Framework;
 
 namespace NJasmine.Core
 {
-    class NJasmineTestSuite : TestSuite, INJasmineTest
+    public class NJasmineTestSuite : TestSuite, INJasmineTest
     {
         public TestPosition Position { get; private set; }
 
@@ -48,7 +48,8 @@ namespace NJasmine.Core
 
             List<Test> accumulatedTests = new List<Test>();
 
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup, test => accumulatedTests.Add(test));
+            var branchDestiny = new BranchDestiny();
+            var builder = new NJasmineTestSuiteBuilder(this, buildContext, branchDestiny, globalSetup, test => accumulatedTests.Add(test));
             
             Exception exception = null;
 
@@ -64,7 +65,7 @@ namespace NJasmine.Core
                     action();
 
                     if (isOuterScopeOfSpecification)
-                        buildContext.RunPendingDiscoveryBranches(action);
+                        branchDestiny.RunPendingDiscoveryBranches(action);
                 }
                 catch (Exception e)
                 {

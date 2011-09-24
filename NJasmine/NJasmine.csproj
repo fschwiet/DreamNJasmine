@@ -60,8 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Discovery\AllSuitesBuildContext.cs" />
+    <Compile Include="Core\Discovery\BranchDestiny.cs" />
     <Compile Include="Core\Discovery\NameGenerator.cs" />
     <Compile Include="Core\Discovery\NJasmineTestSuiteBuilder.cs" />
+    <Compile Include="Core\Discovery\PendingDiscoveryBranches.cs" />
     <Compile Include="Core\Execution\ActState.cs" />
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />

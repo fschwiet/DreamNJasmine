@@ -22,6 +22,6 @@
         withCategory,
         trace,
         leakDisposable,
-        either
+        fork
     }
 }

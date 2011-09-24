@@ -9,20 +9,22 @@ using NUnit.Core;
 
 namespace NJasmine.Core.Discovery
 {
-    class NJasmineTestSuiteBuilder : ISpecPositionVisitor
+    public class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         private readonly NJasmineTestSuite _test;
         readonly AllSuitesBuildContext _buildContext;
+        readonly BranchDestiny _branchDestiny;
         private readonly GlobalSetupManager _globalSetup;
         readonly Action<Test> _testVisitor;
         bool _haveVisitedTest;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action<Test> testVisitor)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, BranchDestiny branchDestiny, GlobalSetupManager globalSetup, Action<Test> testVisitor)
         {
             _test = test;
             _buildContext = buildContext;
+            _branchDestiny = branchDestiny;
             _globalSetup = globalSetup;
 
             _testVisitor = t =>
@@ -85,7 +87,7 @@ namespace NJasmine.Core.Discovery
 
         public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
         {
-            var destiny = _buildContext.GetDestinedPath(position);
+            var destiny = _branchDestiny.GetDestinedPath(position);
 
             if (destiny.HasValue)
             {
@@ -97,7 +99,7 @@ namespace NJasmine.Core.Discovery
             {
                 InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
                 {
-                    _buildContext._pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
+                    _branchDestiny._pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
                     {
                         ChosenPath = branchPosition
                     });

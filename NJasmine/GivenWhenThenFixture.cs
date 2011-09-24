@@ -390,7 +390,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitEither(SpecElement.either, options, position);
+                base.Visitor.visitEither(SpecElement.fork, options, position);
             });
         }
     }
