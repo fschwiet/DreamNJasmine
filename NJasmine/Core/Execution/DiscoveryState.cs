@@ -25,11 +25,11 @@ namespace NJasmine.Core.Execution
 
         public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
         {
-            NJasmineTestSuiteBuilder.HandleInlineBranches(position, options, (branch, branchPosition) =>
+            InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
                 if (_runContext.PositionIsAncestorOfIntendedTest(branchPosition))
                 {
-                    NJasmineTestSuiteBuilder.RunBranchOption(branch);
+                    InlineBranching.RunBranchOption(branch);
                 }
             });
         }

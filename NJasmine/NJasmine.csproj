@@ -78,6 +78,7 @@
     <Compile Include="Core\GlobalSetup\LolMutex.cs" />
     <Compile Include="Core\GlobalSetup\TraceTracker.cs" />
     <Compile Include="Core\IGlobalSetupManager.cs" />
+    <Compile Include="Core\InlineBranching.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />

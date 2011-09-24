@@ -91,11 +91,11 @@ namespace NJasmine.Core.Discovery
             {
                 var option = options[destiny.Value];
 
-                RunBranchOption(option);
+                InlineBranching.RunBranchOption(option);
             }
             else
             {
-                HandleInlineBranches(position, options, (branch, branchPosition) =>
+                InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
                 {
                     _buildContext._pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
                     {
@@ -103,36 +103,6 @@ namespace NJasmine.Core.Discovery
                     });
                 });
             }
-        }
-
-        public static void RunBranchOption(Action<Action> option)
-        {
-            try
-            {
-                option(() =>
-                {
-                    throw new ContinuationException();    
-                });
-            }
-            catch (ContinuationException)
-            {
-            }
-        }
-
-        public static void HandleInlineBranches(TestPosition position, Action<Action>[] options, Action<Action<Action>, TestPosition> optionHandler)
-        {
-            var eitherBranch = position.GetFirstChildPosition();
-
-            for (var i = 0; i < options.Length; i++)
-            {
-                optionHandler(options[i], eitherBranch);
-
-                eitherBranch = eitherBranch.GetNextSiblingPosition();
-            }
-        }
-
-        public class ContinuationException : Exception
-        {
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

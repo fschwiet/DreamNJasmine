@@ -8,7 +8,8 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Specs.proposed_specs.inline_branching
 {
-    public class can_branch_inline : GivenWhenThenFixture, INJasmineInternalRequirement
+    [Explicit]
+    class can_branch_inline : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()
         {

@@ -98,11 +98,11 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
         {
-            NJasmineTestSuiteBuilder.HandleInlineBranches(position, options, (branch, branchPosition) =>
+            InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
                 if (branchPosition.IsAncestorOf(_targetPosition))
                 {
-                    NJasmineTestSuiteBuilder.RunBranchOption(branch);
+                    InlineBranching.RunBranchOption(branch);
                 }
             });
         }
