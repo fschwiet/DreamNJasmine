@@ -386,7 +386,7 @@ namespace NJasmine
         }
 
         [Obsolete("busted")]
-        public void either(params Action<Action>[] options)
+        public void fork(params Action<Action>[] options)
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
