@@ -97,7 +97,7 @@ namespace NJasmine.Core.Discovery
             {
                 HandleInlineBranches(position, options, (branch, branchPosition) =>
                 {
-                    _buildContext._pendingDiscoveryBranches.Add(new PendingDiscoveryBranches()
+                    _buildContext._pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
                     {
                         ChosenPath = branchPosition
                     });

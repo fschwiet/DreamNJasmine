@@ -9,7 +9,7 @@ namespace NJasmine.Core.Discovery
         public Func<SpecificationFixture> _fixtureFactory;
         public SpecificationFixture _fixtureInstanceForDiscovery;
         public NameGenerator _nameGenator;
-        public List<PendingDiscoveryBranches> _pendingDiscoveryBranches;
+        public Queue<PendingDiscoveryBranches> _pendingDiscoveryBranches;
         public TestPosition _destinedPath = new TestPosition();
 
         public AllSuitesBuildContext(Func<SpecificationFixture> fixtureFactory, NameGenerator nameGenerator, SpecificationFixture fixtureInstanceForDiscovery)
@@ -17,16 +17,14 @@ namespace NJasmine.Core.Discovery
             _fixtureFactory = fixtureFactory;
             _nameGenator = nameGenerator;
             _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
-            _pendingDiscoveryBranches = new List<PendingDiscoveryBranches>();
+            _pendingDiscoveryBranches = new Queue<PendingDiscoveryBranches>();
         }
 
         public void RunPendingDiscoveryBranches(Action action)
         {
-            var currentPendingBranches = _pendingDiscoveryBranches.ToArray();
-
-            foreach (var pending in currentPendingBranches)
+            while (_pendingDiscoveryBranches.Any())
             {
-                _destinedPath = pending.ChosenPath;
+                _destinedPath = _pendingDiscoveryBranches.Dequeue().ChosenPath;
 
                 action();
             }
