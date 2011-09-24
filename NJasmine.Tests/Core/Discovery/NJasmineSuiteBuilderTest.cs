@@ -39,7 +39,7 @@ namespace NJasmineTests.Core.Discovery
 
             given("a path is set for the current branch", delegate
             {
-                branchDestiny._destinedPath = new TestPosition(1, 2, 3, 4);
+                branchDestiny.SetPredeterminedPath(new TestPosition(1, 2, 3, 4));
 
                 when("the test discovery forks", delegate
                 {

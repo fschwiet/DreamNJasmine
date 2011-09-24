@@ -6,8 +6,13 @@ namespace NJasmine.Core.Discovery
 {
     public class BranchDestiny
     {
-        public Queue<PendingDiscoveryBranches> _pendingDiscoveryBranches = new Queue<PendingDiscoveryBranches>();
-        public TestPosition _destinedPath = new TestPosition();
+        Queue<PendingDiscoveryBranches> _pendingDiscoveryBranches = new Queue<PendingDiscoveryBranches>();
+        TestPosition _destinedPath = new TestPosition();
+
+        public void SetPredeterminedPath(TestPosition destinationPath)
+        {
+            _destinedPath = destinationPath;
+        }
 
         public void RunPendingDiscoveryBranches(Action action)
         {
@@ -32,6 +37,17 @@ namespace NJasmine.Core.Discovery
         public int GetDiscoveriesQueuedCount()
         {
             return _pendingDiscoveryBranches.Count();
+        }
+
+        public void AddOptionsAtPositon(TestPosition position, Action<Action>[] options)
+        {
+            InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
+            {
+                _pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
+                {
+                    ChosenPath = branchPosition
+                });
+            });
         }
     }
 }

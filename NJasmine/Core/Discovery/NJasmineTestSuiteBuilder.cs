@@ -97,13 +97,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
-                {
-                    _branchDestiny._pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
-                    {
-                        ChosenPath = branchPosition
-                    });
-                });
+                _branchDestiny.AddOptionsAtPositon(position, options);
             }
         }
 
