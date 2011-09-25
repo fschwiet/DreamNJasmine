@@ -21,13 +21,14 @@ namespace NJasmineTests.Core.Discovery
                 when("the test discovery forks", delegate
                 {
                     var position = new TestPosition(1,2,3);
+                    TestPosition continuingAt;
 
                     sut.visitEither(SpecElement.fork, new Action<Action>[]
                     {
                        join => { throw new Exception(); join();},
                        join => { throw new Exception(); join();},
                        join => { throw new Exception(); join();},
-                    }, position);
+                    }, position, out continuingAt);
 
                     then("available paths are queued", delegate
                     {
@@ -44,6 +45,7 @@ namespace NJasmineTests.Core.Discovery
                 when("the test discovery forks", delegate
                 {
                     var position = new TestPosition(1, 2);
+                    TestPosition continuingAt;
 
                     bool wasRun = false;
 
@@ -58,7 +60,7 @@ namespace NJasmineTests.Core.Discovery
                            join => { throw new Exception(); join();},
                            join => { throw new Exception(); join();},
                         }, 
-                        position);
+                        position, out continuingAt);
 
                     then("no paths are queued", delegate
                     {

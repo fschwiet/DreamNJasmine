@@ -23,7 +23,7 @@ namespace NJasmine.Core.Execution
             }
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
@@ -32,6 +32,8 @@ namespace NJasmine.Core.Execution
                     InlineBranching.RunBranchOption(branch);
                 }
             });
+
+            continuingAt = null;
         }
 
         public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

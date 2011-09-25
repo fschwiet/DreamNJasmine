@@ -85,7 +85,7 @@ namespace NJasmine.Core.Discovery
             }
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
         {
             var destiny = _branchDestiny.GetDestinedPath(position);
 
@@ -99,6 +99,8 @@ namespace NJasmine.Core.Discovery
             {
                 _branchDestiny.AddOptionsAtPositon(position, options);
             }
+
+            continuingAt = null;
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

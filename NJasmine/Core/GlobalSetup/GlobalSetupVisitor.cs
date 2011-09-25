@@ -96,7 +96,7 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker.UnwindToPosition(_targetPosition);
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
@@ -105,6 +105,8 @@ namespace NJasmine.Core.GlobalSetup
                     InlineBranching.RunBranchOption(branch);
                 }
             });
+
+            continuingAt = null;
         }
 
         protected void ReportError(TestPosition position, Exception error)
