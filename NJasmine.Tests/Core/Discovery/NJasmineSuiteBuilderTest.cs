@@ -69,6 +69,11 @@ namespace NJasmineTests.Core.Discovery
                     {
                         expect(() => wasRun);
                     });
+
+                    then("position reflects the branch", delegate
+                    {
+                        //expect(() => sut.);
+                    });
                 });
             });
         }
