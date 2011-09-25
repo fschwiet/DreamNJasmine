@@ -6,6 +6,8 @@ using NJasmine;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
+using NUnit.Core;
+using NUnit.Framework;
 
 namespace NJasmineTests.Core.Discovery
 {
@@ -14,7 +16,11 @@ namespace NJasmineTests.Core.Discovery
         public override void Specify()
         {
             var branchDestiny = new BranchDestiny();
-            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null, null);
+            
+            bool haveRecordedTest = false;
+            Action<Test> testVisitor = t => haveRecordedTest = true; 
+
+            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null, testVisitor);
 
             given("no path is set for the current branch", delegate
             {
@@ -23,17 +29,29 @@ namespace NJasmineTests.Core.Discovery
                     var position = new TestPosition(1,2,3);
                     TestPosition continuingAt;
 
-                    sut.visitEither(SpecElement.fork, new Action<Action>[]
+                    arrange(() =>
                     {
-                       join => { throw new Exception(); join();},
-                       join => { throw new Exception(); join();},
-                       join => { throw new Exception(); join();},
-                    }, position, out continuingAt);
+                        sut.visitEither(SpecElement.fork, new Action<Action>[]
+                        {
+                           join => { throw new Exception(); join();},
+                           join => { throw new Exception(); join();},
+                           join => { throw new Exception(); join();},
+                        }, position, out continuingAt);
+                    });
 
                     then("available paths are queued", delegate
                     {
                         expect(() => branchDestiny.GetDiscoveriesQueuedCount() == 3);
                     });
+
+                    //then("discovery stops creating tests for this iteration", delegate
+                    //{
+                    //    Assert.That(sut, Is.Not.Null);
+
+                    //    sut.visitTest(SpecElement.it, "testing", () => {}, new TestPosition(1,2,3,4));
+
+                    //    expect(() => haveRecordedTest == false);
+                    //});
                 });
             });
 
@@ -72,9 +90,9 @@ namespace NJasmineTests.Core.Discovery
                         expect(() => wasRun);
                     });
 
-                    then("position reflects the branch", delegate
+                    then("discovery continues along that branch", delegate
                     {
-                        //expect(() => sut.);
+                        Assert.That(continuingAt, Is.EqualTo(new TestPosition(1,2,3,0)));
                     });
                 });
             });

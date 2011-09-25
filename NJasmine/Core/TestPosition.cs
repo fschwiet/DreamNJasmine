@@ -36,10 +36,7 @@ namespace NJasmine.Core
 
         public TestPosition GetFirstChildPosition()
         {
-            return new TestPosition()
-            {
-                Coordinates = Coordinates.Concat(new int[] { 0 })
-            };
+            return GetChildPositionByIndex(0);
         }
 
         public TestPosition GetNextSiblingPosition()
@@ -104,6 +101,14 @@ namespace NJasmine.Core
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
+        }
+
+        public TestPosition GetChildPositionByIndex(int value)
+        {
+            return new TestPosition()
+            {
+                Coordinates = Coordinates.Concat(new [] { value}).ToArray()
+            };
         }
     }
 }
