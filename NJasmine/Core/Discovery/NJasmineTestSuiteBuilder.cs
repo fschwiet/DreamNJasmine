@@ -89,21 +89,19 @@ namespace NJasmine.Core.Discovery
         {
             int? destiny = _branchDestiny.GetDestinedPath(position);
 
-            if (destiny.HasValue)
+            if (!destiny.HasValue)
             {
-                var option = options[destiny.Value];
-
-                InlineBranching.RunBranchOption(option);
-
-                continuingAt = position.GetChildPositionByIndex(destiny.Value).GetFirstChildPosition();
+                _branchDestiny.AddRemainingOptions(position, options);
+                destiny = 0;
             }
-            else
-            {
-                _branchDestiny.AddOptionsAtPositon(position, options);
 
-                continuingAt = null;
-            }
+            var option = options[destiny.Value];
+
+            InlineBranching.RunBranchOption(option);
+
+            continuingAt = position.GetChildPositionByIndex(destiny.Value).GetFirstChildPosition();
         }
+
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
         {

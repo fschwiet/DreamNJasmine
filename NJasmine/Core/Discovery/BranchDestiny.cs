@@ -39,15 +39,14 @@ namespace NJasmine.Core.Discovery
             return _pendingDiscoveryBranches.Count();
         }
 
-        public void AddOptionsAtPositon(TestPosition position, Action<Action>[] options)
+        public void AddRemainingOptions(TestPosition position, Action<Action>[] options)
         {
-            InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
-            {
-                _pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
+            InlineBranching.HandleInlineBranches(position, options, 
+                (branch, branchPosition) => _pendingDiscoveryBranches.Enqueue(new PendingDiscoveryBranches()
                 {
                     ChosenPath = branchPosition
-                });
-            });
+                }), 
+                skip:1);
         }
     }
 }

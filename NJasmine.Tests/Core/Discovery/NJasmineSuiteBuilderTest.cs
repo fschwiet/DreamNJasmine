@@ -17,41 +17,42 @@ namespace NJasmineTests.Core.Discovery
         {
             var branchDestiny = new BranchDestiny();
             
-            bool haveRecordedTest = false;
-            Action<Test> testVisitor = t => haveRecordedTest = true; 
-
-            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null, testVisitor);
+            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null, null);
 
             given("no path is set for the current branch", delegate
             {
                 when("the test discovery forks", delegate
                 {
                     var position = new TestPosition(1,2,3);
-                    TestPosition continuingAt;
+                    TestPosition continuingAt = null;
+
+                    bool wasExpectedBranchRan = false;
+                    Action<Action> expectedBranch = join => { wasExpectedBranchRan = true; join(); };
 
                     arrange(() =>
                     {
                         sut.visitEither(SpecElement.fork, new Action<Action>[]
                         {
-                           join => { throw new Exception(); join();},
+                           join => { wasExpectedBranchRan = true; join(); },
                            join => { throw new Exception(); join();},
                            join => { throw new Exception(); join();},
                         }, position, out continuingAt);
                     });
 
-                    then("available paths are queued", delegate
+                    then("the first branch runs", delegate
                     {
-                        expect(() => branchDestiny.GetDiscoveriesQueuedCount() == 3);
+                        expect(() => wasExpectedBranchRan);
                     });
 
-                    //then("discovery stops creating tests for this iteration", delegate
-                    //{
-                    //    Assert.That(sut, Is.Not.Null);
+                    then("continuing at the first subpath", delegate
+                    {
+                        Assert.That(continuingAt, Is.EqualTo(new TestPosition(1, 2, 3, 0, 0)));
+                    });
 
-                    //    sut.visitTest(SpecElement.it, "testing", () => {}, new TestPosition(1,2,3,4));
-
-                    //    expect(() => haveRecordedTest == false);
-                    //});
+                    then("remaining paths are queued", delegate
+                    {
+                        expect(() => branchDestiny.GetDiscoveriesQueuedCount() == 2);
+                    });
                 });
             });
 
@@ -65,9 +66,8 @@ namespace NJasmineTests.Core.Discovery
                     var position = new TestPosition(1, 2);
                     TestPosition continuingAt;
 
-                    bool wasRun = false;
-
-                    Action<Action> expectedBranch = join => { wasRun = true; join(); };
+                    bool wasExpectedBranchRan = false;
+                    Action<Action> expectedBranch = join => { wasExpectedBranchRan = true; join(); };
 
                     sut.visitEither(SpecElement.fork, new Action<Action>[]
                         {
@@ -87,7 +87,7 @@ namespace NJasmineTests.Core.Discovery
 
                     then("the targetted branch is ran", delegate
                     {
-                        expect(() => wasRun);
+                        expect(() => wasExpectedBranchRan);
                     });
 
                     then("discovery continues along that branch", delegate

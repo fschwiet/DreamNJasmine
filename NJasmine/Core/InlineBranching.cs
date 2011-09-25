@@ -26,13 +26,16 @@ namespace NJasmine.Core
             }
         }
 
-        public static void HandleInlineBranches(TestPosition position, Action<Action>[] options, Action<Action<Action>, TestPosition> optionHandler)
+        public static void HandleInlineBranches(TestPosition position, Action<Action>[] options, Action<Action<Action>, TestPosition> optionHandler, int skip = 0)
         {
             var eitherBranch = position.GetFirstChildPosition();
 
             for (var i = 0; i < options.Length; i++)
             {
-                optionHandler(options[i], eitherBranch);
+                if (i >= skip)
+                {
+                    optionHandler(options[i], eitherBranch);
+                }
 
                 eitherBranch = eitherBranch.GetNextSiblingPosition();
             }
