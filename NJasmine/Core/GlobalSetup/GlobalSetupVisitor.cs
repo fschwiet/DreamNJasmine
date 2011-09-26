@@ -96,17 +96,17 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker.UnwindToPosition(_targetPosition);
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, Action<TestPosition> updatePositionHandler)
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
                 if (branchPosition.IsAncestorOf(_targetPosition))
                 {
+                    updatePositionHandler(branchPosition.GetFirstChildPosition());
                     InlineBranching.RunBranchOption(branch);
+                    updatePositionHandler(branchPosition.GetFirstChildPosition().GetFirstChildPosition());
                 }
             });
-
-            continuingAt = null;
         }
 
         protected void ReportError(TestPosition position, Exception error)

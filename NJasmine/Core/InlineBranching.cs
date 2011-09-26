@@ -18,10 +18,10 @@ namespace NJasmine.Core
             {
                 option(() =>
                 {
-                    throw new InlineBranching.ContinuationException();    
+                    throw new ContinuationException();    
                 });
             }
-            catch (InlineBranching.ContinuationException)
+            catch (ContinuationException)
             {
             }
         }

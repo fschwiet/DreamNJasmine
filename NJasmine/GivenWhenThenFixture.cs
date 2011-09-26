@@ -388,11 +388,11 @@ namespace NJasmine
         [Obsolete("busted")]
         public void fork(params Action<Action>[] options)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                TestPosition continuingAt;
-                base.Visitor.visitEither(SpecElement.fork, options, position, out continuingAt);
-            });
+            object result = default(object);
+
+            var nextPosition = CurrentPosition.GetNextSiblingPosition();
+           
+            base.Visitor.visitEither(SpecElement.fork, options, CurrentPosition, position => CurrentPosition = position);
         }
     }
 }

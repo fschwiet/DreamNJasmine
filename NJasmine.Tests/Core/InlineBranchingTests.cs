@@ -32,6 +32,14 @@ namespace NJasmineTests.Core
                        "one" 
                     }));
                 });
+
+                it("swallows ContinuationException", delegate
+                {
+                    InlineBranching.RunBranchOption(join =>
+                    {
+                        throw new InlineBranching.ContinuationException();
+                    });
+                });
             });
             
             describe("HandleInlineBranches", delegate

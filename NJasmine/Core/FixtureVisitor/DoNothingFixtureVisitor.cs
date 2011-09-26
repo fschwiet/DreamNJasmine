@@ -10,9 +10,8 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, Action<TestPosition> updatePositionHandler)
         {
-            continuingAt = null;
         }
 
         public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

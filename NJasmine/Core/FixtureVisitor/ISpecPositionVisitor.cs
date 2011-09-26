@@ -8,7 +8,7 @@ namespace NJasmine.Core.FixtureVisitor
     {
         void visitFork(SpecElement origin, string description, Action action, TestPosition position);
 
-        void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt); 
+        void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, Action<TestPosition> updatePositionHandler); 
 
         TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position);
         void visitAfterAll(SpecElement origin, Action action, TestPosition position);

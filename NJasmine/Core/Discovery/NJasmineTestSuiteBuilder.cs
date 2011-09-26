@@ -85,7 +85,7 @@ namespace NJasmine.Core.Discovery
             }
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, Action<TestPosition> updatePositionHandler)
         {
             int? destiny = _branchDestiny.GetDestinedPath(position);
 
@@ -95,11 +95,9 @@ namespace NJasmine.Core.Discovery
                 destiny = 0;
             }
 
-            var option = options[destiny.Value];
-
-            InlineBranching.RunBranchOption(option);
-
-            continuingAt = position.GetChildPositionByIndex(destiny.Value).GetFirstChildPosition();
+            updatePositionHandler(position.GetChildPositionByIndex(destiny.Value));
+            InlineBranching.RunBranchOption(options[destiny.Value]);
+            updatePositionHandler(position.GetChildPositionByIndex(destiny.Value).GetFirstChildPosition());
         }
 
 

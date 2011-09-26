@@ -23,17 +23,17 @@ namespace NJasmine.Core.Execution
             }
         }
 
-        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, out TestPosition continuingAt)
+        public void visitEither(SpecElement origin, Action<Action>[] options, TestPosition position, Action<TestPosition> updatePositionHandler)
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
                 if (_runContext.PositionIsAncestorOfIntendedTest(branchPosition))
                 {
+                    updatePositionHandler(branchPosition);
                     InlineBranching.RunBranchOption(branch);
+                    updatePositionHandler(branchPosition.GetFirstChildPosition());
                 }
             });
-
-            continuingAt = null;
         }
 
         public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)

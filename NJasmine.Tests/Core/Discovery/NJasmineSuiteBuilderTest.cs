@@ -24,7 +24,7 @@ namespace NJasmineTests.Core.Discovery
                 when("the test discovery forks", delegate
                 {
                     var position = new TestPosition(1,2,3);
-                    TestPosition continuingAt = null;
+                    TestPosition updatedPosition = null;
 
                     bool wasExpectedBranchRan = false;
                     Action<Action> expectedBranch = join => { wasExpectedBranchRan = true; join(); };
@@ -36,7 +36,7 @@ namespace NJasmineTests.Core.Discovery
                            join => { wasExpectedBranchRan = true; join(); },
                            join => { throw new Exception(); join();},
                            join => { throw new Exception(); join();},
-                        }, position, out continuingAt);
+                        }, position, p => updatedPosition = p);
                     });
 
                     then("the first branch runs", delegate
@@ -46,7 +46,7 @@ namespace NJasmineTests.Core.Discovery
 
                     then("continuing at the first subpath", delegate
                     {
-                        Assert.That(continuingAt, Is.EqualTo(new TestPosition(1, 2, 3, 0, 0)));
+                        Assert.That(updatedPosition, Is.EqualTo(new TestPosition(1, 2, 3, 0, 0)));
                     });
 
                     then("remaining paths are queued", delegate
@@ -64,7 +64,7 @@ namespace NJasmineTests.Core.Discovery
                 when("the test discovery forks", delegate
                 {
                     var position = new TestPosition(1, 2);
-                    TestPosition continuingAt;
+                    TestPosition updatedPosition = null;
 
                     bool wasExpectedBranchRan = false;
                     Action<Action> expectedBranch = join => { wasExpectedBranchRan = true; join(); };
@@ -77,8 +77,8 @@ namespace NJasmineTests.Core.Discovery
                            expectedBranch,
                            join => { throw new Exception(); join();},
                            join => { throw new Exception(); join();},
-                        }, 
-                        position, out continuingAt);
+                        },
+                        position, p => updatedPosition = p);
 
                     then("no paths are queued", delegate
                     {
@@ -92,7 +92,7 @@ namespace NJasmineTests.Core.Discovery
 
                     then("discovery continues along that branch", delegate
                     {
-                        Assert.That(continuingAt, Is.EqualTo(new TestPosition(1,2,3,0)));
+                        Assert.That(updatedPosition, Is.EqualTo(new TestPosition(1,2,3,0)));
                     });
                 });
             });
