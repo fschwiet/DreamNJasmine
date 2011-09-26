@@ -100,7 +100,7 @@ namespace NJasmine.Core.GlobalSetup
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
-                if (branchPosition.IsAncestorOf(_targetPosition))
+                if (branchPosition.IsOnPathTo(_targetPosition))
                 {
                     updatePositionHandler(branchPosition.GetFirstChildPosition());
                     InlineBranching.RunBranchOption(branch);

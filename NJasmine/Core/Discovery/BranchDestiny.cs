@@ -26,7 +26,7 @@ namespace NJasmine.Core.Discovery
 
         public int? GetDestinedPath(TestPosition position)
         {
-            if (position.IsAncestorOf(_destinedPath))
+            if (position.IsOnPathTo(_destinedPath))
             {
                 return _destinedPath.Coordinates.ToArray()[position.Coordinates.Count()];
             }

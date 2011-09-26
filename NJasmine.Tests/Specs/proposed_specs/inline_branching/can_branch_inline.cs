@@ -19,24 +19,30 @@ namespace NJasmineTests.Specs.proposed_specs.inline_branching
                 string expectedResult = null;
 
                 fork(
-                    join => when("the input is 0", delegate
+                    delegate(Action join)
                     {
-                        input = 0;
-                        expectedResult = input.ToString();
+                        when("the input is 0", delegate
+                        {
+                            input = 0;
+                            expectedResult = input.ToString();
 
-                        // do special setup
+                            // do special setup
 
-                        join();
-                    }),
-                    join => when("the input is 1", delegate
+                            join();
+                        });
+                    },
+                    delegate(Action join)
                     {
-                        input = 1;
-                        expectedResult = input.ToString();
+                        when("the input is 1", delegate
+                        {
+                            input = 1;
+                            expectedResult = input.ToString();
 
-                        // other special setup
+                            // other special setup
 
-                        join();
-                    }));
+                            join();
+                        });
+                    });
 
                 then("it runs" + input, delegate
                 {
