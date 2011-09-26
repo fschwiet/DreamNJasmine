@@ -27,7 +27,7 @@ namespace NJasmine.Core.Execution
         {
             InlineBranching.HandleInlineBranches(position, options, (branch, branchPosition) =>
             {
-                if (_runContext.PositionIsAncestorOfIntendedTest(branchPosition))
+                if (_runContext.PositionIsOnPathToIntendedTarget(branchPosition))
                 {
                     updatePositionHandler(branchPosition);
                     InlineBranching.RunBranchOption(branch);

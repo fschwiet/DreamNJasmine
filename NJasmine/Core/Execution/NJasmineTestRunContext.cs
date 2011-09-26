@@ -25,6 +25,11 @@ namespace NJasmine.Core.Execution
             State = new DiscoveryState(this);
         }
 
+        public bool PositionIsOnPathToIntendedTarget(TestPosition position)
+        {
+            return position.IsOnPathTo(_position);
+        }
+
         public bool PositionIsAncestorOfIntendedTest(TestPosition position)
         {
             return position.IsAncestorOf(_position);
