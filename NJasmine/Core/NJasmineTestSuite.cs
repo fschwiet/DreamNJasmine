@@ -50,16 +50,11 @@ namespace NJasmine.Core
 
             var branchDestiny = new BranchDestiny();
             var builder = new NJasmineTestSuiteBuilder(this, buildContext, branchDestiny, globalSetup, test => accumulatedTests.Add(test));
-            
-            Exception exception = null;
 
-            var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
-
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = Position.GetFirstChildPosition();
-            buildContext._fixtureInstanceForDiscovery.Visitor = builder;
-
-            try
+            return buildContext._fixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
             {
+                Exception exception1 = null;
+
                 try
                 {
                     action();
@@ -69,39 +64,35 @@ namespace NJasmine.Core
                 }
                 catch (Exception e)
                 {
-                    exception = e;
+                    exception1 = e;
                 }
 
-                if (exception == null)
+                if (exception1 == null)
                 {
-                    foreach (var test in accumulatedTests)
-                        Add(test);
+                    foreach (var test1 in accumulatedTests)
+                        Add(test1);
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, Position);
+                    var nJasmineInvalidTestSuite1 = new NJasmineInvalidTestSuite(exception1, Position);
 
-                    nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
-                    nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
+                    nJasmineInvalidTestSuite1.TestName.FullName = TestName.FullName;
+                    nJasmineInvalidTestSuite1.TestName.Name = TestName.Name;
 
-                    nJasmineInvalidTestSuite.SetMultilineName(this.GetMultilineName());
+                    nJasmineInvalidTestSuite1.SetMultilineName(this.GetMultilineName());
 
                     if (isOuterScopeOfSpecification)
                     {
-                        Add(nJasmineInvalidTestSuite);
+                        Add(nJasmineInvalidTestSuite1);
                     }
                     else
                     {
-                        return nJasmineInvalidTestSuite;
+                        return nJasmineInvalidTestSuite1;
                     }
                 }
-            }
-            finally
-            {
-                buildContext._fixtureInstanceForDiscovery.Visitor = originalVisitor;
-            }
 
-            return this;
+                return this;
+            });
         }
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)

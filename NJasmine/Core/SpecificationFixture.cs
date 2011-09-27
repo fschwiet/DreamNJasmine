@@ -1,5 +1,7 @@
 ﻿using System;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
+using NUnit.Core;
 
 namespace NJasmine.Core
 {
@@ -43,6 +45,23 @@ namespace NJasmine.Core
                 action(tp);
                 return null;
             });
+        }
+
+        public Test BuildChildSuite(NJasmineTestSuiteBuilder builder, TestPosition suitePosition, Func<Test> run)
+        {
+            var originalVisitor = Visitor;
+
+            CurrentPosition = suitePosition;
+            Visitor = builder;
+
+            try
+            {
+                return run();
+            }
+            finally
+            {
+                Visitor = originalVisitor;
+            }
         }
     }
 }
