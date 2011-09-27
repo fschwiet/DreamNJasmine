@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Discovery\AllSuitesBuildContext.cs" />
+    <Compile Include="Core\Discovery\FixtureDiscoveryContext.cs" />
     <Compile Include="Core\Discovery\BranchDestiny.cs" />
     <Compile Include="Core\Discovery\NameGenerator.cs" />
     <Compile Include="Core\Discovery\NJasmineTestSuiteBuilder.cs" />

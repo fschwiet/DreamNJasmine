@@ -22,7 +22,7 @@ namespace NJasmine.Core
         {
             var fixtureFactory = GetFixtureFactoryForType(type);
 
-            AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+            FixtureDiscoveryContext fixtureContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
             var globalSetup = new GlobalSetupManager();
 
@@ -32,7 +32,7 @@ namespace NJasmine.Core
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true, new TestPosition());
+            return rootSuite.BuildNJasmineTestSuite(fixtureContext, globalSetup, fixtureContext.FixtureInstanceForDiscovery.Run, true, new TestPosition());
         }
 
         public NJasmineTestSuite(GlobalSetupManager setupManager)
@@ -42,16 +42,16 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification, TestPosition position)
+        public Test BuildNJasmineTestSuite(FixtureDiscoveryContext fixtureContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification, TestPosition position)
         {
             Position = position;
 
             List<Test> accumulatedTests = new List<Test>();
 
             var branchDestiny = new BranchDestiny();
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, branchDestiny, globalSetup, test => accumulatedTests.Add(test));
+            var builder = new NJasmineTestSuiteBuilder(this, fixtureContext, branchDestiny, globalSetup, test => accumulatedTests.Add(test));
 
-            return buildContext._fixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
+            return fixtureContext.FixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
             {
                 Exception exception1 = null;
 

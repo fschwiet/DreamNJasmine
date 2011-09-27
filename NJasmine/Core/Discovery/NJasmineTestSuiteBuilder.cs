@@ -12,7 +12,7 @@ namespace NJasmine.Core.Discovery
     public class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         private readonly NJasmineTestSuite _test;
-        readonly AllSuitesBuildContext _buildContext;
+        readonly FixtureDiscoveryContext _fixtureContext;
         readonly BranchDestiny _branchDestiny;
         private readonly GlobalSetupManager _globalSetup;
         readonly Action<Test> _testVisitor;
@@ -20,10 +20,10 @@ namespace NJasmine.Core.Discovery
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, AllSuitesBuildContext buildContext, BranchDestiny branchDestiny, GlobalSetupManager globalSetup, Action<Test> testVisitor)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, FixtureDiscoveryContext fixtureContext, BranchDestiny branchDestiny, GlobalSetupManager globalSetup, Action<Test> testVisitor)
         {
             _test = test;
-            _buildContext = buildContext;
+            _fixtureContext = fixtureContext;
             _branchDestiny = branchDestiny;
             _globalSetup = globalSetup;
 
@@ -58,7 +58,7 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuiteAsFailedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(description, _test, subSuiteAsFailedTest);
+                _fixtureContext.NameGenator.NameTest(description, _test, subSuiteAsFailedTest);
 
                 ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
 
@@ -70,15 +70,15 @@ namespace NJasmine.Core.Discovery
 
                 bool reusedName;
 
-                _buildContext._nameGenator.NameFork(description, _test, subSuite, out reusedName);
+                _fixtureContext.NameGenator.NameFork(description, _test, subSuite, out reusedName);
 
                 ApplyCategoryAndIgnoreIfSet(subSuite);
 
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false, position);
+                var actualSuite = subSuite.BuildNJasmineTestSuite(_fixtureContext, _globalSetup, action, false, position);
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
-                    _buildContext._nameGenator.MakeNameUnique((INJasmineTest)actualSuite);
+                    _fixtureContext.NameGenator.MakeNameUnique((INJasmineTest)actualSuite);
                 }
 
                 _testVisitor(actualSuite);
@@ -125,7 +125,7 @@ namespace NJasmine.Core.Discovery
             {
                 var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext._nameGenator.NameTest(description, _test, unimplementedTest);
+                _fixtureContext.NameGenator.NameTest(description, _test, unimplementedTest);
 
                 ApplyCategoryAndIgnoreIfSet(unimplementedTest);
 
@@ -133,9 +133,9 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = new NJasmineTestMethod(_buildContext._fixtureFactory, position, _globalSetup);
+                var test = new NJasmineTestMethod(_fixtureContext.FixtureFactory, position, _globalSetup);
 
-                _buildContext._nameGenator.NameTest(description, _test, test);
+                _fixtureContext.NameGenator.NameTest(description, _test, test);
 
                 ApplyCategoryAndIgnoreIfSet(test);
 
