@@ -48,7 +48,7 @@ namespace NJasmine.Core
             List<Test> accumulatedTests = new List<Test>();
 
             var branchDestiny = new BranchDestiny();
-            var builder = new NJasmineTestSuiteBuilder(this, _fixtureContext, branchDestiny, test => accumulatedTests.Add(test));
+            var builder = new NJasmineTestSuiteBuilder(_fixtureContext, this, branchDestiny, test => accumulatedTests.Add(test));
 
             return _fixtureContext.FixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
             {

@@ -11,15 +11,15 @@ namespace NJasmine.Core.Discovery
 {
     public class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
-        private readonly NJasmineTestSuite _test;
         readonly FixtureDiscoveryContext _fixtureContext;
+        private readonly NJasmineTestSuite _test;
         readonly BranchDestiny _branchDestiny;
         readonly Action<Test> _testVisitor;
         bool _haveVisitedTest;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, FixtureDiscoveryContext fixtureContext, BranchDestiny branchDestiny, Action<Test> testVisitor)
+        public NJasmineTestSuiteBuilder(FixtureDiscoveryContext fixtureContext, NJasmineTestSuite test, BranchDestiny branchDestiny, Action<Test> testVisitor)
         {
             _test = test;
             _fixtureContext = fixtureContext;
