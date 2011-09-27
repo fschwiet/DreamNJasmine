@@ -13,7 +13,7 @@ namespace NJasmineTests.Core
         {
             var branchDestiny = new BranchDestiny();
             
-            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null, null);
+            var sut = new NJasmineTestSuiteBuilder(null, null, branchDestiny, null);
 
             given("no path is set for the current branch", delegate
             {

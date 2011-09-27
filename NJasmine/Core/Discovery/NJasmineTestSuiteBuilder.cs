@@ -14,18 +14,16 @@ namespace NJasmine.Core.Discovery
         private readonly NJasmineTestSuite _test;
         readonly FixtureDiscoveryContext _fixtureContext;
         readonly BranchDestiny _branchDestiny;
-        private readonly GlobalSetupManager _globalSetup;
         readonly Action<Test> _testVisitor;
         bool _haveVisitedTest;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, FixtureDiscoveryContext fixtureContext, BranchDestiny branchDestiny, GlobalSetupManager globalSetup, Action<Test> testVisitor)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, FixtureDiscoveryContext fixtureContext, BranchDestiny branchDestiny, Action<Test> testVisitor)
         {
             _test = test;
             _fixtureContext = fixtureContext;
             _branchDestiny = branchDestiny;
-            _globalSetup = globalSetup;
 
             _testVisitor = t =>
             {
@@ -66,7 +64,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(_globalSetup);
+                var subSuite = new NJasmineTestSuite(_fixtureContext);
 
                 bool reusedName;
 
@@ -74,7 +72,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuite);
 
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_fixtureContext, _globalSetup, action, false, position);
+                var actualSuite = subSuite.BuildNJasmineTestSuite(action, false, position);
 
                 if (!actualSuite.IsSuite && reusedName)
                 {
@@ -133,7 +131,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = new NJasmineTestMethod(_fixtureContext.FixtureFactory, position, _globalSetup);
+                var test = new NJasmineTestMethod(_fixtureContext.FixtureFactory, position, _fixtureContext.GlobalSetup);
 
                 _fixtureContext.NameGenator.NameTest(description, _test, test);
 

@@ -14,44 +14,43 @@ namespace NJasmine.Core
 {
     public class NJasmineTestSuite : TestSuite, INJasmineTest
     {
+        readonly FixtureDiscoveryContext _fixtureContext;
         public TestPosition Position { get; private set; }
-
-        GlobalSetupManager _setupManager;
 
         public static Test CreateRootNJasmineSuite(Type type)
         {
             var fixtureFactory = GetFixtureFactoryForType(type);
 
-            FixtureDiscoveryContext fixtureContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
-
             var globalSetup = new GlobalSetupManager();
+
+            FixtureDiscoveryContext fixtureContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), globalSetup, fixtureFactory());
 
             globalSetup.Initialize(fixtureFactory);
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(globalSetup);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(fixtureContext);
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(fixtureContext, globalSetup, fixtureContext.FixtureInstanceForDiscovery.Run, true, new TestPosition());
+            return rootSuite.BuildNJasmineTestSuite(fixtureContext.FixtureInstanceForDiscovery.Run, true, new TestPosition());
         }
 
-        public NJasmineTestSuite(GlobalSetupManager setupManager)
+        public NJasmineTestSuite(FixtureDiscoveryContext fixtureContext)
             : base("thistestname", "willbeoverwritten")
         {
-            _setupManager = setupManager;
+            _fixtureContext = fixtureContext;
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(FixtureDiscoveryContext fixtureContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification, TestPosition position)
+        public Test BuildNJasmineTestSuite(Action action, bool isOuterScopeOfSpecification, TestPosition position)
         {
             Position = position;
 
             List<Test> accumulatedTests = new List<Test>();
 
             var branchDestiny = new BranchDestiny();
-            var builder = new NJasmineTestSuiteBuilder(this, fixtureContext, branchDestiny, globalSetup, test => accumulatedTests.Add(test));
+            var builder = new NJasmineTestSuiteBuilder(this, _fixtureContext, branchDestiny, test => accumulatedTests.Add(test));
 
-            return fixtureContext.FixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
+            return _fixtureContext.FixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
             {
                 Exception exception1 = null;
 
@@ -99,7 +98,7 @@ namespace NJasmine.Core
         {
             try
             {
-                _setupManager.Cleanup(Position);
+                _fixtureContext.GlobalSetup.Cleanup(Position);
             }
             catch (Exception innerException)
             {
