@@ -55,11 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\build_and_run_suite_with_loops.cs" />
-    <Compile Include="Core\Discovery\NJasmineSuiteBuilderTest.cs" />
     <Compile Include="Core\FakeGlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetupManagerTests.cs" />
     <Compile Include="Core\GlobalSetupManager_handles_inline_branching.cs" />
     <Compile Include="Core\InlineBranchingTests.cs" />
+    <Compile Include="Core\NJasmineSuiteBuilderTest.cs" />
+    <Compile Include="Core\NJasmineSuiteBuilder_can_build_suite_with_fork.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
     <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
@@ -134,6 +135,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Discovery\" />
     <Folder Include="Core\GlobalSetup\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
