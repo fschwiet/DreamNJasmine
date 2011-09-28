@@ -9,12 +9,12 @@ namespace NJasmineTests.Export
     public class BaseResult
     {
         protected string _name;
-        private readonly string _typeName;
+        private readonly string _descriptiveNameOfResultType;
         protected XElement _xml;
 
-        public BaseResult(string typeName, XElement xml)
+        public BaseResult(string descriptiveNameOfResultType, XElement xml)
         {
-            _typeName = typeName;
+            _descriptiveNameOfResultType = descriptiveNameOfResultType;
             _xml = xml;
 
             if (xml.Attribute("name") != null)
@@ -27,7 +27,7 @@ namespace NJasmineTests.Export
         {
             var result = GetResult();
 
-            Assert.AreEqual(inconclusive, result, String.Format("Expected {0} named {1} to be {2}.", _typeName, _name, inconclusive));
+            Assert.AreEqual(inconclusive, result, String.Format("Expected {0} named {1} to be {2}.", _descriptiveNameOfResultType, _name, inconclusive));
         }
 
         protected string GetResult()
@@ -35,7 +35,7 @@ namespace NJasmineTests.Export
             return _xml.Attribute("result").Value;
         }
 
-        public void withCategories(params string[] categories)
+        protected TResult withCategories<TResult>(params string[] categories) where TResult : BaseResult
         {
             var actualCategories = new List<string>();
 
@@ -54,10 +54,12 @@ namespace NJasmineTests.Export
 
             Assert.That(categories, Is.EquivalentTo(actualCategories),
                 String.Format("Expected {0} named {1} to have categories {2}, actually had {3}",
-                    _typeName, 
+                    _descriptiveNameOfResultType, 
                     _name, 
                     string.Join(",", categories), 
                     string.Join(",", actualCategories)));
+
+            return this as TResult;
         }
     }
 }

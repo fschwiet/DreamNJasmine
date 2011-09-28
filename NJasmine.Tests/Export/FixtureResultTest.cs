@@ -191,7 +191,7 @@ THREE
                         sut.hasSuite(wrongSuiteName);
                     });
 
-                    expect(() => exception.Message.Contains("Expected test suite not found, expected suite named " + wrongSuiteName));
+                    expect(() => exception.Message.Contains("Expected test suite not found, expected suite named '" + wrongSuiteName));
                 });
             });
 

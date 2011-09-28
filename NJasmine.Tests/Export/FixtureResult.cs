@@ -11,14 +11,14 @@ namespace NJasmineTests.Export
 {
     public class FixtureResult
     {
-        private readonly string _name;
+        private readonly string _testName;
         private readonly string _xmlOutput;
         private readonly string _consoleOutput;
         private XDocument _doc;
 
-        public FixtureResult(string name, string xmlOutput = null, string consoleOutput = "")
+        public FixtureResult(string testName, string xmlOutput = null, string consoleOutput = "")
         {
-            _name = name;
+            _testName = testName;
             _xmlOutput = xmlOutput ?? GetSampleXmlResult();
             _consoleOutput = consoleOutput;
             _doc = XDocument.Parse(xmlOutput);
@@ -30,16 +30,16 @@ namespace NJasmineTests.Export
             int errorCount = GetErrorCount();
             int failureCount = GetFailureCount();
 
-            Assert.AreEqual(0, errorCount, _name + " had errors.");
-            Assert.AreEqual(0, failureCount, _name + " had failures.");
-            Assert.AreNotEqual(0, totalCount, _name + " didn't have any tests.");
+            Assert.AreEqual(0, errorCount, _testName + " had errors.");
+            Assert.AreEqual(0, failureCount, _testName + " had failures.");
+            Assert.AreNotEqual(0, totalCount, _testName + " didn't have any tests.");
 
             return this;
         }
 
         public FixtureResult failed()
         {
-            Assert.AreNotEqual(0, GetErrorCount() + GetFailureCount(), _name + " didn't have errors.");
+            Assert.AreNotEqual(0, GetErrorCount() + GetFailureCount(), _testName + " didn't have errors.");
 
             return this;
         }
@@ -60,12 +60,12 @@ namespace NJasmineTests.Export
             
             var trace = matches.OfType<Match>().Select(m => m.Groups[1].Value).ToArray();
             
-            Assert.That(trace, Is.EquivalentTo(expectedTrace.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries)), "Did not find expected trace in " + _name);
+            Assert.That(trace, Is.EquivalentTo(expectedTrace.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries)), "Did not find expected trace in " + _testName);
         }
 
         public TestResult hasTest(string name)
         {
-            return hasTestWithFullName(_name + ", " + name);
+            return hasTestWithFullName(_testName + ", " + name);
         }
 
         public TestResult hasTestWithFullName(string name)
@@ -79,11 +79,22 @@ namespace NJasmineTests.Export
 
         public SuiteResult hasSuite(string name)
         {
-            var suites = _doc.Descendants("test-suite").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            return FindSuite(_doc.Root, _testName, name);
+        }
 
-            Assert.AreEqual(1, suites.Count(), "Expected test suite not found, expected suite named " + name);
+        public static SuiteResult FindSuite(XElement element, string fixtureName, string name)
+        {
+            string expectedSuiteName = name;
 
-            return new SuiteResult(suites.Single());
+            IEnumerable<XElement> allSuites = element.Descendants("test-suite");
+
+            var suites = allSuites.Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(expectedSuiteName, StringComparison.InvariantCultureIgnoreCase));
+
+            Assert.AreEqual(1, suites.Count(), 
+                "Expected test suite not found, expected suite named '" + expectedSuiteName + "', found:\n"
+                + string.Join("\n", allSuites.Select(s => s.Attribute("name").Value)));
+
+            return new SuiteResult(fixtureName, suites.Single());
         }
 
         public string[] withStackTraces()
