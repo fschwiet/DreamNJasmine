@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using NJasmine.Extras;
 using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
     public class SuiteResult : BaseResult
     {
-        readonly string _fixtureName;
+        readonly string _fullName;
 
         public SuiteResult(string fixtureName, XElement xml) : base("test suite", xml)
         {
-            _fixtureName = fixtureName;
+            _fullName = fixtureName + ", " + _name;
         }
 
         public SuiteResult thatsInconclusive()
@@ -45,8 +46,7 @@ namespace NJasmineTests.Export
 
             var name = tests.Single().Attribute("name").Value;
 
-            string expectedPrefix = _fixtureName + ", " + _name;
-            Assert.That(name, Is.StringStarting(expectedPrefix), "Test name '{0}' did not start with expected fixture name '{1}'.", name, expectedPrefix);
+            Expect.That(() => name.StartsWith(_fullName));
 
             return new TestResult(tests.Single());
         }
@@ -54,6 +54,11 @@ namespace NJasmineTests.Export
         public SuiteResult withCategories(params string[] categories)
         {
             return base.withCategories<SuiteResult>(categories);
+        }
+
+        public SuiteResult hasSuite(string name)
+        {
+            return FixtureResult.FindSuite(_xml, _fullName, name);
         }
     }
 }
