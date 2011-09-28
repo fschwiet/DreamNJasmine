@@ -70,5 +70,10 @@ namespace NJasmineTests.Export
 
             return this;
         }
+
+        public TestResult withCategories(params string[] categories)
+        {
+            return withCategories<TestResult>(categories);
+        }
     }
 }

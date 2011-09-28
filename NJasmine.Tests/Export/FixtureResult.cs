@@ -83,7 +83,7 @@ namespace NJasmineTests.Export
 
             Assert.AreEqual(1, suites.Count(), "Expected test suite not found, expected suite named " + name);
 
-            return new SuiteResult(suites.Single());
+            return new SuiteResult(_name, suites.Single());
         }
 
         public string[] withStackTraces()

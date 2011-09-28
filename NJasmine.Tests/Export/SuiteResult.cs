@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
@@ -7,8 +8,11 @@ namespace NJasmineTests.Export
 {
     public class SuiteResult : BaseResult
     {
-        public SuiteResult(XElement xml) : base("test suite", xml)
+        readonly string _fixtureName;
+
+        public SuiteResult(string fixtureName, XElement xml) : base("test suite", xml)
         {
+            _fixtureName = fixtureName;
         }
 
         public SuiteResult thatsInconclusive()
@@ -32,14 +36,24 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult ShouldHaveTest(string name)
+        public TestResult hasTest(string expectedName)
         {
-            var tests = _xml.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            IEnumerable<XElement> tests = _xml.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.EndsWith(expectedName, StringComparison.InvariantCultureIgnoreCase));
 
             Assert.AreEqual(1, tests.Count(),
-                String.Format("Expected test not found in suite {0}, expected test named {1}", _name, name));
+                String.Format("Expected test not found in suite {0}, expected test named {1}", _name, expectedName));
+
+            var name = tests.Single().Attribute("name").Value;
+
+            string expectedPrefix = _fixtureName + ", " + _name;
+            Assert.That(name, Is.StringStarting(expectedPrefix), "Test name '{0}' did not start with expected fixture name '{1}'.", name, expectedPrefix);
 
             return new TestResult(tests.Single());
+        }
+
+        public SuiteResult withCategories(params string[] categories)
+        {
+            return base.withCategories<SuiteResult>(categories);
         }
     }
 }

@@ -40,22 +40,22 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.succeeds();
 
-            fixtureResult.hasSuite("when using category Foo then Bar").withCategories();
+            var suite = fixtureResult.hasSuite("when using category Foo then Bar").withCategories<SuiteResult>();
+             
+            suite.hasTest("when using category Foo then Bar, then tests have Foo")
+                .withCategories<TestResult>("Foo");
 
-            fixtureResult.hasTest("when using category Foo then Bar, then tests have Foo")
-                .withCategories("Foo");
+            suite.hasTest("when using category Foo then Bar, then tests have Foo")
+                .withCategories<TestResult>("Foo");
 
-            fixtureResult.hasTest("when using category Foo then Bar, then tests have Foo")
-                .withCategories("Foo");
-
-            fixtureResult.hasTest("when using category Foo then Bar, then tests have For and Bar")
-                .withCategories("Foo", "Bar");
+            suite.hasTest("when using category Foo then Bar, then tests have For and Bar")
+                .withCategories<TestResult>("Foo", "Bar");
 
             fixtureResult.hasSuite("when in a nested block and using a category")
-                .withCategories("Foo", "Bar");
+                .withCategories<TestResult>("Foo", "Bar");
 
-            fixtureResult.hasTest("when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz")
-                .withCategories("Baz");
+            suite.hasTest("when using category Foo then Bar, when in a nested block and using a category, then the test only has category Baz")
+                .withCategories<TestResult>("Baz");
         }
     }
 }

@@ -35,7 +35,7 @@ namespace NJasmineTests.Export
             return _xml.Attribute("result").Value;
         }
 
-        public void withCategories(params string[] categories)
+        public TResult withCategories<TResult>(params string[] categories) where TResult : BaseResult
         {
             var actualCategories = new List<string>();
 
@@ -58,6 +58,8 @@ namespace NJasmineTests.Export
                     _name, 
                     string.Join(",", categories), 
                     string.Join(",", actualCategories)));
+
+            return this as TResult;
         }
     }
 }
