@@ -1,30 +1,32 @@
 ﻿using System;
 using System.IO;
+using ManyConsole;
 using NJasmineTests.Export;
 using NJasmineTests.Specs.expectations;
 
 namespace NJasmineTestLoader
 {
-    class VerifyTestCommand : AbstractCommand
+    class VerifyTestCommand : ConsoleCommand
     {
-        public override string Name
+        public VerifyTestCommand()
         {
-            get { return "verify-test"; }
+            Command = "verify-test";
+            OneLineDescription = "Verifies the output of a test run meets specification.";
+            TraceCommandAfterParse = false;
+        }
+
+        public override void FinishLoadingArguments(string[] remainingArguments)
+        {
+            VerifyNumberOfArguments(remainingArguments, 3);
+
+            TestName = remainingArguments[0];
+            XmlOutputFile = remainingArguments[1];
+            ConsoleOutputFile = remainingArguments[2];
         }
 
         public string TestName;
         public string XmlOutputFile;
         public string ConsoleOutputFile;
-
-        public override void LoadArgs(string[] args)
-        {
-            if (args.Length != 3)
-                throw new ArgumentException("Expected 3 additional arguments for verify-test");
-
-            TestName = args[0];
-            XmlOutputFile = args[1];
-            ConsoleOutputFile = args[2];
-        }
 
         public override int Run()
         {
@@ -39,15 +41,6 @@ namespace NJasmineTestLoader
             test.Verify_NJasmine_implementation(fixtureResult);
 
             return 0;
-        }
-
-        public override void WriteExpectedArguments(TextWriter tw, string exeName)
-        {
-            tw.WriteLine(exeName + " " + Name + " <testName> <xmlOutputFile> <consoleOutputFile>");
-        }
-
-        public override void Trace(TextWriter tw)
-        {
         }
     }
 }

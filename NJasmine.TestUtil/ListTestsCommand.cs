@@ -3,23 +3,25 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+using ManyConsole;
 using NJasmineTests;
 using NJasmineTests.Export;
 using NJasmineTests.Specs.expectations;
 
 namespace NJasmineTestLoader
 {
-    public class ListTestsCommand : AbstractCommand
+    public class ListTestsCommand : ConsoleCommand
     {
-        public override string Name
+        public ListTestsCommand()
         {
-            get { return "list-tests"; }
+            Command = "list-tests";
+            OneLineDescription = "Lists the tests that are NJasmine specifications.";
+            TraceCommandAfterParse = false;
         }
 
-        public override void LoadArgs(string[] args)
+        public override void FinishLoadingArguments(string[] remainingArguments)
         {
-            if (args.Length != 0)
-                throw new ArgumentException("Unexpected arguments for command " + Name);
+            VerifyNumberOfArguments(remainingArguments, 0);
         }
 
         public override int Run()
@@ -27,6 +29,7 @@ namespace NJasmineTestLoader
             var types = from t in typeof(can_check_that_an_arbtirary_condition_is_true).Assembly.GetTypes()
                         where t.GetInterfaces().Contains(typeof(INJasmineInternalRequirement))
                         where t.IsPublic
+                        orderby t.FullName
                    select new ListTestsCommand.TestDefinition
                    {
                        Name = t.FullName
@@ -36,16 +39,6 @@ namespace NJasmineTestLoader
             serializer.Serialize(Console.Out, types.ToArray());
 
             return 0;
-        }
-
-        public override void WriteExpectedArguments(TextWriter tw, string exeName)
-        {
-            tw.WriteLine(exeName + " list-tests");
-        }
-
-        public override void Trace(TextWriter tw)
-        {
-            // no output since script reads it directly
         }
 
         public class TestDefinition
