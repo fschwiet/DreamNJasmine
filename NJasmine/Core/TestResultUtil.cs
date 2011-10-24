@@ -80,7 +80,16 @@ namespace NJasmine.Core
                     if (PatternForNJasmineAnonymousMethod.IsMatch(line))
                         continue;
 
-                    sb.AppendLine(line);
+                    var match = Regex.Match(line, @"^(\s*at )(.*\\)([^\\]*\.cs:line \d+)$");
+
+                    if (match.Success)
+                    {
+                        sb.AppendLine(match.Groups[1].Value + match.Groups[3].Value.Replace(":line ", ":") + "  " + match.Groups[2].Value + match.Groups[3].Value);
+                    }
+                    else
+                    {
+                        sb.AppendLine(line);
+                    }
                 }
             }
             catch (Exception)
