@@ -65,18 +65,16 @@ namespace NJasmine.Core
 
                     if (isOuterScopeOfSpecification)
                         branchDestiny.RunPendingDiscoveryBranches(action);
+
+                    foreach (var test1 in accumulatedTests)
+                        Add(test1);
                 }
                 catch (Exception e)
                 {
                     exception1 = e;
                 }
 
-                if (exception1 == null)
-                {
-                    foreach (var test1 in accumulatedTests)
-                        Add(test1);
-                }
-                else
+                if (exception1 != null)
                 {
                     var nJasmineInvalidTestSuite1 = new NJasmineInvalidTestSuite(exception1, Position);
 
