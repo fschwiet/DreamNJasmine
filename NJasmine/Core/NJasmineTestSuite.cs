@@ -50,7 +50,12 @@ namespace NJasmine.Core
             var branchDestiny = new BranchDestiny();
             var builder = new NJasmineTestSuiteBuilder(_fixtureContext, this, branchDestiny, test => accumulatedTests.Add(test));
 
-            return _fixtureContext.FixtureInstanceForDiscovery.BuildChildSuite(builder, this.Position.GetFirstChildPosition(), delegate
+            var originalVisitor = _fixtureContext.FixtureInstanceForDiscovery.Visitor;
+
+            _fixtureContext.FixtureInstanceForDiscovery.CurrentPosition = this.Position.GetFirstChildPosition();
+            _fixtureContext.FixtureInstanceForDiscovery.Visitor = builder;
+
+            try
             {
                 Exception exception1 = null;
 
@@ -91,7 +96,11 @@ namespace NJasmine.Core
                 }
 
                 return this;
-            });
+            }
+            finally
+            {
+                _fixtureContext.FixtureInstanceForDiscovery.Visitor = originalVisitor;
+            }
         }
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)
