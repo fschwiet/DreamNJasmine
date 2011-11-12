@@ -86,6 +86,7 @@
     <Compile Include="Specs\proposed_specs\inline_branching\can_branch_inline.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_at_outermost_scope.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_within_describe.cs" />
+    <Compile Include="Specs\report_test_failures_usefully\stacktrace_shows_fileposition_first.cs" />
     <Compile Include="Specs\report_test_failures_usefully\stacktrace_has_NJasmine_internal_calls_removed.cs" />
     <Compile Include="Specs\report_test_failures_usefully\stacktrace_keeps_internal_calls_for_NJasmine_tests.cs" />
     <Compile Include="Specs\setup_per_test\arrange_after_test_is_not_included_in_prior_test.cs" />

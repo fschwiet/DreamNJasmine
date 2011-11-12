@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using NJasmine.Extras;
 using NUnit.Framework;
 
 namespace NJasmineTests.Export
@@ -13,12 +15,9 @@ namespace NJasmineTests.Export
 
         public TestResult withFailureMessage(string expectedMessage)
         {
-            var failure = _xml.Element("failure");
+            var failure = _xml.Element("failure").Element("message");
 
-            if (failure != null)
-                failure = failure.Element("message");
-
-            Assert.That(failure.Value, Is.StringContaining(expectedMessage));
+            Expect.That(() => failure.Value.Contains(expectedMessage));
 
             return this;
         }
@@ -61,10 +60,7 @@ namespace NJasmineTests.Export
 
         public TestResult withDetailedMessageThat(Action<string> handler)
         {
-            var stackTrace = _xml.Element("failure");
-
-            if (stackTrace != null)
-                stackTrace = stackTrace.Element("stack-trace");
+            var stackTrace = _xml.Element("failure").Element("stack-trace");
 
             handler(stackTrace.Value);
 
