@@ -112,9 +112,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = new NJasmineTestMethod(_buildContext.FixtureFactory, position, _globalSetup);
-
-                _buildContext.NameGenator.NameTest(description, _test, test);
+                var test = this._buildContext.CreateTest(this._globalSetup, this._test, position, description);
 
                 ApplyCategoryAndIgnoreIfSet(test);
 

@@ -5,14 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using NJasmine.Core.Discovery;
-using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
-using NJasmine.Extras;
 using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineTestSuite : TestSuite, INJasmineTest
+    public class NJasmineTestSuite : TestSuite, INJasmineTest
     {
         public TestPosition Position { get; private set; }
 

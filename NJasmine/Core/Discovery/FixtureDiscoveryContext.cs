@@ -1,19 +1,19 @@
 ﻿using System;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Core.GlobalSetup;
 using NJasmine.Extras;
 
 namespace NJasmine.Core.Discovery
 {
-    internal class FixtureDiscoveryContext
+    public class FixtureDiscoveryContext
     {
-        private SpecificationFixture _fixtureInstanceForDiscovery;
-
-        public Func<SpecificationFixture> FixtureFactory;
         public NameGenerator NameGenator;
+        private SpecificationFixture _fixtureInstanceForDiscovery;
+        private Func<SpecificationFixture> _fixtureFactory;
 
         public FixtureDiscoveryContext(Func<SpecificationFixture> fixtureFactory, NameGenerator nameGenerator, SpecificationFixture fixtureInstanceForDiscovery)
         {
-            FixtureFactory = fixtureFactory;
+            _fixtureFactory = fixtureFactory;
             NameGenator = nameGenerator;
             _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
         }
@@ -48,6 +48,14 @@ namespace NJasmine.Core.Discovery
             }
 
             return exception;
+        }
+
+        public NJasmineTestMethod CreateTest(GlobalSetupManager globalSetupManager, NJasmineTestSuite parentTest, TestPosition position, string description)
+        {
+            var test = new NJasmineTestMethod(_fixtureFactory, position, globalSetupManager);
+
+            NameGenator.NameTest(description, parentTest, test);
+            return test;
         }
     }
 }
