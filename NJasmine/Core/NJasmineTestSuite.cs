@@ -7,6 +7,7 @@ using System.Threading;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Extras;
 using NUnit.Core;
 
 namespace NJasmine.Core
@@ -29,7 +30,7 @@ namespace NJasmine.Core
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.FixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
         }
 
         public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
@@ -44,51 +45,29 @@ namespace NJasmine.Core
         {
             var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
             
-            Exception exception = null;
+            var exception = buildContext.RunActionWithVisitor(Position.GetFirstChildPosition(), action, builder);
 
-
-            var originalVisitor = buildContext.FixtureInstanceForDiscovery.Visitor;
-
-            buildContext.FixtureInstanceForDiscovery.CurrentPosition = Position.GetFirstChildPosition();
-            buildContext.FixtureInstanceForDiscovery.Visitor = builder;
-
-            try
+            if (exception == null)
             {
-                try
-                {
-                    action();
-                }
-                catch (Exception e)
-                {
-                    exception = e;
-                }
+                builder.VisitAccumulatedTests(Add);
+            }
+            else
+            {
+                var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, Position);
 
-                if (exception == null)
+                nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
+                nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
+
+                nJasmineInvalidTestSuite.SetMultilineName(this.GetMultilineName());
+
+                if (isOuterScopeOfSpecification)
                 {
-                    builder.VisitAccumulatedTests(Add);
+                    Add(nJasmineInvalidTestSuite);
                 }
                 else
                 {
-                    var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, Position);
-
-                    nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
-                    nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
-
-                    nJasmineInvalidTestSuite.SetMultilineName(this.GetMultilineName());
-
-                    if (isOuterScopeOfSpecification)
-                    {
-                        Add(nJasmineInvalidTestSuite);
-                    }
-                    else
-                    {
-                        return nJasmineInvalidTestSuite;
-                    }
+                    return nJasmineInvalidTestSuite;
                 }
-            }
-            finally
-            {
-                buildContext.FixtureInstanceForDiscovery.Visitor = originalVisitor;
             }
 
             return this;
