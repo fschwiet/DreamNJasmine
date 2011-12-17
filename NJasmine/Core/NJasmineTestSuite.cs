@@ -49,8 +49,7 @@ namespace NJasmine.Core
 
             var originalVisitor = buildContext.FixtureInstanceForDiscovery.Visitor;
 
-            buildContext.FixtureInstanceForDiscovery.CurrentPosition = Position;
-            buildContext.FixtureInstanceForDiscovery.CurrentPosition = buildContext.FixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
+            buildContext.FixtureInstanceForDiscovery.CurrentPosition = Position.GetFirstChildPosition();
             buildContext.FixtureInstanceForDiscovery.Visitor = builder;
 
             try
