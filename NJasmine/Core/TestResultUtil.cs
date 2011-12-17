@@ -70,15 +70,22 @@ namespace NJasmine.Core
 
             try
             {
-                foreach(var line in exception.StackTrace.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+                string[] stackTrace = exception.StackTrace.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
+
+                bool filterNJasmineInternals = !stackTrace.Any(l => l.StartsWith("at NJasmineTests"));  // don't filter for NJasmine's tests
+
+                foreach(var line in stackTrace)
                 {
-                    var lineIsInNJasmineCore = line.Trim().StartsWith("at NJasmine.Core");
+                    if (filterNJasmineInternals)
+                    {
+                        var lineIsInNJasmineCore = line.Trim().StartsWith("at NJasmine.Core");
 
-                    if (lineIsInNJasmineCore)
-                        continue;
+                        if (lineIsInNJasmineCore)
+                            continue;
 
-                    if (PatternForNJasmineAnonymousMethod.IsMatch(line))
-                        continue;
+                        if (PatternForNJasmineAnonymousMethod.IsMatch(line))
+                            continue;
+                    }
 
                     var match = Regex.Match(line, @"^(\s*at )(.*\\)([^\\]*\.cs:line \d+)$");
 
