@@ -138,6 +138,13 @@ task IntegrationTests {
 task AllTests -depends Build, CopyNUnitToBuild, UnitTests, IntegrationTests {
 }
 
+task RunGUI -depends KillNUnit, TraceSourceControlCommit,Build, CopyNUnitToBuild, RunNUnitGUI {
+}
+
+task KillNUnit {
+    (ps nunit*) | % { $_.kill() }
+}
+
 function TrackPackage($zipFile, $buildLocation) {
 
     if (-not $script:packages) {
@@ -145,6 +152,15 @@ function TrackPackage($zipFile, $buildLocation) {
     }
 
     $script:packages[$zipFile] = $buildLocation
+}
+
+task RunNUnitGUI {
+
+    $nunitGui = (join-path $buildDir "nunit\nunit.exe")
+
+    $testXmlTarget = (join-path $buildDir "UnitTests.xml")
+
+    exec { & $nunitGui "$buildDir\NJasmine.tests.dll"}
 }
 
 task Build_2_5_9 {
