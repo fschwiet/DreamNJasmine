@@ -19,7 +19,7 @@ namespace NJasmine.Core
 
         public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
         {
-            AllSuitesBuildContext buildContext = new AllSuitesBuildContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
 
             var globalSetup = new GlobalSetupManager();
 
@@ -29,7 +29,7 @@ namespace NJasmine.Core
             rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
             rootSuite.TestName.Name = type.Name;
 
-            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext._fixtureInstanceForDiscovery.Run, true);
+            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.FixtureInstanceForDiscovery.Run, true);
         }
 
         public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
@@ -40,18 +40,18 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(AllSuitesBuildContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public Test BuildNJasmineTestSuite(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
             var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
             
             Exception exception = null;
 
 
-            var originalVisitor = buildContext._fixtureInstanceForDiscovery.Visitor;
+            var originalVisitor = buildContext.FixtureInstanceForDiscovery.Visitor;
 
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = Position;
-            buildContext._fixtureInstanceForDiscovery.CurrentPosition = buildContext._fixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
-            buildContext._fixtureInstanceForDiscovery.Visitor = builder;
+            buildContext.FixtureInstanceForDiscovery.CurrentPosition = Position;
+            buildContext.FixtureInstanceForDiscovery.CurrentPosition = buildContext.FixtureInstanceForDiscovery.CurrentPosition.GetFirstChildPosition();
+            buildContext.FixtureInstanceForDiscovery.Visitor = builder;
 
             try
             {
@@ -89,7 +89,7 @@ namespace NJasmine.Core
             }
             finally
             {
-                buildContext._fixtureInstanceForDiscovery.Visitor = originalVisitor;
+                buildContext.FixtureInstanceForDiscovery.Visitor = originalVisitor;
             }
 
             return this;
