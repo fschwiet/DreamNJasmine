@@ -73,6 +73,7 @@
     <Compile Include="Export\TestResult.cs" />
     <Compile Include="Extras\can_check_for_expected_substrings.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
+    <Compile Include="LambdaFixture.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\leakDisposable_can_be_used_to_prevent_automatic_dispose.cs" />
     <Compile Include="Specs\expectations\can_check_that_an_arbtirary_condition_is_true.cs" />
     <Compile Include="Specs\expectations\can_wait_for_a_condition_to_be_true.cs" />
