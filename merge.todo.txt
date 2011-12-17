@@ -1,0 +1,16 @@
+merging inline_edit changes...
+
+current position: NameGenerator
+
+new files not imported:
+    C:\src\NJasminePost\NJasmine.Tests\Core\GlobalSetupManager_handles_inline_branching.cs
+    C:\src\NJasminePost\NJasmine.Tests\Core\InlineBranchingTests.cs
+    C:\src\NJasminePost\NJasmine.Tests\Core\NJasmineSuiteBuilder_can_build_suite_with_fork.cs
+    C:\src\NJasminePost\NJasmine.Tests\Core\NJasmineSuiteBuilderTest.cs
+    C:\src\NJasminePost\NJasmine\Core\Discovery\BranchDestiny.cs
+
+
+
+changes not yet ported:
+
+  FixtureDiscoveryContext had a IGlobalSetupManager added
