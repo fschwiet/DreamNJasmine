@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
-using NJasmine.Extras;
-using NUnit.Core;
 
 namespace NJasmine.Core.Discovery
 {
@@ -35,17 +33,16 @@ namespace NJasmine.Core.Discovery
                 action(descendant);
         }
 
-        private void ApplyCategoryAndIgnoreIfSet(Test test)
+        private void ApplyCategoryAndIgnoreIfSet(NJasmineBuildResult result)
         {
             if (_ignoreReason != null)
             {
-                test.RunState = RunState.Explicit;
-                test.IgnoreReason = _ignoreReason;
+                result.AddIgnoreReason(_ignoreReason);
             }
 
             foreach (var category in _accumulatedCategories)
             {
-                NUnitFrameworkUtil.ApplyCategoryToTest(category, test);
+                result.AddCategory(category);
             }
         }
 
@@ -57,9 +54,11 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext.NameGenator.NameTest(description, _parent, subSuiteAsFailedTest);
 
-                ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
+                var result = new NJasmineBuildResult(subSuiteAsFailedTest);
 
-                _accumulatedDescendants.Add(new NJasmineBuildResult(subSuiteAsFailedTest));
+                ApplyCategoryAndIgnoreIfSet(result);
+
+                _accumulatedDescendants.Add(result);
             }
             else
             {
@@ -67,9 +66,9 @@ namespace NJasmine.Core.Discovery
                 
                 var _result = new NJasmineTestSuiteNUnit(_parent.FullName, description, p => _globalSetup.Cleanup(p), position);
 
-                ApplyCategoryAndIgnoreIfSet(_result);
-
                 var resultBuilder = new NJasmineBuildResult(_result);
+
+                ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
                 bool reusedName;
 
@@ -113,17 +112,21 @@ namespace NJasmine.Core.Discovery
 
                 _buildContext.NameGenator.NameTest(description, _parent, unimplementedTest);
 
-                ApplyCategoryAndIgnoreIfSet(unimplementedTest);
+                var buildResult = new NJasmineBuildResult(unimplementedTest);
 
-                _accumulatedDescendants.Add(new NJasmineBuildResult(unimplementedTest));
+                ApplyCategoryAndIgnoreIfSet(buildResult);
+                
+                _accumulatedDescendants.Add(buildResult);
             }
             else
             {
                 var test = this._buildContext.CreateTest(this._globalSetup, _parent, position, description);
 
-                ApplyCategoryAndIgnoreIfSet(test);
+                var buildResult = new NJasmineBuildResult(test);
 
-                _accumulatedDescendants.Add(new NJasmineBuildResult(test));
+                ApplyCategoryAndIgnoreIfSet(buildResult);
+
+                _accumulatedDescendants.Add(buildResult);
             }
         }
 

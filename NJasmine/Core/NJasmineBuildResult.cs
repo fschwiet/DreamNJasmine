@@ -65,5 +65,20 @@ namespace NJasmine.Core
         {
             (_test as TestSuite).Add(test.GetNUnitResult());
         }
+
+        public void AddIgnoreReason(string ignoreReason)
+        {
+            _test.RunState = RunState.Explicit;
+            
+            if (string.IsNullOrEmpty(_test.IgnoreReason))
+                _test.IgnoreReason = ignoreReason;
+            else
+                _test.IgnoreReason = _test.IgnoreReason + ", " + ignoreReason;
+        }
+
+        public void AddCategory(string category)
+        {
+            NUnitFrameworkUtil.ApplyCategoryToTest(category, _test);
+        }
     }
 }
