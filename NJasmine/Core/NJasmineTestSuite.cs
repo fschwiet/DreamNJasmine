@@ -50,7 +50,7 @@ namespace NJasmine.Core
                 if (isOuterScopeOfSpecification)
                 {
                     var subfailure = NJasmineBuildResult.ForSuite(_position, () => { });
-                    subfailure.TurnIntoAFailingSuite(exception);
+                    subfailure.TurnIntoAFailingSuite(exception, _position);
 
                     subfailure.FullName = resultBuilder.FullName;
                     subfailure.Shortname = resultBuilder.Shortname;
@@ -60,7 +60,7 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    resultBuilder.TurnIntoAFailingSuite(exception);
+                    resultBuilder.TurnIntoAFailingSuite(exception, _position);
                     buildContext.NameGenator.ReserveName(resultBuilder);
                 }
             }

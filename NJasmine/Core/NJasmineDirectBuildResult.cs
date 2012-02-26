@@ -10,8 +10,7 @@ namespace NJasmine.Core
     public interface INJasmineBuildResult : INJasmineNameable
     {
         Test GetNUnitResult();
-        void TurnIntoAFailingSuite(Exception exception);
-        bool IsSuite();
+        void TurnIntoAFailingSuite(Exception exception, TestPosition position);
         string Shortname { get; set; }
         string FullName { get; set; }
         string MultilineName { get; set; }
@@ -22,58 +21,47 @@ namespace NJasmine.Core
 
     class NJasmineBuildResult : INJasmineBuildResult
     {
-        readonly TestPosition _position;
-        bool _isSuite;
         string _ignoreReason;
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
         List<string> _categories = new List<string>();
-        Action _onetimeCleanup;
         Func<Test> _creationStrategy; 
 
-        public NJasmineBuildResult(bool isSuite, TestPosition position, Action onetimeCleanup)
+        NJasmineBuildResult()
         {
-            _position = position;
-            _isSuite = isSuite;
-            _onetimeCleanup = onetimeCleanup;
         }
 
         public static NJasmineBuildResult ForUnimplementedTest(TestPosition position)
         {
-            var result = new NJasmineBuildResult(false, position, () => {});
+            var result = new NJasmineBuildResult();
             result._creationStrategy = () => new NJasmineUnimplementedTestMethod(position);
             return result;
         }
 
         public static NJasmineBuildResult ForSuite(TestPosition position, Action onetimeCleanup)
         {
-            var result = new NJasmineBuildResult(true, position, onetimeCleanup);
-            result._onetimeCleanup = onetimeCleanup;
+            var result = new NJasmineBuildResult();
+            result._creationStrategy = () => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position);
             return result;
         }
 
         public static NJasmineBuildResult ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
-            var result = new NJasmineBuildResult(false, position, () => { });
+            var result = new NJasmineBuildResult();
             result._creationStrategy = () => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager);
             return result;
+        }
+
+        public void TurnIntoAFailingSuite(Exception exception, TestPosition position)
+        {
+            _creationStrategy = () => new NJasmineInvalidTestSuite(exception, position);
+            _children = new List<INJasmineBuildResult>();
         }
 
         public Test GetNUnitResult()
         {
             Test result;
 
-            if (_creationStrategy != null)
-            {
-                result = _creationStrategy();
-            }
-            else if (IsSuite())
-            {
-                result = new NJasmineTestSuiteNUnit("hi", "there", _onetimeCleanup, _position);
-            } 
-            else
-            {
-                throw new NotImplementedException();
-            }
+            result = _creationStrategy();
 
             ApplyPropertiesToTest(result);
 
@@ -101,31 +89,12 @@ namespace NJasmine.Core
                 result.Categories.Add(category);
         }
 
-        public void TurnIntoAFailingSuite(Exception exception)
-        {
-            AssertIsSuite();
-
-            _creationStrategy = () => new NJasmineInvalidTestSuite(exception, _position);
-        }
-
-        void AssertIsSuite()
-        {
-            if (!_isSuite)
-                throw new InvalidProgramException();
-        }
-
-        public bool IsSuite()
-        {
-            return _isSuite;
-        }
-
         public string Shortname { get; set; }
         public string FullName { get; set; }
         public string MultilineName { get; set; }
 
         public void AddChildTest(INJasmineBuildResult test)
         {
-            AssertIsSuite();
             _children.Add(test);
         }
 
