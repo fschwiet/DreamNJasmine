@@ -50,11 +50,9 @@ namespace NJasmine.Core.Discovery
         {
             if (action == null)
             {
-                var subSuiteAsFailedTest = new NJasmineUnimplementedTestMethod(position);
+                var result = new NJasmineBuildResult(new NJasmineUnimplementedTestMethod(position));
 
-                _buildContext.NameGenator.NameTest(description, _parent, subSuiteAsFailedTest);
-
-                var result = new NJasmineBuildResult(subSuiteAsFailedTest);
+                _buildContext.NameGenator.NameTest(description, _parent, result);
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -63,10 +61,8 @@ namespace NJasmine.Core.Discovery
             else
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
-                
-                var _result = new NJasmineTestSuiteNUnit(_parent.FullName, description, p => _globalSetup.Cleanup(p), position);
 
-                var resultBuilder = new NJasmineBuildResult(_result);
+                var resultBuilder = new NJasmineBuildResult(new NJasmineTestSuiteNUnit(_parent.FullName, description, p => _globalSetup.Cleanup(p), position));
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -110,9 +106,9 @@ namespace NJasmine.Core.Discovery
             {
                 var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext.NameGenator.NameTest(description, _parent, unimplementedTest);
-
                 var buildResult = new NJasmineBuildResult(unimplementedTest);
+
+                _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 
@@ -120,9 +116,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = this._buildContext.CreateTest(this._globalSetup, _parent, position, description);
-
-                var buildResult = new NJasmineBuildResult(test);
+                var buildResult = new NJasmineBuildResult(_buildContext.CreateTest(this._globalSetup, _parent, position, description));
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 

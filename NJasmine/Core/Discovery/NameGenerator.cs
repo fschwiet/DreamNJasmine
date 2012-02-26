@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Core;
 
 namespace NJasmine.Core.Discovery
 {

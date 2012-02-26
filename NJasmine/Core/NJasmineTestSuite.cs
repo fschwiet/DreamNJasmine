@@ -22,9 +22,7 @@ namespace NJasmine.Core
 
         public NJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
-            var resultSuite = new NJasmineTestSuiteNUnit(parentName, name, p => _globalSetup.Cleanup(p), _position);
-
-            var resultBuilder = new NJasmineBuildResult(resultSuite);
+            var resultBuilder = new NJasmineBuildResult(new NJasmineTestSuiteNUnit(parentName, name, p => _globalSetup.Cleanup(p), _position));
 
             RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
 
