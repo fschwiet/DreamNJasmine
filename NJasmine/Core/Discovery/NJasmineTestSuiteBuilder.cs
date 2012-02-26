@@ -62,7 +62,7 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
 
-                var resultBuilder = new NJasmineDirectBuildResult(new NJasmineTestSuiteNUnit(_parent.FullName, description, () => _globalSetup.Cleanup(position), position), position);
+                var resultBuilder = NJasmineBuildResult.ForSuite(position, () => _globalSetup.Cleanup(position));
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
