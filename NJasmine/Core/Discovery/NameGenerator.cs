@@ -21,15 +21,13 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public void NameFork(string testShortName, INJasmineNameable parentTest, INJasmineNameable test, out bool reusedName)
+        public void NameFork(string testShortName, INJasmineNameable parentTest, INJasmineNameable test)
         {
             test.Shortname = testShortName;
             test.FullName = parentTest.FullName + ", " + testShortName;
             test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
             IncrementTestNameUntilItsNot(test, IsReserved);
-
-            reusedName = _globallyAccumulatedTestNames.ContainsKey(test.FullName);
 
             _globallyAccumulatedTestNames[test.FullName] = NameIs.Available;
         }
@@ -40,12 +38,13 @@ namespace NJasmine.Core.Discovery
             test.FullName = parentTest.FullName + ", " + testShortName;
             test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
-            MakeNameUnique(test);
+            IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name));
+            _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
         }
 
-        public void MakeNameUnique(INJasmineNameable test)
+        public void ReserveName(INJasmineNameable test)
         {
-            IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name));
+            IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
             _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
         }
 

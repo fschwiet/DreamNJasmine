@@ -61,6 +61,7 @@ namespace NJasmine.Core
                 else
                 {
                     resultBuilder.TurnIntoAFailingSuite(exception);
+                    buildContext.NameGenator.ReserveName(resultBuilder);
                 }
             }
         }

@@ -66,17 +66,9 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
-                bool reusedName;
-
-                _buildContext.NameGenator.NameFork(description, _parent, resultBuilder, out reusedName);
+                _buildContext.NameGenator.NameFork(description, _parent, resultBuilder);
 
                 subSuite.RunSuiteAction(_buildContext, _globalSetup, action, false, resultBuilder);
-
-                if (reusedName)
-                {
-                    if (!resultBuilder.IsSuite())
-                        _buildContext.NameGenator.MakeNameUnique(resultBuilder);
-                }
 
                 _accumulatedDescendants.Add(resultBuilder);
             }
