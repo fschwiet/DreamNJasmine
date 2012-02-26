@@ -71,12 +71,13 @@ namespace NJasmine.Core.Discovery
 
                 var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false);
 
-                if (!actualSuite.IsSuite && reusedName)
+                if (reusedName)
                 {
-                    _buildContext.NameGenator.MakeNameUnique((INJasmineTest)actualSuite);
+                    if (!actualSuite.IsSuite())
+                        _buildContext.NameGenator.MakeNameUnique((INJasmineTest)actualSuite.GetNUnitResult());
                 }
 
-                _accumulatedDescendants.Add(actualSuite);
+                _accumulatedDescendants.Add(actualSuite.GetNUnitResult());
             }
         }
 

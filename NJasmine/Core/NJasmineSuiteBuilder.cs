@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NJasmine.Core.Discovery;
+using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
@@ -38,12 +40,24 @@ namespace NJasmine.Core
                 var fixture = constructor.Invoke(new object[0]) as SpecificationFixture;
                 return fixture;
             };
+
+            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+
+            var globalSetup = new GlobalSetupManager();
+
+            globalSetup.Initialize(fixtureFactory);
+
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
+            rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
+            rootSuite.TestName.Name = type.Name;
             
-            var rootSuite = NJasmineTestSuite.CreateRootNJasmineSuite(fixtureFactory, type);
+            var root = rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
+            
+            var result = root.GetNUnitResult();
 
-            NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), rootSuite);
+            NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), result);
 
-            return rootSuite;
+            return result;
         }
 
         public static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)

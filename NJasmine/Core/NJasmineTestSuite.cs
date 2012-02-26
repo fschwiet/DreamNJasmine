@@ -16,21 +16,6 @@ namespace NJasmine.Core
 
         private GlobalSetupManager _setupManager;
 
-        public static Test CreateRootNJasmineSuite(Func<SpecificationFixture> fixtureFactory, Type type)
-        {
-            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
-
-            var globalSetup = new GlobalSetupManager();
-
-            globalSetup.Initialize(fixtureFactory);
-
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
-            rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
-            rootSuite.TestName.Name = type.Name;
-
-            return rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
-        }
-
         public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
             : base("thistestname", "willbeoverwritten")
         {
@@ -39,7 +24,7 @@ namespace NJasmine.Core
             maintainTestOrder = true;
         }
 
-        public Test BuildNJasmineTestSuite(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public NJasmineBuildResult BuildNJasmineTestSuite(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
             var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
             
@@ -64,11 +49,11 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    return nJasmineInvalidTestSuite;
+                    return new NJasmineBuildResult(nJasmineInvalidTestSuite);
                 }
             }
 
-            return this;
+            return new NJasmineBuildResult(this);
         }
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)
