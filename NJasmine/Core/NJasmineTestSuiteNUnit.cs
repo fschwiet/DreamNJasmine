@@ -29,7 +29,9 @@ namespace NJasmine.Core
                     innerException = exception2.InnerException;
                 }
 
-                TestResultUtil.Error(suiteResult, innerException, null, FailureSite.TearDown);
+                var shim = new TestResultShim();
+                TestResultUtil.Error(shim, suiteResult.Test.GetMultilineName(), innerException, null, TestResultShim.Site.TearDown);
+                shim.ApplyToNunitResult(suiteResult);
             }
         }
 

@@ -3,30 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NJasmine.Core.Discovery;
-using NUnit.Core;
 
 namespace NJasmine.Core
 {
     public class TestResultUtil
     {
-        public static void Error(TestResult testResult, Exception exception, IEnumerable<string> traceMessages, FailureSite failureSite = FailureSite.Test)
+        public static void Error(TestResultShim testResult, string multilineName, Exception exception, IEnumerable<string> traceMessages, TestResultShim.Site failureSite = TestResultShim.Site.Test)
         {
             traceMessages = traceMessages ?? new List<string>();
 
-            testResult.SetResult(ResultState.Error, BuildMessage(exception), BuildStackTrace(exception, testResult.Test, traceMessages), failureSite);
+            testResult.SetError(BuildMessage(exception), BuildStackTrace(exception, multilineName, traceMessages), failureSite);
         }
 
-        private static string BuildStackTrace(Exception exception, ITest test, IEnumerable<string> traceMessages)
+        private static string BuildStackTrace(Exception exception, string multilineName, IEnumerable<string> traceMessages)
         {
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("SPECIFICATION:");
-            if (test.Properties.Contains(TestExtensions.MultilineNameProperty))
-            {
-                foreach (var line in ((string)test.Properties[TestExtensions.MultilineNameProperty]).Split('\n'))
-                    sb.AppendLine("    " + line);
-            }
+            foreach (var line in multilineName.Split('\n'))
+                sb.AppendLine("    " + line);
 
             sb.AppendLine();
 

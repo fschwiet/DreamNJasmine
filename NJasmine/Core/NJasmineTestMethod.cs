@@ -26,7 +26,7 @@ namespace NJasmine.Core
         {
             listener.TestStarted(base.TestName);
             long ticks = DateTime.Now.Ticks;
-            TestResult testResult = new TestResult(this);
+            var testResult = new TestResultShim();
 
             Exception existingError = null;
 
@@ -34,7 +34,7 @@ namespace NJasmine.Core
 
             if (existingError != null)
             {
-                TestResultUtil.Error(testResult, existingError, null, FailureSite.SetUp);
+                TestResultUtil.Error(testResult, base.MultilineName, existingError, null, TestResultShim.Site.SetUp);
             }
             else
             {
@@ -46,19 +46,20 @@ namespace NJasmine.Core
                 catch (Exception e)
                 {
                     var globalTraceMessages = _globalSetup.GetTraceMessages();
-                    TestResultUtil.Error(testResult, e, globalTraceMessages.Concat(traceMessages));
+                    TestResultUtil.Error(testResult, MultilineName, e, globalTraceMessages.Concat(traceMessages));
                 }
             }
 
-            double num3 = ((double)(DateTime.Now.Ticks - ticks)) / 10000000.0;
-            testResult.Time = num3;
-            listener.TestFinished(testResult);
-            return testResult;
+            var nunitTestResult = new TestResult(this);
+            testResult.ApplyToNunitResult(nunitTestResult);
+            nunitTestResult.Time = ((DateTime.Now.Ticks - ticks)) / 10000000.0;
+            listener.TestFinished(nunitTestResult);
+            return nunitTestResult;
         }
 
-        public void RunTestMethod(TestResult testResult, out List<string> traceMessages)
+        public void RunTestMethod(TestResultShim testResult, out List<string> traceMessages)
         {
-            RunTestMethodInner(new TestResultShim(testResult), out traceMessages);
+            RunTestMethodInner(testResult, out traceMessages);
         }
 
         public void RunTestMethodInner(TestResultShim testResult, out List<string> traceMessages)
