@@ -24,8 +24,6 @@ namespace NJasmine.Core
     {
         readonly TestPosition _position;
         bool _isSuite;
-        bool _unimplementedTest;
-        Exception _failureException;
         string _ignoreReason;
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
         List<string> _categories = new List<string>();
@@ -42,7 +40,7 @@ namespace NJasmine.Core
         public static NJasmineBuildResult ForUnimplementedTest(TestPosition position)
         {
             var result = new NJasmineBuildResult(false, position, () => {});
-            result._unimplementedTest = true;
+            result._creationStrategy = () => new NJasmineUnimplementedTestMethod(position);
             return result;
         }
 
@@ -68,14 +66,6 @@ namespace NJasmine.Core
             {
                 result = _creationStrategy();
             }
-            else if (_failureException != null)
-            {
-                result = new NJasmineInvalidTestSuite(_failureException, _position);
-            } 
-            else if (_unimplementedTest)
-            {
-                result = new NJasmineUnimplementedTestMethod(_position);
-            } 
             else if (IsSuite())
             {
                 result = new NJasmineTestSuiteNUnit("hi", "there", _onetimeCleanup, _position);
@@ -115,7 +105,7 @@ namespace NJasmine.Core
         {
             AssertIsSuite();
 
-            _failureException = exception;
+            _creationStrategy = () => new NJasmineInvalidTestSuite(exception, _position);
         }
 
         void AssertIsSuite()
@@ -179,6 +169,7 @@ namespace NJasmine.Core
         public NJasmineDirectBuildResult(Test test, TestPosition position)
         {
             _test = test;
+            _position = position;
         }
 
         public Test GetNUnitResult()
