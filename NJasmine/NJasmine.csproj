@@ -89,6 +89,7 @@
     <Compile Include="Core\SpecificationFixture.cs" />
     <Compile Include="Core\TestExtensions.cs" />
     <Compile Include="Core\TestPosition.cs" />
+    <Compile Include="Core\TestResultShim.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\Expect.cs" />

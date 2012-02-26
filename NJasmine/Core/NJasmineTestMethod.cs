@@ -61,6 +61,11 @@ namespace NJasmine.Core
 
         public void RunTestMethod(TestResult testResult, out List<string> traceMessages)
         {
+            RunTestMethodInner(new TestResultShim(testResult), out traceMessages);
+        }
+
+        public void RunTestMethodInner(TestResultShim testResult, out List<string> traceMessages)
+        {
             traceMessages = new List<string>();
 
             var executionContext = new NJasmineTestRunContext(Position, _globalSetup, traceMessages);

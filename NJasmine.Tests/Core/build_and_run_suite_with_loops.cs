@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
-using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -75,9 +74,9 @@ namespace NJasmineTests.Core
             var fixture = new has_test_in_loop();
             var method = new NJasmine.Core.NJasmineTestMethod(() => fixture, testPosition, new FakeGlobalSetupManager());
 
-            TestResult result = new TestResult(method);
+            TestResultShim result = new TestResultShim();
             List<string> ignored;
-            method.RunTestMethod(result, out ignored);
+            method.RunTestMethodInner(result, out ignored);
 
             expect(() => result.IsSuccess);
 
