@@ -40,7 +40,7 @@ namespace NJasmine.Core
 
             if (exception == null)
             {
-                builder.VisitAccumulatedTests(v => resultBuilder.AddChildTest(new NJasmineBuildResult(v)));
+                builder.VisitAccumulatedTests(v => resultBuilder.AddChildTest(v));
             }
             else
             {

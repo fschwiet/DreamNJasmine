@@ -14,7 +14,7 @@ namespace NJasmine.Core.Discovery
         private readonly NJasmineBuildResult _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
-        List<Test> _accumulatedDescendants;
+        List<NJasmineBuildResult> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
@@ -24,12 +24,12 @@ namespace NJasmine.Core.Discovery
             _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
-            _accumulatedDescendants = new List<Test>();
+            _accumulatedDescendants = new List<NJasmineBuildResult>();
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
         }
 
-        public void VisitAccumulatedTests(Action<Test> action)
+        public void VisitAccumulatedTests(Action<NJasmineBuildResult> action)
         {
             foreach (var descendant in _accumulatedDescendants)
                 action(descendant);
@@ -59,7 +59,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
 
-                _accumulatedDescendants.Add(subSuiteAsFailedTest);
+                _accumulatedDescendants.Add(new NJasmineBuildResult(subSuiteAsFailedTest));
             }
             else
             {
@@ -83,7 +83,7 @@ namespace NJasmine.Core.Discovery
                         _buildContext.NameGenator.MakeNameUnique(resultBuilder);
                 }
 
-                _accumulatedDescendants.Add(resultBuilder.GetNUnitResult());
+                _accumulatedDescendants.Add(resultBuilder);
             }
         }
 
@@ -115,7 +115,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(unimplementedTest);
 
-                _accumulatedDescendants.Add(unimplementedTest);
+                _accumulatedDescendants.Add(new NJasmineBuildResult(unimplementedTest));
             }
             else
             {
@@ -123,7 +123,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(test);
 
-                _accumulatedDescendants.Add(test);
+                _accumulatedDescendants.Add(new NJasmineBuildResult(test));
             }
         }
 
