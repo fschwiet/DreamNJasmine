@@ -6,9 +6,9 @@ namespace NJasmine.Core
     public class NJasmineTestSuiteNUnit : TestSuite, INJasmineTest
     {
         public TestPosition Position { get; private set; }
-        private readonly Action<TestPosition> _oneTimeTeardown;
+        private readonly Action _oneTimeTeardown;
 
-        public NJasmineTestSuiteNUnit(string parentSuiteName, string name, Action<TestPosition> oneTimeTeardown, TestPosition position) : base(parentSuiteName, name)
+        public NJasmineTestSuiteNUnit(string parentSuiteName, string name, Action oneTimeTeardown, TestPosition position) : base(parentSuiteName, name)
         {
             _oneTimeTeardown = oneTimeTeardown;
             maintainTestOrder = true;
@@ -19,7 +19,7 @@ namespace NJasmine.Core
         {
             try
             {
-                _oneTimeTeardown(Position);
+                _oneTimeTeardown();
             }
             catch (Exception innerException)
             {

@@ -20,9 +20,10 @@ namespace NJasmine.Core
             _globalSetup = globalSetup;
         }
 
-        public NJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public INJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
-            var resultBuilder = new NJasmineBuildResult(new NJasmineTestSuiteNUnit(parentName, name, p => _globalSetup.Cleanup(p), _position));
+            var position = _position;
+            var resultBuilder = new NJasmineDirectBuildResult(new NJasmineTestSuiteNUnit(parentName, name, () => _globalSetup.Cleanup(_position), position), position);
 
             RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
 
@@ -30,7 +31,7 @@ namespace NJasmine.Core
         }
 
         public void RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
-                                    bool isOuterScopeOfSpecification, NJasmineBuildResult resultBuilder)
+                                    bool isOuterScopeOfSpecification, INJasmineBuildResult resultBuilder)
         {
             var builder = new NJasmineTestSuiteBuilder(this, resultBuilder, buildContext, globalSetup);
 
@@ -44,7 +45,7 @@ namespace NJasmine.Core
             {
                 if (isOuterScopeOfSpecification)
                 {
-                    var subfailure = new NJasmineBuildResult(new NJasmineInvalidTestSuite(exception, _position));
+                    var subfailure = new NJasmineDirectBuildResult(new NJasmineInvalidTestSuite(exception, _position), _position);
 
                     subfailure.FullName = resultBuilder.FullName;
                     subfailure.Shortname = resultBuilder.Shortname;
@@ -54,7 +55,7 @@ namespace NJasmine.Core
                 }
                 else
                 {
-                    resultBuilder.ReplaceNUnitResult(new NJasmineInvalidTestSuite(exception, _position));
+                    resultBuilder.TurnIntoAFailingSuite(exception);
                 }
             }
         }

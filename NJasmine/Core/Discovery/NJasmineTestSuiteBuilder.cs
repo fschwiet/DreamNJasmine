@@ -9,31 +9,31 @@ namespace NJasmine.Core.Discovery
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         private readonly NJasmineTestSuite _test;
-        private readonly NJasmineBuildResult _parent;
+        private readonly INJasmineBuildResult _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
-        List<NJasmineBuildResult> _accumulatedDescendants;
+        List<INJasmineBuildResult> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, NJasmineBuildResult parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, INJasmineBuildResult parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
             _test = test;
             _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
-            _accumulatedDescendants = new List<NJasmineBuildResult>();
+            _accumulatedDescendants = new List<INJasmineBuildResult>();
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
         }
 
-        public void VisitAccumulatedTests(Action<NJasmineBuildResult> action)
+        public void VisitAccumulatedTests(Action<INJasmineBuildResult> action)
         {
             foreach (var descendant in _accumulatedDescendants)
                 action(descendant);
         }
 
-        private void ApplyCategoryAndIgnoreIfSet(NJasmineBuildResult result)
+        private void ApplyCategoryAndIgnoreIfSet(INJasmineBuildResult result)
         {
             if (_ignoreReason != null)
             {
@@ -50,7 +50,7 @@ namespace NJasmine.Core.Discovery
         {
             if (action == null)
             {
-                var result = new NJasmineBuildResult(new NJasmineUnimplementedTestMethod(position));
+                var result = new NJasmineDirectBuildResult(new NJasmineUnimplementedTestMethod(position), position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, result);
 
@@ -62,7 +62,7 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
 
-                var resultBuilder = new NJasmineBuildResult(new NJasmineTestSuiteNUnit(_parent.FullName, description, p => _globalSetup.Cleanup(p), position));
+                var resultBuilder = new NJasmineDirectBuildResult(new NJasmineTestSuiteNUnit(_parent.FullName, description, () => _globalSetup.Cleanup(position), position), position);
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -106,7 +106,7 @@ namespace NJasmine.Core.Discovery
             {
                 var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                var buildResult = new NJasmineBuildResult(unimplementedTest);
+                var buildResult = new NJasmineDirectBuildResult(unimplementedTest, position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 
@@ -116,7 +116,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var buildResult = new NJasmineBuildResult(_buildContext.CreateTest(this._globalSetup, _parent, position, description));
+                var buildResult = new NJasmineDirectBuildResult(_buildContext.CreateTest(this._globalSetup, _parent, position, description), position);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 
@@ -132,7 +132,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                _parent.SetIgnoreReason(reason);
+                _parent.AddIgnoreReason(reason);
             }
         }
 
