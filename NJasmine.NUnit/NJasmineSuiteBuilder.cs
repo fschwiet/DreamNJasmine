@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
+using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     [NUnitAddin(Name = "NJasmine", Description = "A BDD-style test framework inspired by the Jasmine BDD framework for Javascript.", Type = ExtensionType.Core)]
     public class NJasmineSuiteBuilder : IAddin, ISuiteBuilder

@@ -1,6 +1,7 @@
 ﻿using System;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.NUnit;
 using NUnit.Framework;
 
  

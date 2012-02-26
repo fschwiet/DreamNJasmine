@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.NUnit;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core

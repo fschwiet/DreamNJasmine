@@ -121,6 +121,10 @@
     <Compile Include="TestDomain\Song.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NJasmine.NUnit\NJasmine.NUnit.csproj">
+      <Project>{FC7EF9BB-137A-4684-ABD3-6F80C537248A}</Project>
+      <Name>NJasmine.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NJasmine\NJasmine.csproj">
       <Project>{52A063FD-B140-44F3-997A-1571D6B72B28}</Project>
       <Name>NJasmine</Name>

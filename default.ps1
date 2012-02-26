@@ -97,6 +97,7 @@ task CopyNUnitToBuild -depends Build {
     }
 
     cp (join-path $buildDir "njasmine.dll") $targetForNUnitAddins
+    cp (join-path $buildDir "njasmine.nunit.dll") $targetForNUnitAddins
     cp (join-path $buildDir "powerassert.dll") $targetForNUnitAddins
 }
 
@@ -217,7 +218,7 @@ task ZipAll -depends CleanZips, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
 
         "packaging '$zipFile' from $buildResult"
         
-        $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt") | % {
+        $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "NJasmine.NUnit.dll", "NJasmine.NUnit.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt") | % {
             (join-path $buildResult $_)
         }
 
@@ -255,6 +256,8 @@ task BuildNuget -depends Build_2_5_10 {
 
     cp "$build\NJasmine.dll" "$nugetTarget\lib\"
     cp "$build\NJasmine.pdb" "$nugetTarget\lib\"
+    cp "$build\NJasmine.NUnit.dll" "$nugetTarget\lib\"
+    cp "$build\NJasmine.NUnit.pdb" "$nugetTarget\lib\"
     cp "$base_dir\nuget.install.ps1" "$nugetTarget\tools\install.ps1"
 
     $old = pwd
