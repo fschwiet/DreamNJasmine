@@ -46,14 +46,7 @@ namespace NJasmine.Core
             return rootSuite;
         }
 
-        public static void VisitAllTestElements<TFixture>(Action<INJasmineTest> visitor)
-        {
-            var rootTest = new NJasmineSuiteBuilder().BuildFrom(typeof(TFixture));
-
-            VisitAllTestElements(rootTest, visitor);
-        }
-
-        static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
+        public static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
         {
             if (test is INJasmineTest)
             {
@@ -67,16 +60,6 @@ namespace NJasmine.Core
                     VisitAllTestElements(childTest, visitor);
                 }
             }
-        }
-
-        static public Dictionary<TestPosition, INJasmineTest> LoadElementsByPosition<TFixture>()
-        {
-            var result = new Dictionary<TestPosition, INJasmineTest>();
-            Action<INJasmineTest> visitor = t => result[t.Position] = t;
-
-            VisitAllTestElements<TFixture>(visitor);
-
-            return result;
         }
     }
 }
