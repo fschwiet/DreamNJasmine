@@ -114,7 +114,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var buildResult = new NJasmineDirectBuildResult(_buildContext.CreateTest(this._globalSetup, _parent, position, description), position);
+                var buildResult = _buildContext.CreateTest(this._globalSetup, _parent, position, description);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 
 namespace NJasmine.Core
@@ -29,6 +30,7 @@ namespace NJasmine.Core
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
         List<string> _categories = new List<string>();
         Action _onetimeCleanup;
+        Func<Test> _creationStrategy; 
 
         public NJasmineBuildResult(bool isSuite, TestPosition position, Action onetimeCleanup)
         {
@@ -51,11 +53,22 @@ namespace NJasmine.Core
             return result;
         }
 
+        public static NJasmineBuildResult ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
+        {
+            var result = new NJasmineBuildResult(false, position, () => { });
+            result._creationStrategy = () => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager);
+            return result;
+        }
+
         public Test GetNUnitResult()
         {
             Test result;
 
-            if (_failureException != null)
+            if (_creationStrategy != null)
+            {
+                result = _creationStrategy();
+            }
+            else if (_failureException != null)
             {
                 result = new NJasmineInvalidTestSuite(_failureException, _position);
             } 

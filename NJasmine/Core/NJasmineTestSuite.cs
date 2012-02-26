@@ -23,7 +23,6 @@ namespace NJasmine.Core
         public INJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
             var position = _position;
-            //var resultBuilder = new NJasmineDirectBuildResult(new NJasmineTestSuiteNUnit(parentName, name, () => _globalSetup.Cleanup(position), position), position);
 
             var resultBuilder = NJasmineBuildResult.ForSuite(position, () => _globalSetup.Cleanup(position));
             resultBuilder.FullName = parentName + "." + name;
