@@ -50,7 +50,7 @@ namespace NJasmine.Core.Discovery
         {
             if (action == null)
             {
-                var result = new NJasmineDirectBuildResult(new NJasmineUnimplementedTestMethod(position), position);
+                var result = NJasmineBuildResult.ForUnimplementedTest(position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, result);
 
@@ -104,9 +104,7 @@ namespace NJasmine.Core.Discovery
         {
             if (action == null)
             {
-                var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
-
-                var buildResult = new NJasmineDirectBuildResult(unimplementedTest, position);
+                var buildResult = NJasmineBuildResult.ForUnimplementedTest(position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 
