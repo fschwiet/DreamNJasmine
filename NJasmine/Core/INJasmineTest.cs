@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Core;
-
+﻿
 namespace NJasmine.Core
 {
     public interface INJasmineNameable
@@ -13,7 +8,7 @@ namespace NJasmine.Core
         string MultilineName { get; set; }
     }
 
-    public interface INJasmineTest : ITest, INJasmineNameable
+    public interface INJasmineTest : INJasmineNameable
     {
         TestPosition Position { get; }
     }

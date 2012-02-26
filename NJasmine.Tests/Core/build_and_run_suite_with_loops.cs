@@ -66,13 +66,13 @@ namespace NJasmineTests.Core
             NJasmineSuiteBuilder.VisitAllTestElements(rootTest, visitor);
             var elements = result;
 
-            expect(() => elements[new TestPosition(0)].TestName.Name == "a1");
-            expect(() => elements[new TestPosition(1)].TestName.Name == "a2");
-            expect(() => elements[new TestPosition(2)].TestName.Name == "a3");
-            expect(() => elements[new TestPosition(3)].TestName.Name == "nested");
-            expect(() => elements[new TestPosition(3, 0)].TestName.Name == "b1");
-            expect(() => elements[new TestPosition(3, 1)].TestName.Name == "b2");
-            expect(() => elements[new TestPosition(3, 2)].TestName.Name == "b3");
+            expect(() => elements[new TestPosition(0)].Shortname == "a1");
+            expect(() => elements[new TestPosition(1)].Shortname == "a2");
+            expect(() => elements[new TestPosition(2)].Shortname == "a3");
+            expect(() => elements[new TestPosition(3)].Shortname == "nested");
+            expect(() => elements[new TestPosition(3, 0)].Shortname == "b1");
+            expect(() => elements[new TestPosition(3, 1)].Shortname == "b2");
+            expect(() => elements[new TestPosition(3, 2)].Shortname == "b3");
         }
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
