@@ -45,7 +45,8 @@ namespace NJasmine.Core
             {
                 if (isOuterScopeOfSpecification)
                 {
-                    var subfailure = new NJasmineDirectBuildResult(new NJasmineInvalidTestSuite(exception, _position), _position);
+                    var subfailure = NJasmineBuildResult.ForSuite(_position, () => { });
+                    subfailure.TurnIntoAFailingSuite(exception);
 
                     subfailure.FullName = resultBuilder.FullName;
                     subfailure.Shortname = resultBuilder.Shortname;
