@@ -6,7 +6,14 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public interface INJasmineTest : ITest
+    public interface INJasmineNameable
+    {
+        string Shortname { get; set; }
+        string FullName { get; set; }
+        string MultilineName { get; set; }
+    }
+
+    public interface INJasmineTest : ITest, INJasmineNameable
     {
         TestPosition Position { get; }
     }

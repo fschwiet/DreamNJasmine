@@ -6,12 +6,11 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineUnimplementedTestMethod : TestMethod, INJasmineTest
+    class NJasmineUnimplementedTestMethod : NJasmineNUnitTestMethod, INJasmineTest
     {
         public NJasmineUnimplementedTestMethod(TestPosition position) 
-            : base(((Action)delegate() { }).Method)
+            : base(((Action)delegate() { }).Method, position)
         {
-            Position = position;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
@@ -25,7 +24,5 @@ namespace NJasmine.Core
             listener.TestFinished(result);
             return result;
         }
-
-        public TestPosition Position { get; private set; }
     }
 }

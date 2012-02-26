@@ -81,6 +81,8 @@
     <Compile Include="Core\ISpecificationRunner.cs" />
     <Compile Include="Core\NJasmineBuildResult.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
+    <Compile Include="Core\NJasmineNUnitTestMethod.cs" />
+    <Compile Include="Core\NJasmineTestSuiteNUnit.cs" />
     <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Core\NUnitFrameworkUtil.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

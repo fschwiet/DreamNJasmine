@@ -6,71 +6,58 @@ using System.Text;
 using System.Threading;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
-using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NJasmineTestSuite : TestSuite, INJasmineTest
+    public class NJasmineTestSuite
     {
-        public TestPosition Position { get; private set; }
+        private readonly TestPosition _position;
+        private GlobalSetupManager _globalSetup;
 
-        private GlobalSetupManager _setupManager;
-
-        public NJasmineTestSuite(TestPosition position, GlobalSetupManager setupManager)
-            : base("thistestname", "willbeoverwritten")
+        public NJasmineTestSuite(TestPosition position, GlobalSetupManager globalSetup)
         {
-            Position = position;
-            _setupManager = setupManager;
-            maintainTestOrder = true;
+            _position = position;
+            _globalSetup = globalSetup;
         }
 
-        public NJasmineBuildResult BuildNJasmineTestSuite(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public NJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
-            var builder = new NJasmineTestSuiteBuilder(this, buildContext, globalSetup);
-            
-            var exception = buildContext.RunActionWithVisitor(Position.GetFirstChildPosition(), action, builder);
+            var resultSuite = new NJasmineTestSuiteNUnit(parentName, name, p => _globalSetup.Cleanup(p), _position);
+
+            var resultBuilder = new NJasmineBuildResult(resultSuite);
+
+            RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
+
+            return resultBuilder;
+        }
+
+        public void RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
+                                    bool isOuterScopeOfSpecification, NJasmineBuildResult resultBuilder)
+        {
+            var builder = new NJasmineTestSuiteBuilder(this, resultBuilder, buildContext, globalSetup);
+
+            var exception = buildContext.RunActionWithVisitor(_position.GetFirstChildPosition(), action, builder);
 
             if (exception == null)
             {
-                builder.VisitAccumulatedTests(Add);
+                builder.VisitAccumulatedTests(v => resultBuilder.AddChildTest(new NJasmineBuildResult(v)));
             }
             else
             {
-                var nJasmineInvalidTestSuite = new NJasmineInvalidTestSuite(exception, Position);
-
-                nJasmineInvalidTestSuite.TestName.FullName = TestName.FullName;
-                nJasmineInvalidTestSuite.TestName.Name = TestName.Name;
-
-                nJasmineInvalidTestSuite.SetMultilineName(this.GetMultilineName());
-
                 if (isOuterScopeOfSpecification)
                 {
-                    Add(nJasmineInvalidTestSuite);
+                    var subfailure = new NJasmineBuildResult(new NJasmineInvalidTestSuite(exception, _position));
+
+                    subfailure.FullName = resultBuilder.FullName;
+                    subfailure.Shortname = resultBuilder.Shortname;
+                    subfailure.MultilineName = resultBuilder.MultilineName;
+
+                    resultBuilder.AddChildTest(subfailure);
                 }
                 else
                 {
-                    return new NJasmineBuildResult(nJasmineInvalidTestSuite);
+                    resultBuilder.ReplaceNUnitResult(new NJasmineInvalidTestSuite(exception, _position));
                 }
-            }
-
-            return new NJasmineBuildResult(this);
-        }
-
-        protected override void DoOneTimeTearDown(TestResult suiteResult)
-        {
-            try
-            {
-                _setupManager.Cleanup(Position);
-            }
-            catch (Exception innerException)
-            {
-                NUnitException exception2 = innerException as NUnitException;
-                if (exception2 != null)
-                {
-                    innerException = exception2.InnerException;
-                }
-
-                TestResultUtil.Error(suiteResult, innerException, null, FailureSite.TearDown);
             }
         }
     }

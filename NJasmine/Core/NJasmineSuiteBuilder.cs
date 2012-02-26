@@ -48,10 +48,8 @@ namespace NJasmine.Core
             globalSetup.Initialize(fixtureFactory);
 
             NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
-            rootSuite.TestName.FullName = type.Namespace + "." + type.Name;
-            rootSuite.TestName.Name = type.Name;
-            
-            var root = rootSuite.BuildNJasmineTestSuite(buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
+
+            var root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
             
             var result = root.GetNUnitResult();
 

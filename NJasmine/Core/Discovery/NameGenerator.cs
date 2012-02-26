@@ -22,37 +22,37 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public void NameFork(string testShortName, INJasmineTest parentTest, INJasmineTest test, out bool reusedName)
+        public void NameFork(string testShortName, INJasmineNameable parentTest, INJasmineNameable test, out bool reusedName)
         {
-            test.TestName.Name = testShortName;
-            test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
-            test.SetMultilineName(parentTest.GetMultilineName() + ",\n" + testShortName);
+            test.Shortname = testShortName;
+            test.FullName = parentTest.FullName + ", " + testShortName;
+            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
             IncrementTestNameUntilItsNot(test, IsReserved);
 
-            reusedName = _globallyAccumulatedTestNames.ContainsKey(test.TestName.FullName);
+            reusedName = _globallyAccumulatedTestNames.ContainsKey(test.FullName);
 
-            _globallyAccumulatedTestNames[test.TestName.FullName] = NameIs.Available;
+            _globallyAccumulatedTestNames[test.FullName] = NameIs.Available;
         }
 
-        public void NameTest(string testShortName, INJasmineTest parentTest, INJasmineTest test)
+        public void NameTest(string testShortName, INJasmineNameable parentTest, INJasmineNameable test)
         {
-            test.TestName.Name = testShortName;
-            test.TestName.FullName = parentTest.TestName.FullName + ", " + testShortName;
-            test.SetMultilineName(parentTest.GetMultilineName() + ",\n" + testShortName);
+            test.Shortname = testShortName;
+            test.FullName = parentTest.FullName + ", " + testShortName;
+            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
 
             MakeNameUnique(test);
         }
 
-        public void MakeNameUnique(INJasmineTest test)
+        public void MakeNameUnique(INJasmineNameable test)
         {
             IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name));
-            _globallyAccumulatedTestNames[test.TestName.FullName] = NameIs.Reserved;
+            _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
         }
 
-        private void IncrementTestNameUntilItsNot(INJasmineTest test, Func<string, bool> condition)
+        private void IncrementTestNameUntilItsNot(INJasmineNameable test, Func<string, bool> condition)
         {
-            var name = test.TestName.FullName;
+            var name = test.FullName;
 
             if (condition(name))
             {
@@ -67,9 +67,9 @@ namespace NJasmine.Core.Discovery
                 } while (condition(nextName));
 
 
-                test.TestName.Name = test.TestName.Name + suffix;
-                test.TestName.FullName = test.TestName.FullName + suffix;
-                test.SetMultilineName(test.GetMultilineName() + suffix);
+                test.Shortname = test.Shortname + suffix;
+                test.FullName = test.FullName + suffix;
+                test.MultilineName = test.MultilineName + suffix;
             }
         }
     }

@@ -4,17 +4,16 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
+    class NJasmineInvalidTestSuite : NJasmineNUnitTestMethod, INJasmineTest
     {
         readonly string _reason;
         string _stackTrace;
 
         public NJasmineInvalidTestSuite(Exception e, TestPosition position)
-            : base(((Action)delegate() { }).Method)
+            : base(((Action)delegate() { }).Method, position)
         {
             _reason = e.Message;
             _stackTrace = e.StackTrace;
-            Position = position;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
@@ -28,7 +27,5 @@ namespace NJasmine.Core
             listener.TestFinished(testResult);
             return testResult;
         }
-
-        public TestPosition Position { get; private set; }
     }
 }

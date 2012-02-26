@@ -11,15 +11,17 @@ namespace NJasmine.Core.Discovery
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         private readonly NJasmineTestSuite _test;
+        private readonly NJasmineBuildResult _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
         List<Test> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, NJasmineBuildResult parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
             _test = test;
+            _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
             _accumulatedDescendants = new List<Test>();
@@ -53,7 +55,7 @@ namespace NJasmine.Core.Discovery
             {
                 var subSuiteAsFailedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext.NameGenator.NameTest(description, _test, subSuiteAsFailedTest);
+                _buildContext.NameGenator.NameTest(description, _parent, subSuiteAsFailedTest);
 
                 ApplyCategoryAndIgnoreIfSet(subSuiteAsFailedTest);
 
@@ -62,22 +64,26 @@ namespace NJasmine.Core.Discovery
             else
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
+                
+                var _result = new NJasmineTestSuiteNUnit(_parent.FullName, description, p => _globalSetup.Cleanup(p), position);
+
+                ApplyCategoryAndIgnoreIfSet(_result);
+
+                var resultBuilder = new NJasmineBuildResult(_result);
 
                 bool reusedName;
 
-                _buildContext.NameGenator.NameFork(description, _test, subSuite, out reusedName);
+                _buildContext.NameGenator.NameFork(description, _parent, resultBuilder, out reusedName);
 
-                ApplyCategoryAndIgnoreIfSet(subSuite);
-
-                var actualSuite = subSuite.BuildNJasmineTestSuite(_buildContext, _globalSetup, action, false);
+                subSuite.RunSuiteAction(_buildContext, _globalSetup, action, false, resultBuilder);
 
                 if (reusedName)
                 {
-                    if (!actualSuite.IsSuite())
-                        _buildContext.NameGenator.MakeNameUnique((INJasmineTest)actualSuite.GetNUnitResult());
+                    if (!resultBuilder.IsSuite())
+                        _buildContext.NameGenator.MakeNameUnique(resultBuilder);
                 }
 
-                _accumulatedDescendants.Add(actualSuite.GetNUnitResult());
+                _accumulatedDescendants.Add(resultBuilder.GetNUnitResult());
             }
         }
 
@@ -105,7 +111,7 @@ namespace NJasmine.Core.Discovery
             {
                 var unimplementedTest = new NJasmineUnimplementedTestMethod(position);
 
-                _buildContext.NameGenator.NameTest(description, _test, unimplementedTest);
+                _buildContext.NameGenator.NameTest(description, _parent, unimplementedTest);
 
                 ApplyCategoryAndIgnoreIfSet(unimplementedTest);
 
@@ -113,7 +119,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var test = this._buildContext.CreateTest(this._globalSetup, this._test, position, description);
+                var test = this._buildContext.CreateTest(this._globalSetup, _parent, position, description);
 
                 ApplyCategoryAndIgnoreIfSet(test);
 
@@ -127,10 +133,9 @@ namespace NJasmine.Core.Discovery
             {
                 _ignoreReason = reason;
             }
-            else if (string.IsNullOrEmpty(this._test.IgnoreReason))
+            else
             {
-                this._test.RunState = RunState.Explicit;
-                this._test.IgnoreReason = reason;
+                _parent.SetIgnoreReason(reason);
             }
         }
 
