@@ -7,31 +7,49 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class BuildTest
+    public class NativeTest
     {
-        public static NJasmineBuilder ForSuite(TestPosition position, Action onetimeCleanup)
+        readonly Func<Test> _factory;
+
+        public NativeTest(Func<Test> factory)
         {
-            var result = new NJasmineBuilder(() => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
+            _factory = factory;
+        }
+
+        public Test GetNative()
+        {
+            return _factory();
+        }
+    }
+
+    public class NativeTestFactory
+    {
+        public static NativeTest ForSuite(TestPosition position, Action onetimeCleanup)
+        {
+            var result = new NativeTest(() => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
             return result;
         }
 
-        public static NJasmineBuilder ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
+        public static NativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
-            var result = new NJasmineBuilder(() => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
+            var result = new NativeTest(() => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
             return result;
         }
 
-        public static NJasmineBuilder ForUnimplementedTest(TestPosition position)
+        public static NativeTest ForUnimplementedTest(TestPosition position)
         {
-            var result = new NJasmineBuilder(() => new NJasmineUnimplementedTestMethod(position));
+            var result = new NativeTest(() => new NJasmineUnimplementedTestMethod(position));
             return result;
         }
 
-        public static NJasmineBuilder ForFailingSuite(TestPosition position, Exception exception)
+        public static NativeTest ForFailingSuite(TestPosition position, Exception exception)
         {
-            return new NJasmineBuilder(() => new NJasmineInvalidTestSuite(exception, position));
+            return new NativeTest(() => new NJasmineInvalidTestSuite(exception, position));
         }
+    }
 
+    public class BuildTest : NativeTestFactory
+    {
         public static void AddChildrenToTest(Test result, List<INJasmineBuildResult> children)
         {
             foreach (var childTest in children)
@@ -40,11 +58,11 @@ namespace NJasmine.Core
             }
         }
 
-        public static Test GetNUnitResultInternal(NJasmineBuilder nJasmineBuilder, Func<Test> creationStrategy)
+        public static Test GetNUnitResultInternal(NJasmineBuilder nJasmineBuilder, NativeTest test)
         {
             Test result;
 
-            result = creationStrategy();
+            result = test.GetNative();
 
             result.TestName.Name = nJasmineBuilder.Shortname;
             result.TestName.FullName = nJasmineBuilder.FullName;

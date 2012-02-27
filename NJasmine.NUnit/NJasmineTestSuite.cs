@@ -20,7 +20,7 @@ namespace NJasmine.NUnit
         {
             var position = _position;
 
-            var resultBuilder = BuildTest.ForSuite(position, () => _globalSetup.Cleanup(position));
+            var resultBuilder = new NJasmineBuilder(BuildTest.ForSuite(position, () => _globalSetup.Cleanup(position)));
             resultBuilder.FullName = parentName + "." + name;
             resultBuilder.Shortname = name;
             resultBuilder.MultilineName = resultBuilder.FullName;
@@ -41,7 +41,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var failingSuiteAsTest = BuildTest.ForFailingSuite(_position, exception);
+                var failingSuiteAsTest = new NJasmineBuilder(BuildTest.ForFailingSuite(_position, exception));
 
                 failingSuiteAsTest.FullName = resultBuilder.FullName;
                 failingSuiteAsTest.Shortname = resultBuilder.Shortname;

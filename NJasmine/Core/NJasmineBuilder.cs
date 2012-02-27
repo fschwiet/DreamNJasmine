@@ -23,19 +23,19 @@ namespace NJasmine.Core
 
     public class NJasmineBuilder : INJasmineBuildResult
     {
+        readonly NativeTest _nativeTest;
         string _ignoreReason;
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
         List<string> _categories = new List<string>();
-        Func<Test> _creationStrategy; 
 
-        public NJasmineBuilder(Func<Test> factory)
+        public NJasmineBuilder(NativeTest nativeTest)
         {
-            _creationStrategy = factory;
+            _nativeTest = nativeTest;
         }
 
         public Test GetNUnitResult()
         {
-            return BuildTest.GetNUnitResultInternal(this, this._creationStrategy);
+            return BuildTest.GetNUnitResultInternal(this, _nativeTest);
         }
 
         public string Shortname { get; set; }
