@@ -7,34 +7,21 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public interface INJasmineBuildResult : INJasmineNameable
+    public class NJasmineBuilder : INJasmineNameable
     {
-        Test GetNUnitResult();
-        string Shortname { get; set; }
-        string FullName { get; set; }
-        string MultilineName { get; set; }
-        string ReasonIgnored { get; }
-        List<INJasmineBuildResult> Children { get; }
-        List<string> Categories { get; }
-        void AddChildTest(INJasmineBuildResult test);
-        void AddIgnoreReason(string ignoreReason);
-        void AddCategory(string category);
-    }
-
-    public class NJasmineBuilder : INJasmineBuildResult
-    {
-        readonly NativeTest _nativeTest;
+        public readonly NativeTest NativeTest;
 
         public NJasmineBuilder(NativeTest nativeTest)
         {
-            _nativeTest = nativeTest;
-            Children = new List<INJasmineBuildResult>();
+            NativeTest = nativeTest;
+            Children = new List<NJasmineBuilder>();
             Categories = new List<string>();
         }
 
         public Test GetNUnitResult()
         {
-            return BuildTest.GetNUnitResultInternal(this, _nativeTest);
+            NativeTest.ApplyResultToTest(this);
+            return NativeTest.GetNative();
         }
 
         public string Shortname { get; set; }
@@ -43,10 +30,10 @@ namespace NJasmine.Core
 
         public string ReasonIgnored { get; private set; }
 
-        public List<INJasmineBuildResult> Children { get; private set; }
+        public List<NJasmineBuilder> Children { get; private set; }
         public List<string> Categories { get; private set; }
 
-        public void AddChildTest(INJasmineBuildResult test)
+        public void AddChildTest(NJasmineBuilder test)
         {
             Children.Add(test);
         }

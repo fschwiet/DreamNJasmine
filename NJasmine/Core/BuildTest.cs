@@ -9,16 +9,41 @@ namespace NJasmine.Core
 {
     public class NativeTest
     {
-        readonly Func<Test> _factory;
+        readonly Test _test;
 
-        public NativeTest(Func<Test> factory)
+        public NativeTest(Test test)
         {
-            _factory = factory;
+            _test = test;
         }
 
         public Test GetNative()
         {
-            return _factory();
+            return _test;
+        }
+
+        public Test ApplyResultToTest(NJasmineBuilder builder)
+        {
+            Test result;
+
+            result = GetNative();
+
+            result.TestName.Name = builder.Shortname;
+            result.TestName.FullName = builder.FullName;
+            result.SetMultilineName(builder.MultilineName);
+
+            if (builder.ReasonIgnored != null)
+            {
+                result.RunState = RunState.Explicit;
+                result.IgnoreReason = builder.ReasonIgnored;
+            }
+
+            foreach (var category in builder.Categories)
+                result.Categories.Add(category);
+
+            foreach (var child in builder.Children)
+                (result as TestSuite).Add(child.GetNUnitResult());
+
+            return result;
         }
     }
 
@@ -26,60 +51,25 @@ namespace NJasmine.Core
     {
         public static NativeTest ForSuite(TestPosition position, Action onetimeCleanup)
         {
-            var result = new NativeTest(() => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
+            var result = new NativeTest(new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
             return result;
         }
 
         public static NativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
-            var result = new NativeTest(() => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
+            var result = new NativeTest(new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
             return result;
         }
 
         public static NativeTest ForUnimplementedTest(TestPosition position)
         {
-            var result = new NativeTest(() => new NJasmineUnimplementedTestMethod(position));
+            var result = new NativeTest(new NJasmineUnimplementedTestMethod(position));
             return result;
         }
 
         public static NativeTest ForFailingSuite(TestPosition position, Exception exception)
         {
-            return new NativeTest(() => new NJasmineInvalidTestSuite(exception, position));
-        }
-    }
-
-    public class BuildTest : NativeTestFactory
-    {
-        public static void AddChildrenToTest(Test result, List<INJasmineBuildResult> children)
-        {
-            foreach (var childTest in children)
-            {
-                (result as TestSuite).Add(childTest.GetNUnitResult());
-            }
-        }
-
-        public static Test GetNUnitResultInternal(NJasmineBuilder nJasmineBuilder, NativeTest test)
-        {
-            Test result;
-
-            result = test.GetNative();
-
-            result.TestName.Name = nJasmineBuilder.Shortname;
-            result.TestName.FullName = nJasmineBuilder.FullName;
-            result.SetMultilineName(nJasmineBuilder.MultilineName);
-
-            if (nJasmineBuilder.ReasonIgnored != null)
-            {
-                result.RunState = RunState.Explicit;
-                result.IgnoreReason = nJasmineBuilder.ReasonIgnored;
-            }
-
-            foreach (var category in nJasmineBuilder.Categories)
-                result.Categories.Add(category);
-
-            AddChildrenToTest(result, nJasmineBuilder.Children);
-
-            return result;
+            return new NativeTest(new NJasmineInvalidTestSuite(exception, position));
         }
     }
 }

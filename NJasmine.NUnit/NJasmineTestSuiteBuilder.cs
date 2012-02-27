@@ -11,31 +11,31 @@ namespace NJasmine.NUnit
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
         private readonly NJasmineTestSuite _test;
-        private readonly INJasmineBuildResult _parent;
+        private readonly NJasmineBuilder _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
-        List<INJasmineBuildResult> _accumulatedDescendants;
+        List<NJasmineBuilder> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, INJasmineBuildResult parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, NJasmineBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
             _test = test;
             _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
-            _accumulatedDescendants = new List<INJasmineBuildResult>();
+            _accumulatedDescendants = new List<NJasmineBuilder>();
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
         }
 
-        public void VisitAccumulatedTests(Action<INJasmineBuildResult> action)
+        public void VisitAccumulatedTests(Action<NJasmineBuilder> action)
         {
             foreach (var descendant in _accumulatedDescendants)
                 action(descendant);
         }
 
-        private void ApplyCategoryAndIgnoreIfSet(INJasmineBuildResult result)
+        private void ApplyCategoryAndIgnoreIfSet(NJasmineBuilder result)
         {
             if (_ignoreReason != null)
             {
@@ -52,7 +52,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var result = new NJasmineBuilder(BuildTest.ForUnimplementedTest(position));
+                var result = new NJasmineBuilder(NativeTestFactory.ForUnimplementedTest(position));
 
                 _buildContext.NameGenator.NameTest(description, _parent, result);
 
@@ -64,7 +64,7 @@ namespace NJasmine.NUnit
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
 
-                var resultBuilder = new NJasmineBuilder(BuildTest.ForSuite(position, () => _globalSetup.Cleanup(position)));
+                var resultBuilder = new NJasmineBuilder(NativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -98,7 +98,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var buildResult = new NJasmineBuilder(BuildTest.ForUnimplementedTest(position));
+                var buildResult = new NJasmineBuilder(NativeTestFactory.ForUnimplementedTest(position));
 
                 _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 

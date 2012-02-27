@@ -16,11 +16,11 @@ namespace NJasmine.NUnit
             _globalSetup = globalSetup;
         }
 
-        public INJasmineBuildResult BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
+        public NJasmineBuilder BuildNJasmineTestSuite(string parentName, string name, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action, bool isOuterScopeOfSpecification)
         {
             var position = _position;
 
-            var resultBuilder = new NJasmineBuilder(BuildTest.ForSuite(position, () => _globalSetup.Cleanup(position)));
+            var resultBuilder = new NJasmineBuilder(NativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
             resultBuilder.FullName = parentName + "." + name;
             resultBuilder.Shortname = name;
             resultBuilder.MultilineName = resultBuilder.FullName;
@@ -28,8 +28,8 @@ namespace NJasmine.NUnit
             return RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
         }
 
-        public INJasmineBuildResult RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
-                                    bool isOuterScopeOfSpecification, INJasmineBuildResult resultBuilder)
+        public NJasmineBuilder RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
+                                    bool isOuterScopeOfSpecification, NJasmineBuilder resultBuilder)
         {
             var builder = new NJasmineTestSuiteBuilder(this, resultBuilder, buildContext, globalSetup);
 
@@ -41,7 +41,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var failingSuiteAsTest = new NJasmineBuilder(BuildTest.ForFailingSuite(_position, exception));
+                var failingSuiteAsTest = new NJasmineBuilder(NativeTestFactory.ForFailingSuite(_position, exception));
 
                 failingSuiteAsTest.FullName = resultBuilder.FullName;
                 failingSuiteAsTest.Shortname = resultBuilder.Shortname;
