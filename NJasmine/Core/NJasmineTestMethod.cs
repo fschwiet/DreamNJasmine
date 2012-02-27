@@ -34,7 +34,7 @@ namespace NJasmine.Core
 
             if (existingError != null)
             {
-                TestResultUtil.Error(testResult, base.MultilineName, existingError, null, TestResultShim.Site.SetUp);
+                TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), existingError, null, TestResultShim.Site.SetUp);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace NJasmine.Core
                 catch (Exception e)
                 {
                     var globalTraceMessages = _globalSetup.GetTraceMessages();
-                    TestResultUtil.Error(testResult, MultilineName, e, globalTraceMessages.Concat(traceMessages));
+                    TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), e, globalTraceMessages.Concat(traceMessages));
                 }
             }
 

@@ -5,6 +5,7 @@ using System.Text;
 using NJasmine;
 using NJasmine.Core;
 using NJasmine.NUnit;
+using NUnit.Core;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core
@@ -59,21 +60,21 @@ namespace NJasmineTests.Core
         [Test]
         public void can_load_tests()
         {
-            var result = new Dictionary<TestPosition, INJasmineTest>();
-            Action<INJasmineTest> visitor = t => result[t.Position] = t;
+            var result = new Dictionary<TestPosition, string>();
+            Action<INJasmineTest> visitor = t => result[t.Position] = (t as Test).TestName.Name;
 
             var rootTest = new NJasmineSuiteBuilder().BuildFrom(typeof(has_test_in_loop));
 
             NJasmineSuiteBuilder.VisitAllTestElements(rootTest, visitor);
             var elements = result;
 
-            expect(() => elements[new TestPosition(0)].Shortname == "a1");
-            expect(() => elements[new TestPosition(1)].Shortname == "a2");
-            expect(() => elements[new TestPosition(2)].Shortname == "a3");
-            expect(() => elements[new TestPosition(3)].Shortname == "nested");
-            expect(() => elements[new TestPosition(3, 0)].Shortname == "b1");
-            expect(() => elements[new TestPosition(3, 1)].Shortname == "b2");
-            expect(() => elements[new TestPosition(3, 2)].Shortname == "b3");
+            expect(() => elements[new TestPosition(0)] == "a1");
+            expect(() => elements[new TestPosition(1)] == "a2");
+            expect(() => elements[new TestPosition(2)] == "a3");
+            expect(() => elements[new TestPosition(3)] == "nested");
+            expect(() => elements[new TestPosition(3, 0)] == "b1");
+            expect(() => elements[new TestPosition(3, 1)] == "b2");
+            expect(() => elements[new TestPosition(3, 2)] == "b3");
         }
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
