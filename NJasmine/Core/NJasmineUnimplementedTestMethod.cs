@@ -6,7 +6,7 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    class NJasmineUnimplementedTestMethod : NJasmineNUnitTestMethod, INJasmineTest
+    public class NJasmineUnimplementedTestMethod : NJasmineNUnitTestMethod, INJasmineTest
     {
         public NJasmineUnimplementedTestMethod(TestPosition position) 
             : base(((Action)delegate() { }).Method, position)

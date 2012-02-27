@@ -10,6 +10,7 @@ namespace NJasmine.NUnit
 {
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
+        readonly INativeTestFactory _nativeTestFactory;
         private readonly TestBuilder _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
@@ -17,8 +18,9 @@ namespace NJasmine.NUnit
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(INativeTestFactory nativeTestFactory, TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
+            _nativeTestFactory = nativeTestFactory;
             _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
@@ -50,7 +52,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var result = new TestBuilder(NativeTestFactory.ForUnimplementedTest(position));
+                var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
                 _buildContext.NameGenator.NameTest(description, _parent, result);
 
@@ -60,9 +62,9 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(position, _globalSetup);
+                var subSuite = new NJasmineTestSuite(_nativeTestFactory, position, _globalSetup);
 
-                var resultBuilder = new TestBuilder(NativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
+                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -96,7 +98,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var buildResult = new TestBuilder(NativeTestFactory.ForUnimplementedTest(position));
+                var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
                 _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 

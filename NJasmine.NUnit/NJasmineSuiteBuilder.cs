@@ -41,13 +41,15 @@ namespace NJasmine.NUnit
                 return fixture;
             };
 
-            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(fixtureFactory, new NameGenerator(), fixtureFactory());
+            NativeTestFactory nativeTestFactory = new NativeTestFactory();
+
+            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameGenerator(), fixtureFactory());
 
             var globalSetup = new GlobalSetupManager();
 
             globalSetup.Initialize(fixtureFactory);
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(nativeTestFactory, new TestPosition(), globalSetup);
 
             TestBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
 

@@ -7,11 +7,13 @@ namespace NJasmine.NUnit
 {
     public class NJasmineTestSuite
     {
+        readonly INativeTestFactory _nativeTestFactory;
         private readonly TestPosition _position;
         private GlobalSetupManager _globalSetup;
 
-        public NJasmineTestSuite(TestPosition position, GlobalSetupManager globalSetup)
+        public NJasmineTestSuite(INativeTestFactory nativeTestFactory, TestPosition position, GlobalSetupManager globalSetup)
         {
+            _nativeTestFactory = nativeTestFactory;
             _position = position;
             _globalSetup = globalSetup;
         }
@@ -20,7 +22,7 @@ namespace NJasmine.NUnit
         {
             var position = _position;
 
-            var resultBuilder = new TestBuilder(NativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
+            var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
             resultBuilder.FullName = parentName + "." + name;
             resultBuilder.Shortname = name;
             resultBuilder.MultilineName = resultBuilder.FullName;
@@ -31,7 +33,7 @@ namespace NJasmine.NUnit
         public TestBuilder RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
                                     bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
-            var builder = new NJasmineTestSuiteBuilder(resultBuilder, buildContext, globalSetup);
+            var builder = new NJasmineTestSuiteBuilder(_nativeTestFactory, resultBuilder, buildContext, globalSetup);
 
             var exception = buildContext.RunActionWithVisitor(_position.GetFirstChildPosition(), action, builder);
 
@@ -41,7 +43,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var failingSuiteAsTest = new TestBuilder(NativeTestFactory.ForFailingSuite(_position, exception));
+                var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(_position, exception));
 
                 failingSuiteAsTest.FullName = resultBuilder.FullName;
                 failingSuiteAsTest.Shortname = resultBuilder.Shortname;

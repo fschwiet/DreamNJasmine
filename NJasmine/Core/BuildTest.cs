@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NJasmine.Core.GlobalSetup;
 using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public interface INativeTestBuilder
-    {
-        void ApplyResultToTest(TestBuilder builder);
-    }
-
     public class NativeTest : INativeTestBuilder
     {
         readonly Test _test;
@@ -46,32 +39,6 @@ namespace NJasmine.Core
             {
                 (_test as TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
             }
-        }
-    }
-
-    public class NativeTestFactory
-    {
-        public static NativeTest ForSuite(TestPosition position, Action onetimeCleanup)
-        {
-            var result = new NativeTest(new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
-            return result;
-        }
-
-        public static NativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
-        {
-            var result = new NativeTest(new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
-            return result;
-        }
-
-        public static NativeTest ForUnimplementedTest(TestPosition position)
-        {
-            var result = new NativeTest(new NJasmineUnimplementedTestMethod(position));
-            return result;
-        }
-
-        public static NativeTest ForFailingSuite(TestPosition position, Exception exception)
-        {
-            return new NativeTest(new NJasmineInvalidTestSuite(exception, position));
         }
     }
 }
