@@ -52,7 +52,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var result = NJasmineBuildResult.ForUnimplementedTest(position);
+                var result = BuildTest.ForUnimplementedTest(position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, result);
 
@@ -64,7 +64,7 @@ namespace NJasmine.NUnit
             {
                 var subSuite = new NJasmineTestSuite(position, _globalSetup);
 
-                var resultBuilder = NJasmineBuildResult.ForSuite(position, () => _globalSetup.Cleanup(position));
+                var resultBuilder = BuildTest.ForSuite(position, () => _globalSetup.Cleanup(position));
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -98,7 +98,7 @@ namespace NJasmine.NUnit
         {
             if (action == null)
             {
-                var buildResult = NJasmineBuildResult.ForUnimplementedTest(position);
+                var buildResult = BuildTest.ForUnimplementedTest(position);
 
                 _buildContext.NameGenator.NameTest(description, _parent, buildResult);
 

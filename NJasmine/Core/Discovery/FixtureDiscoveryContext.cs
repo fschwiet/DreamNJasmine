@@ -52,7 +52,7 @@ namespace NJasmine.Core.Discovery
 
         public INJasmineBuildResult CreateTest(GlobalSetupManager globalSetupManager, INJasmineNameable parentTest, TestPosition position, string description)
         {
-            var test = NJasmineBuildResult.ForTest(_fixtureFactory, position, globalSetupManager);
+            var test = BuildTest.ForTest(_fixtureFactory, position, globalSetupManager);
 
             NameGenator.NameTest(description, parentTest, test);
             return test;

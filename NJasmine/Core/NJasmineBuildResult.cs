@@ -26,29 +26,9 @@ namespace NJasmine.Core
         List<string> _categories = new List<string>();
         Func<Test> _creationStrategy; 
 
-        NJasmineBuildResult()
+        public NJasmineBuildResult(Func<Test> factory)
         {
-        }
-
-        public static NJasmineBuildResult ForUnimplementedTest(TestPosition position)
-        {
-            var result = new NJasmineBuildResult();
-            result._creationStrategy = () => new NJasmineUnimplementedTestMethod(position);
-            return result;
-        }
-
-        public static NJasmineBuildResult ForSuite(TestPosition position, Action onetimeCleanup)
-        {
-            var result = new NJasmineBuildResult();
-            result._creationStrategy = () => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position);
-            return result;
-        }
-
-        public static NJasmineBuildResult ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
-        {
-            var result = new NJasmineBuildResult();
-            result._creationStrategy = () => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager);
-            return result;
+            _creationStrategy = factory;
         }
 
         public void TurnIntoAFailingSuite(Exception exception, TestPosition position)
