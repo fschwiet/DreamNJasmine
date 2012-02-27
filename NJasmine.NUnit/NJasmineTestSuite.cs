@@ -31,7 +31,7 @@ namespace NJasmine.NUnit
         public TestBuilder RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
                                     bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
-            var builder = new NJasmineTestSuiteBuilder(this, resultBuilder, buildContext, globalSetup);
+            var builder = new NJasmineTestSuiteBuilder(resultBuilder, buildContext, globalSetup);
 
             var exception = buildContext.RunActionWithVisitor(_position.GetFirstChildPosition(), action, builder);
 

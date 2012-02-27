@@ -10,7 +10,6 @@ namespace NJasmine.NUnit
 {
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {
-        private readonly NJasmineTestSuite _test;
         private readonly TestBuilder _parent;
         readonly FixtureDiscoveryContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
@@ -18,9 +17,8 @@ namespace NJasmine.NUnit
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(NJasmineTestSuite test, TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public NJasmineTestSuiteBuilder(TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
-            _test = test;
             _parent = parent;
             _buildContext = buildContext;
             _globalSetup = globalSetup;
