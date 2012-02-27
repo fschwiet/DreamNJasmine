@@ -41,15 +41,6 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core">
-      <HintPath>$(NUnitLibPath)\nunit.core.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.core.interfaces">
-      <HintPath>$(NUnitLibPath)\nunit.core.interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>$(NUnitFrameworkPath)\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="PowerAssert">
       <HintPath>..\lib\PowerAssert\PowerAssert.dll</HintPath>
     </Reference>
