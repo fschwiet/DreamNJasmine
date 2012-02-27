@@ -23,9 +23,7 @@ namespace NJasmine.Core
 
         public Test ApplyResultToTest(NJasmineBuilder builder)
         {
-            Test result;
-
-            result = GetNative();
+            Test result = _test;
 
             result.TestName.Name = builder.Shortname;
             result.TestName.FullName = builder.FullName;
@@ -41,7 +39,10 @@ namespace NJasmine.Core
                 result.Categories.Add(category);
 
             foreach (var child in builder.Children)
-                (result as TestSuite).Add(child.GetNUnitResult());
+            {
+                child.NativeTest.ApplyResultToTest(child);
+                (result as TestSuite).Add(child.NativeTest._test);
+            }
 
             return result;
         }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NJasmine.Core.GlobalSetup;
-using NUnit.Core;
 
 namespace NJasmine.Core
 {
@@ -16,12 +14,6 @@ namespace NJasmine.Core
             NativeTest = nativeTest;
             Children = new List<NJasmineBuilder>();
             Categories = new List<string>();
-        }
-
-        public Test GetNUnitResult()
-        {
-            NativeTest.ApplyResultToTest(this);
-            return NativeTest.GetNative();
         }
 
         public string Shortname { get; set; }
