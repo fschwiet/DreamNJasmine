@@ -88,7 +88,6 @@
     <Compile Include="Core\TestResultUtil.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
     <Compile Include="Extras\Expect.cs" />
-    <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\RunsActionOnDispose.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />

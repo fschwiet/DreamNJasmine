@@ -72,6 +72,7 @@
     <Compile Include="Export\SuiteResultTest.cs" />
     <Compile Include="Export\TestResult.cs" />
     <Compile Include="Extras\can_check_for_expected_substrings.cs" />
+    <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
     <Compile Include="LambdaFixture.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\leakDisposable_can_be_used_to_prevent_automatic_dispose.cs" />

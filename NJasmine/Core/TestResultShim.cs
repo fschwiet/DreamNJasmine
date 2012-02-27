@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Core;
 
 namespace NJasmine.Core
 {
     public class TestResultShim
     {
-        enum Status
+        public enum Result
         {
             Inconclusive = 0,
             Successs,
@@ -24,10 +22,10 @@ namespace NJasmine.Core
             Child
         }
 
-        Status _status;
-        string _failureReason;
-        string _failureStackTrace;
-        Site _failureSite;
+        public Result Status { get; private set; }
+        public string FailureReason { get; private set; }
+        public string FailureStackTrace { get; private set; }
+        public Site FailureSite { get; private set; }
 
         public TestResultShim()
         {
@@ -35,55 +33,17 @@ namespace NJasmine.Core
 
         public void Success()
         {
-            _status = Status.Successs;
+            Status = Result.Successs;
         }
 
-        public bool IsSuccess { get { return _status == Status.Successs;  } }
-
-        public TestResult ApplyToNunitResult(TestResult result)
-        {
-            switch(_status)
-            {
-                case Status.Inconclusive:
-                    break;
-                case Status.Successs:
-                    result.Success();
-                    break;
-                case Status.Error:
-                    result.SetResult(ResultState.Error, _failureReason, _failureStackTrace, GetNUnitFailureSite(_failureSite));
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return result;
-        }
+        public bool IsSuccess { get { return Status == Result.Successs;  } }
 
         public void SetError(string reason, string stackTrace, Site failureSite)
         {
-            _status = Status.Error;
-            _failureReason = reason;
-            _failureStackTrace = stackTrace;
-            _failureSite = failureSite;
-        }
-
-        private static FailureSite GetNUnitFailureSite(Site site)
-        {
-            switch(site)
-            {
-                case Site.Test:
-                    return FailureSite.Test;
-                case Site.SetUp:
-                    return FailureSite.SetUp;
-                case Site.TearDown:
-                    return FailureSite.TearDown;
-                case Site.Parent:
-                    return FailureSite.Parent;
-                case Site.Child:
-                    return FailureSite.Child;
-                default:
-                    throw new ArgumentOutOfRangeException("site");
-            }
+            Status = Result.Error;
+            FailureReason = reason;
+            FailureStackTrace = stackTrace;
+            FailureSite = failureSite;
         }
     }
 }

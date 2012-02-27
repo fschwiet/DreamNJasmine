@@ -32,7 +32,7 @@ namespace NJasmine.NUnit.TestElements
 
                 var shim = new TestResultShim();
                 TestResultUtil.Error(shim, suiteResult.Test.GetMultilineName(), innerException, null, TestResultShim.Site.TearDown);
-                shim.ApplyToNunitResult(suiteResult);
+                NativeTestResult.ApplyToNunitResult(shim, suiteResult);
             }
         }
     }

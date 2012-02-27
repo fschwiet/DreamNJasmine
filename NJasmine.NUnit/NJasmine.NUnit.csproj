@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="NativeTest.cs" />
     <Compile Include="NativeTestFactory.cs" />
+    <Compile Include="NativeTestResult.cs" />
     <Compile Include="NJasmineSuiteBuilder.cs" />
     <Compile Include="NJasmineTestSuiteBuilder.cs" />
     <Compile Include="NUnitFrameworkUtil.cs" />

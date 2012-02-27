@@ -1,8 +1,7 @@
-﻿using System;
-using NJasmine.Core.FixtureVisitor;
+using NJasmine;
 using NUnit.Core;
 
-namespace NJasmine.Extras
+namespace NJasmineTests.Extras
 {
     public class NUnitFixtureDriver
     {

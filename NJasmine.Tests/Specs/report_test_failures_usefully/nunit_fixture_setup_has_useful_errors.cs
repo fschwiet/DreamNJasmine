@@ -1,6 +1,8 @@
 ﻿using System;
 using NJasmine;
+using NJasmine.Extras;
 using NJasmineTests.Export;
+using NJasmineTests.Extras;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs.report_test_failures_usefully
@@ -12,7 +14,7 @@ namespace NJasmineTests.Specs.report_test_failures_usefully
         {
             when("in some context", delegate
             {
-                importNUnit<SomeFixture>();
+                NUnitFixtureDriver.IncludeFixture<SomeFixture>(this);
 
                 then("there is some text", delegate
                 {
@@ -20,7 +22,7 @@ namespace NJasmineTests.Specs.report_test_failures_usefully
                 });
             });
 
-            importNUnit<SomeFixture>();
+            NUnitFixtureDriver.IncludeFixture<SomeFixture>(this);
         }
 
         public class SomeFixture

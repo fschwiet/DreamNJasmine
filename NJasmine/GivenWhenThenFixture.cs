@@ -7,7 +7,6 @@ using NJasmine.Extras;
 
 namespace NJasmine
 {
-    [NUnit.Framework.Explicit]
     public abstract class GivenWhenThenFixture : SpecificationFixture
     {
         /// <summary>
@@ -258,16 +257,6 @@ namespace NJasmine
             {
                 base.Visitor.visitAfterAll(SpecElement.afterAll, action, position);
             });
-        }
-
-        /// <summary>
-        /// Imports an NUnit fixture, running its setup and teardown functions.
-        /// </summary>
-        /// <typeparam name="TFixture">The type of the NUnit fixture</typeparam>
-        /// <returns>The NUnit fixture instance.</returns>
-        public TFixture importNUnit<TFixture>() where TFixture : class, new()
-        {
-            return NUnitFixtureDriver.IncludeFixture<TFixture>(this);
         }
 
         /// <summary>

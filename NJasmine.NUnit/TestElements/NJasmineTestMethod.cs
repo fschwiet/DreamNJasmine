@@ -48,7 +48,7 @@ namespace NJasmine.NUnit.TestElements
             }
 
             var nunitTestResult = new TestResult(this);
-            testResult.ApplyToNunitResult(nunitTestResult);
+            NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
             nunitTestResult.Time = ((DateTime.Now.Ticks - ticks)) / 10000000.0;
             listener.TestFinished(nunitTestResult);
             return nunitTestResult;

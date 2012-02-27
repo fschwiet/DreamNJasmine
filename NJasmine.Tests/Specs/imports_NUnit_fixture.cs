@@ -1,6 +1,8 @@
 ﻿using System;
+using NJasmine.Extras;
 using NJasmineTests.Core;
 using NJasmineTests.Export;
+using NJasmineTests.Extras;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs
@@ -50,7 +52,7 @@ namespace NJasmineTests.Specs
             beforeAll(ResetTracing);
 
             Trace("test started, before include of a");
-            var firstA = importNUnit<some_Nunit_fixture_a>();
+            var firstA = NUnitFixtureDriver.IncludeFixture<some_Nunit_fixture_a>(this);
             Trace("after include of a");
 
             arrange(() => Assert.That(firstA is some_Nunit_fixture_a));
@@ -58,7 +60,7 @@ namespace NJasmineTests.Specs
             describe("a block", () =>
             {
                 Trace("first describe, before include of b");
-                var firstB = importNUnit<some_Nunit_fixture_b>();
+                var firstB = NUnitFixtureDriver.IncludeFixture<some_Nunit_fixture_b>(this);
                 Trace("after include of b");
 
                 arrange(() => Assert.That(firstB is some_Nunit_fixture_b));
@@ -71,7 +73,7 @@ namespace NJasmineTests.Specs
                 describe("a sub block", () =>
                 {
                     Trace("before include of c");
-                    var secondA = importNUnit<some_Nunit_fixture_c>();
+                    var secondA = NUnitFixtureDriver.IncludeFixture<some_Nunit_fixture_c>(this);
                     Trace("after include of c");
 
                     arrange(() => Assert.That(secondA is some_Nunit_fixture_a));
