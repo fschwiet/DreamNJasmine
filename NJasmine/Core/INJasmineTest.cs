@@ -1,11 +1,7 @@
 ﻿
 namespace NJasmine.Core
 {
-    public interface INJasmineNameable
-    {
-    }
-
-    public interface INJasmineTest : INJasmineNameable
+    public interface INJasmineTest
     {
         TestPosition Position { get; }
     }

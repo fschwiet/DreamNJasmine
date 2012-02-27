@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NJasmineBuilder : INJasmineNameable
+    public class NJasmineBuilder
     {
-        public readonly NativeTest NativeTest;
+        readonly NativeTest _nativeTest;
 
         public NJasmineBuilder(NativeTest nativeTest)
         {
-            NativeTest = nativeTest;
+            _nativeTest = nativeTest;
             Children = new List<NJasmineBuilder>();
             Categories = new List<string>();
         }
@@ -41,6 +42,11 @@ namespace NJasmine.Core
                 ReasonIgnored = ignoreReason;
             else
                 ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
-        }    
+        }
+
+        public Test GetUnderlyingTest()
+        {
+            return _nativeTest.GetNative(this);
+        }
     }
 }

@@ -16,8 +16,9 @@ namespace NJasmine.Core
             _test = test;
         }
 
-        public Test GetNative()
+        public Test GetNative(NJasmineBuilder builder)
         {
+            ApplyResultToTest(builder);
             return _test;
         }
 
@@ -40,8 +41,7 @@ namespace NJasmine.Core
 
             foreach (var child in builder.Children)
             {
-                child.NativeTest.ApplyResultToTest(child);
-                (result as TestSuite).Add(child.NativeTest._test);
+                (result as TestSuite).Add(child.GetUnderlyingTest());
             }
 
             return result;
