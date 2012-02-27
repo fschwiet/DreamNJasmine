@@ -6,14 +6,14 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NJasmineBuilder
+    public class TestBuilder
     {
         readonly NativeTest _nativeTest;
 
-        public NJasmineBuilder(NativeTest nativeTest)
+        public TestBuilder(NativeTest nativeTest)
         {
             _nativeTest = nativeTest;
-            Children = new List<NJasmineBuilder>();
+            Children = new List<TestBuilder>();
             Categories = new List<string>();
         }
 
@@ -23,10 +23,10 @@ namespace NJasmine.Core
 
         public string ReasonIgnored { get; private set; }
 
-        public List<NJasmineBuilder> Children { get; private set; }
+        public List<TestBuilder> Children { get; private set; }
         public List<string> Categories { get; private set; }
 
-        public void AddChildTest(NJasmineBuilder test)
+        public void AddChildTest(TestBuilder test)
         {
             Children.Add(test);
         }

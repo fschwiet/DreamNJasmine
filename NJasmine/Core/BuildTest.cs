@@ -16,13 +16,13 @@ namespace NJasmine.Core
             _test = test;
         }
 
-        public Test GetNative(NJasmineBuilder builder)
+        public Test GetNative(TestBuilder builder)
         {
             ApplyResultToTest(builder);
             return _test;
         }
 
-        public Test ApplyResultToTest(NJasmineBuilder builder)
+        public Test ApplyResultToTest(TestBuilder builder)
         {
             Test result = _test;
 
