@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Core\Discovery\FixtureDiscoveryContext.cs" />
     <Compile Include="Core\Discovery\NameGenerator.cs" />
-    <Compile Include="Core\Discovery\NJasmineTestSuiteBuilder.cs" />
     <Compile Include="Core\Execution\ActState.cs" />
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Core\NUnitFrameworkUtil.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\NJasmineTestMethod.cs" />
-    <Compile Include="Core\NJasmineTestSuite.cs" />
     <Compile Include="Core\SpecificationFixture.cs" />
     <Compile Include="Core\TestExtensions.cs" />
     <Compile Include="Core\TestPosition.cs" />

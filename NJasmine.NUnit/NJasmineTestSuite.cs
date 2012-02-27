@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
+using System;
+using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     public class NJasmineTestSuite
     {

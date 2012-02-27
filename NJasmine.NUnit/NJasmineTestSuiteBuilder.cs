@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
 
-namespace NJasmine.Core.Discovery
+namespace NJasmine.NUnit
 {
     class NJasmineTestSuiteBuilder : ISpecPositionVisitor
     {

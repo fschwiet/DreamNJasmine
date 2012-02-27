@@ -19,7 +19,7 @@ namespace NJasmine.Core
         void AddCategory(string category);
     }
 
-    class NJasmineBuildResult : INJasmineBuildResult
+    public class NJasmineBuildResult : INJasmineBuildResult
     {
         string _ignoreReason;
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 

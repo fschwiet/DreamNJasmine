@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NJasmineSuiteBuilder.cs" />
+    <Compile Include="NJasmineTestSuite.cs" />
+    <Compile Include="NJasmineTestSuiteBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
