@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NativeTest.cs" />
     <Compile Include="NativeTestFactory.cs" />
     <Compile Include="NJasmineSuiteBuilder.cs" />
     <Compile Include="NJasmineTestSuite.cs" />

@@ -59,7 +59,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BuildTest.cs" />
     <Compile Include="Core\Discovery\FixtureDiscoveryContext.cs" />
     <Compile Include="Core\Discovery\NameGenerator.cs" />
     <Compile Include="Core\Execution\ActState.cs" />

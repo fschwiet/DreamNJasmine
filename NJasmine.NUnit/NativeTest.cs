@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     public class NativeTest : INativeTestBuilder
     {
@@ -24,7 +22,7 @@ namespace NJasmine.Core
         {
             _test.TestName.Name = builder.Shortname;
             _test.TestName.FullName = builder.FullName;
-            _test.SetMultilineName(builder.MultilineName);
+            TestExtensions.SetMultilineName(_test, builder.MultilineName);
 
             if (builder.ReasonIgnored != null)
             {
