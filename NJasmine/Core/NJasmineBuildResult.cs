@@ -10,7 +10,7 @@ namespace NJasmine.Core
     public interface INJasmineBuildResult : INJasmineNameable
     {
         Test GetNUnitResult();
-        void TurnIntoAFailingSuite(Exception exception, TestPosition position);
+        void TurnIntoAFailingSuite(Func<Test> creationStrategy);
         string Shortname { get; set; }
         string FullName { get; set; }
         string MultilineName { get; set; }
@@ -31,9 +31,9 @@ namespace NJasmine.Core
             _creationStrategy = factory;
         }
 
-        public void TurnIntoAFailingSuite(Exception exception, TestPosition position)
+        public void TurnIntoAFailingSuite(Func<Test> creationStrategy)
         {
-            _creationStrategy = () => new NJasmineInvalidTestSuite(exception, position);
+            _creationStrategy = creationStrategy;
             _children = new List<INJasmineBuildResult>();
         }
 

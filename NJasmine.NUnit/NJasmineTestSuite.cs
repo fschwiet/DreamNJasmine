@@ -25,12 +25,10 @@ namespace NJasmine.NUnit
             resultBuilder.Shortname = name;
             resultBuilder.MultilineName = resultBuilder.FullName;
 
-            RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
-
-            return resultBuilder;
+            return RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
         }
 
-        public void RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
+        public INJasmineBuildResult RunSuiteAction(FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup, Action action,
                                     bool isOuterScopeOfSpecification, INJasmineBuildResult resultBuilder)
         {
             var builder = new NJasmineTestSuiteBuilder(this, resultBuilder, buildContext, globalSetup);
@@ -43,23 +41,24 @@ namespace NJasmine.NUnit
             }
             else
             {
+                var failingSuiteAsTest = BuildTest.ForFailingSuite(_position, exception);
+
+                failingSuiteAsTest.FullName = resultBuilder.FullName;
+                failingSuiteAsTest.Shortname = resultBuilder.Shortname;
+                failingSuiteAsTest.MultilineName = resultBuilder.MultilineName;
+
+                buildContext.NameGenator.ReserveName(failingSuiteAsTest);
+
                 if (isOuterScopeOfSpecification)
                 {
-                    var subfailure = BuildTest.ForSuite(_position, () => { });
-                    subfailure.TurnIntoAFailingSuite(exception, _position);
-
-                    subfailure.FullName = resultBuilder.FullName;
-                    subfailure.Shortname = resultBuilder.Shortname;
-                    subfailure.MultilineName = resultBuilder.MultilineName;
-
-                    resultBuilder.AddChildTest(subfailure);
+                    resultBuilder.AddChildTest(failingSuiteAsTest);
                 }
                 else
                 {
-                    resultBuilder.TurnIntoAFailingSuite(exception, _position);
-                    buildContext.NameGenator.ReserveName(resultBuilder);
+                    return failingSuiteAsTest;
                 }
             }
+            return resultBuilder;
         }
     }
 }

@@ -70,9 +70,9 @@ namespace NJasmine.NUnit
 
                 _buildContext.NameGenator.NameFork(description, _parent, resultBuilder);
 
-                subSuite.RunSuiteAction(_buildContext, _globalSetup, action, false, resultBuilder);
+                var finalResultBuilder = subSuite.RunSuiteAction(_buildContext, _globalSetup, action, false, resultBuilder);
 
-                _accumulatedDescendants.Add(resultBuilder);
+                _accumulatedDescendants.Add(finalResultBuilder);
             }
         }
 

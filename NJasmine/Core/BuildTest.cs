@@ -8,12 +8,6 @@ namespace NJasmine.Core
 {
     public class BuildTest
     {
-        public static NJasmineBuildResult ForUnimplementedTest(TestPosition position)
-        {
-            var result = new NJasmineBuildResult(() => new NJasmineUnimplementedTestMethod(position));
-            return result;
-        }
-
         public static NJasmineBuildResult ForSuite(TestPosition position, Action onetimeCleanup)
         {
             var result = new NJasmineBuildResult(() => new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
@@ -24,6 +18,17 @@ namespace NJasmine.Core
         {
             var result = new NJasmineBuildResult(() => new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
             return result;
+        }
+
+        public static NJasmineBuildResult ForUnimplementedTest(TestPosition position)
+        {
+            var result = new NJasmineBuildResult(() => new NJasmineUnimplementedTestMethod(position));
+            return result;
+        }
+
+        public static NJasmineBuildResult ForFailingSuite(TestPosition position, Exception exception)
+        {
+            return new NJasmineBuildResult(() => new NJasmineInvalidTestSuite(exception, position));
         }
     }
 }
