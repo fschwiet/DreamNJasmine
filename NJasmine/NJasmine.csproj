@@ -80,8 +80,6 @@
     <Compile Include="Core\INativeTestBuilder.cs" />
     <Compile Include="Core\INativeTestFactory.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
-    <Compile Include="Core\NJasmineNUnitTestMethod.cs" />
-    <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\TestBuilder.cs" />
     <Compile Include="Core\NUnitFrameworkUtil.cs" />
     <Compile Include="Core\INJasmineTest.cs" />

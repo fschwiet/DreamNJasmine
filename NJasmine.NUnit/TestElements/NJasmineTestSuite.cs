@@ -3,7 +3,7 @@ using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
 
-namespace NJasmine.NUnit
+namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestSuite
     {

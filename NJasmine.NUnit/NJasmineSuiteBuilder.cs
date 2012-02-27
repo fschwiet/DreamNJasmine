@@ -3,6 +3,7 @@ using System.Linq;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 

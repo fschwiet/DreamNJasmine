@@ -2,7 +2,7 @@ using System;
 using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.NUnit
+namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineUnimplementedTestMethod : NJasmineNUnitTestMethod, INJasmineTest
     {

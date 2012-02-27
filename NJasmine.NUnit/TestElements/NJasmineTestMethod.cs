@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NJasmine.Core;
 using NJasmine.Core.Execution;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestMethod : NJasmineNUnitTestMethod, INJasmineTest
     {

@@ -5,6 +5,7 @@ using System.Text;
 using NJasmine;
 using NJasmine.Core;
 using NJasmine.NUnit;
+using NJasmine.NUnit.TestElements;
 using NUnit.Framework;
 
 namespace NJasmineTests.Core

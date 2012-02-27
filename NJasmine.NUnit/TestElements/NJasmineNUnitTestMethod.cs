@@ -1,7 +1,8 @@
 using System.Reflection;
+using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineNUnitTestMethod : TestMethod, INJasmineTest
     {

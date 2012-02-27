@@ -5,8 +5,8 @@ namespace NJasmine.Core
 {
     public abstract class SpecificationFixture 
     {
-        internal TestPosition CurrentPosition { get; set; }
-        internal ISpecPositionVisitor Visitor { get; set; }
+        public TestPosition CurrentPosition { get; set; }
+        public ISpecPositionVisitor Visitor { get; set; }
 
         public SpecificationFixture()
         {

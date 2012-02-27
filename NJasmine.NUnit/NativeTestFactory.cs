@@ -1,6 +1,7 @@
 using System;
 using NJasmine.Core;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.NUnit.TestElements;
 
 namespace NJasmine.NUnit
 {
