@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
+using System;
+using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     public class NJasmineInvalidTestSuite : NJasmineNUnitTestMethod, INJasmineTest
     {

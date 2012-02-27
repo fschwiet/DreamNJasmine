@@ -80,14 +80,11 @@
     <Compile Include="Core\INativeTestBuilder.cs" />
     <Compile Include="Core\INativeTestFactory.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
-    <Compile Include="Core\TestBuilder.cs" />
-    <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineNUnitTestMethod.cs" />
-    <Compile Include="Core\NJasmineTestSuiteNUnit.cs" />
-    <Compile Include="Core\NJasmineUnimplementedTestMethod.cs" />
+    <Compile Include="Core\NJasmineTestMethod.cs" />
+    <Compile Include="Core\TestBuilder.cs" />
     <Compile Include="Core\NUnitFrameworkUtil.cs" />
     <Compile Include="Core\INJasmineTest.cs" />
-    <Compile Include="Core\NJasmineTestMethod.cs" />
     <Compile Include="Core\SpecificationFixture.cs" />
     <Compile Include="Core\TestExtensions.cs" />
     <Compile Include="Core\TestPosition.cs" />

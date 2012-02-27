@@ -1,7 +1,8 @@
 using System;
+using NJasmine.Core;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     public class NJasmineTestSuiteNUnit : TestSuite, INJasmineTest
     {

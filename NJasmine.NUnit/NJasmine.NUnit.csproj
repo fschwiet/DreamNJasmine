@@ -52,9 +52,12 @@
   <ItemGroup>
     <Compile Include="NativeTest.cs" />
     <Compile Include="NativeTestFactory.cs" />
+    <Compile Include="NJasmineInvalidTestSuite.cs" />
     <Compile Include="NJasmineSuiteBuilder.cs" />
     <Compile Include="NJasmineTestSuite.cs" />
     <Compile Include="NJasmineTestSuiteBuilder.cs" />
+    <Compile Include="NJasmineTestSuiteNUnit.cs" />
+    <Compile Include="NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
