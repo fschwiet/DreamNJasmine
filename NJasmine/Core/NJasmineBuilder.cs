@@ -16,50 +16,26 @@ namespace NJasmine.Core
         void AddChildTest(INJasmineBuildResult test);
         void AddIgnoreReason(string ignoreReason);
         void AddCategory(string category);
+        List<INJasmineBuildResult> Children { get; }
+        string ReasonIgnored { get; }
+        List<string> Categories { get; }
     }
 
-    public class NJasmineBuildResult : INJasmineBuildResult
+    public class NJasmineBuilder : INJasmineBuildResult
     {
         string _ignoreReason;
         List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
         List<string> _categories = new List<string>();
         Func<Test> _creationStrategy; 
 
-        public NJasmineBuildResult(Func<Test> factory)
+        public NJasmineBuilder(Func<Test> factory)
         {
             _creationStrategy = factory;
         }
 
         public Test GetNUnitResult()
         {
-            Test result;
-
-            result = _creationStrategy();
-
-            ApplyPropertiesToTest(result);
-
-            foreach(var childTest in _children)
-            {
-                (result as TestSuite).Add(childTest.GetNUnitResult());
-            }
-
-            return result;
-        }
-
-        void ApplyPropertiesToTest(Test result)
-        {
-            result.TestName.Name = Shortname;
-            result.TestName.FullName = FullName;
-            result.SetMultilineName(MultilineName);
-
-            if (_ignoreReason != null)
-            {
-                result.RunState = RunState.Explicit;
-                result.IgnoreReason = _ignoreReason;
-            }
-
-            foreach (var category in _categories)
-                result.Categories.Add(category);
+            return BuildTest.GetNUnitResultInternal(this, this._creationStrategy);
         }
 
         public string Shortname { get; set; }
@@ -82,6 +58,21 @@ namespace NJasmine.Core
         public void AddCategory(string category)
         {
             _categories.Add(category);
+        }
+
+        public List<INJasmineBuildResult> Children
+        {
+            get { return _children; }
+        }
+
+        public string ReasonIgnored
+        {
+            get { return _ignoreReason; }
+        }
+
+        public List<string> Categories
+        {
+            get { return _categories; }
         }
 
         string INJasmineNameable.Shortname
