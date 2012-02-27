@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NJasmine.Core.Discovery;
 using NUnit.Core;
 
-namespace NJasmine.Core
+namespace NJasmine.NUnit
 {
     public static class TestExtensions
     {

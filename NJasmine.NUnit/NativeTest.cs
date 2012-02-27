@@ -29,9 +29,9 @@ namespace NJasmine.NUnit
                 _test.RunState = RunState.Explicit;
                 _test.IgnoreReason = builder.ReasonIgnored;
             }
-
+            
             foreach (var category in builder.Categories)
-                _test.Categories.Add(category);
+                NUnitFrameworkUtil.ApplyCategoryToTest(category, _test);
 
             foreach (var child in builder.Children)
             {
