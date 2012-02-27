@@ -13,24 +13,23 @@ namespace NJasmine.Core
         string Shortname { get; set; }
         string FullName { get; set; }
         string MultilineName { get; set; }
+        string ReasonIgnored { get; }
+        List<INJasmineBuildResult> Children { get; }
+        List<string> Categories { get; }
         void AddChildTest(INJasmineBuildResult test);
         void AddIgnoreReason(string ignoreReason);
         void AddCategory(string category);
-        List<INJasmineBuildResult> Children { get; }
-        string ReasonIgnored { get; }
-        List<string> Categories { get; }
     }
 
     public class NJasmineBuilder : INJasmineBuildResult
     {
         readonly NativeTest _nativeTest;
-        string _ignoreReason;
-        List<INJasmineBuildResult> _children = new List<INJasmineBuildResult>(); 
-        List<string> _categories = new List<string>();
 
         public NJasmineBuilder(NativeTest nativeTest)
         {
             _nativeTest = nativeTest;
+            Children = new List<INJasmineBuildResult>();
+            Categories = new List<string>();
         }
 
         public Test GetNUnitResult()
@@ -42,55 +41,27 @@ namespace NJasmine.Core
         public string FullName { get; set; }
         public string MultilineName { get; set; }
 
+        public string ReasonIgnored { get; private set; }
+
+        public List<INJasmineBuildResult> Children { get; private set; }
+        public List<string> Categories { get; private set; }
+
         public void AddChildTest(INJasmineBuildResult test)
         {
-            _children.Add(test);
-        }
-
-        public void AddIgnoreReason(string ignoreReason)
-        {
-            if (String.IsNullOrEmpty(_ignoreReason))
-                _ignoreReason = ignoreReason;
-            else
-                _ignoreReason = _ignoreReason + ", " + ignoreReason;
+            Children.Add(test);
         }
 
         public void AddCategory(string category)
         {
-            _categories.Add(category);
+            Categories.Add(category);
         }
 
-        public List<INJasmineBuildResult> Children
+        public void AddIgnoreReason(string ignoreReason)
         {
-            get { return _children; }
-        }
-
-        public string ReasonIgnored
-        {
-            get { return _ignoreReason; }
-        }
-
-        public List<string> Categories
-        {
-            get { return _categories; }
-        }
-
-        string INJasmineNameable.Shortname
-        {
-            get { return Shortname; }
-            set { Shortname = value; }
-        }
-
-        string INJasmineNameable.FullName
-        {
-            get { return FullName; }
-            set { FullName = value; }
-        }
-
-        string INJasmineNameable.MultilineName
-        {
-            get { return MultilineName; }
-            set { MultilineName = value; }
-        }
+            if (String.IsNullOrEmpty(ReasonIgnored))
+                ReasonIgnored = ignoreReason;
+            else
+                ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
+        }    
     }
 }
