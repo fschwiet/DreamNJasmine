@@ -50,9 +50,9 @@ namespace NJasmine.Core.Discovery
             return exception;
         }
 
-        public NJasmineBuilder CreateTest(GlobalSetupManager globalSetupManager, NJasmineBuilder parentTest, TestPosition position, string description)
+        public TestBuilder CreateTest(GlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
         {
-            var test = new NJasmineBuilder(NativeTestFactory.ForTest(_fixtureFactory, position, globalSetupManager));
+            var test = new TestBuilder(NativeTestFactory.ForTest(_fixtureFactory, position, globalSetupManager));
 
             NameGenator.NameTest(description, parentTest, test);
             return test;

@@ -49,9 +49,9 @@ namespace NJasmine.NUnit
 
             NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup);
 
-            NJasmineBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
+            TestBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
 
-            var result = root.GetUnderlyingTest();
+            var result = (root.GetUnderlyingTest() as NativeTest).GetNative(root);
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), result);
 

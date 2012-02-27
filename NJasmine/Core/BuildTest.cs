@@ -7,7 +7,12 @@ using NUnit.Core;
 
 namespace NJasmine.Core
 {
-    public class NativeTest
+    public interface INativeTestBuilder
+    {
+        void ApplyResultToTest(TestBuilder builder);
+    }
+
+    public class NativeTest : INativeTestBuilder
     {
         readonly Test _test;
 
@@ -22,29 +27,25 @@ namespace NJasmine.Core
             return _test;
         }
 
-        public Test ApplyResultToTest(TestBuilder builder)
+        public void ApplyResultToTest(TestBuilder builder)
         {
-            Test result = _test;
-
-            result.TestName.Name = builder.Shortname;
-            result.TestName.FullName = builder.FullName;
-            result.SetMultilineName(builder.MultilineName);
+            _test.TestName.Name = builder.Shortname;
+            _test.TestName.FullName = builder.FullName;
+            _test.SetMultilineName(builder.MultilineName);
 
             if (builder.ReasonIgnored != null)
             {
-                result.RunState = RunState.Explicit;
-                result.IgnoreReason = builder.ReasonIgnored;
+                _test.RunState = RunState.Explicit;
+                _test.IgnoreReason = builder.ReasonIgnored;
             }
 
             foreach (var category in builder.Categories)
-                result.Categories.Add(category);
+                _test.Categories.Add(category);
 
             foreach (var child in builder.Children)
             {
-                (result as TestSuite).Add(child.GetUnderlyingTest());
+                (_test as TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
             }
-
-            return result;
         }
     }
 

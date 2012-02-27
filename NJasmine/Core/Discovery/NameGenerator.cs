@@ -21,7 +21,7 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public void NameFork(string testShortName, NJasmineBuilder parentTest, NJasmineBuilder test)
+        public void NameFork(string testShortName, TestBuilder parentTest, TestBuilder test)
         {
             test.Shortname = testShortName;
             test.FullName = parentTest.FullName + ", " + testShortName;
@@ -32,7 +32,7 @@ namespace NJasmine.Core.Discovery
             _globallyAccumulatedTestNames[test.FullName] = NameIs.Available;
         }
 
-        public void NameTest(string testShortName, NJasmineBuilder parentTest, NJasmineBuilder test)
+        public void NameTest(string testShortName, TestBuilder parentTest, TestBuilder test)
         {
             test.Shortname = testShortName;
             test.FullName = parentTest.FullName + ", " + testShortName;
@@ -42,13 +42,13 @@ namespace NJasmine.Core.Discovery
             _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
         }
 
-        public void ReserveName(NJasmineBuilder test)
+        public void ReserveName(TestBuilder test)
         {
             IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
             _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
         }
 
-        private void IncrementTestNameUntilItsNot(NJasmineBuilder test, Func<string, bool> condition)
+        private void IncrementTestNameUntilItsNot(TestBuilder test, Func<string, bool> condition)
         {
             var name = test.FullName;
 

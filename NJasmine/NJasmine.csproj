@@ -79,7 +79,7 @@
     <Compile Include="Core\GlobalSetup\TraceTracker.cs" />
     <Compile Include="Core\IGlobalSetupManager.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
-    <Compile Include="Core\NJasmineBuilder.cs" />
+    <Compile Include="Core\TestBuilder.cs" />
     <Compile Include="Core\NJasmineInvalidTestSuite.cs" />
     <Compile Include="Core\NJasmineNUnitTestMethod.cs" />
     <Compile Include="Core\NJasmineTestSuiteNUnit.cs" />

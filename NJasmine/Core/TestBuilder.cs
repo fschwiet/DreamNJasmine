@@ -8,9 +8,9 @@ namespace NJasmine.Core
 {
     public class TestBuilder
     {
-        readonly NativeTest _nativeTest;
+        readonly INativeTestBuilder _nativeTest;
 
-        public TestBuilder(NativeTest nativeTest)
+        public TestBuilder(INativeTestBuilder nativeTest)
         {
             _nativeTest = nativeTest;
             Children = new List<TestBuilder>();
@@ -44,9 +44,9 @@ namespace NJasmine.Core
                 ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
         }
 
-        public Test GetUnderlyingTest()
+        public INativeTestBuilder GetUnderlyingTest()
         {
-            return _nativeTest.GetNative(this);
+            return _nativeTest;
         }
     }
 }
