@@ -233,12 +233,6 @@ namespace NJasmine.Core.GlobalSetup
                 throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
         }
 
-        private void CheckNotAlreadyPastDiscovery(SpecElement origin)
-        {
-            if (_executingPastDiscovery != null)
-                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
-        }
-
         public object GetSetupResultAt(TestPosition position)
         {
             if (!position.IsOnPathTo(_targetPosition))
