@@ -13,62 +13,62 @@ namespace NJasmine.Core.Execution
             _runContext = runContext;
         }
 
-        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
+        public void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             _runContext.State.visitFork(origin, description, action, position);
         }
 
-        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
         {
             return _runContext.State.visitBeforeAll(origin, action, position);
         }
 
-        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        public void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
         {
             _runContext.State.visitAfterAll(origin, action, position);
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position)
         {
             return _runContext.State.visitBeforeEach<TArranged>(origin, factory, position);
         }
 
-        public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
+        public void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
         {
             _runContext.State.visitAfterEach(origin, action, position);
         }
 
-        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
+        public void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             _runContext.State.visitTest(origin, description, action, position);
         }
 
-        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecificationElement origin, string reason, TestPosition position)
         {
             _runContext.State.visitIgnoreBecause(origin, reason, position);
         }
 
-        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
             _runContext.State.visitExpect(origin, expectation, position);
         }
 
-        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
             _runContext.State.visitWaitUntil(origin, expectation, totalWaitMs, waitIncrementMs, position);
         }
 
-        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
+        public void visitWithCategory(SpecificationElement origin, string category, TestPosition position)
         {
             _runContext.State.visitWithCategory(origin, category, position);
         }
 
-        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        public void visitTrace(SpecificationElement origin, string message, TestPosition position)
         {
             _runContext.State.visitTrace(origin, message, position);
         }
 
-        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        public void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position)
         {
             _runContext.State.visitLeakDisposable(origin, disposable, position);
         }

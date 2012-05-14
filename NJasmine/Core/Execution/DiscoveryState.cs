@@ -15,7 +15,7 @@ namespace NJasmine.Core.Execution
             _runContext = runContext;
         }
 
-        public virtual void visitFork(SpecElement origin, string description, Action action, TestPosition position)
+        public virtual void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             if (_runContext.PositionIsAncestorOfContext(position))
             {
@@ -23,16 +23,16 @@ namespace NJasmine.Core.Execution
             }
         }
 
-        public virtual TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
+        public virtual TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
         {
             return _runContext.GetSetupResultAt<TArranged>(position);
         }
 
-        public virtual void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        public virtual void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
         {
         }
 
-        public virtual void visitAfterEach(SpecElement origin, Action action, TestPosition position)
+        public virtual void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
         {
             _runContext.AddTeardownAction(delegate()
             {
@@ -40,7 +40,7 @@ namespace NJasmine.Core.Execution
             });
         }
 
-        public virtual void visitTest(SpecElement origin, string description, Action action, TestPosition position)
+        public virtual void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             if (_runContext.TestIsAtPosition(position))
             {
@@ -50,35 +50,35 @@ namespace NJasmine.Core.Execution
             }
         }
 
-        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecificationElement origin, string reason, TestPosition position)
         {
         }
 
-        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
             Expect.That(expectation);
         }
 
-        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
             Expect.Eventually(expectation, totalWaitMs, waitIncrementMs);
         }
 
-        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
+        public void visitWithCategory(SpecificationElement origin, string category, TestPosition position)
         {
         }
 
-        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        public void visitTrace(SpecificationElement origin, string message, TestPosition position)
         {
             _runContext.AddTrace(message);
         }
 
-        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        public void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position)
         {
             _runContext.LeakDisposable(disposable);
         }
 
-        public virtual TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
+        public virtual TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position)
         {
             TArranged result = default(TArranged);
 

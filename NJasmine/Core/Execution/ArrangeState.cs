@@ -6,35 +6,35 @@ namespace NJasmine.Core.Execution
 {
     class ArrangeState : DiscoveryState
     {
-        protected readonly SpecElement SpecElement;
+        protected readonly SpecificationElement SpecElement;
 
-        public ArrangeState(NJasmineTestRunContext runContext, SpecElement specElement)
+        public ArrangeState(NJasmineTestRunContext runContext, SpecificationElement specElement)
             : base(runContext)
         {
             SpecElement = specElement;
         }
 
-        public override void visitFork(SpecElement origin, string description, Action action, TestPosition position)
+        public override void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
+        public override TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        public override void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override void visitTest(SpecElement origin, string description, Action action, TestPosition position)
+        public override void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public InvalidOperationException DontException(SpecElement innerSpecElement)
+        public InvalidOperationException DontException(SpecificationElement innerSpecElement)
         {
             return new InvalidOperationException("Called " + innerSpecElement + "() within " + SpecElement + "().");
         }

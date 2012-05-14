@@ -70,7 +70,7 @@ namespace NJasmine.Core.GlobalSetup
             _currentTestPosition = new TestPosition();
         }
 
-        public void visitFork(SpecElement origin, string description, Action action, TestPosition position)
+        public void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             if (position.IsAncestorOf(_targetPosition))
             {
@@ -108,7 +108,7 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        public TArranged visitBeforeAll<TArranged>(SpecElement origin, Func<TArranged> action, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
 
@@ -116,7 +116,7 @@ namespace NJasmine.Core.GlobalSetup
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                _executingPastDiscovery = origin;
+                _executingPastDiscovery = origin.Value;
 
                 try
                 {
@@ -140,32 +140,32 @@ namespace NJasmine.Core.GlobalSetup
             return result;
         }
 
-        public void visitAfterAll(SpecElement origin, Action action, TestPosition position)
+        public void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
 
             if (position.IsOnPathTo(_targetPosition))
             {
                 _setupResultAccumulator.AddCleanupAction(position, delegate {
-                    _executingCleanup = origin;
+                    _executingCleanup = origin.Value;
                     action();
                     _executingCleanup = null;
                 });
             }
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecElement origin, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
             return default(TArranged);
         }
 
-        public void visitAfterEach(SpecElement origin, Action action, TestPosition position)
+        public void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
         }
 
-        public void visitTest(SpecElement origin, string description, Action action, TestPosition position)
+        public void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
 
@@ -183,12 +183,12 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker.UnwindToPosition(_targetPosition);
         }
 
-        public void visitIgnoreBecause(SpecElement origin, string reason, TestPosition position)
+        public void visitIgnoreBecause(SpecificationElement origin, string reason, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
         }
 
-        public void visitExpect(SpecElement origin, Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
             if (_executingPastDiscovery.HasValue)
             {
@@ -196,7 +196,7 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        public void visitWaitUntil(SpecElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
             if (_executingPastDiscovery.HasValue)
             {
@@ -204,12 +204,12 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        public void visitWithCategory(SpecElement origin, string category, TestPosition position)
+        public void visitWithCategory(SpecificationElement origin, string category, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(origin);
         }
 
-        public void visitTrace(SpecElement origin, string message, TestPosition position)
+        public void visitTrace(SpecificationElement origin, string message, TestPosition position)
         {
             if (_executingPastDiscovery.HasValue)
             {
@@ -222,9 +222,15 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        public void visitLeakDisposable(SpecElement origin, IDisposable disposable, TestPosition position)
+        public void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position)
         {
             //TODO
+        }
+
+        private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
+        {
+            if (_executingPastDiscovery.HasValue)
+                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)
