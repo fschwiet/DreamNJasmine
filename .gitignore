@@ -1,7 +1,6 @@
 bin/
 obj/
 obj.build/
-build/
 build_*/
 package/
 _ReSharper.*
