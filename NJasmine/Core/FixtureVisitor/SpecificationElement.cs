@@ -14,10 +14,6 @@ namespace NJasmine.Core.FixtureVisitor
             _element = element;
         }
 
-        public SpecElement Value { 
-            get { return _element; } 
-        }
-
         public override string ToString()
         {
             return _element.ToString();

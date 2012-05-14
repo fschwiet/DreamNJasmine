@@ -218,7 +218,7 @@ namespace NJasmine.Core.GlobalSetup
 
             if (_executingCleanup != null)
             {
-                throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup.Value);
+                throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup);
             }
         }
 
@@ -230,7 +230,7 @@ namespace NJasmine.Core.GlobalSetup
         private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
         {
             if (_executingPastDiscovery != null)
-                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
+                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery + ".");
         }
 
         public object GetSetupResultAt(TestPosition position)
