@@ -1,3 +1,4 @@
+import-module ..\tools\PSUpdateXml.psm1
 
 #  brazenly borrowed from https://github.com/ayende/ravendb
 
