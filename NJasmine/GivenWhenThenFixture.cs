@@ -16,9 +16,11 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void describe(string description, Action specification)
         {
+            var specificationElement = new ForkElement(SpecElement.describe, description, specification);
+            
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitFork(new SpecificationElement(SpecElement.describe), description, specification, position);
+                specificationElement.Run(base.Visitor, position);
             });
         }
 
@@ -29,9 +31,11 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void given(string description, Action specification)
         {
+            var specificationElement = new ForkElement(SpecElement.describe, "given " + description, specification);
+
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitFork(new SpecificationElement(SpecElement.given), "given " + description, specification, position);
+                specificationElement.Run(base.Visitor, position);
             });
         }
 
@@ -42,9 +46,11 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void when(string description, Action specification)
         {
+            var specificationElement = new ForkElement(SpecElement.describe, "when " + description, specification);
+
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitFork(new SpecificationElement(SpecElement.when), "when " + description, specification, position);
+                specificationElement.Run(base.Visitor, position);
             });
         }
 
