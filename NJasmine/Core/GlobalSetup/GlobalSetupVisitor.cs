@@ -11,8 +11,8 @@ namespace NJasmine.Core.GlobalSetup
     public class GlobalSetupVisitor : ISpecPositionVisitor
     {
         readonly LolMutex _runningLock;
-        SpecElement? _executingPastDiscovery;
-        SpecElement? _executingCleanup;
+        SpecificationElement _executingPastDiscovery;
+        SpecificationElement _executingCleanup;
         TestPosition _currentTestPosition;
 
         protected TestPosition _targetPosition;
@@ -116,7 +116,7 @@ namespace NJasmine.Core.GlobalSetup
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                _executingPastDiscovery = origin.Value;
+                _executingPastDiscovery = origin;
 
                 try
                 {
@@ -147,7 +147,7 @@ namespace NJasmine.Core.GlobalSetup
             if (position.IsOnPathTo(_targetPosition))
             {
                 _setupResultAccumulator.AddCleanupAction(position, delegate {
-                    _executingCleanup = origin.Value;
+                    _executingCleanup = origin;
                     action();
                     _executingCleanup = null;
                 });
@@ -190,7 +190,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position)
         {
-            if (_executingPastDiscovery.HasValue)
+            if (_executingPastDiscovery != null)
             {
                 Expect.That(expectation);
             }
@@ -198,7 +198,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
         {
-            if (_executingPastDiscovery.HasValue)
+            if (_executingPastDiscovery != null)
             {
                 Expect.Eventually(expectation, totalWaitMs, waitIncrementMs);
             }
@@ -211,12 +211,12 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitTrace(SpecificationElement origin, string message, TestPosition position)
         {
-            if (_executingPastDiscovery.HasValue)
+            if (_executingPastDiscovery != null)
             {
                 _traceTracker.AddTraceEntry(position, message);
             }
 
-            if (_executingCleanup.HasValue)
+            if (_executingCleanup != null)
             {
                 throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup.Value);
             }
@@ -229,13 +229,13 @@ namespace NJasmine.Core.GlobalSetup
 
         private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
         {
-            if (_executingPastDiscovery.HasValue)
+            if (_executingPastDiscovery != null)
                 throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecElement origin)
         {
-            if (_executingPastDiscovery.HasValue)
+            if (_executingPastDiscovery != null)
                 throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery.Value + ".");
         }
 
