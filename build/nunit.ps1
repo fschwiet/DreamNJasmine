@@ -8,7 +8,8 @@
 properties {
   Write-Output "Loading nunit properties"
   $nunit = @{}
-  $nunit.runner = (Get-ChildItem "$($base.dir)\*" -recurse -include nunit-console-x86.exe).FullName
+  $nunitrunners = @(Get-ChildItem "$($base.dir)\*" -recurse -include nunit-console-x86.exe)
+  if($nunitrunners.Length -gt 0) { $nunit.runner = $nunitrunners[0] }
 }
 
 function Invoke-TestRunner {
@@ -23,7 +24,8 @@ function Invoke-TestRunner {
      Write-Output "No tests defined"
      return 
   }
-  exec { & $nunit.runner $dlls /noshadow /xml=$nunit.XmlTarget }
+  $private:command = "& $($nunit.runner) $dlls /noshadow /xml=`"$($nunit.XmlTarget)`""
+  exec { & $nunit.runner $dlls /noshadow /xml="$($nunit.XmlTarget)" } "$private:command"
 }
 
 function Invoke-TestRunnerGui {
