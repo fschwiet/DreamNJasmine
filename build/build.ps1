@@ -118,7 +118,7 @@ task GenerateAssemblyInfo {
         
     Generate-Assembly-Info `
       -file $asmInfo `
-      -title "$projectName $build.version.0" `
+      -title "$projectName $($build.version).0" `
       -description $shortDescription `
       -company "n/a" `
       -product "NJasmine $build.version.0" `
