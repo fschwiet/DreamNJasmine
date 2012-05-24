@@ -49,7 +49,7 @@ Task IntegrationTest -Depends Test {
   foreach($test in $tests)  { 
     $testName = $test.Name;
 
-    write-output "Running integration test $testName."
+    write-output "Checking $testName."
 
     $testXmlTarget = (join-path $build.dir "IntegrationTest.xml")
     $testConsoleTarget = (join-path $build.dir "IntegrationTest.txt")
