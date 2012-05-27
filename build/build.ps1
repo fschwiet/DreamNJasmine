@@ -175,33 +175,45 @@ task RunNUnitGUI {
 }
 
 task Build_2_5_9 {
-  $NUnitLibPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
-  $NUnitFrameworkPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\framework"
-  $NUnitBinPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
+
+  $subProperties = @{ 
+	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
+	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
+	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
+	NUnitBinPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
+  }
 
   TrackPackage "NJasmine_for_NUnit-2.5.9.zip" $build.dir
   
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties @{ NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath} -init { $build.dir = "$($base.dir)\build_2_5_9\" }
+  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties $subProperties -init { $build.dir = "$($base.dir)\build_2_5_9\" }
 }
 
 task Build_2_5_10 {
-  $NUnitLibPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\lib"
-  $NUnitFrameworkPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\framework"
-  $NUnitBinPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0"
+
+  $subProperties = @{ 
+	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\lib"
+	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\lib"
+	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\framework"
+	NUnitBinPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0"
+  }
 
   TrackPackage "NJasmine_for_NUnit-2.5.10 (stable).zip" $build.dir
   
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties @{ NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath}  -init { $build.dir = "$($base.dir)\build_2_5_10\" }
+  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties $subProperties -init { $build.dir = "$($base.dir)\build_2_5_10\" }
 }
 
 task Build_2_6_0 {
-  $NUnitLibPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\lib"
-  $NUnitFrameworkPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\framework"
-  $NUnitBinPath = "$($lib.dir)\NUnit-2.6.0.12051\bin"
+
+  $subProperties = @{ 
+	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\lib"
+	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\lib"
+	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\framework"
+	NUnitBinPath = "$($lib.dir)\NUnit-2.6.0.12051\bin"
+  }
 
   TrackPackage "NJasmine_for_NUnit-2.6.0.zip" $build.dir
 
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties @{ NUnitLibPath=$NUnitLibPath; NUnitFrameworkPath=$NUnitFrameworkPath; NUnitBinPath=$NUnitBinPath} -init { $build.dir = "$($base.dir)\build_2_6_0\" }
+  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -properties $subProperties -init { $build.dir = "$($base.dir)\build_2_6_0\" }
 }
 
 task Install -depends Build_2_5_10 {

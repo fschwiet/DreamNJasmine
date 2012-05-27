@@ -45,9 +45,11 @@ properties {
   $packages = @{}
   $packages.name = "lib"
   $packages.dir = "$($base.dir)\$($packages.name)"
-  
-  $NUnitLibPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
-  $NUnitFrameworkPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\framework"
+
+  $NUnitCoreDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
+  $UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
+  $NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
+
   $NUnitBinPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
 
   $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "NJasmine.NUnit.dll", "NJasmine.NUnit.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt")
