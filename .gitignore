@@ -3,6 +3,7 @@ obj/
 obj.build/
 build_*/
 package/
+release/
 _ReSharper.*
 *.ReSharper.user
 *.resharper.user
