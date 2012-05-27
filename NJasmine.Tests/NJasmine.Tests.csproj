@@ -36,9 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <NUnitCoreDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreDllPath>
-    <NUnitCoreInterfacesDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreInterfacesDllPath>
-    <NUnitFrameworkDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\</NUnitFrameworkDllPath>
+    <NUnitCoreDllPath>..\packages\NUnit.2.5.9.10348\tools\lib\</NUnitCoreDllPath>
+    <NUnitCoreInterfacesDllPath>..\packages\NUnit.2.5.9.10348\tools\lib\</NUnitCoreInterfacesDllPath>
+    <NUnitFrameworkDllPath>..\packages\NUnit.2.5.9.10348\lib\</NUnitFrameworkDllPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.core">

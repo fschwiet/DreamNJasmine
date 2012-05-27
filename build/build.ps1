@@ -177,10 +177,10 @@ task RunNUnitGUI {
 task Build_2_5_9 {
 
   $subParameters = @{ 
-	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
-	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0\lib"
-	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
-	NUnitBinPath = "$($lib.dir)\NUnit-2.5.9.10348\bin\net-2.0"
+	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
+	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
+	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\lib\"
+	NUnitBinPath = "$($base.dir)\packages\NUnit.2.5.9.10348\tools\"
   }
 
   TrackPackage "NJasmine_for_NUnit-2.5.9.zip" $build.dir
@@ -191,10 +191,10 @@ task Build_2_5_9 {
 task Build_2_5_10 {
 
   $subParameters = @{ 
-	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\lib"
-	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\lib"
-	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0\framework"
-	NUnitBinPath = "$($lib.dir)\NUnit-2.5.10.11092\bin\net-2.0"
+	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
+	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
+	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
+	NUnitBinPath = "$($base.dir)\packages\NUnit.2.5.10.11092\tools\"
   }
 
   TrackPackage "NJasmine_for_NUnit-2.5.10 (stable).zip" $build.dir
@@ -205,10 +205,10 @@ task Build_2_5_10 {
 task Build_2_6_0 {
 
   $subParameters = @{ 
-	NUnitCoreDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\lib"
-	UnitCoreInterfacesDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\lib"
-	NUnitFrameworkDllPath = "$($lib.dir)\NUnit-2.6.0.12051\bin\framework"
-	NUnitBinPath = "$($lib.dir)\NUnit-2.6.0.12051\bin"
+	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\lib\"
+	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\lib\"
+	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.6.0.12054\lib\"
+	NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\"
   }
 
   TrackPackage "NJasmine_for_NUnit-2.6.0.zip" $build.dir
