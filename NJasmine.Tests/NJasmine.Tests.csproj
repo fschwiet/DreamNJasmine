@@ -35,15 +35,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <NUnitCoreDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreDllPath>
+    <NUnitCoreInterfacesDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreInterfacesDllPath>
+    <NUnitFrameworkDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\</NUnitFrameworkDllPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.core">
-      <HintPath>$(NUnitLibPath)\nunit.core.dll</HintPath>
+      <HintPath>$(NUnitCoreDllPath)\nunit.core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core.interfaces">
-      <HintPath>$(NUnitLibPath)\nunit.core.interfaces.dll</HintPath>
+      <HintPath>$(NUnitCoreInterfacesDllPath)\nunit.core.interfaces.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>$(NUnitFrameworkPath)\nunit.framework.dll</HintPath>
+      <HintPath>$(NUnitFrameworkDllPath)\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PowerAssert">
       <HintPath>..\lib\PowerAssert\PowerAssert.dll</HintPath>
