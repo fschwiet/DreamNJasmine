@@ -31,16 +31,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <NUnitCoreDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreDllPath>
+    <NUnitCoreInterfacesDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\</NUnitCoreInterfacesDllPath>
+    <NUnitFrameworkDllPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\</NUnitFrameworkDllPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.core">
-      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\nunit.core.dll</HintPath>
+      <HintPath>$(NUnitCoreDllPath)\nunit.core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core.interfaces">
-      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\lib\nunit.core.interfaces.dll</HintPath>
+      <HintPath>$(NUnitCoreInterfacesDllPath)\nunit.core.interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\NUnit-2.5.9.10348\bin\net-2.0\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>$(NUnitFrameworkDllPath)\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
