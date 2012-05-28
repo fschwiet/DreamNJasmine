@@ -6,26 +6,26 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Elements
 {
-    public class BeforeEachElement<T> : SpecificationElement
+    public class BeforeAllElement<T> : SpecificationElement
     {
         readonly Func<T> _action;
 
-        public BeforeEachElement(ActualKeyword beforeEach, Func<T> action)
-            : base(beforeEach)
+        public BeforeAllElement(ActualKeyword actualKeyword, Func<T> action)
+            : base(actualKeyword)
         {
             _action = action;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            return visitor.visitBeforeEach(this, _action, position);
+            return visitor.visitBeforeAll(this, _action, position);
         }
     }
 
-    public class BeforeEachElementWithoutReturnValue : BeforeEachElement<object>
+    public class BeforeAllElementWithoutReturnValue : BeforeAllElement<object>
     {
-        public BeforeEachElementWithoutReturnValue(ActualKeyword beforeEach, Action action)
-            : base(beforeEach, delegate()
+        public BeforeAllElementWithoutReturnValue(ActualKeyword actualKeyword, Action action)
+            : base(actualKeyword, delegate()
             {
                 action();
                 return ElementResultUnused;

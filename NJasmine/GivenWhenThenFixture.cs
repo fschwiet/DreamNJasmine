@@ -141,15 +141,7 @@ namespace NJasmine
         /// <param name="action">The initialization code.</param>
         public void beforeAll(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitBeforeAll<string>(new SpecificationElement(ActualKeyword.beforeAll), delegate
-                    {
-                        action();
-                        return (string)null;
-                    }, 
-                    position);
-            });
+            RunSpecificationElement(new BeforeAllElementWithoutReturnValue(ActualKeyword.beforeAll, action));
         }
 
         /// <summary>
@@ -162,10 +154,7 @@ namespace NJasmine
         /// <returns>The return value of the initialization code.</returns>
         public T beforeAll<T>(Func<T> action)
         {
-            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                return base.Visitor.visitBeforeAll(new SpecificationElement(ActualKeyword.beforeAll), action, position);
-            });
+            return RunSpecificationElement<T>(new BeforeAllElement<T>(ActualKeyword.beforeAll, action));
         }
 
         /// <summary>
