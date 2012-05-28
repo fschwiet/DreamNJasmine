@@ -163,10 +163,7 @@ namespace NJasmine
         /// <param name="action">The cleanup code.</param>
         public void afterAll(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitAfterAll(new SpecificationElement(ActualKeyword.afterAll), action, position);
-            });
+            RunSpecificationElement(new AfterAllElement(ActualKeyword.afterAll, action));
         }
 
         /// <summary>
@@ -177,10 +174,7 @@ namespace NJasmine
         /// <param name="reason"></param>
         public void ignoreBecause(string reason)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitIgnoreBecause(new SpecificationElement(ActualKeyword.ignore), reason, position);
-            });
+            RunSpecificationElement(new IgnoreElement(ActualKeyword.ignore, reason));
         }
 
         /// <summary>
@@ -189,10 +183,7 @@ namespace NJasmine
         /// <param name="expectation">The expectation.</param>
         public void expect(Expression<Func<bool>> expectation)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitExpect(new SpecificationElement(ActualKeyword.expect), expectation, position);
-            });
+            RunSpecificationElement(new ExpectElement(ActualKeyword.expect, expectation));
         }
 
         private int _msWaitMax = 1000;
@@ -239,10 +230,7 @@ namespace NJasmine
         /// <param name="msWaitIncrement">The polling interval, in milliseconds.</param>
         public void expectEventually(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitWaitUntil(new SpecificationElement(ActualKeyword.expectEventually), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
-            });
+            RunSpecificationElement(new WaitUntilElement(ActualKeyword.expectEventually, expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement));
         }
 
         /// <summary>
@@ -254,10 +242,7 @@ namespace NJasmine
         /// <param name="msWaitIncrement">The polling interval, in milliseconds.</param>
         public void waitUntil(Expression<Func<bool>> expectation, int? msWaitMax = null, int? msWaitIncrement = null)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitWaitUntil(new SpecificationElement(ActualKeyword.waitUntil), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
-            });
+            RunSpecificationElement(new WaitUntilElement(ActualKeyword.waitUntil, expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement));
         }
 
         public void withCategory(string category)
