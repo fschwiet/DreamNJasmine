@@ -25,17 +25,18 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
         public class some_observable_D : ObservableDisposable { }
         public class some_observable_E : ObservableDisposable { }
         public class some_observable_F : ObservableDisposable { }
+        public class some_observable_G : ObservableDisposable { }
         
         public override void Specify()
         {
             beforeAll(ResetTracing);
 
-            var a = arrange(() => new some_observable_A());
-            var b = arrange(() => new some_observable_B());
+            var a = beforeEach(() => new some_observable_A());
+            var b = beforeEach(() => new some_observable_B());
 
             describe("first describe block", delegate
             {
-                var c = arrange(() => new some_observable_C());
+                var c = beforeEach(() => new some_observable_C());
                 
                 it("a test", delegate
                 {
@@ -49,7 +50,9 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             {
                 describe("nested describe block", delegate
                 {
-                    var d = arrange(() => new some_observable_D());
+                    var g = beforeAll(() => new some_observable_G());
+
+                    var d = beforeEach(() => new some_observable_D());
 
                     describe("another describe block", delegate
                     {
@@ -62,8 +65,8 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
 
                         it("inline using", delegate
                         {
-                            var e = arrange(() => new some_observable_E());
-                            var f = arrange(() => new some_observable_F());
+                            var e = beforeEach(() => new some_observable_E());
+                            var f = beforeEach(() => new some_observable_F());
 
                             expect(() => e != null);
                             expect(() => f != null);
@@ -84,6 +87,7 @@ creating some_observable_C
 disposing some_observable_C
 disposing some_observable_B
 disposing some_observable_A
+creating some_observable_G
 creating some_observable_A
 creating some_observable_B
 creating some_observable_D
@@ -100,6 +104,7 @@ disposing some_observable_E
 disposing some_observable_D
 disposing some_observable_B
 disposing some_observable_A
+disposing some_observable_G
 ");
         }
     }
