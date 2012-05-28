@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NJasmine.Core.FixtureVisitor
 {
-    public class SpecificationElement
+    public abstract class SpecificationElement
     {
         public readonly ActualKeyword ActualKeyword;
 
@@ -19,10 +19,7 @@ namespace NJasmine.Core.FixtureVisitor
             return ActualKeyword.ToString();
         }
 
-        public virtual object Run(ISpecPositionVisitor visitor, TestPosition position)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract object Run(ISpecPositionVisitor visitor, TestPosition position);
 
         protected static object ElementResultUnused = new Object();
     }

@@ -15,7 +15,7 @@ namespace NJasmine.Core.Elements
             _disposable = disposable;
         }
 
-        public virtual object Run(ISpecPositionVisitor visitor, TestPosition position)
+        public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
             visitor.visitLeakDisposable(this, _disposable, position);
             return ElementResultUnused;

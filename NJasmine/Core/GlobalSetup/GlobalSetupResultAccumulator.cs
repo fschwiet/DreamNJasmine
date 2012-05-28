@@ -7,13 +7,20 @@ namespace NJasmine.Core.GlobalSetup
 {
     public class GlobalSetupResultAccumulator
     {
+        List<IDisposable> _disposablesToLeak;
         List<KeyValuePair<TestPosition, object>> _setupResults;
         List<KeyValuePair<TestPosition, Action>> _cleanupActions;
 
         public GlobalSetupResultAccumulator()
         {
+            _disposablesToLeak = new List<IDisposable>();
             _cleanupActions = new List<KeyValuePair<TestPosition, Action>>();
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
+        }
+
+        public void LeakDisposable(IDisposable disposable)
+        {
+            _disposablesToLeak.Add(disposable);
         }
 
         public void UnwindForPosition(TestPosition position, Action<Exception> errorHandler)
@@ -72,6 +79,7 @@ namespace NJasmine.Core.GlobalSetup
             }
 
             _setupResults = new List<KeyValuePair<TestPosition, object>>();
+            _disposablesToLeak = new List<IDisposable>();
         }
 
         public void AddCleanupAction(TestPosition position, Action action)
@@ -87,7 +95,11 @@ namespace NJasmine.Core.GlobalSetup
                     position,
                     delegate
                     {
-                        (value as IDisposable).Dispose();
+                        var valueAsDisposable = value as IDisposable;
+                        if (!_disposablesToLeak.Contains(valueAsDisposable))
+                        {
+                            valueAsDisposable.Dispose();
+                        }
                     });
             }
 

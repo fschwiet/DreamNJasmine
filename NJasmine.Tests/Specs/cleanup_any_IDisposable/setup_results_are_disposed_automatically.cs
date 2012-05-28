@@ -50,7 +50,10 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             {
                 describe("nested describe block", delegate
                 {
-                    var g = beforeAll(() => new some_observable_G());
+                    var disposed = beforeAll(() => new some_observable_G());
+                    
+                    var leaked = beforeAll(() => new some_observable_G());
+                    leakDisposable(leaked);
 
                     var d = beforeEach(() => new some_observable_D());
 
@@ -87,6 +90,7 @@ creating some_observable_C
 disposing some_observable_C
 disposing some_observable_B
 disposing some_observable_A
+creating some_observable_G
 creating some_observable_G
 creating some_observable_A
 creating some_observable_B

@@ -224,7 +224,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position)
         {
-            //TODO
+            _setupResultAccumulator.LeakDisposable(disposable);
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
