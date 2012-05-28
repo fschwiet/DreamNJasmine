@@ -16,7 +16,12 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void describe(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, description, specification));
+            var specificationElement = new ForkElement(SpecElement.describe, description, specification);
+            
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                specificationElement.Run(base.Visitor, position);
+            });
         }
 
         /// <summary>
@@ -26,7 +31,12 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void given(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, "given " + description, specification));
+            var specificationElement = new ForkElement(SpecElement.describe, "given " + description, specification);
+
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                specificationElement.Run(base.Visitor, position);
+            });
         }
 
         /// <summary>
@@ -36,7 +46,12 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void when(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, "when " + description, specification));
+            var specificationElement = new ForkElement(SpecElement.describe, "when " + description, specification);
+
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                specificationElement.Run(base.Visitor, position);
+            });
         }
 
         /// <summary>
@@ -46,7 +61,10 @@ namespace NJasmine
         /// <param name="test">The test implementation.</param>
         public void then(string description, Action test)
         {
-            RunSpecificationElement(new TestElement(SpecElement.then, "then " + description, test));
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, test, position);
+            });
         }
 
         /// <summary>
@@ -55,7 +73,10 @@ namespace NJasmine
         /// <param name="description">The description that names the test -- will be prefixed with 'then'.</param>
         public void then(string description)
         {
-            RunSpecificationElement(new TestElement(SpecElement.then, "then " + description, null));
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, null, position);
+            });
         }
 
         /// <summary>
@@ -65,7 +86,10 @@ namespace NJasmine
         /// <param name="action">The test implementation.</param>
         public void it(string description, Action action)
         {
-            RunSpecificationElement(new TestElement(SpecElement.then, description, action));
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, action, position);
+            });
         }
 
         /// <summary>
@@ -74,7 +98,10 @@ namespace NJasmine
         /// <param name="description">The description that names the test.</param>
         public void it(string description)
         {
-            RunSpecificationElement(new TestElement(SpecElement.then, description, null));
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, null, position);
+            });
         }
 
         /// <summary>

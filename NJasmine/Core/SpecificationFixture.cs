@@ -22,13 +22,7 @@ namespace NJasmine.Core
         //
         //  Hmm, how to make sense of this?  It works.
         //
-
-        protected void RunSpecificationElement(SpecificationElement specificationElement)
-        {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(
-                position => { specificationElement.Run(Visitor, position); });
-        }
-
+        
         protected T SetPositionForNestedCall_Run_Then_SetPositionForNextSibling<T>(Func<TestPosition, T> action)
         {
             T result = default(T);
