@@ -12,13 +12,7 @@ namespace NJasmine.NUnit
             _test = test;
         }
 
-        public Test GetNative(TestBuilder builder)
-        {
-            ApplyResultToTest(builder);
-            return _test;
-        }
-
-        public void ApplyResultToTest(TestBuilder builder)
+        public object GetNative(TestBuilder builder)
         {
             _test.TestName.Name = builder.Shortname;
             _test.TestName.FullName = builder.FullName;
@@ -37,6 +31,8 @@ namespace NJasmine.NUnit
             {
                 (_test as TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
             }
+
+            return _test;
         }
     }
 }

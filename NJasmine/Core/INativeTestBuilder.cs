@@ -1,7 +1,8 @@
+
 namespace NJasmine.Core
 {
     public interface INativeTestBuilder
     {
-        void ApplyResultToTest(TestBuilder builder);
+        object GetNative(TestBuilder builder);
     }
 }
