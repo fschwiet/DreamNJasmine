@@ -13,7 +13,7 @@ namespace NJasmine.Core.FixtureVisitor
             Action = action;
         }
 
-        public void Run(ISpecPositionVisitor visitor, TestPosition position)
+        public override void Run(ISpecPositionVisitor visitor, TestPosition position)
         {
             visitor.visitFork(new SpecificationElement(SpecElement.describe), Description, Action, position);
         }

@@ -64,6 +64,7 @@
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\SpecElement.cs" />
     <Compile Include="Core\FixtureVisitor\SpecificationElement.cs" />
+    <Compile Include="Core\FixtureVisitor\TestElement.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupVisitor.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupResultAccumulator.cs" />

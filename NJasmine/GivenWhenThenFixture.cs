@@ -16,12 +16,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void describe(string description, Action specification)
         {
-            var specificationElement = new ForkElement(SpecElement.describe, description, specification);
-            
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                specificationElement.Run(base.Visitor, position);
-            });
+            RunSpecificationElement(new ForkElement(SpecElement.describe, description, specification));
         }
 
         /// <summary>
@@ -31,12 +26,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void given(string description, Action specification)
         {
-            var specificationElement = new ForkElement(SpecElement.describe, "given " + description, specification);
-
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                specificationElement.Run(base.Visitor, position);
-            });
+            RunSpecificationElement(new ForkElement(SpecElement.describe, "given " + description, specification));
         }
 
         /// <summary>
@@ -46,12 +36,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void when(string description, Action specification)
         {
-            var specificationElement = new ForkElement(SpecElement.describe, "when " + description, specification);
-
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                specificationElement.Run(base.Visitor, position);
-            });
+            RunSpecificationElement(new ForkElement(SpecElement.describe, "when " + description, specification));
         }
 
         /// <summary>
@@ -61,10 +46,7 @@ namespace NJasmine
         /// <param name="test">The test implementation.</param>
         public void then(string description, Action test)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, test, position);
-            });
+            RunSpecificationElement(new TestElement(SpecElement.then, "then " + description, test));
         }
 
         /// <summary>
@@ -73,10 +55,7 @@ namespace NJasmine
         /// <param name="description">The description that names the test -- will be prefixed with 'then'.</param>
         public void then(string description)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, null, position);
-            });
+            RunSpecificationElement(new TestElement(SpecElement.then, "then " + description, null));
         }
 
         /// <summary>
@@ -86,10 +65,7 @@ namespace NJasmine
         /// <param name="action">The test implementation.</param>
         public void it(string description, Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, action, position);
-            });
+            RunSpecificationElement(new TestElement(SpecElement.then, description, action));
         }
 
         /// <summary>
@@ -98,10 +74,7 @@ namespace NJasmine
         /// <param name="description">The description that names the test.</param>
         public void it(string description)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, null, position);
-            });
+            RunSpecificationElement(new TestElement(SpecElement.then, description, null));
         }
 
         /// <summary>
