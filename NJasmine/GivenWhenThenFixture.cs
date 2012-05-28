@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading;
 using NJasmine.Core;
+using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Extras;
 
@@ -16,7 +17,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void describe(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, description, specification));
+            RunSpecificationElement(new ForkElement(ActualKeyword.describe, description, specification));
         }
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void given(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, "given " + description, specification));
+            RunSpecificationElement(new ForkElement(ActualKeyword.describe, "given " + description, specification));
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace NJasmine
         /// <param name="specification">The branched portion of the specification.</param>
         public void when(string description, Action specification)
         {
-            RunSpecificationElement(new ForkElement(SpecElement.describe, "when " + description, specification));
+            RunSpecificationElement(new ForkElement(ActualKeyword.describe, "when " + description, specification));
         }
 
         /// <summary>
@@ -46,10 +47,7 @@ namespace NJasmine
         /// <param name="test">The test implementation.</param>
         public void then(string description, Action test)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, test, position);
-            });
+            RunSpecificationElement(new TestElement(ActualKeyword.then, "then " + description, test));
         }
 
         /// <summary>
@@ -58,10 +56,7 @@ namespace NJasmine
         /// <param name="description">The description that names the test -- will be prefixed with 'then'.</param>
         public void then(string description)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.then), "then " + description, null, position);
-            });
+            RunSpecificationElement(new TestElement(ActualKeyword.then, "then " + description, null));
         }
 
         /// <summary>
@@ -71,10 +66,7 @@ namespace NJasmine
         /// <param name="action">The test implementation.</param>
         public void it(string description, Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, action, position);
-            });
+            RunSpecificationElement(new TestElement(ActualKeyword.it, description, action));
         }
 
         /// <summary>
@@ -83,10 +75,7 @@ namespace NJasmine
         /// <param name="description">The description that names the test.</param>
         public void it(string description)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTest(new SpecificationElement(SpecElement.it), description, null, position);
-            });
+            RunSpecificationElement(new TestElement(ActualKeyword.it, description, null));
         }
 
         /// <summary>
@@ -97,7 +86,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitAfterEach(new SpecificationElement(SpecElement.afterEach), cleanup, position);
+                base.Visitor.visitAfterEach(new SpecificationElement(ActualKeyword.afterEach), cleanup, position);
             });
         }
 
@@ -109,7 +98,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitAfterEach(new SpecificationElement(SpecElement.cleanup), cleanup, position);
+                base.Visitor.visitAfterEach(new SpecificationElement(ActualKeyword.cleanup), cleanup, position);
             });
         }
 
@@ -121,7 +110,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.beforeEach), delegate()
+                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.beforeEach), delegate()
                 {
                     action();
                     return (string)null;
@@ -138,7 +127,7 @@ namespace NJasmine
         {
             return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                return base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.beforeEach), action, position);
+                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.beforeEach), action, position);
             });
         }
 
@@ -150,7 +139,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.arrange), delegate()
+                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), delegate()
                 {
                     action();
                     return (string)null;
@@ -166,7 +155,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.act), delegate()
+                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.act), delegate()
                 {
                     action();
                     return (string)null;
@@ -185,7 +174,7 @@ namespace NJasmine
         {
             return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                return base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.arrange), arrangeAction, position);
+                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), arrangeAction, position);
             });
         }
 
@@ -201,7 +190,7 @@ namespace NJasmine
             {
                 Func<TArranged> factory = delegate { return new TArranged(); };
 
-                return base.Visitor.visitBeforeEach(new SpecificationElement(SpecElement.arrange), factory, position);
+                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), factory, position);
             });
         }
 
@@ -213,7 +202,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitBeforeAll<string>(new SpecificationElement(SpecElement.beforeAll), delegate
+                base.Visitor.visitBeforeAll<string>(new SpecificationElement(ActualKeyword.beforeAll), delegate
                     {
                         action();
                         return (string)null;
@@ -234,7 +223,7 @@ namespace NJasmine
         {
             return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                return base.Visitor.visitBeforeAll(new SpecificationElement(SpecElement.beforeAll), action, position);
+                return base.Visitor.visitBeforeAll(new SpecificationElement(ActualKeyword.beforeAll), action, position);
             });
         }
 
@@ -246,7 +235,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitAfterAll(new SpecificationElement(SpecElement.afterAll), action, position);
+                base.Visitor.visitAfterAll(new SpecificationElement(ActualKeyword.afterAll), action, position);
             });
         }
 
@@ -260,7 +249,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitIgnoreBecause(new SpecificationElement(SpecElement.ignore), reason, position);
+                base.Visitor.visitIgnoreBecause(new SpecificationElement(ActualKeyword.ignore), reason, position);
             });
         }
 
@@ -272,7 +261,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitExpect(new SpecificationElement(SpecElement.expect), expectation, position);
+                base.Visitor.visitExpect(new SpecificationElement(ActualKeyword.expect), expectation, position);
             });
         }
 
@@ -322,7 +311,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitWaitUntil(new SpecificationElement(SpecElement.expectEventually), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
+                base.Visitor.visitWaitUntil(new SpecificationElement(ActualKeyword.expectEventually), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
             });
         }
 
@@ -337,7 +326,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitWaitUntil(new SpecificationElement(SpecElement.waitUntil), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
+                base.Visitor.visitWaitUntil(new SpecificationElement(ActualKeyword.waitUntil), expectation, msWaitMax ?? _msWaitMax, msWaitIncrement ?? _msWaitIncrement, position);
             });
         }
 
@@ -345,7 +334,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitWithCategory(new SpecificationElement(SpecElement.withCategory), category, position);
+                base.Visitor.visitWithCategory(new SpecificationElement(ActualKeyword.withCategory), category, position);
             });
         }
 
@@ -353,7 +342,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitTrace(new SpecificationElement(SpecElement.trace), message, position);
+                base.Visitor.visitTrace(new SpecificationElement(ActualKeyword.trace), message, position);
             });
         }
 
@@ -361,7 +350,7 @@ namespace NJasmine
         {
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
-                base.Visitor.visitLeakDisposable(new SpecificationElement(SpecElement.leakDisposable), disposable, position);
+                base.Visitor.visitLeakDisposable(new SpecificationElement(ActualKeyword.leakDisposable), disposable, position);
             });
         }
     }

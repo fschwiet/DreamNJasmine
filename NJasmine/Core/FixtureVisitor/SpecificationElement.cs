@@ -7,16 +7,16 @@ namespace NJasmine.Core.FixtureVisitor
 {
     public class SpecificationElement
     {
-        readonly SpecElement _element;
+        public readonly ActualKeyword ActualKeyword;
 
-        public SpecificationElement(SpecElement element)
+        public SpecificationElement(ActualKeyword actualKeyword)
         {
-            _element = element;
+            ActualKeyword = actualKeyword;
         }
 
         public override string ToString()
         {
-            return _element.ToString();
+            return ActualKeyword.ToString();
         }
 
         public virtual void Run(ISpecPositionVisitor visitor, TestPosition position)
