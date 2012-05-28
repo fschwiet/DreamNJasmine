@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NJasmine</id>
+    <version>$version$</version>
+    <title>NJasmine</title>
+    <authors>Frank Schwieterman</authors>
+    <owners>Frank Schwieterman</owners>
+    <licenseUrl>https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/fschwiet/DreamNJasmine/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<summary>NJasmine allows writing RSpec-like specifications.</summary>
+    <description>NJasmine is an NUnit extension for writing given/when/then style specifications or tests.  Like RSpec, NJasmine as a DSL uses nested anonymous methods to build up a specification.  Reference nuget NJasmine to write your specs, and reference nuget NJasmine.NUnit to run your tests.</description>
+    <copyright>Copyright 2012</copyright>
+    <tags>BDD TDD NUnit</tags>
+	<dependencies>
+		<dependency id="PowerAssert" version="1.0.2" />
+	</dependencies>
+  </metadata>
+</package>

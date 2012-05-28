@@ -216,68 +216,37 @@ task Build_2_6_0 {
   invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -parameters $subParameters -init { $build.dir = "$($base.dir)\build_2_6_0\" }
 }
 
-task Install -depends Build_2_5_10 {
-  $target = "C:\Program Files\NUnit 2.5.10\bin";
-
-  if (-not (test-path $target)) {
-    $target = "C:\Program Files (x86)\NUnit 2.5.10\bin\net-2.0";
-  }
-
-  assert (test-path $target) "Install task could not find NUnit 2.5.10 installed."
-
-  $target = (join-path $target "addins")
-
-  if (-not (test-path $target)) {
-    $null = mkdir $target
-  }
-
-  cp (join-path "$($base.dir)\build_2_5_10\" NJasmine.dll) $target
-  cp (join-path "$($base.dir)\build_2_5_10\" PowerAssert.dll) $target
-}
-
-task BuildNuget -depends Build_2_5_10 {
+task BuildNuget -depends Build_2_6_0 {
   $version = "$($build.version).0"
-  $build = "$($base.dir)\build_2_5_10"
-  $nugetTarget = "$($base.dir)\build_2_5_10\nuget"
+  $build = "$($base.dir)\build_2_6_0"
+  $nugetTargetLib = "$($base.dir)\build_2_6_0\nuget\NJasmine"
+  $nugetTargetRunner = "$($base.dir)\build_2_6_0\nuget\NJasmine.NUnit"
 
-  mkdir "$nugetTarget\lib\" | out-null
-  mkdir "$nugetTarget\tools\" | out-null
+  mkdir "$nugetTargetLib\lib\" | out-null
+  mkdir "$nugetTargetRunner\lib\" | out-null
+  mkdir "$nugetTargetRunner\tools\" | out-null
 
-  cp "$build\NJasmine.dll" "$nugetTarget\lib\"
-  cp "$build\NJasmine.pdb" "$nugetTarget\lib\"
-  cp "$build\NJasmine.NUnit.dll" "$nugetTarget\lib\"
-  cp "$build\NJasmine.NUnit.pdb" "$nugetTarget\lib\"
-  cp "$($base.dir)\nuget.install.ps1" "$nugetTarget\tools\install.ps1"
+  cp "$($base.dir)\NJasmine\NJasmine.nuspec" "$nugetTargetLib\"
+  cp "$build\NJasmine.dll" "$nugetTargetLib\lib\"
+  cp "$build\NJasmine.pdb" "$nugetTargetLib\lib\"
+  cp "$($base.dir)\NJasmine.NUnit\NJasmine.NUnit.nuspec" "$nugetTargetRunner\"
+  cp "$build\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
+  cp "$build\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
+  cp "$($base.dir)\nuget.install.ps1" "$nugetTargetRunner\tools\install.ps1"
 
-  pushd $nugetTarget
-  try {
-    nuget.exe spec -a ".\lib\NJasmine.dll" 
-	
-    update-xml "NJasmine.nuspec" {
-      #add-xmlnamespace "ns" "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
+  update-xml "$nugetTargetLib\NJasmine.nuspec" {
+    set-xml -exactlyOnce "//package/metadata/version" "$version"
+  }
 
-      for-xml "//package/metadata" {
-        set-xml -exactlyOnce "//version" "$version"
-        set-xml -exactlyOnce "//owners" "fschwiet"
-        set-xml -exactlyOnce "//authors" "Frank Schwieterman"
-        set-xml -exactlyOnce "//description" $longDescription
-
-        set-xml -exactlyOnce "//licenseUrl" "https://github.com/fschwiet/DreamNJasmine/blob/master/LICENSE.txt"
-        set-xml -exactlyOnce "//projectUrl" "https://github.com/fschwiet/DreamNJasmine/"
-        remove-xml -exactlyOnce "//iconUrl"
-        set-xml -exactlyOnce "//tags" "BDD TDD NUnit"
-
-        set-xml -exactlyOnce "//dependencies" ""
-        append-xml -exactlyOnce "//dependencies" "<dependency id=`"NUnit`" version=`"2.5.10`" />"
-        append-xml -exactlyOnce "//dependencies" "<dependency id=`"PowerAssert`" version=`"1.0.2`" />"
-
-        append-xml "." "<summary>$shortDescription</summary>"
-      }
-    }
-
-    nuget.exe pack "NJasmine.nuspec"
-
-  } finally { popd }
+  update-xml "$nugetTargetRunner\NJasmine.NUnit.nuspec" {
+    set-xml -exactlyOnce "//package/metadata/version" "$version"
+    for-xml -exactlyOnce "//package/metadata/dependencies/dependency[@id='NJasmine']" {
+	  set-attribute "version" $version
+	}
+  }
+  
+  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetLib\NJasmine.nuspec" -output "$build" }
+  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetRunner\NJasmine.NUnit.nuspec" -output "$build" }
 }
 
 function get-nunit-console {
