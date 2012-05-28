@@ -102,15 +102,7 @@ namespace NJasmine
         /// <param name="action">The initialization code.</param>
         public void beforeEach(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.beforeEach), delegate()
-                {
-                    action();
-                    return (string)null;
-                },
-                    position);
-            });
+            RunSpecificationElement(new BeforeEachElementWithoutReturnValue(ActualKeyword.beforeEach, action));
         }
 
         /// <summary>
@@ -119,10 +111,7 @@ namespace NJasmine
         /// <param name="action">The initialization code.</param>
         public T beforeEach<T>(Func<T> action)
         {
-            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.beforeEach), action, position);
-            });
+            return RunSpecificationElement<T>(new BeforeEachElement<T>(ActualKeyword.beforeEach, action));
         }
 
         /// <summary>
@@ -131,30 +120,7 @@ namespace NJasmine
         /// <param name="action">The initialization code.</param>
         public void arrange(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), delegate()
-                {
-                    action();
-                    return (string)null;
-                }, position);
-            });
-        }
-
-        /// <summary>
-        /// Functionally the same as arrange(), has the semantics of exercising the sut.
-        /// </summary>
-        /// <param name="action">The initialization code.</param>
-        public void act(Action action)
-        {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.act), delegate()
-                {
-                    action();
-                    return (string)null;
-                }, position);
-            });
+            RunSpecificationElement(new BeforeEachElementWithoutReturnValue(ActualKeyword.arrange, action));
         }
 
         /// <summary>
@@ -164,28 +130,9 @@ namespace NJasmine
         /// </summary>
         /// <param name="action">The initialization code.</param>
         /// <returns>The result of the initialization code.</returns>
-        public T arrange<T>(Func<T> arrangeAction)
+        public T arrange<T>(Func<T> action)
         {
-            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), arrangeAction, position);
-            });
-        }
-
-        /// <summary>
-        /// Adds initialization code to instantiate a class before after each test in the following context.
-        /// If that class supports IDisposable, it will be disposed when the test is done.
-        /// </summary>
-        /// <typeparam name="TArranged">The class to be created.</typeparam>
-        /// <returns>The class instance created.</returns>
-        public TArranged arrange<TArranged>() where TArranged : class, new()
-        {
-            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                Func<TArranged> factory = delegate { return new TArranged(); };
-
-                return base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.arrange), factory, position);
-            });
+            return RunSpecificationElement<T>(new BeforeEachElement<T>(ActualKeyword.arrange, action));
         }
 
         /// <summary>
@@ -230,6 +177,22 @@ namespace NJasmine
             SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
             {
                 base.Visitor.visitAfterAll(new SpecificationElement(ActualKeyword.afterAll), action, position);
+            });
+        }
+
+        /// <summary>
+        /// Functionally the same as arrange(), has the semantics of exercising the sut.
+        /// </summary>
+        /// <param name="action">The initialization code.</param>
+        public void act(Action action)
+        {
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
+            {
+                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.act), delegate()
+                {
+                    action();
+                    return (string)null;
+                }, position);
             });
         }
 

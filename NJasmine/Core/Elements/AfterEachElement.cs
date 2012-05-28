@@ -15,9 +15,10 @@ namespace NJasmine.Core.Elements
             _action = action;
         }
 
-        public override void Run(ISpecPositionVisitor visitor, TestPosition position)
+        public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
             visitor.visitAfterEach(this, _action, position);
+            return ElementResultUnused;
         }
     }
 }

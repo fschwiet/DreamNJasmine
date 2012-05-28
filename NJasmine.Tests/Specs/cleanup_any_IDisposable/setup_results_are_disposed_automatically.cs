@@ -30,7 +30,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
         {
             beforeAll(ResetTracing);
 
-            var a = arrange<some_observable_A>();
+            var a = arrange(() => new some_observable_A());
             var b = arrange(() => new some_observable_B());
 
             describe("first describe block", delegate
@@ -62,7 +62,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
 
                         it("inline using", delegate
                         {
-                            var e = arrange<some_observable_E>();
+                            var e = arrange(() => new some_observable_E());
                             var f = arrange(() => new some_observable_F());
 
                             expect(() => e != null);

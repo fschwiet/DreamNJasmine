@@ -19,9 +19,11 @@ namespace NJasmine.Core.FixtureVisitor
             return ActualKeyword.ToString();
         }
 
-        public virtual void Run(ISpecPositionVisitor visitor, TestPosition position)
+        public virtual object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
             throw new NotImplementedException();
         }
+
+        protected static object ElementResultUnused = new Object();
     }
 }

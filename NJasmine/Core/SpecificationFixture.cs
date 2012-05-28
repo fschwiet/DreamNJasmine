@@ -45,10 +45,15 @@ namespace NJasmine.Core
             });
         }
 
-        protected void RunSpecificationElement(SpecificationElement specificationElement)
+        protected void RunSpecificationElement(SpecificationElement specElement)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(
-                position => { specificationElement.Run(Visitor, position); });
+            RunSpecificationElement<object>(specElement);
+        }
+
+        protected T RunSpecificationElement<T>(SpecificationElement specificationElement)
+        {
+            return SetPositionForNestedCall_Run_Then_SetPositionForNextSibling<T>(
+                position => { return (T)specificationElement.Run(Visitor, position); });
         }
     }
 }
