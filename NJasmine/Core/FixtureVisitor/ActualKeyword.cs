@@ -8,7 +8,6 @@
         it,
         importNUnit,
         arrange,
-        act,
         given,
         when,
         then,

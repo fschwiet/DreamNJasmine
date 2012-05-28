@@ -181,22 +181,6 @@ namespace NJasmine
         }
 
         /// <summary>
-        /// Functionally the same as arrange(), has the semantics of exercising the sut.
-        /// </summary>
-        /// <param name="action">The initialization code.</param>
-        public void act(Action action)
-        {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitBeforeEach(new SpecificationElement(ActualKeyword.act), delegate()
-                {
-                    action();
-                    return (string)null;
-                }, position);
-            });
-        }
-
-        /// <summary>
         /// Indicates that the tests in the following specification context should not
         /// be ran unless the user explicitly asks for them to be ran.  Similar to
         /// NUnit's ExplicitAttribute.
