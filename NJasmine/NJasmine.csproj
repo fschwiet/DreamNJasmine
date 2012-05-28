@@ -59,8 +59,11 @@
     <Compile Include="Core\Elements\ExpectElement.cs" />
     <Compile Include="Core\Elements\ForkElement.cs" />
     <Compile Include="Core\Elements\IgnoreElement.cs" />
+    <Compile Include="Core\Elements\LeakDisposableElement.cs" />
     <Compile Include="Core\Elements\TestElement.cs" />
+    <Compile Include="Core\Elements\TraceElement.cs" />
     <Compile Include="Core\Elements\WaitUntilElement.cs" />
+    <Compile Include="Core\Elements\WithCategoryElement.cs" />
     <Compile Include="Core\Execution\ActState.cs" />
     <Compile Include="Core\Execution\ArrangeState.cs" />
     <Compile Include="Core\Execution\CleanupState.cs" />

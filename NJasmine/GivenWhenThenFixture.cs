@@ -247,26 +247,17 @@ namespace NJasmine
 
         public void withCategory(string category)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitWithCategory(new SpecificationElement(ActualKeyword.withCategory), category, position);
-            });
+            RunSpecificationElement(new WithCategoryElement(ActualKeyword.withCategory, category));
         }
 
         public void trace(string message)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitTrace(new SpecificationElement(ActualKeyword.trace), message, position);
-            });
+            RunSpecificationElement(new TraceElement(ActualKeyword.trace,  message));
         }
 
         public void leakDisposable(IDisposable disposable)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitLeakDisposable(new SpecificationElement(ActualKeyword.leakDisposable), disposable, position);
-            });
+            RunSpecificationElement(new LeakDisposableElement(ActualKeyword.leakDisposable, disposable));
         }
     }
 }
