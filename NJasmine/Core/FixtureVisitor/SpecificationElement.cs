@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -16,6 +17,11 @@ namespace NJasmine.Core.FixtureVisitor
         public override string ToString()
         {
             return _element.ToString();
+        }
+
+        public virtual void Run(ISpecPositionVisitor visitor, TestPosition position)
+        {
+            throw new NotImplementedException();
         }
     }
 }

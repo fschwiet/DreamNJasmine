@@ -44,5 +44,11 @@ namespace NJasmine.Core
                 return null;
             });
         }
+
+        protected void RunSpecificationElement(SpecificationElement specificationElement)
+        {
+            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(
+                position => { specificationElement.Run(Visitor, position); });
+        }
     }
 }
