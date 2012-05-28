@@ -81,25 +81,19 @@ namespace NJasmine
         /// <summary>
         /// Adds cleanup code to be ran after each test in the following context.
         /// </summary>
-        /// <param name="cleanup">The cleanup code.</param>
-        public void afterEach(Action cleanup)
+        /// <param name="action">The cleanup code.</param>
+        public void afterEach(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitAfterEach(new SpecificationElement(ActualKeyword.afterEach), cleanup, position);
-            });
+            RunSpecificationElement(new AfterEachElement(ActualKeyword.afterEach, action));
         }
 
         /// <summary>
         /// Adds cleanup code to be ran after each test in the following context.
         /// </summary>
-        /// <param name="cleanup">The cleanup code.</param>
-        public void cleanup(Action cleanup)
+        /// <param name="action">The cleanup code.</param>
+        public void cleanup(Action action)
         {
-            SetPositionForNestedCall_Run_Then_SetPositionForNextSibling(position =>
-            {
-                base.Visitor.visitAfterEach(new SpecificationElement(ActualKeyword.cleanup), cleanup, position);
-            });
+            RunSpecificationElement(new AfterEachElement(ActualKeyword.cleanup, action));
         }
 
         /// <summary>
