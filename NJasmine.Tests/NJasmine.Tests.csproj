@@ -86,6 +86,8 @@
     <Compile Include="Specs\cleanup_any_IDisposable\setup_results_dont_have_to_be_disposable.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\setup_results_are_disposed_automatically.cs" />
     <Compile Include="Specs\proposed_specs\inline_branching\can_branch_inline.cs" />
+    <Compile Include="Specs\proposed_specs\RazorSpecs\RazorFixture.cs" />
+    <Compile Include="Specs\proposed_specs\RazorSpecs\Romanizer.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_at_outermost_scope.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_within_describe.cs" />
     <Compile Include="Specs\report_test_failures_usefully\stacktrace_keeps_internal_calls_for_NJasmine_tests.cs" />
@@ -141,7 +143,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Specs\proposed_specs\RazorSpecs\RazorTest.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

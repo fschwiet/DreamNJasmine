@@ -1,0 +1,21 @@
+﻿@using NJasmineTests.Specs.proposed_specs.RazorSpecs
+@inherits RazorFixture
+
+@describe("calculates roman numerals", () =>
+{
+    foreach(var pair in new Dictionary<int,string>()
+    {
+        {1,"I"},
+        {2,"II"},
+        {4,"IV"},
+    })
+    {
+        it(string.Format("Produces {0} as the roman numeral for {1}", pair.Value, pair.Key), delegate
+        {
+            expect(() => Romanizer.Get(pair.Key) == pair.Value);
+        });
+    }
+});
+
+
+
