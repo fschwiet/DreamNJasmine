@@ -145,20 +145,20 @@ task RunNUnitGUI {
 
 task BuildNuget -depends AllTests {
   $version = "$($build.version).0"
-  $build = "$($build.dir)"
   $nugetTargetLib = "$($build.dir)\nuget\NJasmine"
   $nugetTargetRunner = "$($build.dir)\nuget\NJasmine.NUnit"
+
 
   mkdir "$nugetTargetLib\lib\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
   mkdir "$nugetTargetRunner\tools\" | out-null
 
   cp "$($base.dir)\NJasmine\NJasmine.nuspec" "$nugetTargetLib\"
-  cp "$build\NJasmine.dll" "$nugetTargetLib\lib\"
-  cp "$build\NJasmine.pdb" "$nugetTargetLib\lib\"
+  cp "$($build.dir)\NJasmine.dll" "$nugetTargetLib\lib\"
+  cp "$($build.dir)\NJasmine.pdb" "$nugetTargetLib\lib\"
   cp "$($base.dir)\NJasmine.NUnit\NJasmine.NUnit.nuspec" "$nugetTargetRunner\"
-  cp "$build\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
-  cp "$build\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
+  cp "$($build.dir)\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
+  cp "$($build.dir)\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
   cp "$($base.dir)\nuget.install.ps1" "$nugetTargetRunner\tools\install.ps1"
 
   update-xml "$nugetTargetLib\NJasmine.nuspec" {
@@ -172,8 +172,8 @@ task BuildNuget -depends AllTests {
 	}
   }
   
-  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetLib\NJasmine.nuspec" -output "$build" }
-  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetRunner\NJasmine.NUnit.nuspec" -output "$build" }
+  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetLib\NJasmine.nuspec" -output $build.dir }
+  exec { & "$($base.dir)\tools\NuGet.exe" pack "$nugetTargetRunner\NJasmine.NUnit.nuspec" -output $build.dir }
 }
 
 function get-nunit-console {
