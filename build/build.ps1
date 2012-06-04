@@ -76,29 +76,6 @@ Task Clean {
   }
 }
 
-task CleanZips {
-  if (test-path $release.dir) {
-    rm $release.dir -recurse
-  }
-
-  mkdir $release.dir | out-null
-}
-
-task Package -depends CleanZips, Build_2_5_9, Build_2_5_10, Build_2_6_0 {
-  $script:packages.GetEnumerator() | % {
-    $zipFile = (join-path $release.dir $_.Key)
-    $buildResult = $_.Value;
-
-    write-output "packaging '$zipFile' from $buildResult"
-        
-    $filesToDeploy | % {
-      (join-path $buildResult $_)
-    }
-
-    & "$($lib.dir)\7-Zip\7za.exe" a $zipFile $filesToDeploy
-  }
-}
-
 Task ? -Description "Helper to display task info" {
   Write-Documentation
 }
@@ -129,7 +106,7 @@ task GenerateAssemblyInfo {
   }
 }
 
-task Build -depends Clean, GenerateAssemblyInfo, Invoke-MsBuild {
+task Build -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild {
   cp "$($base.dir)\getting started.txt" "$($build.dir)"
   cp "$($base.dir)\license.txt" "$($build.dir)\license-NJasmine.txt"
   cp "$($base.dir)\lib\PowerAssert\license-PowerAssert.txt" "$($build.dir)"
@@ -162,61 +139,11 @@ task KillNUnit {
   (ps nunit*) | % { $_.kill() }
 }
 
-function TrackPackage($zipFile, $buildLocation) {
-  if (-not $script:packages) {
-    $script:packages = @{};
-  }
-
-  $script:packages[$zipFile] = $buildLocation
-}
-
 task RunNUnitGUI {
   Invoke-TestRunnerGui @("$($build.dir)\NJasmine.tests.dll")
 }
 
-task Build_2_5_9 {
-
-  $subParameters = @{ 
-	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
-	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
-	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\lib\"
-	NUnitBinPath = "$($base.dir)\packages\NUnit.2.5.9.10348\tools\"
-  }
-
-  TrackPackage "NJasmine_for_NUnit-2.5.9.zip" $build.dir
-  
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -parameters $subParameters -init { $build.dir = "$($base.dir)\build_2_5_9\" }
-}
-
-task Build_2_5_10 {
-
-  $subParameters = @{ 
-	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
-	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
-	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.5.10.11092\Tools\lib\"
-	NUnitBinPath = "$($base.dir)\packages\NUnit.2.5.10.11092\tools\"
-  }
-
-  TrackPackage "NJasmine_for_NUnit-2.5.10 (stable).zip" $build.dir
-  
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -parameters $subParameters -init { $build.dir = "$($base.dir)\build_2_5_10\" }
-}
-
-task Build_2_6_0 {
-
-  $subParameters = @{ 
-	NUnitCoreDllPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\lib\"
-	UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\lib\"
-	NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.6.0.12054\lib\"
-	NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\"
-  }
-
-  TrackPackage "NJasmine_for_NUnit-2.6.0.zip" $build.dir
-
-  invoke-psake -buildFile .\build.ps1 -taskList @("AllTests") -parameters $subParameters -init { $build.dir = "$($base.dir)\build_2_6_0\" }
-}
-
-task BuildNuget -depends Build_2_6_0 {
+task BuildNuget -depends AllTests {
   $version = "$($build.version).0"
   $build = "$($base.dir)\build_2_6_0"
   $nugetTargetLib = "$($base.dir)\build_2_6_0\nuget\NJasmine"

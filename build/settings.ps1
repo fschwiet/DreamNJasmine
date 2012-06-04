@@ -46,11 +46,7 @@ properties {
   $packages.name = "lib"
   $packages.dir = "$($base.dir)\$($packages.name)"
 
-  $NUnitCoreDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
-  $UnitCoreInterfacesDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\Tools\lib\"
-  $NUnitFrameworkDllPath = "$($base.dir)\packages\NUnit.2.5.9.10348\lib\"
-  $NUnitBinPath = "$($base.dir)\packages\NUnit.2.5.9.10348\tools\"
-
+  $NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\"
   $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "NJasmine.NUnit.dll", "NJasmine.NUnit.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt")
   $integrationTestRunPattern = "*"
 
