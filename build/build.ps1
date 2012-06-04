@@ -98,7 +98,7 @@ task GenerateAssemblyInfo {
       -title "$projectName $($build.version).0" `
       -description $shortDescription `
       -company "n/a" `
-      -product "NJasmine $build.version.0" `
+      -product "NJasmine $($build.version).0" `
       -version "$($build.version).0" `
       -fileversion "$($build.version).0" `
       -copyright "Copyright © Frank Schwieterman 2010-2011" `
