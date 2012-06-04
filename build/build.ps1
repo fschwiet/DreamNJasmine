@@ -145,9 +145,9 @@ task RunNUnitGUI {
 
 task BuildNuget -depends AllTests {
   $version = "$($build.version).0"
-  $build = "$($base.dir)\build_2_6_0"
-  $nugetTargetLib = "$($base.dir)\build_2_6_0\nuget\NJasmine"
-  $nugetTargetRunner = "$($base.dir)\build_2_6_0\nuget\NJasmine.NUnit"
+  $build = "$($build.dir)"
+  $nugetTargetLib = "$($build.dir)\nuget\NJasmine"
+  $nugetTargetRunner = "$($build.dir)\nuget\NJasmine.NUnit"
 
   mkdir "$nugetTargetLib\lib\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
