@@ -10,26 +10,22 @@ namespace NJasmineTestLoader
     {
         public VerifyTestCommand()
         {
-            Command = "verify-test";
-            OneLineDescription = "Verifies the output of a test run meets specification.";
-            TraceCommandAfterParse = false;
-        }
+            this.IsCommand("verify-test", "Verifies the output of a test run meets specification.");
+            this.SkipsCommandSummaryBeforeRunning();
 
-        public override void FinishLoadingArguments(string[] remainingArguments)
-        {
-            VerifyNumberOfArguments(remainingArguments, 3);
-
-            TestName = remainingArguments[0];
-            XmlOutputFile = remainingArguments[1];
-            ConsoleOutputFile = remainingArguments[2];
+            this.HasAdditionalArguments(3, "<testName> <xmlOutputFile> <consoleOutputFile>");
         }
 
         public string TestName;
         public string XmlOutputFile;
         public string ConsoleOutputFile;
 
-        public override int Run()
+        public override int Run(string[] remainingArgs)
         {
+            TestName = remainingArgs[0];
+            XmlOutputFile = remainingArgs[1];
+            ConsoleOutputFile = remainingArgs[2];
+
             var xmlOutput = File.ReadAllText(XmlOutputFile);
             var consoleOutput = File.ReadAllText(ConsoleOutputFile);
 

@@ -14,17 +14,12 @@ namespace NJasmineTestLoader
     {
         public ListTestsCommand()
         {
-            Command = "list-tests";
-            OneLineDescription = "Lists the tests that are NJasmine specifications.";
-            TraceCommandAfterParse = false;
+            this.IsCommand("list-tests", "Lists the tests that are NJasmine specifications.");
+            this.SkipsCommandSummaryBeforeRunning();
+            this.HasAdditionalArguments(0);
         }
 
-        public override void FinishLoadingArguments(string[] remainingArguments)
-        {
-            VerifyNumberOfArguments(remainingArguments, 0);
-        }
-
-        public override int Run()
+        public override int Run(string[] args)
         {
             var types = from t in typeof(can_check_that_an_arbtirary_condition_is_true).Assembly.GetTypes()
                         where t.GetInterfaces().Contains(typeof(INJasmineInternalRequirement))

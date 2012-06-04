@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManyConsole">
-      <HintPath>..\packages\ManyConsole.0.3.6.0\lib\ManyConsole.dll</HintPath>
+    <Reference Include="ManyConsole, Version=0.4.2.7, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ManyConsole.0.4.2.7\lib\ManyConsole.dll</HintPath>
     </Reference>
     <Reference Include="NDesk.Options">
       <HintPath>..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
