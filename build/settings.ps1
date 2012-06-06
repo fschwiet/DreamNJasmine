@@ -28,6 +28,7 @@ properties {
   # Make sure Semver versioning is used for the build number.
   $build.version = "0.2.0"
   if($env:BUILD_NUMBER) { $build.version = $env:BUILD_NUMBER } 
+  $prerelease = $true;
 
   $tools = @{}
   $tools.dir = "$($base.dir)\tools"

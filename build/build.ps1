@@ -146,7 +146,6 @@ task BuildNuget {
 	rm $nugetBuildPath -force -rec
   }
   
-  $version = "$($build.version).0"
   $nugetTargetLib = "$nugetBuildPath\NJasmine"
   $nugetTargetRunner = "$nugetBuildPath\NJasmine.NUnit"
 
@@ -169,14 +168,20 @@ task BuildNuget {
 
   (get-content "$($base.dir)\nuget.install.ps1") -replace "!NUnitVersion!",$nunitVersion | set-content "$nugetTargetRunner\tools\install.ps1" -encoding UTF8
 
+  $packageVersion = "$($build.version).0"
+  
+  if ($prerelease) {
+	$packageVersion = $packageVersion + "-beta"
+  }
+
   update-xml "$nugetTargetLib\NJasmine.nuspec" {
-    set-xml -exactlyOnce "//package/metadata/version" "$version"
+    set-xml -exactlyOnce "//package/metadata/version" "$packageVersion"
   }
 
   update-xml "$nugetTargetRunner\NJasmine.NUnit.nuspec" {
-    set-xml -exactlyOnce "//package/metadata/version" "$version"
+    set-xml -exactlyOnce "//package/metadata/version" "$packageVersion"
     for-xml -exactlyOnce "//package/metadata/dependencies/dependency[@id='NJasmine']" {
-	  set-attribute "version" $version
+	  set-attribute "version" $packageVersion
 	}
   }
   
