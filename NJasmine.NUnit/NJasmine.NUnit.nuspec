@@ -15,6 +15,7 @@
     <tags>BDD TDD NUnit</tags>
 	<dependencies>
 		<dependency id="NUnit" version="2.6.0" />	
+		<dependency id="NUnit.Runners" version="2.6.0" />	
 		<dependency id="NJasmine" version="$version$" />
 	</dependencies>
   </metadata>
