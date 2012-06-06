@@ -144,14 +144,20 @@ task RunNUnitGUI {
 }
 
 task BuildNuget -depends AllTests {
+  
   $version = "$($build.version).0"
   $nugetTargetLib = "$($build.dir)\nuget\NJasmine"
   $nugetTargetRunner = "$($build.dir)\nuget\NJasmine.NUnit"
 
-
   mkdir "$nugetTargetLib\lib\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
   mkdir "$nugetTargetRunner\tools\" | out-null
+
+  $packagesConfig = "$($base.dir)\NJasmine.NUnit\packages.config"
+  $packagesConfigXml = [xml] (get-content $packagesConfig)
+  $nunitVersion = @($packagesConfigXml.packages.package | ? { $_.id -eq "NUnit" } | % { $_.version })
+  
+  Assert ($nunitVersion.length -eq 1) "Expected to find NUnit version in $packagesConfig, found $($nunitVersion.length)."
 
   cp "$($base.dir)\NJasmine\NJasmine.nuspec" "$nugetTargetLib\"
   cp "$($build.dir)\NJasmine.dll" "$nugetTargetLib\lib\"
@@ -159,7 +165,8 @@ task BuildNuget -depends AllTests {
   cp "$($base.dir)\NJasmine.NUnit\NJasmine.NUnit.nuspec" "$nugetTargetRunner\"
   cp "$($build.dir)\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
-  cp "$($base.dir)\nuget.install.ps1" "$nugetTargetRunner\tools\install.ps1"
+
+  (get-content "$($base.dir)\nuget.install.ps1") -replace "$NUnitVersion$",$nunitVersion | set-content "$nugetTargetRunner\tools\install.ps1" -encoding UTF8
 
   update-xml "$nugetTargetLib\NJasmine.nuspec" {
     set-xml -exactlyOnce "//package/metadata/version" "$version"
