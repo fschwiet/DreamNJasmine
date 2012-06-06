@@ -166,7 +166,7 @@ task BuildNuget -depends AllTests {
   cp "$($build.dir)\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
 
-  (get-content "$($base.dir)\nuget.install.ps1") -replace "$NUnitVersion$",$nunitVersion | set-content "$nugetTargetRunner\tools\install.ps1" -encoding UTF8
+  (get-content "$($base.dir)\nuget.install.ps1") -replace "!NUnitVersion!",$nunitVersion | set-content "$nugetTargetRunner\tools\install.ps1" -encoding UTF8
 
   update-xml "$nugetTargetLib\NJasmine.nuspec" {
     set-xml -exactlyOnce "//package/metadata/version" "$version"

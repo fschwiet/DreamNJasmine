@@ -1,8 +1,15 @@
 
 param($installPath, $toolsPath, $package, $project)
 
-$nunitPaths = gci (join-path $installPath "..") "NUnit.$NUnitVersion$" | % { $_.fullname }
+$nunitPaths = gci (join-path $installPath "..") "NUnit.Runners.!NUnitVersion!" | % { $_.fullname }
+
 foreach($nunitPath in $nunitPaths) {
-    $null = mkdir "$nunitPath\tools\addins"
+    
+    $targetPath = "$nunitPath\tools\addins";
+    
+    if (-not (test-path $targetPath)) {
+        $null = mkdir $targetPath
+    }
+    
     cp "$installPath\lib\*" "$nunitPath\tools\addins"
 }
