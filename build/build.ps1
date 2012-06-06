@@ -163,6 +163,8 @@ task BuildNuget {
   cp "$($build.dir)\NJasmine.dll" "$nugetTargetLib\lib\"
   cp "$($build.dir)\NJasmine.pdb" "$nugetTargetLib\lib\"
   cp "$($base.dir)\NJasmine.NUnit\NJasmine.NUnit.nuspec" "$nugetTargetRunner\"
+  cp "$($build.dir)\NJasmine.dll" "$nugetTargetRunner\lib\"
+  cp "$($build.dir)\NJasmine.pdb" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
 
