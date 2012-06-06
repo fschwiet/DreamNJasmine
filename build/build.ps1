@@ -26,12 +26,7 @@ properties {
   # and will not have access to any of your shared properties.
 }
 
-Task Default -depends Initialize, TraceSourceControlCommit, Compile
-Task Release -depends Default, Package
-Task Deploy -depends Publish
-Task Compile -Depends Initialize, AllTests
-task AllTests -depends Build, CopyNUnitToBuild, IntegrationTest
-
+task Default -depends Initialize, TraceSourceControlCommit, CopyNUnitToBuild, IntegrationTest, BuildNuget
 task RunGUI -depends KillNUnit, TraceSourceControlCommit, Build, CopyNUnitToBuild, RunNUnitGUI
 
 Task Test { 
@@ -143,11 +138,17 @@ task RunNUnitGUI {
   Invoke-TestRunnerGui @("$($build.dir)\NJasmine.tests.dll")
 }
 
-task BuildNuget -depends AllTests {
+task BuildNuget {
+  
+  $nugetBuildPath = "$($build.dir)\nuget"
+  
+  if (test-path $nugetBuildPath) {
+	rm $nugetBuildPath -force -rec
+  }
   
   $version = "$($build.version).0"
-  $nugetTargetLib = "$($build.dir)\nuget\NJasmine"
-  $nugetTargetRunner = "$($build.dir)\nuget\NJasmine.NUnit"
+  $nugetTargetLib = "$nugetBuildPath\NJasmine"
+  $nugetTargetRunner = "$nugetBuildPath\NJasmine.NUnit"
 
   mkdir "$nugetTargetLib\lib\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
