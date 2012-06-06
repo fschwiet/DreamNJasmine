@@ -1,7 +1,10 @@
 
 param($installPath, $toolsPath, $package, $project)
 
-$nunitPaths = gci (join-path $installPath "..") "NUnit.Runners.!NUnitVersion!" | % { $_.fullname }
+$nunitVersion = "!NUnitVersion!";
+$nunitRunnerPattern = "NUnit.Runners." + $nunitVersion.substring(0, $nunitVersion.lastIndexOf(".")) + ".*"
+
+$nunitPaths = gci (join-path $installPath "..") $nunitRunnerPattern | % { $_.fullname }
 
 foreach($nunitPath in $nunitPaths) {
     
