@@ -150,6 +150,7 @@ task BuildNuget {
   $nugetTargetRunner = "$nugetBuildPath\NJasmine.NUnit"
 
   mkdir "$nugetTargetLib\lib\" | out-null
+  mkdir "$nugetTargetLib\tools\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
   mkdir "$nugetTargetRunner\tools\" | out-null
 
@@ -167,6 +168,9 @@ task BuildNuget {
   cp "$($build.dir)\NJasmine.pdb" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.dll" "$nugetTargetRunner\lib\"
   cp "$($build.dir)\NJasmine.NUnit.pdb" "$nugetTargetRunner\lib\"
+
+  "Nuget package NJasmine is included to write tests, include NJasmine.NUnit to run tests http://nuget.org/packages/NJasmine.NUnit." | set-content "$nugetTargetLib\tools\readme.txt" -encoding utf8
+  "Run NJasmine tests by running the NUnit runners included with NUnit.Runners.  Nuget package NJasmine.NUnit copies the necessary DLLs to the corresponding addins folder." | set-content "$nugetTargetRunner\tools\readme.txt" -encoding utf8
 
   (get-content "$($base.dir)\nuget.install.ps1") -replace "!NUnitVersion!",$nunitVersion | set-content "$nugetTargetRunner\tools\install.ps1" -encoding UTF8
 
