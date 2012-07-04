@@ -50,13 +50,13 @@ namespace NJasmine.NUnit
             }
         }
 
-        public void visitFork(ForkElement origin, TestPosition position)
+        public void visitFork(ForkElement element, TestPosition position)
         {
-            if (origin.Action == null)
+            if (element.Action == null)
             {
                 var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
-                _buildContext.NameGenator.NameTest(origin.Description, _parent, result);
+                _buildContext.NameGenator.NameTest(element.Description, _parent, result);
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -70,39 +70,39 @@ namespace NJasmine.NUnit
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
-                _buildContext.NameGenator.NameFork(origin.Description, _parent, resultBuilder);
+                _buildContext.NameGenator.NameFork(element.Description, _parent, resultBuilder);
 
-                var finalResultBuilder = subSuite.RunSuiteAction(_buildContext, _globalSetup, origin.Action, false, resultBuilder);
+                var finalResultBuilder = subSuite.RunSuiteAction(_buildContext, _globalSetup, element.Action, false, resultBuilder);
 
                 _accumulatedDescendants.Add(finalResultBuilder);
             }
         }
 
-        public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> origin, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> element, TestPosition position)
         {
             return default(TArranged);
         }
 
-        public void visitAfterAll(AfterAllElement origin, TestPosition position)
+        public void visitAfterAll(AfterAllElement element, TestPosition position)
         {
         }
 
-        public TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position)
         {
             return default(TArranged);
         }
 
-        public void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
+        public void visitAfterEach(SpecificationElement element, Action action, TestPosition position)
         {
         }
 
-        public void visitTest(TestElement origin, TestPosition position)
+        public void visitTest(TestElement element, TestPosition position)
         {
-            if (origin.Action == null)
+            if (element.Action == null)
             {
                 var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
-                _buildContext.NameGenator.NameTest(origin.Description, _parent, buildResult);
+                _buildContext.NameGenator.NameTest(element.Description, _parent, buildResult);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 
@@ -110,7 +110,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var buildResult = _buildContext.CreateTest(this._globalSetup, _parent, position, origin.Description);
+                var buildResult = _buildContext.CreateTest(this._globalSetup, _parent, position, element.Description);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 
@@ -118,36 +118,36 @@ namespace NJasmine.NUnit
             }
         }
 
-        public void visitIgnoreBecause(IgnoreElement origin, TestPosition position)
+        public void visitIgnoreBecause(IgnoreElement element, TestPosition position)
         {
             if (_accumulatedDescendants.Count > 0)
             {
-                _ignoreReason = origin.Reason;
+                _ignoreReason = element.Reason;
             }
             else
             {
-                _parent.AddIgnoreReason(origin.Reason);
+                _parent.AddIgnoreReason(element.Reason);
             }
         }
 
-        public void visitExpect(ExpectElement origin, TestPosition position)
+        public void visitExpect(ExpectElement element, TestPosition position)
         {
         }
 
-        public void visitWaitUntil(WaitUntilElement origin, TestPosition position)
+        public void visitWaitUntil(WaitUntilElement element, TestPosition position)
         {
         }
 
-        public void visitWithCategory(WithCategoryElement origin, TestPosition position)
+        public void visitWithCategory(WithCategoryElement element, TestPosition position)
         {
-            _accumulatedCategories.Add(origin.Category);
+            _accumulatedCategories.Add(element.Category);
         }
 
-        public void visitTrace(TraceElement origin, TestPosition position)
+        public void visitTrace(TraceElement element, TestPosition position)
         {
         }
 
-        public void visitLeakDisposable(LeakDisposableElement origin, TestPosition position)
+        public void visitLeakDisposable(LeakDisposableElement element, TestPosition position)
         {
         }
     }

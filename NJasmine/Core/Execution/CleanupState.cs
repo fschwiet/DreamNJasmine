@@ -12,14 +12,14 @@ namespace NJasmine.Core.Execution
         {
         }
 
-        public override void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
+        public override void visitAfterEach(SpecificationElement element, Action action, TestPosition position)
         {
-            throw DontException(origin);
+            throw DontException(element);
         }
 
-        public override TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position)
+        public override TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position)
         {
-            throw DontException(origin);
+            throw DontException(element);
         }
     }
 }

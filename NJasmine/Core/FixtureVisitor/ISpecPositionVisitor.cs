@@ -7,22 +7,22 @@ namespace NJasmine.Core.FixtureVisitor
 {
     public interface ISpecPositionVisitor
     {
-        void visitFork(ForkElement origin, TestPosition position);
+        void visitFork(ForkElement element, TestPosition position);
 
-        TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> origin, TestPosition position);
-        void visitAfterAll(AfterAllElement origin, TestPosition position);
+        TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> element, TestPosition position);
+        void visitAfterAll(AfterAllElement element, TestPosition position);
 
-        TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position);
-        void visitAfterEach(SpecificationElement origin, Action action, TestPosition position);
+        TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position);
+        void visitAfterEach(SpecificationElement element, Action action, TestPosition position);
 
-        void visitTest(TestElement origin, TestPosition position);
-        void visitIgnoreBecause(IgnoreElement origin, TestPosition position);
+        void visitTest(TestElement element, TestPosition position);
+        void visitIgnoreBecause(IgnoreElement element, TestPosition position);
 
-        void visitExpect(ExpectElement origin, TestPosition position);
-        void visitWaitUntil(WaitUntilElement origin, TestPosition position);
-        void visitWithCategory(WithCategoryElement origin, TestPosition position);
+        void visitExpect(ExpectElement element, TestPosition position);
+        void visitWaitUntil(WaitUntilElement element, TestPosition position);
+        void visitWithCategory(WithCategoryElement element, TestPosition position);
 
-        void visitTrace(TraceElement origin, TestPosition position);
-        void visitLeakDisposable(LeakDisposableElement origin, TestPosition position);
+        void visitTrace(TraceElement element, TestPosition position);
+        void visitLeakDisposable(LeakDisposableElement element, TestPosition position);
     }
 }

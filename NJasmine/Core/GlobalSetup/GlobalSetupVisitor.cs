@@ -71,13 +71,13 @@ namespace NJasmine.Core.GlobalSetup
             _currentTestPosition = new TestPosition();
         }
 
-        public void visitFork(ForkElement origin, TestPosition position)
+        public void visitFork(ForkElement element, TestPosition position)
         {
             if (position.IsAncestorOf(_targetPosition))
             {
                 try
                 {
-                    origin.Action();
+                    element.Action();
                 }
                 catch (Exception e)
                 {
@@ -109,21 +109,21 @@ namespace NJasmine.Core.GlobalSetup
             }
         }
 
-        public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> origin, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
 
             TArranged result = default(TArranged);
 
             if (position.IsOnPathTo(_targetPosition))
             {
-                _executingPastDiscovery = origin;
+                _executingPastDiscovery = element;
 
                 try
                 {
                     try
                     {
-                        result = origin.Action();
+                        result = element.Action();
                     }
                     catch (Exception e)
                     {
@@ -141,34 +141,34 @@ namespace NJasmine.Core.GlobalSetup
             return result;
         }
 
-        public void visitAfterAll(AfterAllElement origin, TestPosition position)
+        public void visitAfterAll(AfterAllElement element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
 
             if (position.IsOnPathTo(_targetPosition))
             {
                 _setupResultAccumulator.AddCleanupAction(position, delegate {
-                    _executingCleanup = origin;
-                    origin.Action();
+                    _executingCleanup = element;
+                    element.Action();
                     _executingCleanup = null;
                 });
             }
         }
 
-        public TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
             return default(TArranged);
         }
 
-        public void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
+        public void visitAfterEach(SpecificationElement element, Action action, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
         }
 
-        public void visitTest(TestElement origin, TestPosition position)
+        public void visitTest(TestElement element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
 
             _currentTestPosition = position;
 
@@ -184,48 +184,48 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker.UnwindToPosition(_targetPosition);
         }
 
-        public void visitIgnoreBecause(IgnoreElement origin, TestPosition position)
+        public void visitIgnoreBecause(IgnoreElement element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
         }
 
-        public void visitExpect(ExpectElement origin, TestPosition position)
+        public void visitExpect(ExpectElement element, TestPosition position)
         {
             if (_executingPastDiscovery != null)
             {
-                Expect.That(origin.Expectation);
+                Expect.That(element.Expectation);
             }
         }
 
-        public void visitWaitUntil(WaitUntilElement origin, TestPosition position)
+        public void visitWaitUntil(WaitUntilElement element, TestPosition position)
         {
             if (_executingPastDiscovery != null)
             {
-                Expect.Eventually(origin.Expectation, origin.WaitMaxMS, origin.WaitIncrementMS);
+                Expect.Eventually(element.Expectation, element.WaitMaxMS, element.WaitIncrementMS);
             }
         }
 
-        public void visitWithCategory(WithCategoryElement origin, TestPosition position)
+        public void visitWithCategory(WithCategoryElement element, TestPosition position)
         {
-            CheckNotAlreadyPastDiscovery(origin);
+            CheckNotAlreadyPastDiscovery(element);
         }
 
-        public void visitTrace(TraceElement origin, TestPosition position)
+        public void visitTrace(TraceElement element, TestPosition position)
         {
             if (_executingPastDiscovery != null)
             {
-                _traceTracker.AddTraceEntry(position, origin.Message);
+                _traceTracker.AddTraceEntry(position, element.Message);
             }
 
             if (_executingCleanup != null)
             {
-                throw new Exception("Attempted to call " + origin + "() from within " + _executingCleanup);
+                throw new Exception("Attempted to call " + element + "() from within " + _executingCleanup);
             }
         }
 
-        public void visitLeakDisposable(LeakDisposableElement origin, TestPosition position)
+        public void visitLeakDisposable(LeakDisposableElement element, TestPosition position)
         {
-            _setupResultAccumulator.LeakDisposable(origin.Disposable);
+            _setupResultAccumulator.LeakDisposable(element.Disposable);
         }
 
         private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
