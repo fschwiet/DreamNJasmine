@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
@@ -14,22 +15,22 @@ namespace NJasmine.Core.Execution
             SpecElement = specElement;
         }
 
-        public override void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
+        public override void visitFork(ForkElement origin, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
+        public override TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> origin, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
+        public override void visitAfterAll(AfterAllElement origin, TestPosition position)
         {
             throw DontException(origin);
         }
 
-        public override void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
+        public override void visitTest(TestElement origin, TestPosition position)
         {
             throw DontException(origin);
         }

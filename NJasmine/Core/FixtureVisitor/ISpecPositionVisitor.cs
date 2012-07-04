@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using NJasmine.Core.Elements;
 
 namespace NJasmine.Core.FixtureVisitor
 {
     public interface ISpecPositionVisitor
     {
-        void visitFork(SpecificationElement origin, string description, Action action, TestPosition position);
+        void visitFork(ForkElement origin, TestPosition position);
 
-        TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position);
-        void visitAfterAll(SpecificationElement origin, Action action, TestPosition position);
+        TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> origin, TestPosition position);
+        void visitAfterAll(AfterAllElement origin, TestPosition position);
 
-        TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position);
+        TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position);
         void visitAfterEach(SpecificationElement origin, Action action, TestPosition position);
 
-        void visitTest(SpecificationElement origin, string description, Action action, TestPosition position);
-        void visitIgnoreBecause(SpecificationElement origin, string reason, TestPosition position);
+        void visitTest(TestElement origin, TestPosition position);
+        void visitIgnoreBecause(IgnoreElement origin, TestPosition position);
 
-        void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position);
-        void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position);
-        void visitWithCategory(SpecificationElement origin, string category, TestPosition position);
+        void visitExpect(ExpectElement origin, TestPosition position);
+        void visitWaitUntil(WaitUntilElement origin, TestPosition position);
+        void visitWithCategory(WithCategoryElement origin, TestPosition position);
 
-        void visitTrace(SpecificationElement origin, string message, TestPosition position);
-        void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position);
+        void visitTrace(TraceElement origin, TestPosition position);
+        void visitLeakDisposable(LeakDisposableElement origin, TestPosition position);
     }
 }

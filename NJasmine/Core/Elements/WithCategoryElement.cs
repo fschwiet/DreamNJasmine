@@ -8,16 +8,16 @@ namespace NJasmine.Core.Elements
 {
     public class WithCategoryElement : SpecificationElement
     {
-        readonly string _category;
+        public readonly string Category;
 
         public WithCategoryElement(ActualKeyword actualKeyword, string category) : base(actualKeyword)
         {
-            _category = category;
+            Category = category;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitWithCategory(this, _category, position);
+            visitor.visitWithCategory(this, position);
             return ElementResultUnused;
         }
     }

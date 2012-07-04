@@ -9,17 +9,17 @@ namespace NJasmine.Core.Elements
 {
     public class ExpectElement : SpecificationElement
     {
-        readonly Expression<Func<bool>> _expectation;
+        public readonly Expression<Func<bool>> Expectation;
 
         public ExpectElement(ActualKeyword actualKeyword, Expression<Func<bool>> expectation)
             : base(actualKeyword)
         {
-            _expectation = expectation;
+            Expectation = expectation;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitExpect(this, _expectation, position);
+            visitor.visitExpect(this, position);
             return ElementResultUnused;
         }
     }

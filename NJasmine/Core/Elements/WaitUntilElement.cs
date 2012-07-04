@@ -9,21 +9,21 @@ namespace NJasmine.Core.Elements
 {
     public class WaitUntilElement : SpecificationElement
     {
-        readonly Expression<Func<bool>> _expectation;
-        readonly int _msWaitMax;
-        readonly int _msWaitIncrement;
+        public readonly Expression<Func<bool>> Expectation;
+        public readonly int WaitMaxMS;
+        public readonly int WaitIncrementMS;
 
-        public WaitUntilElement(ActualKeyword actualKeyword, Expression<Func<bool>> expectation, int msWaitMax, int msWaitIncrement)
+        public WaitUntilElement(ActualKeyword actualKeyword, Expression<Func<bool>> expectation, int waitMaxMs, int waitIncrementMs)
             : base(actualKeyword)
         {
-            _expectation = expectation;
-            _msWaitMax = msWaitMax;
-            _msWaitIncrement = msWaitIncrement;
+            Expectation = expectation;
+            WaitMaxMS = waitMaxMs;
+            WaitIncrementMS = waitIncrementMs;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitWaitUntil(this, _expectation, _msWaitMax, _msWaitIncrement, position);
+            visitor.visitWaitUntil(this, position);
             return null;
         }
     }

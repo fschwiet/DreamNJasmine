@@ -8,17 +8,17 @@ namespace NJasmine.Core.Elements
 {
     public class AfterAllElement : SpecificationElement
     {
-        readonly Action _action;
+        public readonly Action Action;
 
         public AfterAllElement(ActualKeyword actualKeyword, Action action)
             : base(actualKeyword)
         {
-            _action = action;
+            Action = action;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitAfterAll(this, _action, position);
+            visitor.visitAfterAll(this, position);
             return ElementResultUnused;
         }
     }

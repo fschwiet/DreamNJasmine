@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
@@ -16,7 +17,7 @@ namespace NJasmine.Core.Execution
             throw DontException(origin);
         }
 
-        public override TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position)
+        public override TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> origin, TestPosition position)
         {
             throw DontException(origin);
         }

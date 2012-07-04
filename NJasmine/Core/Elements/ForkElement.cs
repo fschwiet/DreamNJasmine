@@ -3,7 +3,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Elements
 {
-    class ForkElement : SpecificationElement
+    public class ForkElement : SpecificationElement
     {
         readonly public string Description;
         readonly public Action Action;
@@ -16,7 +16,7 @@ namespace NJasmine.Core.Elements
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitFork(this, Description, Action, position);
+            visitor.visitFork(this, position);
             return ElementResultUnused;
         }
     }

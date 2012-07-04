@@ -8,17 +8,17 @@ namespace NJasmine.Core.Elements
 {
     public class BeforeAllElement<T> : SpecificationElement
     {
-        readonly Func<T> _action;
+        public readonly Func<T> Action;
 
         public BeforeAllElement(ActualKeyword actualKeyword, Func<T> action)
             : base(actualKeyword)
         {
-            _action = action;
+            Action = action;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            return visitor.visitBeforeAll(this, _action, position);
+            return visitor.visitBeforeAll(this, position);
         }
     }
 

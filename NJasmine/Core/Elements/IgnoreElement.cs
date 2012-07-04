@@ -8,16 +8,16 @@ namespace NJasmine.Core.Elements
 {
     public class IgnoreElement : SpecificationElement
     {
-        readonly string _reason;
+        public readonly string Reason;
 
         public IgnoreElement(ActualKeyword actualKeyword, string reason) : base(actualKeyword)
         {
-            _reason = reason;
+            Reason = reason;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitIgnoreBecause(this, _reason, position);
+            visitor.visitIgnoreBecause(this, position);
             return ElementResultUnused;
         }
     }
