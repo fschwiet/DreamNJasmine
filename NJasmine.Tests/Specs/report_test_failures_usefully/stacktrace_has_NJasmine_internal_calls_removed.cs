@@ -32,8 +32,7 @@ namespace NamespaceIsntNJasmineTests
 
             var stackTrace = fixtureResult.withStackTraces().Single();
             Assert.That(stackTrace, Is.Not.StringContaining("NJasmine.Core"));
-
-            Assert.That(!TestResultUtil.PatternForNJasmineAnonymousMethod.IsMatch(stackTrace));
+            Assert.That(stackTrace, Is.Not.StringContaining("NJasmine.NUnit"));
         }
     }
 }
