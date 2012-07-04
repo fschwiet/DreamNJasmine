@@ -24,10 +24,10 @@ namespace NJasmine.Core
         {
             T result = default(T);
 
-            var position1 = CurrentPosition;
+            var position = CurrentPosition;
             var nextPosition = CurrentPosition.GetNextSiblingPosition();
             CurrentPosition = CurrentPosition.GetFirstChildPosition();
-            result = ((Func<TestPosition, T>) (position => { return (T)specificationElement.Run(Visitor, position); }))(position1);
+            result = (T)specificationElement.Run(Visitor, position);
             CurrentPosition = nextPosition;
 
             return result;
