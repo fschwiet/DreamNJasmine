@@ -33,15 +33,23 @@ Task Test {
   Invoke-TestRunner @("$($build.dir)\NJasmine.tests.dll")
 }
 
-Task IntegrationTest -Depends Test { 
-  $testResults = @();
+function VisitTests($testHandler) {
 
   $tests = ([xml](exec {& "$($build.dir)\NJasmine.TestUtil.exe" "list-tests"})).ArrayOfTestDefinition.TestDefinition | 
         ? { $_.Name -like $integrationTestRunPattern };
 
-  $global:t = $tests; # todo: is this needed any longer?
-
   foreach($test in $tests)  { 
+  
+    & $testHandler $test
+  }
+}
+
+Task IntegrationTest -Depends Test { 
+  
+  VisitTests { 
+  
+	param ($test);
+	
     $testName = $test.Name;
 
     write-output "Checking $testName."
