@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Execution
@@ -16,56 +17,56 @@ namespace NJasmine.Core.Execution
             _runContext = runContext;
         }
 
-        public void visitFork(SpecificationElement origin, string description, Action action, TestPosition position)
+        public void visitFork(ForkElement element, TestPosition position)
         {
         }
 
-        public TArranged visitBeforeAll<TArranged>(SpecificationElement origin, Func<TArranged> action, TestPosition position)
+        public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> element, TestPosition position)
         {
             return default(TArranged);
         }
 
-        public void visitAfterAll(SpecificationElement origin, Action action, TestPosition position)
+        public void visitAfterAll(AfterAllElement element, TestPosition position)
         {
         }
 
-        public TArranged visitBeforeEach<TArranged>(SpecificationElement origin, Func<TArranged> factory, TestPosition position)
+        public TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position)
         {
             return default(TArranged);
         }
 
-        public void visitAfterEach(SpecificationElement origin, Action action, TestPosition position)
+        public void visitAfterEach(SpecificationElement element, Action action, TestPosition position)
         {
         }
 
-        public void visitTest(SpecificationElement origin, string description, Action action, TestPosition position)
+        public void visitTest(TestElement element, TestPosition position)
         {
         }
 
-        public void visitIgnoreBecause(SpecificationElement origin, string reason, TestPosition position)
+        public void visitIgnoreBecause(IgnoreElement element, TestPosition position)
         {
         }
 
-        public void visitExpect(SpecificationElement origin, Expression<Func<bool>> expectation, TestPosition position)
+        public void visitExpect(ExpectElement element, TestPosition position)
         {
         }
 
-        public void visitWaitUntil(SpecificationElement origin, Expression<Func<bool>> expectation, int totalWaitMs, int waitIncrementMs, TestPosition position)
+        public void visitWaitUntil(WaitUntilElement element, TestPosition position)
         {
         }
 
-        public void visitWithCategory(SpecificationElement origin, string category, TestPosition position)
+        public void visitWithCategory(WithCategoryElement element, TestPosition position)
         {
         }
 
-        public void visitTrace(SpecificationElement origin, string message, TestPosition position)
+        public void visitTrace(TraceElement element, TestPosition position)
         {
-            _runContext.AddTrace(message);
+            _runContext.AddTrace(element.Message);
         }
 
-        public void visitLeakDisposable(SpecificationElement origin, IDisposable disposable, TestPosition position)
+        public void visitLeakDisposable(LeakDisposableElement element, TestPosition position)
         {
-            _runContext.LeakDisposable(disposable);
+            _runContext.LeakDisposable(element.Disposable);
         }
     }
 }

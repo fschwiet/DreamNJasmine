@@ -73,12 +73,10 @@ namespace NJasmine.Core
                 {
                     if (filterNJasmineInternals)
                     {
-                        var lineIsInNJasmineCore = line.Trim().StartsWith("at NJasmine.Core");
-
-                        if (lineIsInNJasmineCore)
+                        if (line.Trim().StartsWith("at NJasmine.Core"))
                             continue;
 
-                        if (PatternForNJasmineAnonymousMethod.IsMatch(line))
+                        if (line.Trim().StartsWith("at NJasmine.NUnit"))
                             continue;
                     }
 
@@ -101,7 +99,5 @@ namespace NJasmine.Core
 
             return sb.ToString();
         }
-
-        public static Regex PatternForNJasmineAnonymousMethod = new Regex(@"NJasmine\..*\.<>");
     }
 }

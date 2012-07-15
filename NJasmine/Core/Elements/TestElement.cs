@@ -8,18 +8,18 @@ namespace NJasmine.Core.Elements
 {
     public class TestElement : SpecificationElement
     {
-        readonly string _description;
-        readonly Action _action;
+        public readonly string Description;
+        public readonly Action Action;
 
         public TestElement(ActualKeyword actualKeyword, string description, Action action) : base(actualKeyword)
         {
-            _description = description;
-            _action = action;
+            Description = description;
+            Action = action;
         }
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            visitor.visitTest(this, _description, _action, position);
+            visitor.visitTest(this, position);
             return ElementResultUnused;
         }
     }
