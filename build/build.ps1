@@ -44,7 +44,25 @@ function VisitTests($testHandler) {
   }
 }
 
-Task IntegrationTest -Depends Test { 
+Task VisualStudioIntegrationTest -Depends Test { 
+  
+  VisitTests { 
+  
+	param ($test);
+	
+    $testName = $test.Name;
+
+    write-output "Checking $testName."
+
+    $testXmlTarget = (join-path $build.dir "IntegrationTest.xml")
+    $testConsoleTarget = (join-path $build.dir "IntegrationTest.txt")
+
+	#WAT DO
+
+  }
+}
+
+Task NUnitIntegrationTest -Depends Test { 
   
   VisitTests { 
   
@@ -62,6 +80,8 @@ Task IntegrationTest -Depends Test {
     exec { & "$($build.dir)\NJasmine.TestUtil.exe" "verify-test" """$testName""" """$testXmlTarget""" """$testConsoleTarget""" }
   }
 }
+
+task IntegrationTest -depends VisualStudioIntegrationTest, NUnitIntegrationTest
 
 Task Initialize -Depends Clean {
   New-Item $release.dir -ItemType Directory | Out-Null
