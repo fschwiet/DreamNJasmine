@@ -1,4 +1,4 @@
-﻿# 
+﻿ 
 # Copyright (c) 2011-2012, Toji Project Contributors
 # 
 # Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
@@ -26,8 +26,9 @@ properties {
   # and will not have access to any of your shared properties.
 }
 
-task Default -depends Initialize, TraceSourceControlCommit, CopyNUnitToBuild, IntegrationTest, BuildNuget
-task RunGUI -depends KillNUnit, TraceSourceControlCommit, Build, CopyNUnitToBuild, RunNUnitGUI
+task Build -depends RunMSBuild, CopyNUnitToBuild, CopyVS2012TestToBuild
+task Default -depends Initialize, TraceSourceControlCommit, Build, IntegrationTest, BuildNuget
+task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
 Task Test { 
   Invoke-TestRunner @("$($build.dir)\NJasmine.tests.dll")
@@ -129,13 +130,13 @@ task GenerateAssemblyInfo {
   }
 }
 
-task Build -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild {
+task RunMSBuild -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild {
   cp "$($base.dir)\getting started.txt" "$($build.dir)"
   cp "$($base.dir)\license.txt" "$($build.dir)\license-NJasmine.txt"
   cp "$($base.dir)\lib\PowerAssert\license-PowerAssert.txt" "$($build.dir)"
 }
 
-task CopyNUnitToBuild -depends Build {
+task CopyNUnitToBuild {
   $requiredNUnitFiles = @("nunit-agent.exe*", "nunit-console.exe*", "nunit.exe*", "lib", "nunit.framework.dll");
   $targetForNUnitFiles = (join-path $build.dir "nunit\")
   $targetForNUnitAddins = (join-path $targetForNUnitFiles "addins\")
@@ -164,6 +165,18 @@ task KillNUnit {
 
 task RunNUnitGUI {
   Invoke-TestRunnerGui @("$($build.dir)\NJasmine.tests.dll")
+}
+
+task CopyVS2012TestToBuild {
+
+  $targetPath = (join-path $build.dir "VS2012")
+
+  if (test-path $targetPath) {
+    rm -force -recurse $targetPath
+  }
+
+  $null = mkdir $targetPath;
+  cp $VS2012BinPath\* $targetPath
 }
 
 task BuildNuget {
