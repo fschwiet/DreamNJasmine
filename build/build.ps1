@@ -47,7 +47,9 @@ function VisitTests($testHandler) {
 
 Task VisualStudioIntegrationTest { 
   
-  $discovererListing = exec {& "$($build.dir)\VS2012\vstest.console.exe" /ListDiscoverers }
+  $vsTestExe = "$($build.dir)\VS2012\vstest.console.exe"
+
+  $discovererListing = exec {& $vsTestExe /ListDiscoverers }
 
   Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
 
@@ -59,11 +61,7 @@ Task VisualStudioIntegrationTest {
 
     write-output "Checking $testName."
 
-    $testXmlTarget = (join-path $build.dir "IntegrationTest.xml")
-    $testConsoleTarget = (join-path $build.dir "IntegrationTest.txt")
-
-	#WAT DO
-
+    exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
   }
 }
 
