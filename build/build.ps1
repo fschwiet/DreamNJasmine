@@ -27,7 +27,7 @@ properties {
 }
 
 task Build -depends RunMSBuild, CopyNUnitToBuild, CopyVS2012TestToBuild
-task Default -depends Initialize, TraceSourceControlCommit, Build, IntegrationTest, BuildNuget
+task Default -depends Initialize, TraceSourceControlCommit, Build, Test, IntegrationTest, BuildNuget
 task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
 Task Test { 
@@ -45,11 +45,15 @@ function VisitTests($testHandler) {
   }
 }
 
-Task VisualStudioIntegrationTest -Depends Test { 
+Task VisualStudioIntegrationTest { 
   
+  $discovererListing = exec {& "$($build.dir)\VS2012\vstest.console.exe" /ListDiscoverers }
+
+  Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
+
   VisitTests { 
   
-	param ($test);
+	  param ($test);
 	
     $testName = $test.Name;
 
@@ -63,7 +67,7 @@ Task VisualStudioIntegrationTest -Depends Test {
   }
 }
 
-Task NUnitIntegrationTest -Depends Test { 
+Task NUnitIntegrationTest { 
   
   VisitTests { 
   
@@ -176,7 +180,13 @@ task CopyVS2012TestToBuild {
   }
 
   $null = mkdir $targetPath;
-  cp $VS2012BinPath\* $targetPath
+  cp -recurse $VS2012BinPath\* $targetPath
+
+  $targetForExtensions = "$targetPath\Extensions"
+
+  cp (join-path $build.dir "njasmine.dll") $targetForExtensions
+  cp (join-path $build.dir "njasmine.vs2012.dll") $targetForExtensions
+  cp (join-path $build.dir "powerassert.dll") $targetForExtensions
 }
 
 task BuildNuget {
