@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="TestWindow.Microsoft.0771d463-d74d-4e95-aac2-39d3c7ec1f97">
+    <Name>Test Window</Name>
+    <Author>Microsoft</Author>
+    <Version>11.0</Version>
+    <Description xml:space="preserve">Unit Test Explorer</Description>
+    <Locale>1033</Locale>
+    <SupportedProducts>
+      <VisualStudio Version="11.0">
+        <Edition>Ultimate</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="4.0" MaxVersion="4.5" />
+    <SystemComponent>true</SystemComponent>
+  </Identifier>
+  <References />
+  <Content>
+    <VsPackage>Microsoft.VisualStudio.TestWindow.pkgdef</VsPackage>
+    <MefComponent>Microsoft.VisualStudio.TestWindow.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestWindow.Core.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestWindow.VSTest.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.MSTest.TestWindow.dll</MefComponent>
+    <!-- Do not remove these Testlatform assemblies, MEF needs to be seeded with these to work. See bug 306205 -->
+    <MefComponent>Microsoft.VisualStudio.TestPlatform.Client.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestPlatform.Common.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestPlatform.Core.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestPlatform.Utilities.dll</MefComponent>
+    <MefComponent>Microsoft.VisualStudio.TestWindow.CppUnitTestExtension.dll</MefComponent>
+  </Content>
+</Vsix>
