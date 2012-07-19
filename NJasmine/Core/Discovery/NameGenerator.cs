@@ -23,34 +23,38 @@ namespace NJasmine.Core.Discovery
 
         public void NameFork(string testShortName, TestBuilder parentTest, TestBuilder test)
         {
-            test.Shortname = testShortName;
-            test.FullName = parentTest.FullName + ", " + testShortName;
-            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
+            test.Name.Shortname = testShortName;
+            test.Name.FullName = parentTest.Name.FullName + ", " + testShortName;
+            test.Name.MultilineName = parentTest.Name.MultilineName + ",\n" + testShortName;
 
-            IncrementTestNameUntilItsNot(test, IsReserved);
+            IncrementTestNameUntilItsNot(test.Name, IsReserved);
 
-            _globallyAccumulatedTestNames[test.FullName] = NameIs.Available;
+            _globallyAccumulatedTestNames[test.Name.FullName] = NameIs.Available;
         }
 
-        public void NameTest(string testShortName, TestBuilder parentTest, TestBuilder test)
+        public TestName NameTest(string testShortName, TestBuilder parentTest)
         {
-            test.Shortname = testShortName;
-            test.FullName = parentTest.FullName + ", " + testShortName;
-            test.MultilineName = parentTest.MultilineName + ",\n" + testShortName;
+            var testName = new TestName();
 
-            IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name));
-            _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
+            testName.Shortname = testShortName;
+            testName.FullName = parentTest.Name.FullName + ", " + testShortName;
+            testName.MultilineName = parentTest.Name.MultilineName + ",\n" + testShortName;
+
+            IncrementTestNameUntilItsNot(testName, name => _globallyAccumulatedTestNames.ContainsKey(name));
+            _globallyAccumulatedTestNames[testName.FullName] = NameIs.Reserved;
+
+            return testName;
         }
 
-        public void ReserveName(TestBuilder test)
+        public void ReserveName(TestName testName)
         {
-            IncrementTestNameUntilItsNot(test, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
-            _globallyAccumulatedTestNames[test.FullName] = NameIs.Reserved;
+            IncrementTestNameUntilItsNot(testName, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
+            _globallyAccumulatedTestNames[testName.FullName] = NameIs.Reserved;
         }
 
-        private void IncrementTestNameUntilItsNot(TestBuilder test, Func<string, bool> condition)
+        private void IncrementTestNameUntilItsNot(TestName testName, Func<string, bool> condition)
         {
-            var name = test.FullName;
+            var name = testName.FullName;
 
             if (condition(name))
             {
@@ -65,9 +69,9 @@ namespace NJasmine.Core.Discovery
                 } while (condition(nextName));
 
 
-                test.Shortname = test.Shortname + suffix;
-                test.FullName = test.FullName + suffix;
-                test.MultilineName = test.MultilineName + suffix;
+                testName.Shortname = testName.Shortname + suffix;
+                testName.FullName = testName.FullName + suffix;
+                testName.MultilineName = testName.MultilineName + suffix;
             }
         }
     }

@@ -56,7 +56,7 @@ namespace NJasmine.Core.Discovery
         {
             var test = new TestBuilder(_nativeTestFactory.ForTest(_fixtureFactory, position, globalSetupManager));
 
-            NameGenator.NameTest(description, parentTest, test);
+            test.Name = NameGenator.NameTest(description, parentTest);
             return test;
         }
     }

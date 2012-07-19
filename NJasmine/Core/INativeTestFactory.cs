@@ -5,9 +5,9 @@ namespace NJasmine.Core
 {
     public interface INativeTestFactory
     {
-        INativeTestBuilder ForSuite(TestPosition position, Action onetimeCleanup);
-        INativeTestBuilder ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager);
-        INativeTestBuilder ForUnimplementedTest(TestPosition position);
-        INativeTestBuilder ForFailingSuite(TestPosition position, Exception exception);
+        INativeTest ForSuite(TestPosition position, Action onetimeCleanup);
+        INativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager);
+        INativeTest ForUnimplementedTest(TestPosition position);
+        INativeTest ForFailingSuite(TestPosition position, Exception exception);
     }
 }

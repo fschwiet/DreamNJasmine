@@ -17,11 +17,6 @@ namespace NJasmine.VS2012
                 Console.WriteLine("NJasmine.VS2012 source: " + source);
             }
 
-            foreach(var source in sources)
-            {
-                Console.WriteLine("NJasmine.VS2012 source: " + source);
-            }
-
             // LOL WAT DO
         }
     }

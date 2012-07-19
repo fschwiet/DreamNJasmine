@@ -3,7 +3,7 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit
 {
-    public class NativeTest : INativeTestBuilder
+    public class NativeTest : INativeTest
     {
         readonly Test _test;
 
@@ -20,9 +20,9 @@ namespace NJasmine.NUnit
 
         public void ApplyResultToTest(TestBuilder builder)
         {
-            _test.TestName.Name = builder.Shortname;
-            _test.TestName.FullName = builder.FullName;
-            TestExtensions.SetMultilineName(_test, builder.MultilineName);
+            _test.TestName.Name = builder.Name.Shortname;
+            _test.TestName.FullName = builder.Name.FullName;
+            TestExtensions.SetMultilineName(_test, builder.Name.MultilineName);
 
             if (builder.ReasonIgnored != null)
             {

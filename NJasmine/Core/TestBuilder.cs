@@ -7,18 +7,17 @@ namespace NJasmine.Core
 {
     public class TestBuilder
     {
-        readonly INativeTestBuilder _nativeTest;
+        readonly INativeTest _nativeTest;
 
-        public TestBuilder(INativeTestBuilder nativeTest)
+        public TestBuilder(INativeTest nativeTest)
         {
             _nativeTest = nativeTest;
             Children = new List<TestBuilder>();
             Categories = new List<string>();
+            Name = new TestName();
         }
 
-        public string Shortname { get; set; }
-        public string FullName { get; set; }
-        public string MultilineName { get; set; }
+        public TestName Name { get; set; }
 
         public string ReasonIgnored { get; private set; }
 
@@ -43,7 +42,7 @@ namespace NJasmine.Core
                 ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
         }
 
-        public INativeTestBuilder GetUnderlyingTest()
+        public INativeTest GetUnderlyingTest()
         {
             return _nativeTest;
         }

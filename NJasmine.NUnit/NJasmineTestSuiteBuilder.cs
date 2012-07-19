@@ -56,7 +56,7 @@ namespace NJasmine.NUnit
             {
                 var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
-                _buildContext.NameGenator.NameTest(element.Description, _parent, result);
+                result.Name = _buildContext.NameGenator.NameTest(element.Description, _parent);
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -102,7 +102,7 @@ namespace NJasmine.NUnit
             {
                 var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(position));
 
-                _buildContext.NameGenator.NameTest(element.Description, _parent, buildResult);
+                buildResult.Name = _buildContext.NameGenator.NameTest(element.Description, _parent);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 

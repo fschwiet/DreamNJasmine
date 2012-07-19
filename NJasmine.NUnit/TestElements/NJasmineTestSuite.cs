@@ -23,9 +23,9 @@ namespace NJasmine.NUnit.TestElements
             var position = _position;
 
             var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
-            resultBuilder.FullName = parentName + "." + name;
-            resultBuilder.Shortname = name;
-            resultBuilder.MultilineName = resultBuilder.FullName;
+            resultBuilder.Name.FullName = parentName + "." + name;
+            resultBuilder.Name.Shortname = name;
+            resultBuilder.Name.MultilineName = resultBuilder.Name.FullName;
 
             return RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
         }
@@ -45,11 +45,11 @@ namespace NJasmine.NUnit.TestElements
             {
                 var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(_position, exception));
 
-                failingSuiteAsTest.FullName = resultBuilder.FullName;
-                failingSuiteAsTest.Shortname = resultBuilder.Shortname;
-                failingSuiteAsTest.MultilineName = resultBuilder.MultilineName;
+                failingSuiteAsTest.Name.FullName = resultBuilder.Name.FullName;
+                failingSuiteAsTest.Name.Shortname = resultBuilder.Name.Shortname;
+                failingSuiteAsTest.Name.MultilineName = resultBuilder.Name.MultilineName;
 
-                buildContext.NameGenator.ReserveName(failingSuiteAsTest);
+                buildContext.NameGenator.ReserveName(failingSuiteAsTest.Name);
 
                 if (isOuterScopeOfSpecification)
                 {

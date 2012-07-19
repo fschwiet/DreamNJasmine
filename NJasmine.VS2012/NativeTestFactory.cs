@@ -1,33 +1,35 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NJasmine.Core;
 using NJasmine.Core.GlobalSetup;
-using NJasmine.NUnit.TestElements;
 
-namespace NJasmine.NUnit
+namespace NJasmine.VS2012
 {
     public class NativeTestFactory : INativeTestFactory
     {
         public INativeTest ForSuite(TestPosition position, Action onetimeCleanup)
         {
-            var result = new NativeTest(new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
-            return result;
+            //return new TestCase();
+            throw new NotImplementedException();
         }
 
         public INativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
-            var result = new NativeTest(new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
-            return result;
+            throw new NotImplementedException();
         }
 
         public INativeTest ForUnimplementedTest(TestPosition position)
         {
-            var result = new NativeTest(new NJasmineUnimplementedTestMethod(position));
-            return result;
+            throw new NotImplementedException();
         }
 
         public INativeTest ForFailingSuite(TestPosition position, Exception exception)
         {
-            return new NativeTest(new NJasmineInvalidTestSuite(exception, position));
+            throw new NotImplementedException();
         }
     }
 }
