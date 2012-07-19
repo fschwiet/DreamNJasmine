@@ -47,9 +47,9 @@ namespace NJasmine.NUnit.TestElements
             }
             else
             {
-                var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(_position, exception));
+                var failingSuiteName = buildContext.NameReservations.GetReservedNameLike(resultBuilder.Name);
 
-                failingSuiteAsTest.Name = buildContext.NameReservations.GetReservedNameLike(resultBuilder.Name);
+                var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(failingSuiteName,_position, exception), failingSuiteName);
 
                 if (isOuterScopeOfSpecification)
                 {

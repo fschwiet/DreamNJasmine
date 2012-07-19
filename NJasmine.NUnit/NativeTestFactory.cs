@@ -13,7 +13,7 @@ namespace NJasmine.NUnit
             return result;
         }
 
-        public INativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
+        public INativeTest ForTest(TestName name, Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
             var result = new NativeTest(new NJasmineTestMethod(fixtureFactory, position, globalSetupManager));
             return result;
@@ -25,7 +25,7 @@ namespace NJasmine.NUnit
             return result;
         }
 
-        public INativeTest ForFailingSuite(TestPosition position, Exception exception)
+        public INativeTest ForFailingSuite(TestName failingSuiteName, TestPosition position, Exception exception)
         {
             return new NativeTest(new NJasmineInvalidTestSuite(exception, position));
         }

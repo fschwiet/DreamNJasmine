@@ -17,7 +17,7 @@ namespace NJasmine.VS2012
             throw new NotImplementedException();
         }
 
-        public INativeTest ForTest(Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
+        public INativeTest ForTest(TestName name, Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
         {
             throw new NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace NJasmine.VS2012
             throw new NotImplementedException();
         }
 
-        public INativeTest ForFailingSuite(TestPosition position, Exception exception)
+        public INativeTest ForFailingSuite(TestName failingSuiteName, TestPosition position, Exception exception)
         {
             throw new NotImplementedException();
         }

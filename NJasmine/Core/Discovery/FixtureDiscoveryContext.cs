@@ -54,9 +54,10 @@ namespace NJasmine.Core.Discovery
 
         public TestBuilder CreateTest(GlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
         {
-            var test = new TestBuilder(_nativeTestFactory.ForTest(_fixtureFactory, position, globalSetupManager));
+            var reservedTestName = NameReservations.GetReservedTestName(description, parentTest.Name);
 
-            test.Name = NameReservations.GetReservedTestName(description, parentTest.Name);
+            var test = new TestBuilder(_nativeTestFactory.ForTest(reservedTestName,_fixtureFactory, position, globalSetupManager), reservedTestName);
+
             return test;
         }
     }
