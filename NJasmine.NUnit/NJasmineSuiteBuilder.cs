@@ -44,7 +44,7 @@ namespace NJasmine.NUnit
 
             NativeTestFactory nativeTestFactory = new NativeTestFactory();
 
-            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameGenerator(), fixtureFactory());
+            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameReservations(), fixtureFactory());
 
             var globalSetup = new GlobalSetupManager();
 

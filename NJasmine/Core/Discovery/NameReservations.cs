@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NJasmine.Core.Discovery
 {
-    public class NameGenerator
+    public class NameReservations
     {
         enum NameIs
         {
@@ -21,24 +21,20 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public void NameFork(string testShortName, TestBuilder parentTest, TestBuilder test)
+        public TestName GetSharedTestName(string testShortName, TestBuilder parentTest)
         {
-            test.Name.Shortname = testShortName;
-            test.Name.FullName = parentTest.Name.FullName + ", " + testShortName;
-            test.Name.MultilineName = parentTest.Name.MultilineName + ",\n" + testShortName;
+            var result = GetChildTestName(testShortName, parentTest.Name);
 
-            IncrementTestNameUntilItsNot(test.Name, IsReserved);
+            IncrementTestNameUntilItsNot(result, IsReserved);
 
-            _globallyAccumulatedTestNames[test.Name.FullName] = NameIs.Available;
+            _globallyAccumulatedTestNames[result.FullName] = NameIs.Available;
+
+            return result;
         }
 
-        public TestName NameTest(string testShortName, TestBuilder parentTest)
+        public TestName GetReservedTestName(string testShortName, TestName parentTestName)
         {
-            var testName = new TestName();
-
-            testName.Shortname = testShortName;
-            testName.FullName = parentTest.Name.FullName + ", " + testShortName;
-            testName.MultilineName = parentTest.Name.MultilineName + ",\n" + testShortName;
+            var testName = GetChildTestName(testShortName, parentTestName);
 
             IncrementTestNameUntilItsNot(testName, name => _globallyAccumulatedTestNames.ContainsKey(name));
             _globallyAccumulatedTestNames[testName.FullName] = NameIs.Reserved;
@@ -46,10 +42,27 @@ namespace NJasmine.Core.Discovery
             return testName;
         }
 
-        public void ReserveName(TestName testName)
+        static TestName GetChildTestName(string testShortName, TestName parentTestName)
         {
-            IncrementTestNameUntilItsNot(testName, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
-            _globallyAccumulatedTestNames[testName.FullName] = NameIs.Reserved;
+            var testName = new TestName();
+
+            testName.Shortname = testShortName;
+            testName.FullName = parentTestName.FullName + ", " + testShortName;
+            testName.MultilineName = parentTestName.MultilineName + ",\n" + testShortName;
+            return testName;
+        }
+
+        public TestName GetReservedNameLike(TestName testName)
+        {
+            var result = new TestName();
+            result.Shortname = testName.Shortname;
+            result.FullName = testName.FullName;
+            result.MultilineName = testName.MultilineName;
+
+            IncrementTestNameUntilItsNot(result, name => _globallyAccumulatedTestNames.ContainsKey(name) && _globallyAccumulatedTestNames[name] == NameIs.Reserved);
+            _globallyAccumulatedTestNames[result.FullName] = NameIs.Reserved;
+
+            return result;
         }
 
         private void IncrementTestNameUntilItsNot(TestName testName, Func<string, bool> condition)

@@ -45,11 +45,7 @@ namespace NJasmine.NUnit.TestElements
             {
                 var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(_position, exception));
 
-                failingSuiteAsTest.Name.FullName = resultBuilder.Name.FullName;
-                failingSuiteAsTest.Name.Shortname = resultBuilder.Name.Shortname;
-                failingSuiteAsTest.Name.MultilineName = resultBuilder.Name.MultilineName;
-
-                buildContext.NameGenator.ReserveName(failingSuiteAsTest.Name);
+                failingSuiteAsTest.Name = buildContext.NameGenator.GetReservedNameLike(resultBuilder.Name);
 
                 if (isOuterScopeOfSpecification)
                 {

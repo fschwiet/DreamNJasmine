@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Discovery\FixtureDiscoveryContext.cs" />
-    <Compile Include="Core\Discovery\NameGenerator.cs" />
+    <Compile Include="Core\Discovery\NameReservations.cs" />
     <Compile Include="Core\Elements\AfterEachElement.cs" />
     <Compile Include="Core\Elements\BeforeEachElement.cs" />
     <Compile Include="Core\Elements\BeforeAllElement.cs" />

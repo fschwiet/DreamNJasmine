@@ -7,16 +7,16 @@ namespace NJasmine.Core.Discovery
 {
     public class FixtureDiscoveryContext
     {
-        public NameGenerator NameGenator;
+        public NameReservations NameGenator;
         private SpecificationFixture _fixtureInstanceForDiscovery;
         readonly INativeTestFactory _nativeTestFactory;
         private Func<SpecificationFixture> _fixtureFactory;
 
-        public FixtureDiscoveryContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameGenerator nameGenerator, SpecificationFixture fixtureInstanceForDiscovery)
+        public FixtureDiscoveryContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, SpecificationFixture fixtureInstanceForDiscovery)
         {
             _nativeTestFactory = nativeTestFactory;
             _fixtureFactory = fixtureFactory;
-            NameGenator = nameGenerator;
+            NameGenator = nameReservations;
             _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
         }
 
@@ -56,7 +56,7 @@ namespace NJasmine.Core.Discovery
         {
             var test = new TestBuilder(_nativeTestFactory.ForTest(_fixtureFactory, position, globalSetupManager));
 
-            test.Name = NameGenator.NameTest(description, parentTest);
+            test.Name = NameGenator.GetReservedTestName(description, parentTest.Name);
             return test;
         }
     }
