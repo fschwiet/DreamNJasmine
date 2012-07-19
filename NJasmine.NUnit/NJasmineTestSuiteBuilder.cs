@@ -104,8 +104,6 @@ namespace NJasmine.NUnit
 
                 var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(reservedName, position), reservedName);
 
-                buildResult.Name = reservedName;
-
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 
                 _accumulatedDescendants.Add(buildResult);

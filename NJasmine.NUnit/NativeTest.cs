@@ -20,10 +20,6 @@ namespace NJasmine.NUnit
 
         public void ApplyResultToTest(TestBuilder builder)
         {
-            _test.TestName.Name = builder.Name.Shortname;
-            _test.TestName.FullName = builder.Name.FullName;
-            TestExtensions.SetMultilineName(_test, builder.Name.MultilineName);
-
             if (builder.ReasonIgnored != null)
             {
                 _test.RunState = RunState.Explicit;
