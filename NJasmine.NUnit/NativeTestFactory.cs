@@ -19,7 +19,7 @@ namespace NJasmine.NUnit
             return result;
         }
 
-        public INativeTest ForUnimplementedTest(TestPosition position)
+        public INativeTest ForUnimplementedTest(TestName name, TestPosition position)
         {
             var result = new NativeTest(new NJasmineUnimplementedTestMethod(position));
             return result;

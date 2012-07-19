@@ -25,7 +25,7 @@ namespace NJasmine.NUnit.TestElements
             var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
             resultBuilder.Name.FullName = parentName + "." + name;
             resultBuilder.Name.Shortname = name;
-            resultBuilder.Name.MultilineName = resultBuilder.Name.FullName;
+            resultBuilder.Name.MultilineName = parentName + "." + name;
 
             return RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
         }
@@ -45,7 +45,7 @@ namespace NJasmine.NUnit.TestElements
             {
                 var failingSuiteAsTest = new TestBuilder(_nativeTestFactory.ForFailingSuite(_position, exception));
 
-                failingSuiteAsTest.Name = buildContext.NameGenator.GetReservedNameLike(resultBuilder.Name);
+                failingSuiteAsTest.Name = buildContext.NameReservations.GetReservedNameLike(resultBuilder.Name);
 
                 if (isOuterScopeOfSpecification)
                 {

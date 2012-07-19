@@ -22,7 +22,7 @@ namespace NJasmine.VS2012
             throw new NotImplementedException();
         }
 
-        public INativeTest ForUnimplementedTest(TestPosition position)
+        public INativeTest ForUnimplementedTest(TestName testName, TestPosition position)
         {
             throw new NotImplementedException();
         }

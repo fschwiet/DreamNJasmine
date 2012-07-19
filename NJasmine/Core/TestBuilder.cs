@@ -9,12 +9,12 @@ namespace NJasmine.Core
     {
         readonly INativeTest _nativeTest;
 
-        public TestBuilder(INativeTest nativeTest)
+        public TestBuilder(INativeTest nativeTest, TestName name = null)
         {
             _nativeTest = nativeTest;
             Children = new List<TestBuilder>();
             Categories = new List<string>();
-            Name = new TestName();
+            Name = name ?? new TestName();
         }
 
         public TestName Name { get; set; }

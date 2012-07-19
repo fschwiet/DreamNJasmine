@@ -21,9 +21,9 @@ namespace NJasmine.Core.Discovery
             return _globallyAccumulatedTestNames[name] == NameIs.Reserved;
         }
 
-        public TestName GetSharedTestName(string testShortName, TestBuilder parentTest)
+        public TestName GetSharedTestName(string testShortName, TestName parentTestName)
         {
-            var result = GetChildTestName(testShortName, parentTest.Name);
+            var result = GetChildTestName(testShortName, parentTestName);
 
             IncrementTestNameUntilItsNot(result, IsReserved);
 
