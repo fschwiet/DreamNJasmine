@@ -1,4 +1,4 @@
-﻿# 
+﻿ 
 # Copyright (c) 2011-2012, Toji Project Contributors
 # 
 # Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
@@ -26,8 +26,9 @@ properties {
   # and will not have access to any of your shared properties.
 }
 
-task Default -depends Initialize, TraceSourceControlCommit, CopyNUnitToBuild, IntegrationTest, BuildNuget
-task RunGUI -depends KillNUnit, TraceSourceControlCommit, Build, CopyNUnitToBuild, RunNUnitGUI
+task Build -depends RunMSBuild, CopyNUnitToBuild, CopyVS2012TestToBuild
+task Default -depends Initialize, TraceSourceControlCommit, Build, Test, IntegrationTest, BuildNuget
+task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
 Task Test { 
   Invoke-TestRunner @("$($build.dir)\NJasmine.tests.dll")
@@ -44,25 +45,27 @@ function VisitTests($testHandler) {
   }
 }
 
-Task VisualStudioIntegrationTest -Depends Test { 
+Task VisualStudioIntegrationTest { 
   
+  $vsTestExe = "$($build.dir)\VS2012\vstest.console.exe"
+
+  $discovererListing = exec {& $vsTestExe /ListDiscoverers }
+
+  Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
+
   VisitTests { 
   
-	param ($test);
+	  param ($test);
 	
     $testName = $test.Name;
 
     write-output "Checking $testName."
 
-    $testXmlTarget = (join-path $build.dir "IntegrationTest.xml")
-    $testConsoleTarget = (join-path $build.dir "IntegrationTest.txt")
-
-	#WAT DO
-
+    exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
   }
 }
 
-Task NUnitIntegrationTest -Depends Test { 
+Task NUnitIntegrationTest { 
   
   VisitTests { 
   
@@ -129,13 +132,13 @@ task GenerateAssemblyInfo {
   }
 }
 
-task Build -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild {
+task RunMSBuild -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild {
   cp "$($base.dir)\getting started.txt" "$($build.dir)"
   cp "$($base.dir)\license.txt" "$($build.dir)\license-NJasmine.txt"
   cp "$($base.dir)\lib\PowerAssert\license-PowerAssert.txt" "$($build.dir)"
 }
 
-task CopyNUnitToBuild -depends Build {
+task CopyNUnitToBuild {
   $requiredNUnitFiles = @("nunit-agent.exe*", "nunit-console.exe*", "nunit.exe*", "lib", "nunit.framework.dll");
   $targetForNUnitFiles = (join-path $build.dir "nunit\")
   $targetForNUnitAddins = (join-path $targetForNUnitFiles "addins\")
@@ -164,6 +167,24 @@ task KillNUnit {
 
 task RunNUnitGUI {
   Invoke-TestRunnerGui @("$($build.dir)\NJasmine.tests.dll")
+}
+
+task CopyVS2012TestToBuild {
+
+  $targetPath = (join-path $build.dir "VS2012")
+
+  if (test-path $targetPath) {
+    rm -force -recurse $targetPath
+  }
+
+  $null = mkdir $targetPath;
+  cp -recurse $VS2012BinPath\* $targetPath
+
+  $targetForExtensions = "$targetPath\Extensions"
+
+  cp (join-path $build.dir "njasmine.dll") $targetForExtensions
+  cp (join-path $build.dir "njasmine.vs2012.dll") $targetForExtensions
+  cp (join-path $build.dir "powerassert.dll") $targetForExtensions
 }
 
 task BuildNuget {

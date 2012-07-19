@@ -12,6 +12,8 @@ namespace NJasmine.VS2012
     {
         public void DiscoverTests(IEnumerable<string> sources, IDiscoveryContext discoveryContext, IMessageLogger logger, ITestCaseDiscoverySink discoverySink)
         {
+            Console.WriteLine("running NJasmine TestDiscoverer");
+
             foreach(var source in sources)
             {
                 Console.WriteLine("NJasmine.VS2012 source: " + source);

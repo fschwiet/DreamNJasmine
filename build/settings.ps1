@@ -49,6 +49,9 @@ properties {
 
   $NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\"
   $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "NJasmine.NUnit.dll", "NJasmine.NUnit.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt")
+
+  $VS2012BinPath = "$($base.dir)\lib\TestWindow"
+
   $integrationTestRunPattern = "*"
 
   $shortDescription = "NJasmine allows writing RSpec-like specifications."
