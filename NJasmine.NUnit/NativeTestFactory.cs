@@ -7,7 +7,7 @@ namespace NJasmine.NUnit
 {
     public class NativeTestFactory : INativeTestFactory
     {
-        public INativeTest ForSuite(TestPosition position, Action onetimeCleanup)
+        public INativeTest ForSuite(TestName testName, TestPosition position, Action onetimeCleanup)
         {
             var result = new NativeTest(new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position));
             return result;

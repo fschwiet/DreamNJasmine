@@ -22,10 +22,14 @@ namespace NJasmine.NUnit.TestElements
         {
             var position = _position;
 
-            var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
-            resultBuilder.Name.FullName = parentName + "." + name;
-            resultBuilder.Name.Shortname = name;
-            resultBuilder.Name.MultilineName = parentName + "." + name;
+            var testName = new TestName
+            {
+                FullName = parentName + "." + name,
+                Shortname = name,
+                MultilineName = parentName + "." + name
+            };
+
+            var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(testName, position, () => _globalSetup.Cleanup(position)), testName);
 
             return RunSuiteAction(buildContext, globalSetup, action, isOuterScopeOfSpecification, resultBuilder);
         }

@@ -66,11 +66,11 @@ namespace NJasmine.NUnit
             {
                 var subSuite = new NJasmineTestSuite(_nativeTestFactory, position, _globalSetup);
 
-                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(position, () => _globalSetup.Cleanup(position)));
+                var forkName =_buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name);
+
+                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(forkName , position, () => _globalSetup.Cleanup(position)), forkName );
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
-
-                resultBuilder.Name = _buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name);
 
                 var finalResultBuilder = subSuite.RunSuiteAction(_buildContext, _globalSetup, element.Action, false, resultBuilder);
 
