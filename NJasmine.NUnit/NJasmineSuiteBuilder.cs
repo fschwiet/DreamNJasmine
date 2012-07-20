@@ -20,16 +20,7 @@ namespace NJasmine.NUnit
 
         public bool CanBuildFrom(Type type)
         {
-            if (!type.IsSubclassOf(typeof(SpecificationFixture)))
-                return false;
-
-            if (!(type.IsPublic || type.IsNestedPublic))
-                return false;
-
-            if (type.GetConstructor(new Type[0]) == null)  // expression really can be false, don't believe Resharper
-                return false;
-
-            return true;
+            return FixtureClassifier.IsTypeSpecification(type);
         }
 
         public Test BuildFrom(Type type)

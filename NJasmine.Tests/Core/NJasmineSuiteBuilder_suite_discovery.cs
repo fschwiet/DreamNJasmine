@@ -1,64 +1,60 @@
 ﻿using System;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.NUnit;
 using NUnit.Framework;
 
  
 namespace NJasmineTests.Core
 {
-    [TestFixture]
-    public class NJasmineSuiteBuilder_suite_discovery : PowerAssertFixture
+    public class FixtureClassifierSpecification : GivenWhenThenFixture
     {
-        [Test]
-        public void doesnt_handle_most_test_fixtures()
+        public override void Specify()
         {
-            var sut = new NJasmineSuiteBuilder();
+            describe("FixtureClassifier detects classes that are specifications", () =>
+            {
+                it("excludes non specification classes", () =>
+                {
+                    expect(() => !FixtureClassifier.IsTypeSpecification(typeof(Object)));
+                });
 
-            expect(() => !sut.CanBuildFrom(typeof(Object)));
+                it("includes classes derived from GivenWhenThenFixture", () =>
+                {
+                    expect(() => FixtureClassifier.IsTypeSpecification(typeof(FixtureClassifierSpecification.SomeNestedClass)));
+                    expect(() => FixtureClassifier.IsTypeSpecification(typeof(SampleTest)));
+                });
+
+                describe("some classes derived from GivenWhenThenFixture still are not specifications", () =>
+                {
+                    it("excludes abstract classes", () =>
+                    {
+                        expect(() => !FixtureClassifier.IsTypeSpecification(typeof(FixtureClassifierSpecification.SomeAbstractClass)));
+                    });
+
+                    it("excludes non-public classes", () =>
+                    {
+                        expect(() => !FixtureClassifier.IsTypeSpecification(typeof(FixtureClassifierSpecification.ANonpublicFixture)));
+                    });
+                });
+            });
         }
 
-        public class SomeNestedClass : GivenWhenThenFixture
+        class SomeNestedClass : GivenWhenThenFixture
         {
             public override void Specify() { }
         }
 
-
-        [Test]
-        public void will_handle_subclasses_of_NJasmineFixture()
-        {
-            var sut = new NJasmineSuiteBuilder();
-
-            expect(() => sut.CanBuildFrom(typeof(SomeNestedClass)));
-            expect(() => sut.CanBuildFrom(typeof(SampleTest)));
-        }
-
-        public abstract class SomeAbstractClass : GivenWhenThenFixture
+        abstract class SomeAbstractClass : GivenWhenThenFixture
         {
         }
 
-        [Test]
-        public void will_not_build_abstract_classes()
-        {
-            var sut = new NJasmineSuiteBuilder();
-
-            expect(() => !sut.CanBuildFrom(typeof(SomeAbstractClass)));
-        }
-
-        protected class ANonpublicFixture : GivenWhenThenFixture
+        class ANonpublicFixture : GivenWhenThenFixture
         {
             public override void Specify()
             {
                 throw new NotImplementedException();
             }
-        }
-
-        [Test]
-        public void will_not_handle_nonpublic_subclasses_of_NJasmineFixture()
-        {
-            var sut = new NJasmineSuiteBuilder();
-
-            expect(() => !sut.CanBuildFrom(typeof(ANonpublicFixture)));
         }
     }
 }
