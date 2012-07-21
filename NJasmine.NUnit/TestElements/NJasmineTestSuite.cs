@@ -7,20 +7,20 @@ namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestSuite
     {
-        readonly SharedContext _discoveryContext;
+        readonly SharedContext _sharedContext;
         readonly TestContext _testContext;
 
-        public NJasmineTestSuite(SharedContext discoveryContext, TestContext testContext)
+        public NJasmineTestSuite(SharedContext sharedContext, TestContext testContext)
         {
-            _discoveryContext = discoveryContext;
+            _sharedContext = sharedContext;
             _testContext = testContext;
         }
 
         public TestBuilder RunSuiteAction(Action action, bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
-            var builder = new DiscoveryVisitor(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _testContext.GlobalSetupManager);
+            var builder = new DiscoveryVisitor(resultBuilder, _sharedContext, _testContext.GlobalSetupManager);
 
-            var exception = _discoveryContext.RunActionWithVisitor(_testContext.Position.GetFirstChildPosition(), action, builder);
+            var exception = _sharedContext.RunActionWithVisitor(_testContext.Position.GetFirstChildPosition(), action, builder);
 
             if (exception == null)
             {
@@ -30,12 +30,12 @@ namespace NJasmine.NUnit.TestElements
             {
                 var testContext = new TestContext()
                 {
-                    Name = _discoveryContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
+                    Name = _sharedContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
                     Position = _testContext.Position,
                     GlobalSetupManager = _testContext.GlobalSetupManager
                 };
 
-                var failingSuiteAsTest = new TestBuilder(_discoveryContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
+                var failingSuiteAsTest = new TestBuilder(_sharedContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
 
                 if (isOuterScopeOfSpecification)
                 {

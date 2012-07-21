@@ -12,19 +12,17 @@ namespace NJasmine.NUnit
 {
     class DiscoveryVisitor : ISpecPositionVisitor
     {
-        readonly INativeTestFactory _nativeTestFactory;
         private readonly TestBuilder _parent;
-        readonly SharedContext _buildContext;
+        readonly SharedContext _sharedContext;
         private readonly GlobalSetupManager _globalSetup;
         List<TestBuilder> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public DiscoveryVisitor(INativeTestFactory nativeTestFactory, TestBuilder parent, SharedContext buildContext, GlobalSetupManager globalSetup)
+        public DiscoveryVisitor(TestBuilder parent, SharedContext sharedContext, GlobalSetupManager globalSetup)
         {
-            _nativeTestFactory = nativeTestFactory;
             _parent = parent;
-            _buildContext = buildContext;
+            _sharedContext = sharedContext;
             _globalSetup = globalSetup;
             _accumulatedDescendants = new List<TestBuilder>();
             _accumulatedCategories = new List<string>();
@@ -56,12 +54,12 @@ namespace NJasmine.NUnit
             {
                 var testContext = new TestContext()
                 {
-                    Name = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
                 
-                var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(testContext));
+                var result = new TestBuilder(_sharedContext.NativeTestFactory.ForUnimplementedTest(testContext));
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -71,14 +69,14 @@ namespace NJasmine.NUnit
             {
                 var testContext = new TestContext()
                 {
-                    Name = _buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var subSuite = new NJasmineTestSuite(_buildContext, testContext);
+                var subSuite = new NJasmineTestSuite(_sharedContext, testContext);
 
-                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(testContext, () => _globalSetup.Cleanup(position)), testContext.Name);
+                var resultBuilder = new TestBuilder(_sharedContext.NativeTestFactory.ForSuite(testContext, () => _globalSetup.Cleanup(position)), testContext.Name);
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -112,12 +110,12 @@ namespace NJasmine.NUnit
             {
                 var testContext = new TestContext()
                 {
-                    Name = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(testContext), testContext.Name);
+                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForUnimplementedTest(testContext), testContext.Name);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 
@@ -125,7 +123,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var buildResult = _buildContext.CreateTest(this._globalSetup, _parent, position, element.Description);
+                var buildResult = _sharedContext.CreateTest(this._globalSetup, _parent, position, element.Description);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 
