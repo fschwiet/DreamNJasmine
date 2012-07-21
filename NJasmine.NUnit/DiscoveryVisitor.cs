@@ -14,13 +14,13 @@ namespace NJasmine.NUnit
     {
         readonly INativeTestFactory _nativeTestFactory;
         private readonly TestBuilder _parent;
-        readonly FixtureDiscoveryContext _buildContext;
+        readonly SharedContext _buildContext;
         private readonly GlobalSetupManager _globalSetup;
         List<TestBuilder> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public DiscoveryVisitor(INativeTestFactory nativeTestFactory, TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public DiscoveryVisitor(INativeTestFactory nativeTestFactory, TestBuilder parent, SharedContext buildContext, GlobalSetupManager globalSetup)
         {
             _nativeTestFactory = nativeTestFactory;
             _parent = parent;
@@ -54,9 +54,14 @@ namespace NJasmine.NUnit
         {
             if (element.Action == null)
             {
-                var name = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name);
-
-                var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(name, position));
+                var testContext = new TestContext()
+                {
+                    Name = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Position = position,
+                    GlobalSetupManager = _globalSetup
+                };
+                
+                var result = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(testContext));
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -64,11 +69,16 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(position, _globalSetup, _buildContext);
+                var testContext = new TestContext()
+                {
+                    Name = _buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
+                    Position = position,
+                    GlobalSetupManager = _globalSetup
+                };
 
-                var forkName =_buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name);
+                var subSuite = new NJasmineTestSuite(_buildContext, testContext);
 
-                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(forkName , position, () => _globalSetup.Cleanup(position)), forkName );
+                var resultBuilder = new TestBuilder(_nativeTestFactory.ForSuite(testContext, () => _globalSetup.Cleanup(position)), testContext.Name);
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
@@ -100,9 +110,14 @@ namespace NJasmine.NUnit
         {
             if (element.Action == null)
             {
-                var reservedName = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name);
+                var testContext = new TestContext()
+                {
+                    Name = _buildContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Position = position,
+                    GlobalSetupManager = _globalSetup
+                };
 
-                var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(reservedName, position), reservedName);
+                var buildResult = new TestBuilder(_nativeTestFactory.ForUnimplementedTest(testContext), testContext.Name);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 

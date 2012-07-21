@@ -5,14 +5,14 @@ using NJasmine.Extras;
 
 namespace NJasmine.Core.Discovery
 {
-    public class FixtureDiscoveryContext
+    public class SharedContext
     {
         public NameReservations NameReservations;
         public readonly INativeTestFactory NativeTestFactory;
         private SpecificationFixture _fixtureInstanceForDiscovery;
         public Func<SpecificationFixture> FixtureFactory;
 
-        public FixtureDiscoveryContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, SpecificationFixture fixtureInstanceForDiscovery)
+        public SharedContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, SpecificationFixture fixtureInstanceForDiscovery)
         {
             NativeTestFactory = nativeTestFactory;
             FixtureFactory = fixtureFactory;
@@ -58,9 +58,14 @@ namespace NJasmine.Core.Discovery
 
         public TestBuilder CreateTest(GlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
         {
-            var reservedTestName = NameReservations.GetReservedTestName(description, parentTest.Name);
+            var testContext = new TestContext()
+            {
+                Name = NameReservations.GetReservedTestName(description, parentTest.Name),
+                Position = position,
+                GlobalSetupManager = globalSetupManager
+            };
 
-            var test = new TestBuilder(NativeTestFactory.ForTest(reservedTestName,FixtureFactory, position, globalSetupManager), reservedTestName);
+            var test = new TestBuilder(NativeTestFactory.ForTest(testContext, FixtureFactory), testContext.Name);
 
             return test;
         }

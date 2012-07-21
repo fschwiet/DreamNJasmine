@@ -7,22 +7,20 @@ namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestSuite
     {
-        private readonly TestPosition _position;
-        private GlobalSetupManager _globalSetup;
-        readonly FixtureDiscoveryContext _discoveryContext;
+        readonly SharedContext _discoveryContext;
+        readonly TestContext _testContext;
 
-        public NJasmineTestSuite(TestPosition position, GlobalSetupManager globalSetup, FixtureDiscoveryContext discoveryContext)
+        public NJasmineTestSuite(SharedContext discoveryContext, TestContext testContext)
         {
-            _position = position;
-            _globalSetup = globalSetup;
             _discoveryContext = discoveryContext;
+            _testContext = testContext;
         }
 
         public TestBuilder RunSuiteAction(Action action, bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
-            var builder = new DiscoveryVisitor(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _globalSetup);
+            var builder = new DiscoveryVisitor(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _testContext.GlobalSetupManager);
 
-            var exception = _discoveryContext.RunActionWithVisitor(_position.GetFirstChildPosition(), action, builder);
+            var exception = _discoveryContext.RunActionWithVisitor(_testContext.Position.GetFirstChildPosition(), action, builder);
 
             if (exception == null)
             {
@@ -30,9 +28,14 @@ namespace NJasmine.NUnit.TestElements
             }
             else
             {
-                var failingSuiteName = _discoveryContext.NameReservations.GetReservedNameLike(resultBuilder.Name);
+                var testContext = new TestContext()
+                {
+                    Name = _discoveryContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
+                    Position = _testContext.Position,
+                    GlobalSetupManager = _testContext.GlobalSetupManager
+                };
 
-                var failingSuiteAsTest = new TestBuilder(_discoveryContext.NativeTestFactory.ForFailingSuite(failingSuiteName, _position, exception), failingSuiteName);
+                var failingSuiteAsTest = new TestBuilder(_discoveryContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
 
                 if (isOuterScopeOfSpecification)
                 {

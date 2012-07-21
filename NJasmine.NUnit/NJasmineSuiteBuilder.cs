@@ -36,13 +36,21 @@ namespace NJasmine.NUnit
                 return fixture;
             };
 
-            FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameReservations(), fixtureFactory());
+            SharedContext buildContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations(), fixtureFactory());
 
-            var globalSetup = buildContext.GetGlobalSetupManager();
+            var testContext = new TestContext()
+            {
+                Position = new TestPosition(),
+                GlobalSetupManager = buildContext.GetGlobalSetupManager(),
+                Name = new TestName
+                {
+                    FullName = type.Namespace + "." + type.Name,
+                    Shortname = type.Name,
+                    MultilineName = type.Namespace + "." + type.Name
+                }
+            };
 
-            var testPosition = new TestPosition();
-
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(testPosition, globalSetup, buildContext);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(buildContext, testContext);
 
             TestName name = new TestName
             {
@@ -51,7 +59,7 @@ namespace NJasmine.NUnit
                 MultilineName = type.Namespace + "." + type.Name
             };
 
-            TestBuilder root = rootSuite.RunSuiteAction(buildContext.GetSpecificationRootAction(), true, new TestBuilder(buildContext.NativeTestFactory.ForSuite(name, testPosition, () => globalSetup.Cleanup(testPosition)), name));
+            TestBuilder root = rootSuite.RunSuiteAction(buildContext.GetSpecificationRootAction(), true, new TestBuilder(buildContext.NativeTestFactory.ForSuite(testContext, () => testContext.GlobalSetupManager.Cleanup(testContext.Position)), testContext.Name));
 
             var result = (root.GetUnderlyingTest() as NativeTest).GetNative(root);
 

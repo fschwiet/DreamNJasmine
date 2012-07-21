@@ -1,5 +1,6 @@
 using System;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
@@ -9,36 +10,36 @@ namespace NJasmine.NUnit
 {
     public class NativeTestFactory : INativeTestFactory
     {
-        public INativeTest ForSuite(TestName name, TestPosition position, Action onetimeCleanup)
+        public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
         {
-            var nunitTest = new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, position);
+            var nunitTest = new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, testContext.Position);
             
-            ApplyNameToNUnitTest(name, nunitTest);
+            ApplyNameToNUnitTest(testContext.Name, nunitTest);
 
             return new NativeTest(nunitTest);
         }
 
-        public INativeTest ForTest(TestName name, Func<SpecificationFixture> fixtureFactory, TestPosition position, GlobalSetupManager globalSetupManager)
+        public INativeTest ForTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory)
         {
-            var nunitTest = new NJasmineTestMethod(fixtureFactory, position, globalSetupManager);
+            var nunitTest = new NJasmineTestMethod(fixtureFactory, testContext.Position, testContext.GlobalSetupManager);
             
-            ApplyNameToNUnitTest(name, nunitTest);
+            ApplyNameToNUnitTest(testContext.Name, nunitTest);
             
             return new NativeTest(nunitTest);
         }
 
-        public INativeTest ForUnimplementedTest(TestName name, TestPosition position)
+        public INativeTest ForUnimplementedTest(TestContext testContext)
         {
-            var test = new NJasmineUnimplementedTestMethod(position);
-            ApplyNameToNUnitTest(name, test);
+            var test = new NJasmineUnimplementedTestMethod(testContext.Position);
+            ApplyNameToNUnitTest(testContext.Name, test);
             return new NativeTest(test);
         }
 
-        public INativeTest ForFailingSuite(TestName name, TestPosition position, Exception exception)
+        public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
         {
-            var nunitTest = new NJasmineInvalidTestSuite(exception, position);
+            var nunitTest = new NJasmineInvalidTestSuite(exception, testContext.Position);
 
-            ApplyNameToNUnitTest(name, nunitTest);
+            ApplyNameToNUnitTest(testContext.Name, nunitTest);
             
             return new NativeTest(nunitTest);
         }
