@@ -7,16 +7,19 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineTestMethod : NJasmineNUnitTestMethod, INJasmineTest
+    public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
+        public TestPosition Position { get; private set; }
+
         readonly Func<SpecificationFixture> _fixtureFactory;
         readonly IGlobalSetupManager _globalSetup;
 
         public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, IGlobalSetupManager globalSetup)
-            : base(new Action(delegate() { }).Method, position)
+            : base(new Action(delegate() { }).Method)
         {
             _fixtureFactory = fixtureFactory;
             _globalSetup = globalSetup;
+            Position = position;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)

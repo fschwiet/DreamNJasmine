@@ -4,11 +4,14 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineUnimplementedTestMethod : NJasmineNUnitTestMethod, INJasmineTest
+    public class NJasmineUnimplementedTestMethod : TestMethod, INJasmineTest
     {
+        public TestPosition Position { get; private set; }
+
         public NJasmineUnimplementedTestMethod(TestPosition position) 
-            : base(((Action)delegate() { }).Method, position)
+            : base(((Action)delegate() { }).Method)
         {
+            Position = position;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
