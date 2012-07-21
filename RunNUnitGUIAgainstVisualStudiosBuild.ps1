@@ -1,3 +1,3 @@
-cp .\NJasmine\bin\debug\NJasmine.* .\build\nunit\addins
+cp .\NJasmine\bin\debug\NJasmine.* .\bin\nunit\addins
 
-.\build\nunit\nunit.exe .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll
+.\bin\nunit\nunit.exe .\NJasmine.Tests\bin\Debug\NJasmine.Tests.dll
