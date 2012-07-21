@@ -41,9 +41,9 @@ namespace NJasmine.NUnit
 
             globalSetup.Initialize(fixtureFactory);
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(nativeTestFactory, new TestPosition(), globalSetup);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup, buildContext);
 
-            TestBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext, globalSetup, buildContext.GetSpecificationRootAction(), true);
+            TestBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext.GetSpecificationRootAction(), true);
 
             var result = (root.GetUnderlyingTest() as NativeTest).GetNative(root);
 

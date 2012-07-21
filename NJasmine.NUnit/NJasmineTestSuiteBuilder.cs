@@ -64,7 +64,7 @@ namespace NJasmine.NUnit
             }
             else
             {
-                var subSuite = new NJasmineTestSuite(_nativeTestFactory, position, _globalSetup);
+                var subSuite = new NJasmineTestSuite(position, _globalSetup, _buildContext);
 
                 var forkName =_buildContext.NameReservations.GetSharedTestName(element.Description, _parent.Name);
 
@@ -72,7 +72,7 @@ namespace NJasmine.NUnit
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
-                var finalResultBuilder = subSuite.RunSuiteAction(_buildContext, _globalSetup, element.Action, false, resultBuilder);
+                var finalResultBuilder = subSuite.RunSuiteAction(element.Action, false, resultBuilder);
 
                 _accumulatedDescendants.Add(finalResultBuilder);
             }
