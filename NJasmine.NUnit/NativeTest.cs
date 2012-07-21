@@ -14,12 +14,6 @@ namespace NJasmine.NUnit
 
         public Test GetNative(TestBuilder builder)
         {
-            ApplyResultToTest(builder);
-            return _test;
-        }
-
-        public void ApplyResultToTest(TestBuilder builder)
-        {
             if (builder.ReasonIgnored != null)
             {
                 _test.RunState = RunState.Explicit;
@@ -27,12 +21,21 @@ namespace NJasmine.NUnit
             }
             
             foreach (var category in builder.Categories)
-                NUnitFrameworkUtil.ApplyCategoryToTest(category, _test);
+            {
+                _test.Categories.Add(category);
+
+                if (category.IndexOfAny(new char[] { ',', '!', '+', '-' }) >= 0)
+                {
+                    _test.RunState = RunState.NotRunnable;
+                    _test.IgnoreReason = "Category name must not contain ',', '!', '+' or '-'";
+                }
+            }
 
             foreach (var child in builder.Children)
             {
                 (_test as TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
             }
+            return _test;
         }
     }
 }
