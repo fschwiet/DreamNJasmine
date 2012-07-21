@@ -55,7 +55,7 @@
     <Compile Include="NativeTestFactory.cs" />
     <Compile Include="NativeTestResult.cs" />
     <Compile Include="NJasmineSuiteBuilder.cs" />
-    <Compile Include="NJasmineTestSuiteBuilder.cs" />
+    <Compile Include="DiscoveryVisitor.cs" />
     <Compile Include="NUnitFrameworkUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestElements\NJasmineInvalidTestSuite.cs" />

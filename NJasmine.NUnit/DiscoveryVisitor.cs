@@ -10,7 +10,7 @@ using NJasmine.NUnit.TestElements;
 
 namespace NJasmine.NUnit
 {
-    class NJasmineTestSuiteBuilder : ISpecPositionVisitor
+    class DiscoveryVisitor : ISpecPositionVisitor
     {
         readonly INativeTestFactory _nativeTestFactory;
         private readonly TestBuilder _parent;
@@ -20,7 +20,7 @@ namespace NJasmine.NUnit
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public NJasmineTestSuiteBuilder(INativeTestFactory nativeTestFactory, TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
+        public DiscoveryVisitor(INativeTestFactory nativeTestFactory, TestBuilder parent, FixtureDiscoveryContext buildContext, GlobalSetupManager globalSetup)
         {
             _nativeTestFactory = nativeTestFactory;
             _parent = parent;

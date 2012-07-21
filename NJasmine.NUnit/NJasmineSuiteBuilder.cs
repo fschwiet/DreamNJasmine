@@ -26,6 +26,8 @@ namespace NJasmine.NUnit
 
         public Test BuildFrom(Type type)
         {
+            NativeTestFactory nativeTestFactory = new NativeTestFactory();
+
             var constructor = type.GetConstructor(new Type[0]);
 
             Func<SpecificationFixture> fixtureFactory = delegate()
@@ -33,8 +35,6 @@ namespace NJasmine.NUnit
                 var fixture = constructor.Invoke(new object[0]) as SpecificationFixture;
                 return fixture;
             };
-
-            NativeTestFactory nativeTestFactory = new NativeTestFactory();
 
             FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameReservations(), fixtureFactory());
 

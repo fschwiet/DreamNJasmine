@@ -20,7 +20,7 @@ namespace NJasmine.NUnit.TestElements
 
         public TestBuilder RunSuiteAction(Action action, bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
-            var builder = new NJasmineTestSuiteBuilder(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _globalSetup);
+            var builder = new DiscoveryVisitor(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _globalSetup);
 
             var exception = _discoveryContext.RunActionWithVisitor(_position.GetFirstChildPosition(), action, builder);
 
