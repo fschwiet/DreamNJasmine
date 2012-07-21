@@ -33,7 +33,7 @@ namespace NJasmine.NUnit
 
             foreach (var child in builder.Children)
             {
-                (_test as TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
+                (_test as global::NUnit.Core.TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
             }
             return _test;
         }

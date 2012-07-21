@@ -1,16 +1,15 @@
 using System;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
-using NJasmine.Core.GlobalSetup;
 
-namespace NJasmine.NUnit.TestElements
+namespace NJasmine
 {
-    public class NJasmineTestSuite
+    public class TestSuite
     {
         readonly SharedContext _sharedContext;
         readonly TestContext _testContext;
 
-        public NJasmineTestSuite(SharedContext sharedContext, TestContext testContext)
+        public TestSuite(SharedContext sharedContext, TestContext testContext)
         {
             _sharedContext = sharedContext;
             _testContext = testContext;

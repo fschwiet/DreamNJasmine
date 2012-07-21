@@ -7,6 +7,7 @@ using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 using TestName = NJasmine.Core.TestName;
+using TestSuite = NJasmine.TestSuite;
 
 namespace NJasmine.NUnit
 {
@@ -50,7 +51,7 @@ namespace NJasmine.NUnit
                 }
             };
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(buildContext, testContext);
+            TestSuite rootSuite = new TestSuite(buildContext, testContext);
 
             TestName name = new TestName
             {
@@ -75,9 +76,9 @@ namespace NJasmine.NUnit
                 visitor(test as INJasmineTest);
             }
 
-            if (test is TestSuite)
+            if (test is global::NUnit.Core.TestSuite)
             {
-                foreach (ITest childTest in (test as TestSuite).Tests)
+                foreach (ITest childTest in (test as global::NUnit.Core.TestSuite).Tests)
                 {
                     VisitAllTestElements(childTest, visitor);
                 }

@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using NJasmine.Core;
-using NJasmine.Core.Discovery;
 using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
-using NJasmine.NUnit.TestElements;
 
-namespace NJasmine.NUnit
+namespace NJasmine.Core.Discovery
 {
     class DiscoveryVisitor : ISpecPositionVisitor
     {
@@ -74,7 +70,7 @@ namespace NJasmine.NUnit
                     GlobalSetupManager = _globalSetup
                 };
 
-                var subSuite = new NJasmineTestSuite(_sharedContext, testContext);
+                var subSuite = new TestSuite(_sharedContext, testContext);
 
                 var resultBuilder = new TestBuilder(_sharedContext.NativeTestFactory.ForSuite(testContext, () => _globalSetup.Cleanup(position)), testContext.Name);
 
