@@ -85,7 +85,7 @@ namespace NJasmineTests.Core
 
             TestResultShim result = new TestResultShim();
             List<string> ignored;
-            method.RunTestMethodInner(result, out ignored);
+            NJasmineTestMethod.RunTestMethodInner(method, result, out ignored);
 
             expect(() => result.IsSuccess);
 

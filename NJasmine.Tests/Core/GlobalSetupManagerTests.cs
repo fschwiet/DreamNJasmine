@@ -62,11 +62,7 @@ namespace NJasmineTests.Core
                     }
                 };
 
-                var sut = arrange(() => new GlobalSetupManager());
-
-                arrange(() => sut.Initialize(() => fixture));
-
-                cleanup(() => sut.Close());
+                var sut = arrange(() => new GlobalSetupManager(() => fixture));
 
                 when("a test is going to be run", delegate
                 {
@@ -151,9 +147,7 @@ namespace NJasmineTests.Core
                     }
                 };
 
-                var sut = arrange(() => new GlobalSetupManager());
-
-                arrange(() => sut.Initialize(() => fixture));
+                var sut = arrange(() => new GlobalSetupManager(() => fixture));
 
                 cleanup(() => sut.Close());
 

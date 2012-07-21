@@ -10,12 +10,12 @@ namespace NJasmine.Core.Discovery
         public NameReservations NameReservations;
         public readonly INativeTestFactory NativeTestFactory;
         private SpecificationFixture _fixtureInstanceForDiscovery;
-        private Func<SpecificationFixture> _fixtureFactory;
+        public Func<SpecificationFixture> FixtureFactory;
 
         public FixtureDiscoveryContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, SpecificationFixture fixtureInstanceForDiscovery)
         {
             NativeTestFactory = nativeTestFactory;
-            _fixtureFactory = fixtureFactory;
+            FixtureFactory = fixtureFactory;
             NameReservations = nameReservations;
             _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
         }
@@ -23,6 +23,10 @@ namespace NJasmine.Core.Discovery
         public Action GetSpecificationRootAction()
         {
             return _fixtureInstanceForDiscovery.Run;
+        }
+        public GlobalSetupManager GetGlobalSetupManager()
+        {
+            return new GlobalSetupManager(FixtureFactory);
         }
 
         public Exception RunActionWithVisitor(TestPosition position, Action action, ISpecPositionVisitor visitor)
@@ -56,7 +60,7 @@ namespace NJasmine.Core.Discovery
         {
             var reservedTestName = NameReservations.GetReservedTestName(description, parentTest.Name);
 
-            var test = new TestBuilder(NativeTestFactory.ForTest(reservedTestName,_fixtureFactory, position, globalSetupManager), reservedTestName);
+            var test = new TestBuilder(NativeTestFactory.ForTest(reservedTestName,FixtureFactory, position, globalSetupManager), reservedTestName);
 
             return test;
         }

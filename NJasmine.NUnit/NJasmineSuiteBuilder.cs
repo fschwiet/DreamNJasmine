@@ -38,9 +38,7 @@ namespace NJasmine.NUnit
 
             FixtureDiscoveryContext buildContext = new FixtureDiscoveryContext(nativeTestFactory, fixtureFactory, new NameReservations(), fixtureFactory());
 
-            var globalSetup = new GlobalSetupManager();
-
-            globalSetup.Initialize(fixtureFactory);
+            var globalSetup = buildContext.GetGlobalSetupManager();
 
             var testPosition = new TestPosition();
 

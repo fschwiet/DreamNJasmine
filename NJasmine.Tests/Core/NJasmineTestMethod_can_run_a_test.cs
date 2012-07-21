@@ -90,7 +90,7 @@ namespace NJasmineTests.Core
             var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new FakeGlobalSetupManager());
 
             List<string> ignored;
-            sut.RunTestMethodInner(new TestResultShim(), out ignored);
+            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, 7, -2, -3, -4, 8);
         }
@@ -103,11 +103,11 @@ namespace NJasmineTests.Core
             var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new FakeGlobalSetupManager());
 
             List<string> ignored;
-            sut.RunTestMethodInner(new TestResultShim(), out ignored);
+            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
 
             fixture.ResetObservations();
 
-            sut.RunTestMethodInner(new TestResultShim(), out ignored);
+            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, -2, -3, -4, 7, 8);
         }

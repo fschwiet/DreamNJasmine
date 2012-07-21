@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using NJasmine.Core.Discovery;
 
 namespace NJasmine.Core.GlobalSetup
 {
@@ -13,7 +14,7 @@ namespace NJasmine.Core.GlobalSetup
         LolMutex _runMutex;
         private TestPosition _targetPosition;
 
-        public void Initialize(Func<SpecificationFixture> fixtureFactory)
+        public GlobalSetupManager(Func<SpecificationFixture> fixtureFactory)
         {
             _fixtureFactory = fixtureFactory;
             _thread = null;
@@ -25,7 +26,7 @@ namespace NJasmine.Core.GlobalSetup
         {
             if (_thread != null)
             {
-                Exception ignored = PrepareForTestPosition(position);
+                PrepareForTestPosition(position);
             }
         }
 

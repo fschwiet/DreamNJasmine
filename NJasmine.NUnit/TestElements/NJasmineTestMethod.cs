@@ -39,7 +39,7 @@ namespace NJasmine.NUnit.TestElements
                 List<string> traceMessages = null;
                 try
                 {
-                    RunTestMethod(testResult, out traceMessages);
+                    RunTestMethodInner(this, testResult, out traceMessages);
                 }
                 catch (Exception e)
                 {
@@ -55,19 +55,14 @@ namespace NJasmine.NUnit.TestElements
             return nunitTestResult;
         }
 
-        public void RunTestMethod(TestResultShim testResult, out List<string> traceMessages)
-        {
-            RunTestMethodInner(testResult, out traceMessages);
-        }
-
-        public void RunTestMethodInner(TestResultShim testResult, out List<string> traceMessages)
+        public static void RunTestMethodInner(NJasmineTestMethod nJasmineTestMethod, TestResultShim testResult, out List<string> traceMessages)
         {
             traceMessages = new List<string>();
 
-            var executionContext = new NJasmineTestRunContext(Position, _globalSetup, traceMessages);
+            var executionContext = new NJasmineTestRunContext(nJasmineTestMethod.Position, nJasmineTestMethod._globalSetup, traceMessages);
             var runner = new NJasmineTestRunner(executionContext);
 
-            SpecificationFixture fixture = this._fixtureFactory();
+            SpecificationFixture fixture = nJasmineTestMethod._fixtureFactory();
 
             fixture.CurrentPosition = new TestPosition(0);
             fixture.Visitor = runner;
