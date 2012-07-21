@@ -18,20 +18,6 @@ namespace NJasmine.NUnit.TestElements
             _discoveryContext = discoveryContext;
         }
 
-        public TestBuilder BuildNJasmineTestSuite(string parentName, string name, Action action, bool isOuterScopeOfSpecification)
-        {
-            var testName = new TestName
-            {
-                FullName = parentName + "." + name,
-                Shortname = name,
-                MultilineName = parentName + "." + name
-            };
-
-            var resultBuilder = new TestBuilder(_discoveryContext.NativeTestFactory.ForSuite(testName, _position, () => _globalSetup.Cleanup(_position)), testName);
-
-            return RunSuiteAction(action, isOuterScopeOfSpecification, resultBuilder);
-        }
-
         public TestBuilder RunSuiteAction(Action action, bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
         {
             var builder = new NJasmineTestSuiteBuilder(_discoveryContext.NativeTestFactory, resultBuilder, _discoveryContext, _globalSetup);

@@ -6,6 +6,7 @@ using NJasmine.Core.GlobalSetup;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
+using TestName = NJasmine.Core.TestName;
 
 namespace NJasmine.NUnit
 {
@@ -41,9 +42,18 @@ namespace NJasmine.NUnit
 
             globalSetup.Initialize(fixtureFactory);
 
-            NJasmineTestSuite rootSuite = new NJasmineTestSuite(new TestPosition(), globalSetup, buildContext);
+            var testPosition = new TestPosition();
 
-            TestBuilder root = rootSuite.BuildNJasmineTestSuite(type.Namespace, type.Name, buildContext.GetSpecificationRootAction(), true);
+            NJasmineTestSuite rootSuite = new NJasmineTestSuite(testPosition, globalSetup, buildContext);
+
+            TestName name = new TestName
+            {
+                FullName = type.Namespace + "." + type.Name,
+                Shortname = type.Name,
+                MultilineName = type.Namespace + "." + type.Name
+            };
+
+            TestBuilder root = rootSuite.RunSuiteAction(buildContext.GetSpecificationRootAction(), true, new TestBuilder(buildContext.NativeTestFactory.ForSuite(name, testPosition, () => globalSetup.Cleanup(testPosition)), name));
 
             var result = (root.GetUnderlyingTest() as NativeTest).GetNative(root);
 
