@@ -8,6 +8,13 @@ namespace NJasmine.Marshalled
 {
     public class Executor : MarshalByRefObject
     {
+        public class SpecEnumerator : MarshalByRefObject
+        {
+            public string[] GetTestNames()
+            {
+                return new string[0];
+            }
+        }
 
         public class AppSettingLoader : MarshalByRefObject
         {

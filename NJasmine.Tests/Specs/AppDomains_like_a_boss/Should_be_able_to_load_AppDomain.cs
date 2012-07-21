@@ -26,16 +26,25 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
 
                 then("the executor class can be loaded", () =>
                 {
-                    var o = appDomainWrapper.CreateObject("NJasmine.dll", "NJasmine.Marshalled.Executor");
+                    var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor>("NJasmine.dll");
                 });
 
                 then("the test DLL's configuration file is loaded", () =>
                 {
-                    var o = appDomainWrapper.CreateObject("NJasmine.dll", "NJasmine.Marshalled.Executor+AppSettingLoader");
+                    var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor.AppSettingLoader>("NJasmine.dll");
 
-                    string result = (o as NJasmine.Marshalled.Executor.AppSettingLoader).Get("someConfigurationValue");
+                    string result = o.Get("someConfigurationValue");
 
                     expect(() => result == "#winning");
+                });
+
+                then("test test DLL's tests can be enumerated", () =>
+                {
+                    var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
+
+                    var result = (o as NJasmine.Marshalled.Executor.SpecEnumerator).GetTestNames();
+
+                    expect(() => result.Contains("SomeTestLibrary.ASingleTest.first test"));
                 });
             });
         }
@@ -74,12 +83,12 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
             _domain = AppDomain.CreateDomain(setup.ApplicationName, null, setup, new PermissionSet(PermissionState.Unrestricted));
         }
 
-        public object CreateObject(string dllName, string className)
+        public T CreateObject<T>(string dllName)
         {
             var assemblyName =
                 AssemblyName.GetAssemblyName(Path.Combine(new FileInfo(_dllPath).Directory.FullName, dllName));
 
-            return _domain.CreateInstanceAndUnwrap(assemblyName.FullName, className);
+            return (T)_domain.CreateInstanceAndUnwrap(assemblyName.FullName, typeof(T).FullName);
         }
     }
 }
