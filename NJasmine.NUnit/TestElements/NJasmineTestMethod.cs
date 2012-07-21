@@ -28,9 +28,7 @@ namespace NJasmine.NUnit.TestElements
             long ticks = DateTime.Now.Ticks;
             var testResult = new TestResultShim();
 
-            Exception existingError = null;
-
-            _globalSetup.PrepareForTestPosition(Position, out existingError);
+            Exception existingError = _globalSetup.PrepareForTestPosition(Position);
 
             if (existingError != null)
             {

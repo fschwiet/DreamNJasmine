@@ -25,15 +25,13 @@ namespace NJasmine.Core.GlobalSetup
         {
             if (_thread != null)
             {
-                Exception ignored;
-
-                PrepareForTestPosition(position, out ignored);
+                Exception ignored = PrepareForTestPosition(position);
             }
         }
 
-        public void PrepareForTestPosition(TestPosition position, out Exception existingError)
+        public Exception PrepareForTestPosition(TestPosition position)
         {
-            existingError = null;
+            Exception existingError = null;
 
             if (position == null)
                 throw new ArgumentException("Parameter is required", "position");
@@ -41,7 +39,7 @@ namespace NJasmine.Core.GlobalSetup
             _targetPosition = position;
 
             if (_visitor.SetTargetPosition(position, out existingError))
-                return;
+                return existingError;
 
             do
             {
@@ -54,6 +52,8 @@ namespace NJasmine.Core.GlobalSetup
                 _runMutex.PassAndWaitForTurn();
 
             } while (!_visitor.SetTargetPosition(position, out existingError));
+
+            return existingError;
         }
 
         public T GetSetupResultAt<T>(TestPosition position)

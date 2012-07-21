@@ -70,9 +70,7 @@ namespace NJasmineTests.Core
 
                 when("a test is going to be run", delegate
                 {
-                    Exception ignored;
-
-                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(2), out ignored));
+                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(2)));
 
                     then("the global setup has ran", delegate
                     {
@@ -87,7 +85,7 @@ namespace NJasmineTests.Core
                     when("a later nested test is going to be ran", delegate
                     {
 
-                        beforeEach(() => sut.PrepareForTestPosition(new TestPosition(3, 2), out ignored));
+                        beforeEach(() => sut.PrepareForTestPosition(new TestPosition(3, 2)));
 
                         then("the global setup has ran", delegate
                         {
@@ -100,7 +98,7 @@ namespace NJasmineTests.Core
 
                         when("a later test nested in another block is going to be ran", delegate
                         {
-                            beforeEach(() => sut.PrepareForTestPosition(new TestPosition(4, 0), out ignored));
+                            beforeEach(() => sut.PrepareForTestPosition(new TestPosition(4, 0)));
 
                             then("the global setup has ran", delegate
                             {
@@ -163,7 +161,7 @@ namespace NJasmineTests.Core
                 {
                     Exception exception = null;
 
-                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(0), out exception));
+                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(0)));
 
                     then("the exception is reported", delegate
                     {

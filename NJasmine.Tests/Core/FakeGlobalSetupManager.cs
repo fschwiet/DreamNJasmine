@@ -12,9 +12,9 @@ namespace NJasmineTests.Core
         {
         }
 
-        public void PrepareForTestPosition(TestPosition position, out Exception existingError)
+        public Exception PrepareForTestPosition(TestPosition position)
         {
-            existingError = null;
+            return null;
         }
 
         public T GetSetupResultAt<T>(TestPosition position)
