@@ -71,6 +71,7 @@
     <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
     <Compile Include="LambdaFixture.cs" />
+    <Compile Include="Specs\AppDomains_like_a_boss\Should_be_able_to_load_AppDomain.cs" />
     <Compile Include="Specs\cleanup_any_IDisposable\leakDisposable_can_be_used_to_prevent_automatic_dispose.cs" />
     <Compile Include="Specs\expectations\can_check_that_an_arbtirary_condition_is_true.cs" />
     <Compile Include="Specs\expectations\can_wait_for_a_condition_to_be_true.cs" />

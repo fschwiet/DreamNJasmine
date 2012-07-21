@@ -16,3 +16,4 @@ _ReSharper.*
 *.InstallLog
 .backup/
 lib/NUnit-2.5.9.10348/net-2.0/addins
+TestResult.xml

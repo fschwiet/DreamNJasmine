@@ -92,6 +92,7 @@
     <Compile Include="Extras\RunsActionOnDispose.cs" />
     <Compile Include="Extras\ZipDeployTools.cs" />
     <Compile Include="GivenWhenThenFixture.cs" />
+    <Compile Include="Marshalled\Executor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
