@@ -20,13 +20,23 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
 
             expect(() => File.Exists(someDllPath));
 
-            it("should be able to load a test DLL into an AppDomain and ", delegate()
+            given("an AppDomain wrapper for a test DLL", delegate()
             {
-                var appDomainWrapper = new AppDomainWrapper(someDllPath);
+                var appDomainWrapper = arrange(() => new AppDomainWrapper(someDllPath));
 
-                var o = appDomainWrapper.CreateObject("NJasmine.dll", "NJasmine.Marshalled.Executor");
+                then("the executor class can be loaded", () =>
+                {
+                    var o = appDomainWrapper.CreateObject("NJasmine.dll", "NJasmine.Marshalled.Executor");
+                });
 
-                Console.WriteLine(o.GetType());
+                then("the test DLL's configuration file is loaded", () =>
+                {
+                    var o = appDomainWrapper.CreateObject("NJasmine.dll", "NJasmine.Marshalled.Executor+AppSettingLoader");
+
+                    string result = (o as NJasmine.Marshalled.Executor.AppSettingLoader).Get("someConfigurationValue");
+
+                    expect(() => result == "#winning");
+                });
             });
         }
 
@@ -58,7 +68,8 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
             setup.ShadowCopyDirectories = setup.ApplicationBase;
             setup.CachePath = Path.Combine(Path.GetTempPath(), setup.ApplicationName);
 
-            setup.ConfigurationFile = null;
+            var possibleConfigFile = _dllPath + ".config";
+            setup.ConfigurationFile = File.Exists(possibleConfigFile) ? possibleConfigFile : null;
 
             _domain = AppDomain.CreateDomain(setup.ApplicationName, null, setup, new PermissionSet(PermissionState.Unrestricted));
         }
