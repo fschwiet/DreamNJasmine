@@ -7,7 +7,7 @@ namespace NJasmine.Core
     public interface INativeTestFactory
     {
         INativeTest ForSuite(TestContext testContext, Action onetimeCleanup);
-        INativeTest ForTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory);
+        INativeTest ForTest(SharedContext sharedContext, TestContext testContext);
         INativeTest ForUnimplementedTest(TestContext testContext);
         INativeTest ForFailingSuite(TestContext testContext, Exception exception);
     }

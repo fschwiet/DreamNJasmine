@@ -19,7 +19,7 @@ namespace NJasmine.Core
             return new TracingTest();
         }
 
-        public INativeTest ForTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory)
+        public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
             Names.Add(testContext.Name.FullName);
             return new TracingTest();

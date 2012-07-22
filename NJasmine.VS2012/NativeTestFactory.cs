@@ -18,7 +18,7 @@ namespace NJasmine.VS2012
             throw new NotImplementedException();
         }
 
-        public INativeTest ForTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory)
+        public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
             throw new NotImplementedException();
         }

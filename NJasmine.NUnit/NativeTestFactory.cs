@@ -19,9 +19,9 @@ namespace NJasmine.NUnit
             return new NativeTest(nunitTest);
         }
 
-        public INativeTest ForTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory)
+        public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
-            var nunitTest = new NJasmineTestMethod(fixtureFactory, testContext.Position, testContext.GlobalSetupManager);
+            var nunitTest = new NJasmineTestMethod(sharedContext.FixtureFactory, testContext.Position, testContext.GlobalSetupManager);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
             

@@ -65,7 +65,7 @@ namespace NJasmine.Core.Discovery
                 GlobalSetupManager = globalSetupManager
             };
 
-            var test = new TestBuilder(NativeTestFactory.ForTest(testContext, FixtureFactory), testContext.Name);
+            var test = new TestBuilder(NativeTestFactory.ForTest(this, testContext), testContext.Name);
 
             return test;
         }
