@@ -16,7 +16,7 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
     {
         public override void Specify()
         {
-            var someDllPath = GetSomeDllPath();
+            var someDllPath = arrange(() => GetSomeDllPath());
 
             expect(() => File.Exists(someDllPath));
 
@@ -38,13 +38,15 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
                     expect(() => result == "#winning");
                 });
 
-                then("test test DLL's tests can be enumerated", () =>
+                then("test DLL's tests can be enumerated", () =>
                 {
+                    Console.WriteLine("using " + someDllPath);
+
                     var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
 
-                    var result = (o as NJasmine.Marshalled.Executor.SpecEnumerator).GetTestNames();
+                    var result = o.GetTestNames(AssemblyName.GetAssemblyName(someDllPath).FullName);
 
-                    expect(() => result.Contains("SomeTestLibrary.ASingleTest.first test"));
+                    expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
                 });
             });
         }

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using NJasmine.Core;
+using NJasmine.Core.Discovery;
 
 namespace NJasmine.Marshalled
 {
@@ -10,9 +13,24 @@ namespace NJasmine.Marshalled
     {
         public class SpecEnumerator : MarshalByRefObject
         {
-            public string[] GetTestNames()
+            public string[] GetTestNames(string assemblyName)
             {
-                return new string[0];
+                var assembly = Assembly.Load(assemblyName);
+
+                List<string> results = new List<string>();
+
+                foreach (var type in assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)))
+                {
+                    Console.WriteLine("type " + type.Name);
+
+                    TracingTestFactory nativeTestFactory = new TracingTestFactory();
+
+                    SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+
+                    results.AddRange(nativeTestFactory.Names.ToArray());
+                }
+
+                return results.ToArray();
             }
         }
 
