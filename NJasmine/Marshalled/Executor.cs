@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
+using NJasmine.Extras;
 
 namespace NJasmine.Marshalled
 {
@@ -21,8 +22,6 @@ namespace NJasmine.Marshalled
 
                 foreach (var type in assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)))
                 {
-                    Console.WriteLine("type " + type.Name);
-
                     TracingTestFactory nativeTestFactory = new TracingTestFactory();
 
                     SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
@@ -40,6 +39,14 @@ namespace NJasmine.Marshalled
             {
                 return ConfigurationManager.AppSettings.Get(name);
             }
+        }
+
+        public static string[] LoadTestNames(AppDomainWrapper appDomainWrapper, string dllPath)
+        {
+            var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
+
+            var result = o.GetTestNames(AssemblyName.GetAssemblyName(dllPath).FullName);
+            return result;
         }
     }
 }

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Security;
-using System.Security.Permissions;
 using System.Text;
 using NJasmine;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 
 namespace NJasmineTests.Specs.AppDomains_like_a_boss
 {
@@ -42,9 +40,7 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
                 {
                     Console.WriteLine("using " + someDllPath);
 
-                    var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
-
-                    var result = o.GetTestNames(AssemblyName.GetAssemblyName(someDllPath).FullName);
+                    var result = Executor.LoadTestNames(appDomainWrapper, someDllPath);
 
                     expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
                 });
@@ -59,38 +55,6 @@ namespace NJasmineTests.Specs.AppDomains_like_a_boss
                 return Path.Combine(currentDllDirectory.FullName, "SomeTestLibrary.dll");
             else
                 return Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
-        }
-    }
-
-    public struct AppDomainWrapper
-    {
-        private string _dllPath;
-        private AppDomain _domain;
-
-        public AppDomainWrapper(string dllPath)
-        {
-            _dllPath = Path.GetFullPath(dllPath);
-
-            AppDomainSetup setup = new AppDomainSetup();
-            setup.ApplicationBase = Path.GetDirectoryName(_dllPath);
-            setup.ApplicationName = Guid.NewGuid().ToString();
-
-            setup.ShadowCopyFiles = "true";
-            setup.ShadowCopyDirectories = setup.ApplicationBase;
-            setup.CachePath = Path.Combine(Path.GetTempPath(), setup.ApplicationName);
-
-            var possibleConfigFile = _dllPath + ".config";
-            setup.ConfigurationFile = File.Exists(possibleConfigFile) ? possibleConfigFile : null;
-
-            _domain = AppDomain.CreateDomain(setup.ApplicationName, null, setup, new PermissionSet(PermissionState.Unrestricted));
-        }
-
-        public T CreateObject<T>(string dllName)
-        {
-            var assemblyName =
-                AssemblyName.GetAssemblyName(Path.Combine(new FileInfo(_dllPath).Directory.FullName, dllName));
-
-            return (T)_domain.CreateInstanceAndUnwrap(assemblyName.FullName, typeof(T).FullName);
         }
     }
 }
