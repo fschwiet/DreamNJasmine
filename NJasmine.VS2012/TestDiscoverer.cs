@@ -20,11 +20,12 @@ namespace NJasmine.VS2012
         {
             foreach (var source in sources.Where(s => IsAlongsideNJasmineDll(s)))
             {
-                var appDomain = new AppDomainWrapper(Path.GetFullPath(source));
-
-                foreach(var result in Executor.LoadTestNames(appDomain, source))
+                using(var appDomain = new AppDomainWrapper(Path.GetFullPath(source)))
                 {
-                    discoverySink.SendTestCase(new TestCase(result, new Uri("http://nuget.org/packages/NJasmine"), "lolsource:111:lineNumber"));
+                    foreach (var result in Executor.LoadTestNames(appDomain, source))
+                    {
+                        discoverySink.SendTestCase(new TestCase(result, new Uri("http://nuget.org/packages/NJasmine"), "lolsource:111:lineNumber"));
+                    }
                 }
             }
         }

@@ -6,7 +6,7 @@ using System.Security.Permissions;
 
 namespace NJasmine.Extras
 {
-    public struct AppDomainWrapper
+    public struct AppDomainWrapper : IDisposable
     {
         private string _dllPath;
         private AppDomain _domain;
@@ -35,6 +35,15 @@ namespace NJasmine.Extras
                 AssemblyName.GetAssemblyName(Path.Combine(new FileInfo(_dllPath).Directory.FullName, dllName));
 
             return (T)_domain.CreateInstanceAndUnwrap(assemblyName.FullName, typeof(T).FullName);
+        }
+
+        public void Dispose()
+        {
+            if (_domain != null)
+            {
+                AppDomain.Unload(_domain);
+                _domain = null;
+            }
         }
     }
 }
