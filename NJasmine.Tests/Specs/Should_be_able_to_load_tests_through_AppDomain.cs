@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NJasmine;
 using NJasmine.Extras;
 using NJasmine.Marshalled;
 
-namespace NJasmineTests.Specs.AppDomains_like_a_boss
+namespace NJasmineTests.Specs
 {
-    public class Should_be_able_to_load_AppDomain : GivenWhenThenFixture
+    public class Should_be_able_to_load_tests_through_AppDomain : GivenWhenThenFixture
     {
         public override void Specify()
         {
