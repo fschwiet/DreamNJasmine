@@ -66,7 +66,7 @@ namespace NJasmineTests.Core
 
             var rootTest = new NJasmineSuiteBuilder().BuildFrom(typeof(has_test_in_loop));
 
-            NJasmineSuiteBuilder.VisitAllTestElements(rootTest, visitor);
+            VisitAllTestElements(rootTest, visitor);
             var elements = result;
 
             expect(() => elements[new TestPosition(0)] == "a1");
@@ -77,6 +77,23 @@ namespace NJasmineTests.Core
             expect(() => elements[new TestPosition(3, 1)] == "b2");
             expect(() => elements[new TestPosition(3, 2)] == "b3");
         }
+
+        public static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
+        {
+            if (test is INJasmineTest)
+            {
+                visitor(test as INJasmineTest);
+            }
+
+            if (test is global::NUnit.Core.TestSuite)
+            {
+                foreach (ITest childTest in (test as global::NUnit.Core.TestSuite).Tests)
+                {
+                    VisitAllTestElements(childTest, visitor);
+                }
+            }
+        }
+
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
         {

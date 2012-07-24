@@ -37,21 +37,5 @@ namespace NJasmine.NUnit
 
             return result;
         }
-
-        public static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
-        {
-            if (test is INJasmineTest)
-            {
-                visitor(test as INJasmineTest);
-            }
-
-            if (test is global::NUnit.Core.TestSuite)
-            {
-                foreach (ITest childTest in (test as global::NUnit.Core.TestSuite).Tests)
-                {
-                    VisitAllTestElements(childTest, visitor);
-                }
-            }
-        }
     }
 }
