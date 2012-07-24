@@ -96,7 +96,7 @@ namespace NJasmineTests.Core
 
             var nativeTestFactory = new TrackingTestFactory();
 
-SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+            SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
 
             expect(() => nativeTestFactory.Results[TestPosition.At(0)] == "a1");
             expect(() => nativeTestFactory.Results[TestPosition.At(1)] == "a2");
@@ -106,23 +106,6 @@ SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
             expect(() => nativeTestFactory.Results[TestPosition.At(3, 1)] == "b2");
             expect(() => nativeTestFactory.Results[TestPosition.At(3, 2)] == "b3");
         }
-
-        public static void VisitAllTestElements(ITest test, Action<INJasmineTest> visitor)
-        {
-            if (test is INJasmineTest)
-            {
-                visitor(test as INJasmineTest);
-            }
-
-            if (test is global::NUnit.Core.TestSuite)
-            {
-                foreach (ITest childTest in (test as global::NUnit.Core.TestSuite).Tests)
-                {
-                    VisitAllTestElements(childTest, visitor);
-                }
-            }
-        }
-
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)
         {
