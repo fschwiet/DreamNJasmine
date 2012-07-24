@@ -87,10 +87,11 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => fixture, TestPosition.At(1, 3, 2), new FakeGlobalSetupManager());
+            var fakeGlobalSetupManager = new FakeGlobalSetupManager();
+            Func<SpecificationFixture> fixtureFactory = () => fixture;  
 
             List<string> ignored;
-            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
+            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, TestPosition.At(1, 3, 2), out ignored);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, 7, -2, -3, -4, 8);
         }
@@ -100,14 +101,17 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => fixture, TestPosition.At(1, 3, 2), new FakeGlobalSetupManager());
+            Func<SpecificationFixture> fixtureFactory = () => fixture;
+            var fakeGlobalSetupManager = new FakeGlobalSetupManager();
+
+            TestPosition testPosition = TestPosition.At(1, 3, 2);
 
             List<string> ignored;
-            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
+            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, testPosition, out ignored);
 
             fixture.ResetObservations();
 
-            NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
+            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, testPosition, out ignored);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, -2, -3, -4, 7, 8);
         }

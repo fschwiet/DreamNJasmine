@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.Core.Execution;
 using NUnit.Core;
 
@@ -39,7 +40,8 @@ namespace NJasmine.NUnit.TestElements
                 List<string> traceMessages = null;
                 try
                 {
-                    RunTestMethodInner(this, testResult, out traceMessages);
+                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _globalSetup, Position, out traceMessages);
+                    testResult.Success();
                 }
                 catch (Exception e)
                 {
@@ -53,28 +55,6 @@ namespace NJasmine.NUnit.TestElements
             nunitTestResult.Time = ((DateTime.Now.Ticks - ticks)) / 10000000.0;
             listener.TestFinished(nunitTestResult);
             return nunitTestResult;
-        }
-
-        public static void RunTestMethodInner(NJasmineTestMethod nJasmineTestMethod, TestResultShim testResult, out List<string> traceMessages)
-        {
-            traceMessages = new List<string>();
-
-            var executionContext = new NJasmineTestRunContext(nJasmineTestMethod.Position, nJasmineTestMethod._globalSetup, traceMessages);
-            var runner = new NJasmineTestRunner(executionContext);
-
-            SpecificationFixture fixture = nJasmineTestMethod._fixtureFactory();
-
-            fixture.CurrentPosition = TestPosition.At(0);
-            fixture.Visitor = runner;
-            try
-            {
-                fixture.Run();
-            }
-            finally
-            {
-                executionContext.RunAllPerTestTeardowns();
-            }
-            testResult.Success();
         }
     }
 }

@@ -8,15 +8,15 @@ namespace NJasmine.Core.Execution
     {
         public ISpecPositionVisitor State { get; private set; }
 
-        private readonly TestPosition _position;
+        private readonly TestPosition _targetTestPosition;
         private readonly IGlobalSetupManager _globalSetup;
         private readonly List<Action> _allTeardowns;
         private readonly List<string> _traces;
         private readonly List<IDisposable> _leakedDisposables;
 
-        public NJasmineTestRunContext(TestPosition position, IGlobalSetupManager globalSetup, List<string> traceMessages)
+        public NJasmineTestRunContext(TestPosition targetTestPosition, IGlobalSetupManager globalSetup, List<string> traceMessages)
         {
-            _position = position;
+            _targetTestPosition = targetTestPosition;
             _globalSetup = globalSetup;
             _allTeardowns = new List<Action>();
             _traces = traceMessages;
@@ -27,7 +27,7 @@ namespace NJasmine.Core.Execution
 
         public bool PositionIsAncestorOfContext(TestPosition position)
         {
-            return position.IsAncestorOf(_position);
+            return position.IsAncestorOf(_targetTestPosition);
         }
 
         public TArranged GetSetupResultAt<TArranged>(TestPosition position)
@@ -82,7 +82,7 @@ namespace NJasmine.Core.Execution
 
         public bool TestIsAtPosition(TestPosition position)
         {
-            return position.ToString() == _position.ToString();
+            return position.ToString() == _targetTestPosition.ToString();
         }
 
         public void LeakDisposable(IDisposable disposable)
