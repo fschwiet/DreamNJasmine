@@ -33,6 +33,11 @@ namespace NJasmine.Marshalled
             }
         }
 
+        public class SpecRunner : MarshalByRefObject
+        {
+            
+        }
+
         public class AppSettingLoader : MarshalByRefObject
         {
             public string Get(string name)
@@ -46,7 +51,13 @@ namespace NJasmine.Marshalled
             var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
 
             var result = o.GetTestNames(AssemblyName.GetAssemblyName(dllPath).FullName);
+
             return result;
+        }
+
+        public static void RunTests(AppDomainWrapper appDomainWrapper, string[] toArray)
+        {
+            var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecRunner>("NJasmine.dll");
         }
     }
 }

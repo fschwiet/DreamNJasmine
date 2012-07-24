@@ -16,15 +16,17 @@ namespace NJasmine.VS2012
 {
     public class TestDiscoverer : ITestDiscoverer
     {
+        public const string VSExecutorUri = "http://nuget.org/packages/NJasmine";
+
         public void DiscoverTests(IEnumerable<string> sources, IDiscoveryContext discoveryContext, IMessageLogger logger, ITestCaseDiscoverySink discoverySink)
         {
             foreach (var source in sources.Where(s => IsAlongsideNJasmineDll(s)))
             {
-                using(var appDomain = new AppDomainWrapper(Path.GetFullPath(source)))
+                using(var appDomain = new AppDomainWrapper(source))
                 {
                     foreach (var result in Executor.LoadTestNames(appDomain, source))
                     {
-                        discoverySink.SendTestCase(new TestCase(result, new Uri("http://nuget.org/packages/NJasmine"), "lolsource:111:lineNumber"));
+                        discoverySink.SendTestCase(new TestCase(result, new Uri(VSExecutorUri), source));
                     }
                 }
             }
