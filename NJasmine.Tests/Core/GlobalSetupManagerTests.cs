@@ -66,7 +66,7 @@ namespace NJasmineTests.Core
 
                 when("a test is going to be run", delegate
                 {
-                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(2)));
+                    beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(2)));
 
                     then("the global setup has ran", delegate
                     {
@@ -75,13 +75,13 @@ namespace NJasmineTests.Core
 
                     then("the global setup result is available", delegate
                     {
-                        expect(() => "beforeAll result 1" == sut.GetSetupResultAt<string>(new TestPosition(0)));
+                        expect(() => "beforeAll result 1" == sut.GetSetupResultAt<string>(TestPosition.At(0)));
                     });
 
                     when("a later nested test is going to be ran", delegate
                     {
 
-                        beforeEach(() => sut.PrepareForTestPosition(new TestPosition(3, 2)));
+                        beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(3, 2)));
 
                         then("the global setup has ran", delegate
                         {
@@ -94,7 +94,7 @@ namespace NJasmineTests.Core
 
                         when("a later test nested in another block is going to be ran", delegate
                         {
-                            beforeEach(() => sut.PrepareForTestPosition(new TestPosition(4, 0)));
+                            beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(4, 0)));
 
                             then("the global setup has ran", delegate
                             {
@@ -109,7 +109,7 @@ namespace NJasmineTests.Core
 
                         when("we're done running tests", delegate
                         {
-                            beforeEach(() => sut.Cleanup(new TestPosition()));
+                            beforeEach(() => sut.Cleanup(TestPosition.At()));
 
                             then("expected cleanup runs", delegate
                             {
@@ -155,7 +155,7 @@ namespace NJasmineTests.Core
                 {
                     Exception exception = null;
 
-                    beforeEach(() => sut.PrepareForTestPosition(new TestPosition(0)));
+                    beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(0)));
 
                     then("the exception is reported", delegate
                     {
@@ -165,7 +165,7 @@ namespace NJasmineTests.Core
                     when("we're done running tests", delegate
                     {
                         expect(() => sut.HasThread());
-                        beforeEach(() => sut.Cleanup(new TestPosition()));
+                        beforeEach(() => sut.Cleanup(TestPosition.At()));
 
                         then("the setup thread finishes", delegate
                         {

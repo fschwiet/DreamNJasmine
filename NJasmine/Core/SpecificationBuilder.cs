@@ -23,7 +23,7 @@ namespace NJasmine.Core
 
             var testContext = new TestContext()
             {
-                Position = new TestPosition(),
+                Position = TestPosition.At(),
                 GlobalSetupManager = buildContext.GetGlobalSetupManager(),
                 Name = new TestName
                 {

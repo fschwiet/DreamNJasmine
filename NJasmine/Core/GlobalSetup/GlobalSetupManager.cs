@@ -105,7 +105,7 @@ namespace NJasmine.Core.GlobalSetup
 
         public void Close()
         {
-            Cleanup(new TestPosition());
+            Cleanup(TestPosition.At());
         }
     }
 }

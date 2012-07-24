@@ -35,7 +35,7 @@ namespace NJasmine.Core.GlobalSetup
         public void RunFixture(Func<SpecificationFixture> fixtureFactory)
         {
             var fixture = fixtureFactory();
-            fixture.CurrentPosition = new TestPosition(0);
+            fixture.CurrentPosition = TestPosition.At(0);
             fixture.Visitor = this;
             try
             {
@@ -43,7 +43,7 @@ namespace NJasmine.Core.GlobalSetup
             }
             catch (Exception e)
             {
-                ReportError(new TestPosition(0), e);
+                ReportError(TestPosition.At(0), e);
             }
         }
 
@@ -63,12 +63,12 @@ namespace NJasmine.Core.GlobalSetup
         {
             _setupResultAccumulator.UnwindAll(e =>
             {
-                ReportError(new TestPosition(0), e);
+                ReportError(TestPosition.At(0), e);
             });
 
             _traceTracker.UnwindAll();
 
-            _currentTestPosition = new TestPosition();
+            _currentTestPosition = TestPosition.At();
         }
 
         public void visitFork(ForkElement element, TestPosition position)
@@ -92,7 +92,7 @@ namespace NJasmine.Core.GlobalSetup
                 _runningLock.PassAndWaitForTurn();
             }
 
-            _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(new TestPosition(0), e));
+            _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(TestPosition.At(0), e));
             _traceTracker.UnwindToPosition(_targetPosition);
         }
 
@@ -178,7 +178,7 @@ namespace NJasmine.Core.GlobalSetup
             }
 
             _setupResultAccumulator.UnwindForPosition(_targetPosition, e => {
-                                                                                ReportError(new TestPosition(0), e);
+                                                                                ReportError(TestPosition.At(0), e);
             });
 
             _traceTracker.UnwindToPosition(_targetPosition);

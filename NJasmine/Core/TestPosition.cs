@@ -8,9 +8,14 @@ namespace NJasmine.Core
 {
     public class TestPosition
     {
+        public static TestPosition At(params int[] coordinates)
+        {
+            return new TestPosition(coordinates);
+        }
+
         public IEnumerable<int> Coordinates { get; private set; }
 
-        public TestPosition(params int[] coordinates)
+        TestPosition(params int[] coordinates)
         {
             Coordinates = coordinates;
         }

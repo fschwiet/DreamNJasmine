@@ -87,7 +87,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new FakeGlobalSetupManager());
+            var sut = new NJasmineTestMethod(() => fixture, TestPosition.At(1, 3, 2), new FakeGlobalSetupManager());
 
             List<string> ignored;
             NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);
@@ -100,7 +100,7 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            var sut = new NJasmineTestMethod(() => fixture, new TestPosition(1, 3, 2), new FakeGlobalSetupManager());
+            var sut = new NJasmineTestMethod(() => fixture, TestPosition.At(1, 3, 2), new FakeGlobalSetupManager());
 
             List<string> ignored;
             NJasmineTestMethod.RunTestMethodInner(sut, new TestResultShim(), out ignored);

@@ -64,7 +64,7 @@ namespace NJasmine.NUnit.TestElements
 
             SpecificationFixture fixture = nJasmineTestMethod._fixtureFactory();
 
-            fixture.CurrentPosition = new TestPosition(0);
+            fixture.CurrentPosition = TestPosition.At(0);
             fixture.Visitor = runner;
             try
             {
