@@ -54,8 +54,7 @@
     <Compile Include="Core\FakeGlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetupManagerTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />
-    <Compile Include="Core\NJasmineTestMethod_can_detect_reentrancy.cs" />
-    <Compile Include="Core\NJasmineTestMethod_can_run_a_test.cs" />
+    <Compile Include="Core\run_a_test_with_setup.cs" />
     <Compile Include="Core\ObservableNJasmineFixture.cs" />
     <Compile Include="Core\PowerAssertFixture.cs" />
     <Compile Include="Core\STA.cs" />

@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace NJasmineTests.Core
 {
     [TestFixture]
-    public class NJasmineTestMethod_can_run_a_test : PowerAssertFixture
+    public class run_a_test_with_setup : PowerAssertFixture
     {
         private class AFixture : ObservableNJasmineFixture
         {
