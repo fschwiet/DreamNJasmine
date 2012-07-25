@@ -61,7 +61,8 @@ Task VisualStudioIntegrationTest {
 
     write-output "Checking $testName."
 
-    exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
+    & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`""
+    #exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
   }
 }
 

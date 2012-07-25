@@ -23,11 +23,13 @@ namespace NJasmine.VS2012
 
         public void RunTests(IEnumerable<TestCase> tests, IRunContext runContext, IFrameworkHandle frameworkHandle)
         {
+            var sink = new TestExecutorSinkAdapter(frameworkHandle, tests);
+
             foreach(var group in tests.GroupBy(t => t.Source))
             {
                 using (var appDomain = new AppDomainWrapper(group.Key))
                 {
-                    Executor.RunTests(appDomain, tests.Select(t => t.FullyQualifiedName).ToArray());
+                    Executor.RunTests(appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
                 }
             }
         }

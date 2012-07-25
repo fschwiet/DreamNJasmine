@@ -35,7 +35,14 @@ namespace NJasmine.Marshalled
 
         public class SpecRunner : MarshalByRefObject
         {
-            
+            public void RunTests(string[] testNames, ITestResultListener listener)
+            {
+                foreach (var name in testNames)
+                {
+                    listener.NotifyStart(name);
+                    listener.NotifyEnd(name);
+                }
+            }
         }
 
         public class AppSettingLoader : MarshalByRefObject
@@ -55,9 +62,11 @@ namespace NJasmine.Marshalled
             return result;
         }
 
-        public static void RunTests(AppDomainWrapper appDomainWrapper, string[] toArray)
+        public static void RunTests(AppDomainWrapper appDomainWrapper, string[] testNames, ITestResultListener sink)
         {
             var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecRunner>("NJasmine.dll");
+
+            o.RunTests(testNames, sink);
         }
     }
 }

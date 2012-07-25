@@ -84,6 +84,7 @@
     <Compile Include="Core\INativeTest.cs" />
     <Compile Include="Core\INativeTestFactory.cs" />
     <Compile Include="Core\ISpecificationRunner.cs" />
+    <Compile Include="Core\ITestResultListener.cs" />
     <Compile Include="Core\SpecificationBuilder.cs" />
     <Compile Include="Core\SpecificationRunner.cs" />
     <Compile Include="Core\TestBuilder.cs" />
