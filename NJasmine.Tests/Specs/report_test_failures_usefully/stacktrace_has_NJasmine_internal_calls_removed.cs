@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace NamespaceIsntNJasmineTests
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.failed();
 

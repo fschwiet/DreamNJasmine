@@ -1,6 +1,7 @@
 ﻿using System;
 using NJasmine;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NJasmineTests.Extras;
 using NUnit.Framework;
@@ -34,7 +35,7 @@ namespace NJasmineTests.Specs.report_test_failures_usefully
             }
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.failed();
             fixtureResult.hasTest("when in some context, then there is some text")

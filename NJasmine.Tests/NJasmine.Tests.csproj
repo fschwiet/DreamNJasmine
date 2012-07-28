@@ -61,8 +61,11 @@
     <Compile Include="Core\GivenWhenThenFixtureTracingToConsole.cs" />
     <Compile Include="Export\BaseResult.cs" />
     <Compile Include="Export\FixtureResultTest.cs" />
+    <Compile Include="Export\IFixtureResult.cs" />
     <Compile Include="Export\INJasmineInternalRequirement.cs" />
     <Compile Include="Export\FixtureResult.cs" />
+    <Compile Include="Export\ISuiteResult.cs" />
+    <Compile Include="Export\ITestResult.cs" />
     <Compile Include="Export\SuiteResult.cs" />
     <Compile Include="Export\SuiteResultTest.cs" />
     <Compile Include="Export\TestResult.cs" />

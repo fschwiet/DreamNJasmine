@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmine;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -25,7 +26,7 @@ namespace NJasmineTests.Specs.setup_shared_across_tests
             it("then reports the test with the correct count", delegate { });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.failed();
 

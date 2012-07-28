@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -30,7 +31,7 @@ namespace NJasmineTests.Extras
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.hasTest("does nothing if all substrings are present").thatSucceeds();
             fixtureResult.hasTest("fails if a substring is missing").thatErrors();

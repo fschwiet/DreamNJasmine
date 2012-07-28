@@ -1,4 +1,5 @@
 ﻿using System;
+using NJasmine.Marshalled;
 using NJasmineTests.Core;
 using NJasmineTests.Export;
 
@@ -79,7 +80,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.succeeds();
 

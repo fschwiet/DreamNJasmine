@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -90,7 +91,7 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.hasTest("trace information is not included on success, is a passing test")
                 .thatSucceeds();

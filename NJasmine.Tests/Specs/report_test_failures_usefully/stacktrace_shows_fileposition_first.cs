@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NJasmine;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -9,7 +10,7 @@ namespace NJasmineTests.Specs.report_test_failures_usefully
     [Explicit]
     public class stacktrace_shows_fileposition_first : GivenWhenThenFixture, INJasmineInternalRequirement
     {
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.hasTest("shows stacktrace information for this failing test")
                 .withDetailedMessageThat(message =>

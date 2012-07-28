@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -45,7 +46,7 @@ namespace NJasmineTests.Specs.proposed_specs.inline_branching
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.hasTest("given some precondition, when the input is 0, then it runs").thatSucceeds();
             fixtureResult.hasTest("given some precondition, when the input is 1, then it runs").thatSucceeds();

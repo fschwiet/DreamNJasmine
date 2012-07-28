@@ -85,7 +85,7 @@ Task NUnitIntegrationTest {
   }
 }
 
-task IntegrationTest -depends VisualStudioIntegrationTest, NUnitIntegrationTest
+task IntegrationTest -depends NUnitIntegrationTest #, VisualStudioIntegrationTest
 
 Task Initialize -Depends Clean {
   New-Item $release.dir -ItemType Directory | Out-Null

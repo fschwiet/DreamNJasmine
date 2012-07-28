@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class SuiteResult : BaseResult
+    public class SuiteResult : BaseResult, ISuiteResult
     {
         readonly string _fullName;
 
@@ -16,19 +17,19 @@ namespace NJasmineTests.Export
             _fullName = fixtureName + ", " + _name;
         }
 
-        public SuiteResult thatsInconclusive()
+        public ISuiteResult thatsInconclusive()
         {
             thatHasResult("Inconclusive");
             return this;
         }
 
-        public SuiteResult thatSucceeds()
+        public ISuiteResult thatSucceeds()
         {
             thatHasResult("Success");
             return this;
         }
 
-        public SuiteResult thatHasNoResults()
+        public ISuiteResult thatHasNoResults()
         {
             var results = _xml.Descendants("results");
 
@@ -37,7 +38,7 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult hasTest(string expectedName)
+        public ITestResult hasTest(string expectedName)
         {
             IEnumerable<XElement> tests = _xml.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.EndsWith(expectedName, StringComparison.InvariantCultureIgnoreCase));
 
@@ -51,12 +52,12 @@ namespace NJasmineTests.Export
             return new TestResult(tests.Single());
         }
 
-        public SuiteResult withCategories(params string[] categories)
+        public ISuiteResult withCategories(params string[] categories)
         {
             return base.withCategories<SuiteResult>(categories);
         }
 
-        public SuiteResult hasSuite(string name)
+        public ISuiteResult hasSuite(string name)
         {
             return FixtureResult.FindSuite(_xml, _fullName, name);
         }

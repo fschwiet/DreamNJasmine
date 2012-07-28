@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using NJasmine.Marshalled;
 using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class FixtureResult
+    public class FixtureResult : IFixtureResult
     {
         private readonly string _testName;
         private readonly string _consoleOutput;
@@ -22,7 +23,7 @@ namespace NJasmineTests.Export
             _doc = XDocument.Parse(xmlOutput);
         }
 
-        public FixtureResult succeeds()
+        public IFixtureResult succeeds()
         {
             int totalCount = (int)_doc.Root.Attribute("total");
             int errorCount = GetErrorCount();
@@ -35,7 +36,7 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public FixtureResult failed()
+        public IFixtureResult failed()
         {
             Assert.AreNotEqual(0, GetErrorCount() + GetFailureCount(), _testName + " didn't have errors.");
 
@@ -61,12 +62,12 @@ namespace NJasmineTests.Export
             Assert.That(trace, Is.EquivalentTo(expectedTrace.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries)), "Did not find expected trace in " + _testName);
         }
 
-        public TestResult hasTest(string name)
+        public ITestResult hasTest(string name)
         {
             return hasTestWithFullName(_testName + ", " + name);
         }
 
-        public TestResult hasTestWithFullName(string name)
+        public ITestResult hasTestWithFullName(string name)
         {
             var tests = _doc.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
@@ -75,7 +76,7 @@ namespace NJasmineTests.Export
             return new TestResult(tests.Single());
         }
 
-        public SuiteResult hasSuite(string name)
+        public ISuiteResult hasSuite(string name)
         {
             return FindSuite(_doc.Root, _testName, name);
         }

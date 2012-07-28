@@ -3,17 +3,18 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class TestResult : BaseResult
+    public class TestResult : BaseResult, ITestResult
     {
         public TestResult(XElement element) : base("test", element)
         {
         }
 
-        public TestResult withFailureMessage(string expectedMessage)
+        public ITestResult withFailureMessage(string expectedMessage)
         {
             var failure = _xml.Element("failure").Element("message");
 
@@ -22,31 +23,31 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult thatSucceeds()
+        public ITestResult thatSucceeds()
         {
             thatHasResult("Success");
             return this;
         }
 
-        public TestResult thatErrors()
+        public ITestResult thatErrors()
         {
             thatHasResult("Error");
             return this;
         }
 
-        public TestResult thatIsNotRunnable()
+        public ITestResult thatIsNotRunnable()
         {
             thatHasResult("NotRunnable");
             return this;
         }
 
-        public TestResult thatFails()
+        public ITestResult thatFails()
         {
             thatHasResult("Failure");
             return this;
         }
 
-        public TestResult thatFailsInAnUnspecifiedManner()
+        public ITestResult thatFailsInAnUnspecifiedManner()
         {
             var result = GetResult();
 
@@ -58,7 +59,7 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult withDetailedMessageThat(Action<string> handler)
+        public ITestResult withDetailedMessageThat(Action<string> handler)
         {
             var stackTrace = _xml.Element("failure").Element("stack-trace");
 
@@ -67,7 +68,7 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public TestResult withCategories(params string[] categories)
+        public ITestResult withCategories(params string[] categories)
         {
             return withCategories<TestResult>(categories);
         }

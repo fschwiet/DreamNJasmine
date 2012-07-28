@@ -1,5 +1,6 @@
 ﻿using System;
 using NJasmine.Extras;
+using NJasmine.Marshalled;
 using NJasmineTests.Core;
 using NJasmineTests.Export;
 using NJasmineTests.Extras;
@@ -87,7 +88,7 @@ namespace NJasmineTests.Specs
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.succeeds();
 

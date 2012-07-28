@@ -1,4 +1,5 @@
-﻿using NJasmineTests.Core;
+﻿using NJasmine.Marshalled;
+using NJasmineTests.Core;
 using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs.setup_per_test
@@ -49,7 +50,7 @@ namespace NJasmineTests.Specs.setup_per_test
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.succeeds();
             fixtureResult.containsTrace(@"

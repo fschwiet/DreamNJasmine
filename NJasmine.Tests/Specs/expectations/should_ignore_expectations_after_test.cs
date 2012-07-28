@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 
 namespace NJasmineTests.Specs.expectations
@@ -19,7 +20,7 @@ namespace NJasmineTests.Specs.expectations
             it("has a failing test", () => {});
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.hasTest("has a passing test").thatSucceeds();
             fixtureResult.hasTest("has a failing test").thatErrors();

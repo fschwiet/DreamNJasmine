@@ -12,6 +12,11 @@ namespace NJasmineTests
 {
     public class XzibitTest
     {
+        public class TestRecorder
+        {
+            
+        }
+
         [Test]
         public void AllSpecificationsPass()
         {
@@ -19,6 +24,7 @@ namespace NJasmineTests
 
             foreach(var testName in testNames)
             {
+                //var runner = new Executor.SpecRunner().RunTests(new string[] { testName}, )
                 Console.WriteLine(testName);
             }
         }

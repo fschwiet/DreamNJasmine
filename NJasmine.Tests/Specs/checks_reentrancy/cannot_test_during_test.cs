@@ -1,4 +1,5 @@
 ﻿using NJasmine;
+using NJasmine.Marshalled;
 using NJasmineTests.Export;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace NJasmineTests.Specs.checks_reentrancy
             });
         }
 
-        public void Verify_NJasmine_implementation(FixtureResult fixtureResult)
+        public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.failed();
 
