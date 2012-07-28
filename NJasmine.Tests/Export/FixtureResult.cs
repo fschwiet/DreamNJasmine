@@ -12,14 +12,12 @@ namespace NJasmineTests.Export
     public class FixtureResult
     {
         private readonly string _testName;
-        private readonly string _xmlOutput;
         private readonly string _consoleOutput;
         private XDocument _doc;
 
         public FixtureResult(string testName, string xmlOutput = null, string consoleOutput = "")
         {
             _testName = testName;
-            _xmlOutput = xmlOutput ?? GetSampleXmlResult();
             _consoleOutput = consoleOutput;
             _doc = XDocument.Parse(xmlOutput);
         }
