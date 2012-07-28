@@ -15,10 +15,8 @@ namespace NJasmine.Core.GlobalSetup
         SpecificationElement _executingPastDiscovery;
         SpecificationElement _executingCleanup;
         TestPosition _currentTestPosition;
-
+        ErrorAccumulator _errorAccumulator;
         protected TestPosition _targetPosition;
-        protected TestPosition _existingErrorPosition;
-        protected Exception _existingError;
 
         GlobalSetupResultAccumulator _setupResultAccumulator;
         TraceTracker _traceTracker;
@@ -28,6 +26,7 @@ namespace NJasmine.Core.GlobalSetup
             _runningLock = runningLock;
             _executingPastDiscovery = null;
             _executingCleanup = null;
+            _errorAccumulator = new ErrorAccumulator();
             _setupResultAccumulator = new GlobalSetupResultAccumulator();
             _traceTracker = new TraceTracker();
         }
@@ -51,10 +50,7 @@ namespace NJasmine.Core.GlobalSetup
         {
             _targetPosition = position;
 
-            existingError = null;
-
-            if (_existingError != null && _existingErrorPosition != null && _existingErrorPosition.IsOnPathTo(position))
-                existingError = _existingError;
+            existingError = _errorAccumulator.GetErrorForPosition(position);
 
             return existingError != null || _targetPosition.Equals(_currentTestPosition);
         }
@@ -69,6 +65,37 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker.UnwindAll();
 
             _currentTestPosition = TestPosition.At();
+        }
+
+        protected void ReportError(TestPosition position, Exception error)
+        {
+            _errorAccumulator.AddError(position, error);
+
+            while (error != null
+                   && position != null
+                   && position.IsOnPathTo(_targetPosition))
+            {
+                _runningLock.PassAndWaitForTurn();
+            }
+        }
+
+        private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
+        {
+            if (_executingPastDiscovery != null)
+                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery + ".");
+        }
+
+        public object GetSetupResultAt(TestPosition position)
+        {
+            if (!position.IsOnPathTo(_targetPosition))
+                throw new InvalidProgramException();
+
+            return _setupResultAccumulator.InternalGetSetupResultAt(position);
+        }
+
+        public IEnumerable<string> GetCurrentTraceMessages()
+        {
+            return _traceTracker.GetCurrentTraceMessages();
         }
 
         public void visitFork(ForkElement element, TestPosition position)
@@ -94,19 +121,6 @@ namespace NJasmine.Core.GlobalSetup
 
             _setupResultAccumulator.UnwindForPosition(_targetPosition, e => ReportError(TestPosition.At(0), e));
             _traceTracker.UnwindToPosition(_targetPosition);
-        }
-
-        protected void ReportError(TestPosition position, Exception error)
-        {
-            _existingError = error;
-            _existingErrorPosition = position;
-
-            while (error != null
-                  && position != null
-                  && position.IsOnPathTo(_targetPosition))
-            {
-                _runningLock.PassAndWaitForTurn();
-            }
         }
 
         public TArranged visitBeforeAll<TArranged>(BeforeAllElement<TArranged> element, TestPosition position)
@@ -226,25 +240,6 @@ namespace NJasmine.Core.GlobalSetup
         public void visitLeakDisposable(LeakDisposableElement element, TestPosition position)
         {
             _setupResultAccumulator.LeakDisposable(element.Disposable);
-        }
-
-        private void CheckNotAlreadyPastDiscovery(SpecificationElement origin)
-        {
-            if (_executingPastDiscovery != null)
-                throw new Exception("Attempted to call " + origin + " within " + _executingPastDiscovery + ".");
-        }
-
-        public object GetSetupResultAt(TestPosition position)
-        {
-            if (!position.IsOnPathTo(_targetPosition))
-                throw new InvalidProgramException();
-
-            return _setupResultAccumulator.InternalGetSetupResultAt(position);
-        }
-
-        public IEnumerable<string> GetCurrentTraceMessages()
-        {
-            return _traceTracker.GetCurrentTraceMessages();
         }
     }
 }
