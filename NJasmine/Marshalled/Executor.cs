@@ -16,11 +16,16 @@ namespace NJasmine.Marshalled
         {
             public string[] GetTestNames(string assemblyName)
             {
-                var assembly = Assembly.Load(assemblyName);
+                return GetTestNames(Assembly.Load(assemblyName), t => true);
+            }
 
+            public static string[] GetTestNames(Assembly assembly, Func<Type, bool> typeFilter)
+            {
                 List<string> results = new List<string>();
 
-                foreach (var type in assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)))
+                var filteredTypes = assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)).Where(typeFilter);
+
+                foreach (var type in filteredTypes)
                 {
                     TracingTestFactory nativeTestFactory = new TracingTestFactory();
 
