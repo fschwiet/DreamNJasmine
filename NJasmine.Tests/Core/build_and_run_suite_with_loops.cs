@@ -8,6 +8,7 @@ using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Framework;
 using TestContext = NJasmine.Core.Discovery.TestContext;
+using TestName = NJasmine.Core.TestName;
 
 namespace NJasmineTests.Core
 {
@@ -111,7 +112,14 @@ namespace NJasmineTests.Core
         {
             var fixture = new has_test_in_loop();
 
-            SpecificationRunner.RunTestMethodWithoutGlobalSetup(() => fixture, new FakeGlobalSetupManager(), testPosition);
+            var traceMessages = new List<string>();
+
+            SpecificationRunner.RunTest(new TestContext()
+            {
+                GlobalSetupManager = new FakeGlobalSetupManager(),
+                Name = new TestName(),
+                Position = testPosition
+            }, () => fixture, traceMessages);
 
 
             Assert.That(fixture.Observations, Is.EquivalentTo(expected));

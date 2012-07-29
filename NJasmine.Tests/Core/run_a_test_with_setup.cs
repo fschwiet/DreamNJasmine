@@ -7,6 +7,7 @@ using NJasmine.Core;
 using NJasmine.NUnit;
 using NJasmine.NUnit.TestElements;
 using NUnit.Framework;
+using TestContext = NJasmine.Core.Discovery.TestContext;
 
 namespace NJasmineTests.Core
 {
@@ -88,9 +89,15 @@ namespace NJasmineTests.Core
             AFixture fixture = new AFixture();
 
             var fakeGlobalSetupManager = new FakeGlobalSetupManager();
-            Func<SpecificationFixture> fixtureFactory = () => fixture;  
 
-            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, TestPosition.At(1, 3, 2));
+            var traceMessages = new List<string>();
+
+            SpecificationRunner.RunTest(new TestContext()
+            {
+                GlobalSetupManager = fakeGlobalSetupManager,
+                Name = new TestName(),
+                Position = TestPosition.At(1, 3, 2)
+            }, () => fixture, traceMessages);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, 7, -2, -3, -4, 8);
         }
@@ -100,16 +107,29 @@ namespace NJasmineTests.Core
         {
             AFixture fixture = new AFixture();
 
-            Func<SpecificationFixture> fixtureFactory = () => fixture;
             var fakeGlobalSetupManager = new FakeGlobalSetupManager();
 
             TestPosition testPosition = TestPosition.At(1, 3, 2);
 
-            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, testPosition);
+            var traceMessages = new List<string>();
+
+            SpecificationRunner.RunTest(new TestContext()
+            {
+                GlobalSetupManager = fakeGlobalSetupManager,
+                Name = new TestName(),
+                Position = testPosition
+            }, () => fixture, traceMessages);
 
             fixture.ResetObservations();
 
-            SpecificationRunner.RunTestMethodWithoutGlobalSetup(fixtureFactory, fakeGlobalSetupManager, testPosition);
+            var traceMessages1 = new List<string>();
+
+            SpecificationRunner.RunTest(new TestContext()
+            {
+                GlobalSetupManager = fakeGlobalSetupManager,
+                Name = new TestName(),
+                Position = testPosition
+            }, () => fixture, traceMessages1);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, -2, -3, -4, 7, 8);
         }
