@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Logging;
+using NJasmine.Core;
 using NJasmine.Extras;
 using NJasmine.Marshalled;
 
@@ -24,7 +25,7 @@ namespace NJasmine.VS2012
             {
                 using(var appDomain = new AppDomainWrapper(source))
                 {
-                    foreach (var result in Executor.LoadTestNames(appDomain, source))
+                    foreach (var result in WithinAppDomain.LoadTestNames(source, appDomain))
                     {
                         discoverySink.SendTestCase(new TestCase(result, new Uri(VSExecutorUri), source));
                     }
