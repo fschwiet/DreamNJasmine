@@ -1,16 +1,17 @@
 using System;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestSuiteNUnit : global::NUnit.Core.TestSuite
     {
-        private readonly Action _oneTimeTeardown;
+        private readonly TestContext _testContext;
 
-        public NJasmineTestSuiteNUnit(string parentSuiteName, string name, Action oneTimeTeardown) : base(parentSuiteName, name)
+        public NJasmineTestSuiteNUnit(TestContext testContext) : base("hi", "there")
         {
-            _oneTimeTeardown = oneTimeTeardown;
+            _testContext = testContext;
             maintainTestOrder = true;
         }
 
@@ -18,7 +19,7 @@ namespace NJasmine.NUnit.TestElements
         {
             try
             {
-                _oneTimeTeardown();
+                _testContext.GlobalSetupManager.Cleanup(_testContext.Position);
             }
             catch (Exception innerException)
             {

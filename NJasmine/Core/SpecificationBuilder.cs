@@ -35,7 +35,7 @@ namespace NJasmine.Core
 
             TestSuite rootSuite = new TestSuite(buildContext, testContext);
 
-            var resultBuilder = new TestBuilder(buildContext.NativeTestFactory.ForSuite(testContext, () => testContext.GlobalSetupManager.Cleanup(testContext.Position)), testContext.Name);
+            var resultBuilder = new TestBuilder(buildContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
 
             return rootSuite.RunSuiteAction(buildContext.GetSpecificationRootAction(), true, resultBuilder);
         }

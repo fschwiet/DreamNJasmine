@@ -23,7 +23,7 @@ namespace NJasmine.Core
         {
         }
 
-        public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
+        public INativeTest ForSuite(TestContext testContext)
         {
             return new TracingTest();
         }

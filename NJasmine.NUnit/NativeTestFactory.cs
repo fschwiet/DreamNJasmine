@@ -10,9 +10,9 @@ namespace NJasmine.NUnit
 {
     public class NativeTestFactory : INativeTestFactory
     {
-        public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
+        public INativeTest ForSuite(TestContext testContext)
         {
-            var nunitTest = new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup);
+            var nunitTest = new NJasmineTestSuiteNUnit(testContext);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
 
