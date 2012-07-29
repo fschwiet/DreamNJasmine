@@ -2,23 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestMethod : TestMethod, INJasmineTest
     {
-        public TestPosition Position { get; private set; }
+        public TestPosition Position { get
+            {
+                return _testContext.Position;
+            } 
+        }
 
         readonly Func<SpecificationFixture> _fixtureFactory;
-        readonly IGlobalSetupManager _globalSetup;
+        readonly TestContext _testContext;
 
-        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestPosition position, IGlobalSetupManager globalSetup)
+        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestContext testContext)
             : base(new Action(delegate() { }).Method)
         {
             _fixtureFactory = fixtureFactory;
-            _globalSetup = globalSetup;
-            Position = position;
+            _testContext = testContext;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
@@ -30,34 +34,7 @@ namespace NJasmine.NUnit.TestElements
         {
             listener.TestStarted(base.TestName);
             
-            var startTime = DateTime.UtcNow;
-            var testResult = new TestResultShim();
-
-            Exception existingError = _globalSetup.PrepareForTestPosition(Position);
-
-            if (existingError != null)
-            {
-                TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), existingError, null,
-                                     TestResultShim.Site.SetUp);
-            }
-            else
-            {
-                List<string> traceMessages = null;
-                try
-                {
-                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _globalSetup, Position,
-                                                                        out traceMessages);
-                    testResult.Success();
-                }
-                catch (Exception e)
-                {
-                    var globalTraceMessages = _globalSetup.GetTraceMessages();
-                    TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), e,
-                                         globalTraceMessages.Concat(traceMessages));
-                }
-            }
-
-            testResult.SetExecutionTime(DateTime.UtcNow - startTime);
+            var testResult = RunTest();
 
             var nunitTestResult = new TestResult(this);
 
@@ -66,6 +43,39 @@ namespace NJasmine.NUnit.TestElements
             listener.TestFinished(nunitTestResult);
 
             return nunitTestResult;
+        }
+
+        TestResultShim RunTest()
+        {
+            var startTime = DateTime.UtcNow;
+            var testResult = new TestResultShim();
+
+            Exception existingError = _testContext.GlobalSetupManager.PrepareForTestPosition(Position);
+
+            if (existingError != null)
+            {
+                TestResultUtil.Error(testResult, _testContext.Name.MultilineName, existingError, null,
+                                     TestResultShim.Site.SetUp);
+            }
+            else
+            {
+                List<string> traceMessages = null;
+                try
+                {
+                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _testContext.GlobalSetupManager, Position,
+                                                                        out traceMessages);
+                    testResult.Success();
+                }
+                catch (Exception e)
+                {
+                    var globalTraceMessages = _testContext.GlobalSetupManager.GetTraceMessages();
+                    TestResultUtil.Error(testResult, _testContext.Name.MultilineName, e,
+                                         globalTraceMessages.Concat(traceMessages));
+                }
+            }
+
+            testResult.SetExecutionTime(DateTime.UtcNow - startTime);
+            return testResult;
         }
     }
 }

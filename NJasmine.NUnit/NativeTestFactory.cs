@@ -21,7 +21,7 @@ namespace NJasmine.NUnit
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
-            var nunitTest = new NJasmineTestMethod(sharedContext.FixtureFactory, testContext.Position, testContext.GlobalSetupManager);
+            var nunitTest = new NJasmineTestMethod(sharedContext.FixtureFactory, testContext);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
             
