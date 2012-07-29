@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
+using NJasmine.Core.FixtureVisitor;
 
-namespace NJasmine.Core.FixtureVisitor
+namespace NJasmine.Core.Elements
 {
     public abstract class SpecificationElement
     {

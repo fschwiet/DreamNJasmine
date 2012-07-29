@@ -60,6 +60,7 @@
     <Compile Include="Core\Elements\ForkElement.cs" />
     <Compile Include="Core\Elements\IgnoreElement.cs" />
     <Compile Include="Core\Elements\LeakDisposableElement.cs" />
+    <Compile Include="Core\Elements\SpecificationElement.cs" />
     <Compile Include="Core\Elements\TestElement.cs" />
     <Compile Include="Core\Elements\TraceElement.cs" />
     <Compile Include="Core\Elements\WaitUntilElement.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ActualKeyword.cs" />
-    <Compile Include="Core\FixtureVisitor\SpecificationElement.cs" />
     <Compile Include="Core\GlobalSetup\ErrorAccumulator.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupVisitor.cs" />
