@@ -94,6 +94,7 @@
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Core\TestResultShim.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
+    <Compile Include="Core\TestSuite.cs" />
     <Compile Include="Core\TracingTestFactory.cs" />
     <Compile Include="Extras\AppDomainWrapper.cs" />
     <Compile Include="Extras\DirectoryUtil.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="GivenWhenThenFixture.cs" />
     <Compile Include="Marshalled\Executor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestSuite.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

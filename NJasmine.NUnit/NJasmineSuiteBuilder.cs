@@ -7,7 +7,7 @@ using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 using TestName = NJasmine.Core.TestName;
-using TestSuite = NJasmine.TestSuite;
+using TestSuite = NJasmine.Core.TestSuite;
 
 namespace NJasmine.NUnit
 {

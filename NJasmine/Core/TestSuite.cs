@@ -1,8 +1,7 @@
 using System;
-using NJasmine.Core;
 using NJasmine.Core.Discovery;
 
-namespace NJasmine
+namespace NJasmine.Core
 {
     public class TestSuite
     {

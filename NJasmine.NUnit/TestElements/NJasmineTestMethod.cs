@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
+using NJasmine.Marshalled;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
@@ -34,7 +35,7 @@ namespace NJasmine.NUnit.TestElements
         {
             listener.TestStarted(base.TestName);
             
-            var testResult = RunTest();
+            var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory);
 
             var nunitTestResult = new TestResult(this);
 
@@ -43,39 +44,6 @@ namespace NJasmine.NUnit.TestElements
             listener.TestFinished(nunitTestResult);
 
             return nunitTestResult;
-        }
-
-        TestResultShim RunTest()
-        {
-            var startTime = DateTime.UtcNow;
-            var testResult = new TestResultShim();
-
-            Exception existingError = _testContext.GlobalSetupManager.PrepareForTestPosition(_testContext.Position);
-
-            if (existingError != null)
-            {
-                TestResultUtil.Error(testResult, _testContext.Name.MultilineName, existingError, null,
-                                     TestResultShim.Site.SetUp);
-            }
-            else
-            {
-                List<string> traceMessages = null;
-                try
-                {
-                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _testContext.GlobalSetupManager, _testContext.Position,
-                                                                        out traceMessages);
-                    testResult.Success();
-                }
-                catch (Exception e)
-                {
-                    var globalTraceMessages = _testContext.GlobalSetupManager.GetTraceMessages();
-                    TestResultUtil.Error(testResult, _testContext.Name.MultilineName, e,
-                                         globalTraceMessages.Concat(traceMessages));
-                }
-            }
-
-            testResult.SetExecutionTime(DateTime.UtcNow - startTime);
-            return testResult;
         }
     }
 }
