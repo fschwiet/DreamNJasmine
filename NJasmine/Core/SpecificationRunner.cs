@@ -9,9 +9,9 @@ namespace NJasmine.Core
 {
     public class SpecificationRunner
     {
-        public static void RunTestMethodWithoutGlobalSetup(Func<SpecificationFixture> fixtureFactory, IGlobalSetupManager globalSetupManager, TestPosition targetTestPosition, out List<string> traceMessages)
+        public static void RunTestMethodWithoutGlobalSetup(Func<SpecificationFixture> fixtureFactory, IGlobalSetupManager globalSetupManager, TestPosition targetTestPosition, List<string> traceMessages = null)
         {
-            traceMessages = new List<string>();
+            traceMessages = traceMessages ?? new List<string>();
 
             var executionContext = new NJasmineTestRunContext(targetTestPosition, globalSetupManager, traceMessages);
             var runner = new NJasmineTestRunner(executionContext);
@@ -30,7 +30,21 @@ namespace NJasmine.Core
             }
         }
 
-        public static TestResultShim RunTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory)
+        public static void RunTestMethodWithoutGlobalSetup2(Func<SpecificationFixture> fixtureFactory, IGlobalSetupManager globalSetupManager, TestPosition targetTestPosition, List<string> traceMessages = null)
+        {
+            traceMessages = traceMessages ??  new List<string>();
+            
+            var testContext = new TestContext()
+            {
+                GlobalSetupManager = globalSetupManager,
+                Name = new TestName(),
+                Position = targetTestPosition
+            };
+
+            RunTest(testContext, fixtureFactory, traceMessages);
+        }
+
+        public static TestResultShim RunTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory, List<string> traceMessages)
         {
             var startTime = DateTime.UtcNow;
             var testResult = new TestResultShim();
@@ -44,18 +58,15 @@ namespace NJasmine.Core
             }
             else
             {
-                List<string> traceMessages = null;
+                traceMessages.AddRange(testContext.GlobalSetupManager.GetTraceMessages());
                 try
                 {
-                    RunTestMethodWithoutGlobalSetup(fixtureFactory, testContext.GlobalSetupManager, testContext.Position,
-                                                                        out traceMessages);
+                    RunTestMethodWithoutGlobalSetup(fixtureFactory, testContext.GlobalSetupManager, testContext.Position, traceMessages);
                     testResult.Success();
                 }
                 catch (Exception e)
                 {
-                    var globalTraceMessages = testContext.GlobalSetupManager.GetTraceMessages();
-                    TestResultUtil.Error(testResult, testContext.Name.MultilineName, e,
-                                         globalTraceMessages.Concat(traceMessages));
+                    TestResultUtil.Error(testResult, testContext.Name.MultilineName, e, traceMessages);
                 }
             }
 

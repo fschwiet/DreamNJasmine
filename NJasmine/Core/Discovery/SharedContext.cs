@@ -56,7 +56,7 @@ namespace NJasmine.Core.Discovery
             return exception;
         }
 
-        public TestBuilder CreateTest(GlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
+        public TestBuilder CreateTest(IGlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
         {
             var testContext = new TestContext()
             {

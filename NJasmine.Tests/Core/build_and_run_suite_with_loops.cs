@@ -111,8 +111,7 @@ namespace NJasmineTests.Core
         {
             var fixture = new has_test_in_loop();
 
-            List<string> ignored;
-            SpecificationRunner.RunTestMethodWithoutGlobalSetup(() => fixture, new FakeGlobalSetupManager(), testPosition, out ignored);
+            SpecificationRunner.RunTestMethodWithoutGlobalSetup(() => fixture, new FakeGlobalSetupManager(), testPosition);
 
 
             Assert.That(fixture.Observations, Is.EquivalentTo(expected));

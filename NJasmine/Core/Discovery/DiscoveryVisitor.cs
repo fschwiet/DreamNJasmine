@@ -10,12 +10,12 @@ namespace NJasmine.Core.Discovery
     {
         private readonly TestBuilder _parent;
         readonly SharedContext _sharedContext;
-        private readonly GlobalSetupManager _globalSetup;
+        private readonly IGlobalSetupManager _globalSetup;
         List<TestBuilder> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public DiscoveryVisitor(TestBuilder parent, SharedContext sharedContext, GlobalSetupManager globalSetup)
+        public DiscoveryVisitor(TestBuilder parent, SharedContext sharedContext, IGlobalSetupManager globalSetup)
         {
             _parent = parent;
             _sharedContext = sharedContext;

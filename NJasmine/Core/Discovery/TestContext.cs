@@ -10,6 +10,6 @@ namespace NJasmine.Core.Discovery
     {
         public TestName Name;
         public TestPosition Position;
-        public GlobalSetupManager GlobalSetupManager;
+        public IGlobalSetupManager GlobalSetupManager;
     }
 }

@@ -35,7 +35,7 @@ namespace NJasmine.NUnit.TestElements
         {
             listener.TestStarted(base.TestName);
             
-            var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory);
+            var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory, new List<string>());
 
             var nunitTestResult = new TestResult(this);
 
