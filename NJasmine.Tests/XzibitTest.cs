@@ -11,10 +11,18 @@ using NUnit.Framework;
 namespace NJasmineTests
 {
     public class XzibitTest
-    {
-        public class TestRecorder
+    { 
+        public class TestRecorder : ITestResultListener
         {
-            
+            public void NotifyStart(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void NotifyEnd(string name)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [Test]
@@ -24,7 +32,10 @@ namespace NJasmineTests
 
             foreach(var testName in testNames)
             {
-                //var runner = new Executor.SpecRunner().RunTests(new string[] { testName}, )
+                var listener = new TestRecorder();
+                
+                //new Executor.SpecRunner().RunTests(new string[] { testName }, listener);
+                
                 Console.WriteLine(testName);
             }
         }
