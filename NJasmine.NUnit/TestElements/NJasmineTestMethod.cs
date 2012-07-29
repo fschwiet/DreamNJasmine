@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
-using NJasmine.Core.Discovery;
-using NJasmine.Core.Execution;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
@@ -25,35 +23,48 @@ namespace NJasmine.NUnit.TestElements
 
         public override TestResult Run(EventListener listener, ITestFilter filter)
         {
+            return RunTest(listener);
+        }
+
+        TestResult RunTest(EventListener listener)
+        {
             listener.TestStarted(base.TestName);
-            long ticks = DateTime.Now.Ticks;
+            
+            var startTime = DateTime.UtcNow;
             var testResult = new TestResultShim();
 
             Exception existingError = _globalSetup.PrepareForTestPosition(Position);
 
             if (existingError != null)
             {
-                TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), existingError, null, TestResultShim.Site.SetUp);
+                TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), existingError, null,
+                                     TestResultShim.Site.SetUp);
             }
             else
             {
                 List<string> traceMessages = null;
                 try
                 {
-                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _globalSetup, Position, out traceMessages);
+                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _globalSetup, Position,
+                                                                        out traceMessages);
                     testResult.Success();
                 }
                 catch (Exception e)
                 {
                     var globalTraceMessages = _globalSetup.GetTraceMessages();
-                    TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), e, globalTraceMessages.Concat(traceMessages));
+                    TestResultUtil.Error(testResult, TestExtensions.GetMultilineName(this), e,
+                                         globalTraceMessages.Concat(traceMessages));
                 }
             }
 
+            testResult.SetExecutionTime(DateTime.UtcNow - startTime);
+
             var nunitTestResult = new TestResult(this);
+
             NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
-            nunitTestResult.Time = ((DateTime.Now.Ticks - ticks)) / 10000000.0;
+
             listener.TestFinished(nunitTestResult);
+
             return nunitTestResult;
         }
     }

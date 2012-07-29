@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -26,6 +27,7 @@ namespace NJasmine.Core
         public string FailureReason { get; private set; }
         public string FailureStackTrace { get; private set; }
         public Site FailureSite { get; private set; }
+        public TimeSpan ExecutionTime { get; private set; }
 
         public TestResultShim()
         {
@@ -44,6 +46,11 @@ namespace NJasmine.Core
             FailureReason = reason;
             FailureStackTrace = stackTrace;
             FailureSite = failureSite;
+        }
+
+        public void SetExecutionTime(TimeSpan timeSpan)
+        {
+            ExecutionTime = timeSpan;
         }
     }
 }

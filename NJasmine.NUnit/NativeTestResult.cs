@@ -22,6 +22,8 @@ namespace NJasmine.NUnit
                     throw new ArgumentOutOfRangeException();
             }
 
+            result.Time = shim.ExecutionTime.Seconds;
+
             return result;
         }
 
