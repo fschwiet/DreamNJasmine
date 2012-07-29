@@ -1,10 +1,9 @@
 using System;
-using NJasmine.Core;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineUnimplementedTestMethod : TestMethod, INJasmineTest
+    public class NJasmineUnimplementedTestMethod : TestMethod
     {
         public NJasmineUnimplementedTestMethod() 
             : base(((Action)delegate() { }).Method)

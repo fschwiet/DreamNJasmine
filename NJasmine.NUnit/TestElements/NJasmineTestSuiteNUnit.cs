@@ -4,7 +4,7 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineTestSuiteNUnit : global::NUnit.Core.TestSuite, INJasmineTest
+    public class NJasmineTestSuiteNUnit : global::NUnit.Core.TestSuite
     {
         private readonly Action _oneTimeTeardown;
 

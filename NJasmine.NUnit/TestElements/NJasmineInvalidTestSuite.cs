@@ -1,10 +1,9 @@
 using System;
-using NJasmine.Core;
 using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
+    public class NJasmineInvalidTestSuite : TestMethod
     {
         readonly string _reason;
         string _stackTrace;

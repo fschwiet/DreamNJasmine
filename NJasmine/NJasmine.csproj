@@ -89,7 +89,6 @@
     <Compile Include="Core\SpecificationBuilder.cs" />
     <Compile Include="Core\SpecificationRunner.cs" />
     <Compile Include="Core\TestBuilder.cs" />
-    <Compile Include="Core\INJasmineTest.cs" />
     <Compile Include="Core\SpecificationFixture.cs" />
     <Compile Include="Core\TestName.cs" />
     <Compile Include="Core\TestPosition.cs" />

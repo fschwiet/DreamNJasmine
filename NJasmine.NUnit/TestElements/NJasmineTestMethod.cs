@@ -7,7 +7,7 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineTestMethod : TestMethod, INJasmineTest
+    public class NJasmineTestMethod : TestMethod
     {
         public TestPosition Position { get
             {
