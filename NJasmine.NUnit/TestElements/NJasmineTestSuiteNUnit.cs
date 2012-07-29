@@ -6,14 +6,12 @@ namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineTestSuiteNUnit : global::NUnit.Core.TestSuite, INJasmineTest
     {
-        public TestPosition Position { get; private set; }
         private readonly Action _oneTimeTeardown;
 
-        public NJasmineTestSuiteNUnit(string parentSuiteName, string name, Action oneTimeTeardown, TestPosition position) : base(parentSuiteName, name)
+        public NJasmineTestSuiteNUnit(string parentSuiteName, string name, Action oneTimeTeardown) : base(parentSuiteName, name)
         {
             _oneTimeTeardown = oneTimeTeardown;
             maintainTestOrder = true;
-            Position = position;
         }
 
         protected override void DoOneTimeTearDown(TestResult suiteResult)

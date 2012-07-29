@@ -50,7 +50,7 @@ namespace NJasmine.NUnit.TestElements
             var startTime = DateTime.UtcNow;
             var testResult = new TestResultShim();
 
-            Exception existingError = _testContext.GlobalSetupManager.PrepareForTestPosition(Position);
+            Exception existingError = _testContext.GlobalSetupManager.PrepareForTestPosition(_testContext.Position);
 
             if (existingError != null)
             {
@@ -62,7 +62,7 @@ namespace NJasmine.NUnit.TestElements
                 List<string> traceMessages = null;
                 try
                 {
-                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _testContext.GlobalSetupManager, Position,
+                    SpecificationRunner.RunTestMethodWithoutGlobalSetup(_fixtureFactory, _testContext.GlobalSetupManager, _testContext.Position,
                                                                         out traceMessages);
                     testResult.Success();
                 }

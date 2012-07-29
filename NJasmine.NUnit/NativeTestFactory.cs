@@ -12,7 +12,7 @@ namespace NJasmine.NUnit
     {
         public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
         {
-            var nunitTest = new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup, testContext.Position);
+            var nunitTest = new NJasmineTestSuiteNUnit("hi", "there", onetimeCleanup);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
 
@@ -30,7 +30,7 @@ namespace NJasmine.NUnit
 
         public INativeTest ForUnimplementedTest(TestContext testContext)
         {
-            var test = new NJasmineUnimplementedTestMethod(testContext.Position);
+            var test = new NJasmineUnimplementedTestMethod();
 
             ApplyNameToNUnitTest(testContext.Name, test);
 
@@ -39,7 +39,7 @@ namespace NJasmine.NUnit
 
         public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
         {
-            var nunitTest = new NJasmineInvalidTestSuite(exception, testContext.Position);
+            var nunitTest = new NJasmineInvalidTestSuite(exception);
 
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
             

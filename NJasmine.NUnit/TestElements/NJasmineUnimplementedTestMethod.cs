@@ -6,12 +6,9 @@ namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineUnimplementedTestMethod : TestMethod, INJasmineTest
     {
-        public TestPosition Position { get; private set; }
-
-        public NJasmineUnimplementedTestMethod(TestPosition position) 
+        public NJasmineUnimplementedTestMethod() 
             : base(((Action)delegate() { }).Method)
         {
-            Position = position;
         }
 
         public override TestResult Run(EventListener listener, ITestFilter filter)

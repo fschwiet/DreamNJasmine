@@ -6,15 +6,12 @@ namespace NJasmine.NUnit.TestElements
 {
     public class NJasmineInvalidTestSuite : TestMethod, INJasmineTest
     {
-        public TestPosition Position { get; private set; }
-
         readonly string _reason;
         string _stackTrace;
 
-        public NJasmineInvalidTestSuite(Exception e, TestPosition position)
+        public NJasmineInvalidTestSuite(Exception e)
             : base(((Action)delegate() { }).Method)
         {
-            Position = position;
             _reason = e.Message;
             _stackTrace = e.StackTrace;
         }
