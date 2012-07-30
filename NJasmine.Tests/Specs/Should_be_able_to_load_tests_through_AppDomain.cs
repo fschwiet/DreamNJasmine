@@ -12,7 +12,7 @@ namespace NJasmineTests.Specs
     {
         public override void Specify()
         {
-            var someDllPath = arrange(() => GetSomeDllPath());
+            var someDllPath = arrange(() => GetPathOfBinDeployed("SomeTestLibrary.dll"));
 
             expect(() => File.Exists(someDllPath));
 
@@ -20,12 +20,12 @@ namespace NJasmineTests.Specs
             {
                 var appDomainWrapper = arrange(() => new AppDomainWrapper(someDllPath));
 
-                then("the executor class can be loaded", () =>
+                then("objects can be instantiated in the AppDomain", () =>
                 {
                     var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor>("NJasmine.dll");
                 });
 
-                then("the test DLL's configuration file is loaded", () =>
+                then("the test assembly's configuration file is loaded", () =>
                 {
                     var o = appDomainWrapper.CreateObject<NJasmine.Marshalled.Executor.AppSettingLoader>("NJasmine.dll");
 
@@ -34,10 +34,8 @@ namespace NJasmineTests.Specs
                     expect(() => result == "#winning");
                 });
 
-                then("test DLL's tests can be enumerated", () =>
+                then("the tests can be enumerated", () =>
                 {
-                    Console.WriteLine("using " + someDllPath);
-
                     var result = WithinAppDomain.LoadTestNames(someDllPath, appDomainWrapper);
 
                     expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
@@ -45,12 +43,12 @@ namespace NJasmineTests.Specs
             });
         }
 
-        private string GetSomeDllPath()
+        private string GetPathOfBinDeployed(string filename)
         {
             var currentDllDirectory = new FileInfo(new Uri(this.GetType().Assembly.CodeBase).LocalPath).Directory;
 
             if (currentDllDirectory.Name == "build")
-                return Path.Combine(currentDllDirectory.FullName, "SomeTestLibrary.dll");
+                return Path.Combine(currentDllDirectory.FullName, filename);
             else
                 return Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
         }
