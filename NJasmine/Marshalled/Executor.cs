@@ -30,13 +30,13 @@ namespace NJasmine.Marshalled
 
                 foreach(var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
                 {
-                    listener.NotifyStart(testContext.Name.FullName);
+                    listener.NotifyStart(testContext);
 
                     List<string> traceMessages = new List<string>();
 
                     var result = SpecificationRunner.RunTest(testContext, null, traceMessages);
 
-                    listener.NotifyEnd(testContext.Name.FullName);
+                    listener.NotifyEnd(testContext, result);
                 }
             }
         }

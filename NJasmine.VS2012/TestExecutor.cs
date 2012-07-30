@@ -18,10 +18,6 @@ namespace NJasmine.VS2012
     [ExtensionUri(TestDiscoverer.VSExecutorUri)]
     public class TestExecutor : ITestExecutor
     {
-        public TestExecutor()
-        {
-        }
-
         public void RunTests(IEnumerable<TestCase> tests, IRunContext runContext, IFrameworkHandle frameworkHandle)
         {
             var sink = new TestExecutorSinkAdapter(frameworkHandle, tests);

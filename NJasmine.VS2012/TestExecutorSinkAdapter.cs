@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 
 namespace NJasmine.VS2012
 {
@@ -26,14 +27,14 @@ namespace NJasmine.VS2012
             }
         }
 
-        public void NotifyStart(string name)
+        public void NotifyStart(TestContext testContext)
         {
-            _frameworkHandle.RecordStart(_tests[name]);
+            _frameworkHandle.RecordStart(_tests[testContext.Name.MultilineName]);
         }
 
-        public void NotifyEnd(string name)
+        public void NotifyEnd(TestContext testContext, TestResultShim testResult)
         {
-            var test = _tests[name];
+            var test = _tests[testContext.Name.MultilineName];
 
             var result = new TestResult(test)
             {

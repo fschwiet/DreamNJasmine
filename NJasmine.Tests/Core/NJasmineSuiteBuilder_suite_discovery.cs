@@ -40,7 +40,7 @@ namespace NJasmineTests.Core
             });
         }
 
-        class SomeNestedClass : GivenWhenThenFixture
+        public class SomeNestedClass : GivenWhenThenFixture
         {
             public override void Specify() { }
         }

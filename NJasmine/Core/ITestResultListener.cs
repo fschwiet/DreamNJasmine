@@ -1,8 +1,10 @@
+using NJasmine.Core.Discovery;
+
 namespace NJasmine.Core
 {
     public interface ITestResultListener
     {
-        void NotifyStart(string name);
-        void NotifyEnd(string name);
+        void NotifyStart(TestContext testContext);
+        void NotifyEnd(TestContext testContext, TestResultShim TestResult);
     }
 }
