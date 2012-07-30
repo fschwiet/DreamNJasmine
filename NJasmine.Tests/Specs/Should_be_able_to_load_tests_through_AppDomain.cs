@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
+using Moq;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.Extras;
 using NJasmine.Marshalled;
 
@@ -40,6 +42,18 @@ namespace NJasmineTests.Specs
 
                     expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
                 });
+
+                then("the tests can be ran", () =>
+                {
+                    var listener = new Mock<ITestResultListener>();
+                    WithinAppDomain.RunTests(someDllPath, appDomainWrapper, new string[]
+                    {
+                        "ASingleTest.first test"
+                    }, listener.Object);
+
+                    listener.Verify(l => l.NotifyStart(It.IsAny<TestContext>()));
+                    listener.Verify(l => l.NotifyEnd(It.IsAny<TestContext>(), It.IsAny<TestResultShim>()));
+                });
             });
         }
 
@@ -47,10 +61,14 @@ namespace NJasmineTests.Specs
         {
             var currentDllDirectory = new FileInfo(new Uri(this.GetType().Assembly.CodeBase).LocalPath).Directory;
 
+            string otherDllDirectory = null;
+
             if (currentDllDirectory.Name == "build")
-                return Path.Combine(currentDllDirectory.FullName, filename);
+                otherDllDirectory = Path.Combine(currentDllDirectory.FullName, filename);
             else
-                return Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
+                otherDllDirectory = Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
+
+            return Path.GetFullPath(otherDllDirectory);
         }
     }
 }
