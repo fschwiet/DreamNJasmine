@@ -153,9 +153,7 @@ namespace NJasmineTests.Core
 
                 when("a test is to be ran", delegate
                 {
-                    Exception exception = null;
-
-                    beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(0)));
+                    Exception exception = beforeEach(() => sut.PrepareForTestPosition(TestPosition.At(0)));
 
                     then("the exception is reported", delegate
                     {
