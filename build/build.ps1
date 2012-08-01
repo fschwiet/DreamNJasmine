@@ -47,22 +47,28 @@ function VisitTests($testHandler) {
 
 Task VisualStudioIntegrationTest { 
   
-  $vsTestExe = "$($build.dir)\VS2012\vstest.console.exe"
+  try
+  {
+	$vsTestExe = "$($build.dir)\VS2012\vstest.console.exe"
 
-  $discovererListing = exec {& $vsTestExe /ListDiscoverers }
+	$discovererListing = exec {& $vsTestExe /ListDiscoverers }
 
-  Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
+	Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
 
-  VisitTests { 
-  
-	  param ($test);
-	
-    $testName = $test.Name;
+    VisitTests { 
+      
+      param ($test);
 
-    write-output "Checking $testName."
+      $testName = $test.Name;
+      $testDll = (resolve-path (join-path $build.dir "NJasmine.Tests.dll")).path
+      
+	  write-output "Checking $testName at $testDll."
 
-    & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`""
-    #exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
+      & $vsTestExe $testDll "/Tests:`"$testName`""
+        #exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
+    }
+  } finally {
+    $Host.UI.RawUI.ForegroundColor= [ConsoleColor]::Gray
   }
 }
 
@@ -85,7 +91,7 @@ Task NUnitIntegrationTest {
   }
 }
 
-task IntegrationTest -depends NUnitIntegrationTest #, VisualStudioIntegrationTest
+task IntegrationTest -depends VisualStudioIntegrationTest, NUnitIntegrationTest
 
 Task Initialize -Depends Clean {
   New-Item $release.dir -ItemType Directory | Out-Null
