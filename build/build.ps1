@@ -31,7 +31,7 @@ task Default -depends Initialize, TraceSourceControlCommit, Build, Test, Integra
 task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
 Task Test { 
-  Invoke-TestRunner @("$($build.dir)\NJasmine.tests.dll")
+  exec { & "$($build.dir)\nunit\nunit-console.exe" "$($build.dir)\NJasmine.tests.dll" /xml="$($build.dir)\UnitTestResults.xml"}
 }
 
 function VisitTests($testHandler) {
