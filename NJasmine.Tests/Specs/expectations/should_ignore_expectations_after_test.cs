@@ -5,9 +5,11 @@ using System.Text;
 using NJasmine;
 using NJasmine.Marshalled;
 using NJasmineTests.Export;
+using NUnit.Framework;
 
 namespace NJasmineTests.Specs.expectations
 {
+    [Explicit]
     public class should_ignore_expectations_after_test : GivenWhenThenFixture, INJasmineInternalRequirement
     {
         public override void Specify()

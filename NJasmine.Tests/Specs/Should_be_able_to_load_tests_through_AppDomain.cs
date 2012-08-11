@@ -49,7 +49,7 @@ namespace NJasmineTests.Specs
         {
             var currentDllDirectory = new FileInfo(new Uri(this.GetType().Assembly.CodeBase).LocalPath).Directory;
 
-            if (currentDllDirectory.Name == "build")
+            if (currentDllDirectory.Name == "bin")
                 return Path.Combine(currentDllDirectory.FullName, "SomeTestLibrary.dll");
             else
                 return Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
