@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
+using NJasmine.Core;
 using NJasmine.Extras;
 using NJasmine.Marshalled;
 
@@ -29,7 +30,7 @@ namespace NJasmine.VS2012
             {
                 using (var appDomain = new AppDomainWrapper(group.Key))
                 {
-                    Executor.RunTests(appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
+                    UsingAppDomain.RunTests(appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
                 }
             }
         }

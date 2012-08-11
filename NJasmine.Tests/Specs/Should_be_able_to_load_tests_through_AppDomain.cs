@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using NJasmine;
+using NJasmine.Core;
 using NJasmine.Extras;
 using NJasmine.Marshalled;
 
@@ -37,7 +38,7 @@ namespace NJasmineTests.Specs
                 {
                     Console.WriteLine("using " + someDllPath);
 
-                    var result = Executor.LoadTestNames(appDomainWrapper, someDllPath);
+                    var result = UsingAppDomain.LoadTestNames(appDomainWrapper, someDllPath);
 
                     expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
                 });
