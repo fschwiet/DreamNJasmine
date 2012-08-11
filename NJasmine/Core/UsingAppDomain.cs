@@ -18,11 +18,11 @@ namespace NJasmine.Core
             return result;
         }
 
-        public static void RunTests(AppDomainWrapper appDomainWrapper, string[] testNames, ITestResultListener sink)
+        public static void RunTests(string dllPath, AppDomainWrapper appDomainWrapper, string[] testNames, ITestResultListener sink)
         {
             var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecRunner>("NJasmine.dll");
 
-            o.RunTests(testNames, sink);
+            o.RunTests(AssemblyName.GetAssemblyName(dllPath).FullName, testNames, sink);
         }
     }
 }

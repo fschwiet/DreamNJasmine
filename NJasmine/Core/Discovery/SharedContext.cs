@@ -24,10 +24,6 @@ namespace NJasmine.Core.Discovery
         {
             return _fixtureInstanceForDiscovery.Run;
         }
-        public GlobalSetupManager GetGlobalSetupManager()
-        {
-            return new GlobalSetupManager(FixtureFactory);
-        }
 
         public Exception RunActionWithVisitor(TestPosition position, Action action, ISpecPositionVisitor visitor)
         {

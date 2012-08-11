@@ -16,36 +16,27 @@ namespace NJasmine.Marshalled
         {
             public string[] GetTestNames(string assemblyName)
             {
-                return GetTestNames(Assembly.Load(assemblyName), t => true);
-            }
+                var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true);
 
-            public static string[] GetTestNames(Assembly assembly, Func<Type, bool> typeFilter)
-            {
-                List<string> results = new List<string>();
-
-                var filteredTypes = assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)).Where(typeFilter);
-
-                foreach (var type in filteredTypes)
-                {
-                    TracingTestFactory nativeTestFactory = new TracingTestFactory();
-
-                    SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
-
-                    results.AddRange(nativeTestFactory.Names.ToArray());
-                }
-
-                return results.ToArray();
+                return nativeTestFactory.Names.ToArray();
             }
         }
 
         public class SpecRunner : MarshalByRefObject
         {
-            public void RunTests(string[] testNames, ITestResultListener listener)
+            public void RunTests(string assemblyName, string[] testNames, ITestResultListener listener)
             {
-                foreach (var name in testNames)
+                var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true);
+
+                foreach (var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
                 {
-                    listener.NotifyStart(name);
-                    listener.NotifyEnd(name);
+                    listener.NotifyStart(testContext.Name.FullName);
+
+                    List<string> traceMessages = new List<string>();
+
+                    var result = SpecificationRunner.RunTest(testContext, null, traceMessages);
+
+                    listener.NotifyEnd(testContext.Name.FullName);
                 }
             }
         }
@@ -56,6 +47,19 @@ namespace NJasmine.Marshalled
             {
                 return ConfigurationManager.AppSettings.Get(name);
             }
+        }
+
+        protected static TracingTestFactory RunTestDiscovery(Assembly assembly, Func<Type, bool> typeFilter)
+        {
+            TracingTestFactory nativeTestFactory = new TracingTestFactory();
+
+            var filteredTypes = assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)).Where(typeFilter);
+
+            foreach (var type in filteredTypes)
+            {
+                SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+            }
+            return nativeTestFactory;
         }
     }
 }
