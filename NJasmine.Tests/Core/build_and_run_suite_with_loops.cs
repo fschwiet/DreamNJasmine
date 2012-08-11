@@ -65,7 +65,7 @@ namespace NJasmineTests.Core
 
             public class NoopTest : INativeTest { }
 
-            public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
+            public INativeTest ForSuite(TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
                 return new NoopTest();

@@ -12,7 +12,7 @@ namespace NJasmine.VS2012
 {
     public class NativeTestFactory : INativeTestFactory
     {
-        public INativeTest ForSuite(TestContext testContext, Action onetimeCleanup)
+        public INativeTest ForSuite(TestContext testContext)
         {
             //return new TestCase();
             throw new NotImplementedException();

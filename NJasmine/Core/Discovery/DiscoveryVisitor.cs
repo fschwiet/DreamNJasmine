@@ -72,7 +72,7 @@ namespace NJasmine.Core.Discovery
 
                 var subSuite = new TestSuite(_sharedContext, testContext);
 
-                var resultBuilder = new TestBuilder(_sharedContext.NativeTestFactory.ForSuite(testContext, () => _globalSetup.Cleanup(position)), testContext.Name);
+                var resultBuilder = new TestBuilder(_sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
