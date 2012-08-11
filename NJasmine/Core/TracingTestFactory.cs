@@ -8,15 +8,12 @@ namespace NJasmine.Core
 {
     public class TracingTestFactory : INativeTestFactory
     {
-        public List<string> Names
+        public IEnumerable<string> Names
         {
-            get
-            {
-                return Positions.Keys.ToList();
-            }
+            get { return Contexts.Select(kvp => kvp.Key); }
         }
 
-        public Dictionary<string, TestPosition> Positions = new Dictionary<string, TestPosition>(); 
+        public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
 
         public class TracingTest : INativeTest
         {
@@ -29,15 +26,13 @@ namespace NJasmine.Core
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
-            Names.Add(testContext.Name.FullName);
-            Positions[testContext.Name.FullName] = testContext.Position;
+            Contexts[testContext.Name.FullName] = testContext;
             return new TracingTest();
         }
 
         public INativeTest ForUnimplementedTest(TestContext testContext)
         {
-            Names.Add(testContext.Name.FullName);
-            Positions[testContext.Name.FullName] = testContext.Position;
+            Contexts[testContext.Name.FullName] = testContext;
             return new TracingTest();
         }
 
