@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using NJasmine.Extras;
 
 namespace NJasmine.Core
 {
-    public class WithinAppDomain
+    public class UsingAppDomain
     {
-        public static string[] LoadTestNames(string assemblyName, AppDomainWrapper appDomainWrapper)
+        public static string[] LoadTestNames(AppDomainWrapper appDomainWrapper, string dllPath)
         {
             var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecEnumerator>("NJasmine.dll");
 
-            var result = o.GetTestNames(assemblyName);
+            var result = o.GetTestNames(AssemblyName.GetAssemblyName(dllPath).FullName);
 
             return result;
         }
@@ -21,7 +22,7 @@ namespace NJasmine.Core
         {
             var o = appDomainWrapper.CreateObject<Marshalled.Executor.SpecRunner>("NJasmine.dll");
 
-            o.RunTests(dllPath, testNames, sink);
+            o.RunTests(AssemblyName.GetAssemblyName(dllPath).FullName, testNames, sink);
         }
     }
 }

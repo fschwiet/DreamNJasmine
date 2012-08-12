@@ -12,7 +12,7 @@ namespace NJasmine.Marshalled
 {
     public class Executor : MarshalByRefObject
     {
-        public class SpecEnumerator : Executor
+        public class SpecEnumerator : MarshalByRefObject
         {
             public string[] GetTestNames(string assemblyName)
             {
@@ -22,13 +22,13 @@ namespace NJasmine.Marshalled
             }
         }
 
-        public class SpecRunner : Executor
+        public class SpecRunner : MarshalByRefObject
         {
             public void RunTests(string assemblyName, string[] testNames, ITestResultListener listener)
             {
                 var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true);
 
-                foreach(var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
+                foreach (var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
                 {
                     listener.NotifyStart(testContext);
 

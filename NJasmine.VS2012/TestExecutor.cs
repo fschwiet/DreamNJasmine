@@ -25,7 +25,7 @@ namespace NJasmine.VS2012
             {
                 using (var appDomain = new AppDomainWrapper(group.Key))
                 {
-                    WithinAppDomain.RunTests(group.Key, appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
+                    UsingAppDomain.RunTests(group.Key, appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
                 }
             }
         }

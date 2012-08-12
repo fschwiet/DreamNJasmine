@@ -24,7 +24,7 @@ namespace NJasmine.VS2012
             {
                 using(var appDomain = new AppDomainWrapper(source))
                 {
-                    foreach (var result in WithinAppDomain.LoadTestNames(source, appDomain))
+                    foreach (var result in UsingAppDomain.LoadTestNames(appDomain, source))
                     {
                         discoverySink.SendTestCase(new TestCase(result, new Uri(VSExecutorUri), source));
                     }

@@ -10,13 +10,9 @@ namespace NJasmine.Core
     {
         public IEnumerable<string> Names
         {
-            get
-            {
-                return Positions.Keys.ToList();
-            }
+            get { return Contexts.Select(kvp => kvp.Key); }
         }
 
-        public Dictionary<string, TestPosition> Positions = new Dictionary<string, TestPosition>(); 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
 
         public class TracingTest : INativeTest
@@ -30,14 +26,12 @@ namespace NJasmine.Core
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
-            Positions[testContext.Name.FullName] = testContext.Position;
             Contexts[testContext.Name.FullName] = testContext;
             return new TracingTest();
         }
 
         public INativeTest ForUnimplementedTest(TestContext testContext)
         {
-            Positions[testContext.Name.FullName] = testContext.Position;
             Contexts[testContext.Name.FullName] = testContext;
             return new TracingTest();
         }

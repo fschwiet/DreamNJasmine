@@ -2,9 +2,11 @@
 using NJasmine.Marshalled;
 using NJasmineTests.Core;
 using NJasmineTests.Export;
+using NUnit.Framework;
 
 namespace NJasmineTests.Specs
 {
+    [Explicit]
     public class supports_unimplemented_specs : GivenWhenThenFixtureTracingToConsole, INJasmineInternalRequirement
     {
         public override void Specify()

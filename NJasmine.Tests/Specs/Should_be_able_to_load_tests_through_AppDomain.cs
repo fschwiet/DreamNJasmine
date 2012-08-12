@@ -38,21 +38,9 @@ namespace NJasmineTests.Specs
 
                 then("the tests can be enumerated", () =>
                 {
-                    var result = WithinAppDomain.LoadTestNames(someDllPath, appDomainWrapper);
+                    var result = UsingAppDomain.LoadTestNames(appDomainWrapper, someDllPath);
 
                     expect(() => result.Contains("SomeTestLibrary.ASingleTest, first test"));
-                });
-
-                then("the tests can be ran", () =>
-                {
-                    var listener = new Mock<ITestResultListener>();
-                    WithinAppDomain.RunTests(someDllPath, appDomainWrapper, new string[]
-                    {
-                        "ASingleTest.first test"
-                    }, listener.Object);
-
-                    listener.Verify(l => l.NotifyStart(It.IsAny<TestContext>()));
-                    listener.Verify(l => l.NotifyEnd(It.IsAny<TestContext>(), It.IsAny<TestResultShim>()));
                 });
             });
         }
@@ -61,14 +49,10 @@ namespace NJasmineTests.Specs
         {
             var currentDllDirectory = new FileInfo(new Uri(this.GetType().Assembly.CodeBase).LocalPath).Directory;
 
-            string otherDllDirectory = null;
-
-            if (currentDllDirectory.Name == "build")
-                otherDllDirectory = Path.Combine(currentDllDirectory.FullName, filename);
+            if (currentDllDirectory.Name == "bin")
+                return Path.Combine(currentDllDirectory.FullName, "SomeTestLibrary.dll");
             else
-                otherDllDirectory = Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
-
-            return Path.GetFullPath(otherDllDirectory);
+                return Path.Combine(currentDllDirectory.FullName, "..\\..\\..\\SomeTestLibrary\\bin\\debug\\SomeTestLibrary.dll");
         }
     }
 }

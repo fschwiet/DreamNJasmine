@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.GlobalSetup;
 
 namespace NJasmine.Core
 {
@@ -24,7 +25,7 @@ namespace NJasmine.Core
             var testContext = new TestContext()
             {
                 Position = TestPosition.At(),
-                GlobalSetupManager = buildContext.GetGlobalSetupManager(),
+                GlobalSetupManager = new GlobalSetupManager(fixtureFactory),
                 Name = new TestName
                 {
                     FullName = type.Namespace + "." + type.Name,
