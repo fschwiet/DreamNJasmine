@@ -4,7 +4,7 @@ namespace NJasmine.Core
 {
     public interface ITestResultListener
     {
-        void NotifyStart(TestContext testContext);
-        void NotifyEnd(TestContext testContext, TestResultShim TestResult);
+        void NotifyStart(string testFullName);
+        void NotifyEnd(string testFullName, TestResultShim TestResult);
     }
 }

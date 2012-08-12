@@ -26,14 +26,14 @@ namespace NJasmine.VS2012
             }
         }
 
-        public void NotifyStart(TestContext testContext)
+        public void NotifyStart(string testFullName)
         {
-            _frameworkHandle.RecordStart(_tests[testContext.Name.MultilineName]);
+            _frameworkHandle.RecordStart(_tests[testFullName]);
         }
 
-        public void NotifyEnd(TestContext testContext, TestResultShim testResult)
+        public void NotifyEnd(string testFullName, TestResultShim testResult)
         {
-            var test = _tests[testContext.Name.MultilineName];
+            var test = _tests[testFullName];
 
             var result = new TestResult(test)
             {
