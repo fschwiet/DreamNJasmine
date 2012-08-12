@@ -38,18 +38,32 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public ITestResult hasTest(string expectedName)
+        public ISuiteResult hasTest(string expectedName, Action<ITestResult> handler)
         {
-            IEnumerable<XElement> tests = _xml.Descendants("test-case").Where(e => e.Attribute("name") != null && e.Attribute("name").Value.EndsWith(expectedName, StringComparison.InvariantCultureIgnoreCase));
+            var tests = GetTestsWithName(s => s.EndsWith(expectedName, StringComparison.InvariantCultureIgnoreCase));
 
             Assert.AreEqual(1, tests.Count(),
                 String.Format("Expected test not found in suite {0}, expected test named {1}", _name, expectedName));
 
             var name = tests.Single().Attribute("name").Value;
 
-            Expect.That(() => name.StartsWith(_fullName));
+            var testResult = new TestResult(tests.Single());
 
-            return new TestResult(tests.Single());
+            handler(testResult);
+
+            return this;
+        }
+
+        IEnumerable<XElement> GetTestsWithName(Func<string, bool> matchDetector)
+        {
+            IEnumerable<XElement> tests =
+                _xml.Descendants("test-case").Where(
+                    e =>
+                    e.Attribute("name") != null &&
+                    e.Attribute("name").Value.StartsWith(_fullName) &&
+                    matchDetector(e.Attribute("name").Value));
+
+            return tests;
         }
 
         public ISuiteResult withCategories(params string[] categories)
@@ -60,6 +74,15 @@ namespace NJasmineTests.Export
         public ISuiteResult hasSuite(string name)
         {
             return FixtureResult.FindSuite(_xml, _fullName, name);
+        }
+
+        public ISuiteResult doesNotHaveTestContaining(string skipped)
+        {
+            IEnumerable<XElement> matchingTests = GetTestsWithName(s => s.Contains(skipped));
+
+            Assert.IsEmpty(matchingTests, String.Format("Expected not to have tests containing {0}, found: {1}", skipped, string.Join(", ", matchingTests.Select(t => t.Attribute("name").Value))));
+            
+            return this;
         }
     }
 }

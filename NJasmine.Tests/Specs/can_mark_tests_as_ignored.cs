@@ -21,7 +21,7 @@ namespace NJasmineTests.Specs
                 });
             });
 
-            when("ignore is set after a test", delegate
+            when("ignore is set after a test the suite is inconclusive", delegate
             {
                 then("the earlier test runs", delegate
                 {
@@ -29,7 +29,7 @@ namespace NJasmineTests.Specs
 
                 ignoreBecause("the test requires it");
 
-                then("the later test is ignored, and the containing when is inconclusive", delegate
+                then("the later test is skipped", delegate
                 {
                 });
             });
@@ -41,9 +41,9 @@ namespace NJasmineTests.Specs
 
             fixtureResult.hasSuite("given an outer block").thatsInconclusive().thatHasNoResults();
 
-            fixtureResult.hasSuite("when ignore is set after a test").thatSucceeds()
-                .hasTest("then the earlier test runs")
-                .thatSucceeds();
+            fixtureResult.hasSuite("when ignore is set after a test the suite is inconclusive").thatSucceeds()
+                .hasTest("then the earlier test runs", t => t.thatSucceeds())
+                .doesNotHaveTestContaining("skipped");
         }
     }
 }
