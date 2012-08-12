@@ -145,7 +145,21 @@ task RunMSBuild -depends Clean, Initialize, GenerateAssemblyInfo, Invoke-MsBuild
   cp "$($base.dir)\lib\PowerAssert\license-PowerAssert.txt" "$($build.dir)"
 }
 
-task CopyNUnitToBuild {
+task DetermineNUnitVersion {
+  $njasmineNUnitPackagesConfig = "$($base.dir)\NJasmine.NUnit\packages.config"
+  $njasmineNUnitPackagesConfigXml = [xml] (get-content $njasmineNUnitPackagesConfig)
+  $script:nunitVersion = @($njasmineNUnitPackagesConfigXml.packages.package | ? { $_.id -eq "NUnit" } | % { $_.version })
+  
+  $weirdPackagesConfigXml = [xml] (get-content "$($base.dir)\.nuget\packages.config")
+  $script:nunitRunnerVersion = @($weirdPackagesConfigXml.packages.package | ? { $_.id -eq "NUnit.Runners" } | % { $_.version })
+  
+  $script:NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.$nunitRunnerVersion\tools\"
+  
+  Assert ($nunitVersion.length -eq 1) "Expected to find NUnit version in $packagesConfig, found $($nunitVersion.length)."
+  Assert (test-path $NUnitBinPath) "Expected to find NUnit runner path at $NUnitBinPath"
+}
+
+task CopyNUnitToBuild -depends DetermineNUnitVersion {
   $requiredNUnitFiles = @("nunit-agent.exe*", "nunit-console.exe*", "nunit.exe*", "lib", "nunit.framework.dll");
   $targetForNUnitFiles = (join-path $build.dir "nunit\")
   $targetForNUnitAddins = (join-path $targetForNUnitFiles "addins\")
@@ -194,7 +208,7 @@ task CopyVS2012TestToBuild {
   cp (join-path $build.dir "powerassert.dll") $targetForExtensions
 }
 
-task BuildNuget {
+task BuildNuget -depends DetermineNUnitVersion {
   
   $nugetBuildPath = "$($build.dir)\nuget"
   
@@ -209,12 +223,6 @@ task BuildNuget {
   mkdir "$nugetTargetLib\tools\" | out-null
   mkdir "$nugetTargetRunner\lib\" | out-null
   mkdir "$nugetTargetRunner\tools\" | out-null
-
-  $packagesConfig = "$($base.dir)\NJasmine.NUnit\packages.config"
-  $packagesConfigXml = [xml] (get-content $packagesConfig)
-  $nunitVersion = @($packagesConfigXml.packages.package | ? { $_.id -eq "NUnit" } | % { $_.version })
-  
-  Assert ($nunitVersion.length -eq 1) "Expected to find NUnit version in $packagesConfig, found $($nunitVersion.length)."
 
   cp "$($base.dir)\NJasmine\NJasmine.nuspec" "$nugetTargetLib\"
   cp "$($build.dir)\NJasmine.dll" "$nugetTargetLib\lib\"

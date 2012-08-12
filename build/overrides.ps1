@@ -11,7 +11,6 @@
 properties {
   Write-Output "Loading override settings" 
   $msbuild.userparameters = @{BaseIntermediateOutputPath="$($base.dir)\obj.build\"}
-  $nunit.runner = (join-path $NUnitBinPath nunit-console.exe)
   $nunit.gui = (join-path $build.dir "nunit\nunit.exe")
   $nunit.XmlTarget = (join-path $build.dir "UnitTests.xml")
 }

@@ -26,7 +26,7 @@ properties {
   # BUILD_NUMBER is defined during CI builds. Make sure that this value
   # is changed if the CI system in use does not set this variable.
   # Make sure Semver versioning is used for the build number.
-  $build.version = "0.3.0"
+  $build.version = "0.3.1"
   if($env:BUILD_NUMBER) { $build.version = $env:BUILD_NUMBER } 
   $prerelease = $false;
 
@@ -47,7 +47,6 @@ properties {
   $packages.name = "lib"
   $packages.dir = "$($base.dir)\$($packages.name)"
 
-  $NUnitBinPath = "$($base.dir)\packages\NUnit.Runners.2.6.0.12051\tools\"
   $filesToDeploy = @("NJasmine.dll", "NJasmine.xml", "NJasmine.NUnit.dll", "NJasmine.NUnit.xml", "PowerAssert.dll", "nunit.framework.dll", "license-*.txt", "getting started.txt")
 
   $VS2012BinPath = "$($base.dir)\lib\TestWindow"
