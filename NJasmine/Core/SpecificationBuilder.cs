@@ -34,9 +34,8 @@ namespace NJasmine.Core
                 }
             };
 
-            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
-
-            return resultBuilder.RunSuiteAction(testContext, sharedContext, sharedContext.GetSpecificationRootAction(), true);
+            return TestBuilder.BuildSuiteForTextContext(sharedContext, testContext,
+                sharedContext.GetSpecificationRootAction(), true);
         }
     }
 }

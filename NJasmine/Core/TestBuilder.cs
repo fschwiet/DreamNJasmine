@@ -81,5 +81,14 @@ namespace NJasmine.Core
             
             return this;
         }
+
+        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext, Action invoke, bool isRootSuite)
+        {
+            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
+
+            var finalResultBuilder = resultBuilder.RunSuiteAction(testContext, sharedContext, invoke, isRootSuite);
+
+            return finalResultBuilder;
+        }
     }
 }
