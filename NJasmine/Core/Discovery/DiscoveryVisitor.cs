@@ -74,7 +74,7 @@ namespace NJasmine.Core.Discovery
 
                 ApplyCategoryAndIgnoreIfSet(resultBuilder);
 
-                var finalResultBuilder = TestBuilder.RunSuiteAction(testContext, _sharedContext, element.Action, false, resultBuilder);
+                var finalResultBuilder = resultBuilder.RunSuiteAction(testContext, _sharedContext, element.Action, false);
 
                 _accumulatedDescendants.Add(finalResultBuilder);
             }

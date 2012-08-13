@@ -48,21 +48,21 @@ namespace NJasmine.Core
             return _nativeTest;
         }
 
-        public static TestBuilder RunSuiteAction(TestContext testContext1, SharedContext sharedContext, Action action, bool isOuterScopeOfSpecification, TestBuilder resultBuilder)
+        public TestBuilder RunSuiteAction(TestContext testContext1, SharedContext sharedContext, Action action, bool isOuterScopeOfSpecification)
         {
-            var builder = new DiscoveryVisitor(resultBuilder, sharedContext, testContext1.GlobalSetupManager);
+            var builder = new DiscoveryVisitor(this, sharedContext, testContext1.GlobalSetupManager);
 
             var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), action, builder);
 
             if (exception == null)
             {
-                builder.VisitAccumulatedTests(v => resultBuilder.AddChildTest(v));
+                builder.VisitAccumulatedTests(AddChildTest);
             }
             else
             {
                 var testContext = new TestContext()
                 {
-                    Name = sharedContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
+                    Name = sharedContext.NameReservations.GetReservedNameLike(this.Name),
                     Position = testContext1.Position,
                     GlobalSetupManager = testContext1.GlobalSetupManager
                 };
@@ -71,14 +71,15 @@ namespace NJasmine.Core
 
                 if (isOuterScopeOfSpecification)
                 {
-                    resultBuilder.AddChildTest(failingSuiteAsTest);
+                    AddChildTest(failingSuiteAsTest);
                 }
                 else
                 {
                     return failingSuiteAsTest;
                 }
             }
-            return resultBuilder;
+            
+            return this;
         }
     }
 }

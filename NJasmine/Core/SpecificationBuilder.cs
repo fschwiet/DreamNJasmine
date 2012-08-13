@@ -36,7 +36,7 @@ namespace NJasmine.Core
 
             var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
 
-            return TestBuilder.RunSuiteAction(testContext, sharedContext, sharedContext.GetSpecificationRootAction(), true, resultBuilder);
+            return resultBuilder.RunSuiteAction(testContext, sharedContext, sharedContext.GetSpecificationRootAction(), true);
         }
     }
 }
