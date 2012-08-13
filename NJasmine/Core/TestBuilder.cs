@@ -48,47 +48,33 @@ namespace NJasmine.Core
             return _nativeTest;
         }
 
-        public TestBuilder RunSuiteAction(TestContext testContext1, SharedContext sharedContext, Action action, bool isOuterScopeOfSpecification)
+        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite)
         {
-            var builder = new DiscoveryVisitor(this, sharedContext, testContext1.GlobalSetupManager);
+            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext1), testContext1.Name);
 
-            var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), action, builder);
+            var builder = new DiscoveryVisitor(resultBuilder, sharedContext, testContext1.GlobalSetupManager);
+
+            var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
 
             if (exception == null)
             {
-                builder.VisitAccumulatedTests(AddChildTest);
+                builder.VisitAccumulatedTests(resultBuilder.AddChildTest);
             }
             else
             {
-                var testContext = new TestContext()
-                {
-                    Name = sharedContext.NameReservations.GetReservedNameLike(this.Name),
-                    Position = testContext1.Position,
-                    GlobalSetupManager = testContext1.GlobalSetupManager
-                };
+                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForFailingSuite(testContext1, exception), testContext1.Name);
 
-                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
-
-                if (isOuterScopeOfSpecification)
+                if (isRootSuite)
                 {
-                    AddChildTest(failingSuiteAsTest);
+                    resultBuilder.AddChildTest(failingSuiteAsTest);
                 }
                 else
                 {
                     return failingSuiteAsTest;
                 }
             }
-            
-            return this;
-        }
 
-        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext, Action invoke, bool isRootSuite)
-        {
-            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
-
-            var finalResultBuilder = resultBuilder.RunSuiteAction(testContext, sharedContext, invoke, isRootSuite);
-
-            return finalResultBuilder;
+            return resultBuilder;
         }
     }
 }
