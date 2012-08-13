@@ -19,8 +19,7 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            SharedContext sharedContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations(),
-                                                           fixtureFactory());
+            SharedContext sharedContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations());
 
             var testContext = new TestContext()
             {
@@ -34,8 +33,7 @@ namespace NJasmine.Core
                 }
             };
 
-            return TestBuilder.BuildSuiteForTextContext(sharedContext, testContext,
-                sharedContext.GetSpecificationRootAction(), true);
+            return TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true);
         }
     }
 }

@@ -12,12 +12,12 @@ namespace NJasmine.Core.Discovery
         private SpecificationFixture _fixtureInstanceForDiscovery;
         public Func<SpecificationFixture> FixtureFactory;
 
-        public SharedContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, SpecificationFixture fixtureInstanceForDiscovery)
+        public SharedContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations)
         {
             NativeTestFactory = nativeTestFactory;
             FixtureFactory = fixtureFactory;
             NameReservations = nameReservations;
-            _fixtureInstanceForDiscovery = fixtureInstanceForDiscovery;
+            _fixtureInstanceForDiscovery = fixtureFactory();
         }
 
         public Action GetSpecificationRootAction()

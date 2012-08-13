@@ -62,7 +62,14 @@ namespace NJasmine.Core
             }
             else
             {
-                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForFailingSuite(testContext1, exception), testContext1.Name);
+                var testContext = new TestContext()
+                {
+                    Name = sharedContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
+                    Position = testContext1.Position,
+                    GlobalSetupManager = testContext1.GlobalSetupManager
+                };
+
+                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
 
                 if (isRootSuite)
                 {
