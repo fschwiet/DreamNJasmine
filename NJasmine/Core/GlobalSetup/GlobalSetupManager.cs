@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using NJasmine.Core.Discovery;
 
 namespace NJasmine.Core.GlobalSetup
 {
@@ -20,14 +19,6 @@ namespace NJasmine.Core.GlobalSetup
             _thread = null;
             _runMutex = new LolMutex(new AutoResetEvent(false));
             _visitor = new GlobalSetupVisitor(_runMutex);
-        }
-
-        public void Cleanup(TestPosition position)
-        {
-            if (_thread != null)
-            {
-                PrepareForTestPosition(position);
-            }
         }
 
         public Exception PrepareForTestPosition(TestPosition position)
@@ -55,6 +46,19 @@ namespace NJasmine.Core.GlobalSetup
             } while (!_visitor.SetTargetPosition(position, out existingError));
 
             return existingError;
+        }
+
+        public void Close()
+        {
+            Cleanup(TestPosition.At());
+        }
+
+        public void Cleanup(TestPosition position)
+        {
+            if (_thread != null)
+            {
+                PrepareForTestPosition(position);
+            }
         }
 
         public T GetSetupResultAt<T>(TestPosition position)
@@ -101,11 +105,6 @@ namespace NJasmine.Core.GlobalSetup
         public bool HasThread()
         {
             return _thread != null;
-        }
-
-        public void Close()
-        {
-            Cleanup(TestPosition.At());
         }
     }
 }
