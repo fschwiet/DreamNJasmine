@@ -94,7 +94,6 @@
     <Compile Include="Core\TestPosition.cs" />
     <Compile Include="Core\TestResultShim.cs" />
     <Compile Include="Core\TestResultUtil.cs" />
-    <Compile Include="Core\TestSuite.cs" />
     <Compile Include="Core\TracingTestFactory.cs" />
     <Compile Include="Core\UsingAppDomain.cs" />
     <Compile Include="Extras\AppDomainWrapper.cs" />

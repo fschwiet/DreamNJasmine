@@ -19,7 +19,7 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            SharedContext buildContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations(),
+            SharedContext sharedContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations(),
                                                            fixtureFactory());
 
             var testContext = new TestContext()
@@ -34,11 +34,9 @@ namespace NJasmine.Core
                 }
             };
 
-            TestSuite rootSuite = new TestSuite(buildContext, testContext);
+            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
 
-            var resultBuilder = new TestBuilder(buildContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
-
-            return rootSuite.RunSuiteAction(buildContext.GetSpecificationRootAction(), true, resultBuilder);
+            return TestBuilder.RunSuiteAction(testContext, sharedContext, sharedContext.GetSpecificationRootAction(), true, resultBuilder);
         }
     }
 }
