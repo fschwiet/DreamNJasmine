@@ -9,7 +9,22 @@ namespace NJasmine.Core
 {
     public class SpecificationBuilder
     {
-        public static TestBuilder BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
+        public class ExecutionContext : IDisposable
+        {
+            public TestBuilder Root;
+            public GlobalSetupManager SetupManager;
+
+            public void Dispose()
+            {
+                if (SetupManager != null)
+                {
+                    SetupManager.Close();
+                    SetupManager = null;
+                }
+            }
+        }
+
+        public static ExecutionContext BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
         {
             var constructor = type.GetConstructor(new Type[0]);
 
@@ -21,10 +36,12 @@ namespace NJasmine.Core
 
             SharedContext sharedContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations());
 
+            var setupManager  = new GlobalSetupManager(fixtureFactory);
+
             var testContext = new TestContext()
             {
                 Position = TestPosition.At(),
-                GlobalSetupManager = new GlobalSetupManager(fixtureFactory),
+                GlobalSetupManager = setupManager ,
                 Name = new TestName
                 {
                     FullName = type.Namespace + "." + type.Name,
@@ -33,7 +50,12 @@ namespace NJasmine.Core
                 }
             };
 
-            return TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true);
+            var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true);
+            return new ExecutionContext
+            {
+                Root = result,
+                SetupManager = setupManager
+            };
         }
     }
 }

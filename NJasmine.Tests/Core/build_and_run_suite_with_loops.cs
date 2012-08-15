@@ -97,15 +97,16 @@ namespace NJasmineTests.Core
 
             var nativeTestFactory = new TrackingTestFactory();
 
-            SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
-
-            expect(() => nativeTestFactory.Results[TestPosition.At(0)] == "a1");
-            expect(() => nativeTestFactory.Results[TestPosition.At(1)] == "a2");
-            expect(() => nativeTestFactory.Results[TestPosition.At(2)] == "a3");
-            expect(() => nativeTestFactory.Results[TestPosition.At(3)] == "nested");
-            expect(() => nativeTestFactory.Results[TestPosition.At(3, 0)] == "b1");
-            expect(() => nativeTestFactory.Results[TestPosition.At(3, 1)] == "b2");
-            expect(() => nativeTestFactory.Results[TestPosition.At(3, 2)] == "b3");
+            using (var builder = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory))
+            {
+                expect(() => nativeTestFactory.Results[TestPosition.At(0)] == "a1");
+                expect(() => nativeTestFactory.Results[TestPosition.At(1)] == "a2");
+                expect(() => nativeTestFactory.Results[TestPosition.At(2)] == "a3");
+                expect(() => nativeTestFactory.Results[TestPosition.At(3)] == "nested");
+                expect(() => nativeTestFactory.Results[TestPosition.At(3, 0)] == "b1");
+                expect(() => nativeTestFactory.Results[TestPosition.At(3, 1)] == "b2");
+                expect(() => nativeTestFactory.Results[TestPosition.At(3, 2)] == "b3");
+            }
         }
 
         void expect_test_to_observe(TestPosition testPosition, List<string> expected)

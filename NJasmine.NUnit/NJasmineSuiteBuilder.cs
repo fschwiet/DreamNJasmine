@@ -28,7 +28,7 @@ namespace NJasmine.NUnit
         {
             NativeTestFactory nativeTestFactory = new NativeTestFactory();
 
-            var root = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+            var root = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory).Root;
 
             var result = (root.GetUnderlyingTest() as NativeTest).GetNative(root);
 
