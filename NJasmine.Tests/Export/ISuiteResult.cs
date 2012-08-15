@@ -1,3 +1,5 @@
+using System;
+
 namespace NJasmineTests.Export
 {
     public interface ISuiteResult
@@ -5,8 +7,9 @@ namespace NJasmineTests.Export
         ISuiteResult thatsInconclusive();
         ISuiteResult thatSucceeds();
         ISuiteResult thatHasNoResults();
-        ITestResult hasTest(string expectedName);
+        ISuiteResult hasTest(string expectedName, Action<ITestResult> handler);
         ISuiteResult withCategories(params string[] categories);
         ISuiteResult hasSuite(string name);
+        ISuiteResult doesNotHaveTestContaining(string skipped);
     }
 }
