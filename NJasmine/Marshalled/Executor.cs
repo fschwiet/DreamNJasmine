@@ -16,9 +16,10 @@ namespace NJasmine.Marshalled
         {
             public string[] GetTestNames(string assemblyName)
             {
-                var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true);
-
-                return nativeTestFactory.Names.ToArray();
+                using(var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true))
+                {
+                    return nativeTestFactory.Names.ToArray();
+                }
             }
         }
 
@@ -26,17 +27,18 @@ namespace NJasmine.Marshalled
         {
             public void RunTests(string assemblyName, string[] testNames, ITestResultListener listener)
             {
-                var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true);
-
-                foreach (var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
+                using(var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true))
                 {
-                    listener.NotifyStart(testContext.Name.FullName);
+                    foreach (var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
+                    {
+                        listener.NotifyStart(testContext.Name.FullName);
 
-                    List<string> traceMessages = new List<string>();
+                        List<string> traceMessages = new List<string>();
 
-                    var result = SpecificationRunner.RunTest(testContext, null, traceMessages);
+                        var result = SpecificationRunner.RunTest(testContext, null, traceMessages);
 
-                    listener.NotifyEnd(testContext.Name.FullName, result);
+                        listener.NotifyEnd(testContext.Name.FullName, result);
+                    }                    
                 }
             }
         }
@@ -57,7 +59,7 @@ namespace NJasmine.Marshalled
 
             foreach (var type in filteredTypes)
             {
-                SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+                nativeTestFactory.ExecutionContext = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
             }
             return nativeTestFactory;
         }

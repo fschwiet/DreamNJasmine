@@ -6,12 +6,14 @@ using NJasmine.Core.Discovery;
 
 namespace NJasmine.Core
 {
-    public class TracingTestFactory : INativeTestFactory
+    public class TracingTestFactory : INativeTestFactory, IDisposable
     {
         public IEnumerable<string> Names
         {
             get { return Contexts.Select(kvp => kvp.Key); }
         }
+
+        public SpecificationBuilder.ExecutionContext ExecutionContext;
 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
 
@@ -39,6 +41,15 @@ namespace NJasmine.Core
         public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
         {
             return new TracingTest();
+        }
+
+        public void Dispose()
+        {
+            if (ExecutionContext != null)
+            {
+                ExecutionContext.SetupManager.Close();
+                ExecutionContext = null;
+            }
         }
     }
 }
