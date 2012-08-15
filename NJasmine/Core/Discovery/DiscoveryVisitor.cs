@@ -70,13 +70,9 @@ namespace NJasmine.Core.Discovery
                     GlobalSetupManager = _globalSetup
                 };
 
-                var subSuite = new TestSuite(_sharedContext, testContext);
+                var finalResultBuilder = TestBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
 
-                var resultBuilder = new TestBuilder(_sharedContext.NativeTestFactory.ForSuite(testContext), testContext.Name);
-
-                ApplyCategoryAndIgnoreIfSet(resultBuilder);
-
-                var finalResultBuilder = subSuite.RunSuiteAction(element.Action, false, resultBuilder);
+                ApplyCategoryAndIgnoreIfSet(finalResultBuilder);
 
                 _accumulatedDescendants.Add(finalResultBuilder);
             }
