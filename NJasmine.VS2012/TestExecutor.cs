@@ -11,8 +11,6 @@ using NJasmine.Marshalled;
 
 namespace NJasmine.VS2012
 {
-    [FileExtension(".dll")]
-    [FileExtension(".exe")]
     [DefaultExecutorUri(TestDiscoverer.VSExecutorUri)]
     [ExtensionUri(TestDiscoverer.VSExecutorUri)]
     public class TestExecutor : ITestExecutor

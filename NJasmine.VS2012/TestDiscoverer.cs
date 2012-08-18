@@ -14,9 +14,13 @@ using NJasmine.Marshalled;
 
 namespace NJasmine.VS2012
 {
+    [FileExtension(".dll")]
+    [FileExtension(".exe")]
+    [DefaultExecutorUri(TestDiscoverer.VSExecutorUri)]
+    [ExtensionUri(TestDiscoverer.VSExecutorUri)]
     public class TestDiscoverer : ITestDiscoverer
     {
-        public const string VSExecutorUri = "http://nuget.org/packages/NJasmine";
+        public const string VSExecutorUri = "executor:http://nuget.org/packages/NJasmine";
 
         public void DiscoverTests(IEnumerable<string> sources, IDiscoveryContext discoveryContext, IMessageLogger logger, ITestCaseDiscoverySink discoverySink)
         {
