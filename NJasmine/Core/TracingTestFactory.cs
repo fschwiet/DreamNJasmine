@@ -21,6 +21,9 @@ namespace NJasmine.Core
 
         public class TracingTest : INativeTest
         {
+            public void Add(TestBuilder test)
+            {
+            }
         }
 
         public INativeTest ForSuite(TestContext testContext)

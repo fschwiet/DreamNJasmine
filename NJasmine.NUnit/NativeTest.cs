@@ -31,11 +31,12 @@ namespace NJasmine.NUnit
                 }
             }
 
-            foreach (var child in builder.Children)
-            {
-                (_test as global::NUnit.Core.TestSuite).Add((child.GetUnderlyingTest() as NativeTest).GetNative(child));
-            }
             return _test;
+        }
+
+        public void Add(TestBuilder test)
+        {
+            (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative(test));
         }
     }
 }

@@ -63,7 +63,9 @@ namespace NJasmineTests.Core
         {
             public Dictionary<TestPosition, string> Results = new Dictionary<TestPosition, string>();
 
-            public class NoopTest : INativeTest { }
+            public class NoopTest : INativeTest {
+                public void Add(TestBuilder test) { }
+            }
 
             public INativeTest ForSuite(TestContext testContext)
             {

@@ -13,7 +13,6 @@ namespace NJasmine.Core
         public TestBuilder(INativeTest nativeTest, TestName name = null)
         {
             _nativeTest = nativeTest;
-            Children = new List<TestBuilder>();
             Categories = new List<string>();
             Name = name ?? new TestName();
         }
@@ -21,13 +20,11 @@ namespace NJasmine.Core
         public TestName Name { get; set; }
 
         public string ReasonIgnored { get; private set; }
-
-        public List<TestBuilder> Children { get; private set; }
         public List<string> Categories { get; private set; }
 
         public void AddChildTest(TestBuilder test)
         {
-            Children.Add(test);
+            _nativeTest.Add(test);
         }
 
         public void AddCategory(string category)
