@@ -10,7 +10,10 @@ namespace SomeTestLibrary
     {
         public override void Specify()
         {
-            it("first test");
+            it("first test", delegate()
+            {
+                expect(() => true);
+            });
         }
     }
 }
