@@ -10,7 +10,6 @@ namespace NJasmine.Core
     {
         public enum Result
         {
-            Inconclusive = 0,
             Successs,
             Error
         }

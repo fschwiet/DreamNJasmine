@@ -55,8 +55,6 @@ namespace NJasmine.VS2012
         {
             switch(shim.Status)
             {
-            case TestResultShim.Result.Inconclusive:
-                return TestOutcome.Skipped;
             case TestResultShim.Result.Successs:
                 return TestOutcome.Passed;
             case TestResultShim.Result.Error:

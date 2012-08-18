@@ -10,8 +10,6 @@ namespace NJasmine.NUnit
         {
             switch (shim.Status)
             {
-                case TestResultShim.Result.Inconclusive:
-                    break;
                 case TestResultShim.Result.Successs:
                     result.Success();
                     break;
