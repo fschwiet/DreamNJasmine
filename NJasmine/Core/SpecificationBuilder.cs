@@ -50,7 +50,10 @@ namespace NJasmine.Core
                 }
             };
 
-            var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true);
+            var explicitReason = ExplicitAttributeReader.GetFor(type);
+
+            var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
+
             return new ExecutionContext
             {
                 Root = result,

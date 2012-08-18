@@ -45,9 +45,12 @@ namespace NJasmine.Core
             return _nativeTest;
         }
 
-        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite)
+        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
         {
             var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext1), testContext1.Name);
+
+            if (explicitReason != null)
+                resultBuilder.AddIgnoreReason(explicitReason);
 
             var builder = new DiscoveryVisitor(resultBuilder, sharedContext, testContext1.GlobalSetupManager);
 
