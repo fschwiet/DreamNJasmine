@@ -33,7 +33,7 @@ namespace NJasmineTests.Core
 
             it("can detect a class does have Explicit Attribute", () =>
             {
-                expect(() => ExplicitAttributeReader.GetFor(typeof(ClassWithExplicitAttribute)) == "ClassWithoutExplicitAttribute has attribute Explicit.");
+                expect(() => ExplicitAttributeReader.GetFor(typeof(ClassWithExplicitAttribute)) == "ClassWithExplicitAttribute has attribute ExplicitAttribute.");
             });
 
             it("can detect the reason attribute of ExplicitAttribute when available", () =>

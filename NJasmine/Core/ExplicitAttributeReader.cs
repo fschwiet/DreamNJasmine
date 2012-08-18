@@ -34,7 +34,7 @@ namespace NJasmine.Core
             }
 
             if (explicitReason == null)
-                return "ClassWithoutExplicitAttribute has attribute Explicit.";
+                return type.Name + " has attribute " + explicitAttributes.First().GetType().Name + ".";
             else
                 return explicitReason;
         }
