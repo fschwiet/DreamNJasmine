@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\build_and_run_suite_with_loops.cs" />
+    <Compile Include="Core\can_detect_ExplicitAttribute_reason.cs" />
     <Compile Include="Core\FakeGlobalSetupManager.cs" />
     <Compile Include="Core\GlobalSetupManagerTests.cs" />
     <Compile Include="Core\NJasmineSuiteBuilder_suite_discovery.cs" />

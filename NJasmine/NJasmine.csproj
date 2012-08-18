@@ -72,6 +72,7 @@
     <Compile Include="Core\Execution\FinishingState.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunContext.cs" />
     <Compile Include="Core\Execution\NJasmineTestRunner.cs" />
+    <Compile Include="Core\ExplicitAttributeReader.cs" />
     <Compile Include="Core\FixtureVisitor\DoNothingFixtureVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ISpecPositionVisitor.cs" />
     <Compile Include="Core\FixtureVisitor\ActualKeyword.cs" />
