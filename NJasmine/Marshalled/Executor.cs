@@ -29,13 +29,16 @@ namespace NJasmine.Marshalled
             {
                 using(var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true))
                 {
-                    foreach (var testContext in testNames.Select(name => nativeTestFactory.Contexts[name]))
+                    foreach(var name in testNames)
                     {
+                        var testContext = nativeTestFactory.Contexts[name];
+                        var testFixtureBuilder = nativeTestFactory.FixtureBuilders[name];
+
                         listener.NotifyStart(testContext.Name.FullName);
 
                         List<string> traceMessages = new List<string>();
 
-                        var result = SpecificationRunner.RunTest(testContext, null, traceMessages);
+                        var result = SpecificationRunner.RunTest(testContext, testFixtureBuilder, traceMessages);
 
                         listener.NotifyEnd(testContext.Name.FullName, result);
                     }                    

@@ -15,6 +15,8 @@ namespace NJasmine.Core
 
         public SpecificationBuilder.ExecutionContext ExecutionContext;
 
+        public Dictionary<string, Func<SpecificationFixture>> FixtureBuilders =
+            new Dictionary<string, Func<SpecificationFixture>>(); 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
 
         public class TracingTest : INativeTest
@@ -28,6 +30,7 @@ namespace NJasmine.Core
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
+            FixtureBuilders[testContext.Name.FullName] = sharedContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
             return new TracingTest();
         }

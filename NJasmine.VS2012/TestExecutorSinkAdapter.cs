@@ -37,12 +37,33 @@ namespace NJasmine.VS2012
 
             var result = new TestResult(test)
             {
-                Outcome = TestOutcome.Failed
+                Outcome = MapToOutcome(testResult),
+                DisplayName = testFullName
             };
 
-            _frameworkHandle.RecordStart(test);
+            if (result.Outcome == TestOutcome.Failed)
+            {
+                result.ErrorMessage = testResult.FailureReason;
+                result.ErrorStackTrace = testResult.FailureStackTrace;
+            }
+
             _frameworkHandle.RecordEnd(test, result.Outcome);
             _frameworkHandle.RecordResult(result);
+        }
+
+        public TestOutcome MapToOutcome(TestResultShim shim)
+        {
+            switch(shim.Status)
+            {
+            case TestResultShim.Result.Inconclusive:
+                return TestOutcome.Skipped;
+            case TestResultShim.Result.Successs:
+                return TestOutcome.Passed;
+            case TestResultShim.Result.Error:
+                return TestOutcome.Failed;
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

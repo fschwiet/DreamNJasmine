@@ -5,6 +5,7 @@ using System.Text;
 
 namespace NJasmine.Core
 {
+    [Serializable]
     public class TestResultShim
     {
         public enum Result
