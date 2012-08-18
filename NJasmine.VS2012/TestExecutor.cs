@@ -30,7 +30,11 @@ namespace NJasmine.VS2012
 
         public void RunTests(IEnumerable<string> sources, IRunContext runContext, IFrameworkHandle frameworkHandle)
         {
-            throw new NotImplementedException();
+            List<TestCase> tests = new List<TestCase>();
+
+            TestDiscoverer.VisitTests(sources, t => tests.Add(t));
+
+            RunTests(tests, runContext, frameworkHandle);
         }
 
         public void Cancel()

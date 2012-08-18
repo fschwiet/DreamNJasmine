@@ -1,0 +1,1 @@
+﻿use VS2012 to run unit tests as part of build

@@ -24,13 +24,20 @@ namespace NJasmine.VS2012
 
         public void DiscoverTests(IEnumerable<string> sources, IDiscoveryContext discoveryContext, IMessageLogger logger, ITestCaseDiscoverySink discoverySink)
         {
+            Action<TestCase> visitor = test => discoverySink.SendTestCase(test);
+
+            VisitTests(sources, visitor);
+        }
+
+        public static void VisitTests(IEnumerable<string> sources, Action<TestCase> visitor)
+        {
             foreach (var source in sources.Where(s => IsAlongsideNJasmineDll(s)))
             {
-                using(var appDomain = new AppDomainWrapper(source))
+                using (var appDomain = new AppDomainWrapper(source))
                 {
                     foreach (var result in UsingAppDomain.LoadTestNames(appDomain, source))
                     {
-                        discoverySink.SendTestCase(new TestCase(result, new Uri(VSExecutorUri), source));
+                        visitor(new TestCase(result, new Uri(VSExecutorUri), source));
                     }
                 }
             }
