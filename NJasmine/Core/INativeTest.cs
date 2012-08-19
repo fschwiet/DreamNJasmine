@@ -2,6 +2,7 @@ namespace NJasmine.Core
 {
     public interface INativeTest
     {
-        void Add(TestBuilder test);
+        void AddChild(TestBuilder test);
+        void SetIgnoreReason(string reasonIgnored);
     }
 }

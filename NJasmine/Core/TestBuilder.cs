@@ -24,7 +24,7 @@ namespace NJasmine.Core
 
         public void AddChildTest(TestBuilder test)
         {
-            _nativeTest.Add(test);
+            _nativeTest.AddChild(test);
         }
 
         public void AddCategory(string category)
@@ -38,6 +38,8 @@ namespace NJasmine.Core
                 ReasonIgnored = ignoreReason;
             else
                 ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
+
+            _nativeTest.SetIgnoreReason(ReasonIgnored);
         }
 
         public INativeTest GetUnderlyingTest()

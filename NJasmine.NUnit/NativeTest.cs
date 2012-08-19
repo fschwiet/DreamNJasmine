@@ -14,12 +14,6 @@ namespace NJasmine.NUnit
 
         public Test GetNative(TestBuilder builder)
         {
-            if (builder.ReasonIgnored != null)
-            {
-                _test.RunState = RunState.Explicit;
-                _test.IgnoreReason = builder.ReasonIgnored;
-            }
-            
             foreach (var category in builder.Categories)
             {
                 _test.Categories.Add(category);
@@ -34,9 +28,15 @@ namespace NJasmine.NUnit
             return _test;
         }
 
-        public void Add(TestBuilder test)
+        public void AddChild(TestBuilder test)
         {
             (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative(test));
+        }
+
+        public void SetIgnoreReason(string reasonIgnored)
+        {
+            _test.RunState = RunState.Explicit;
+            _test.IgnoreReason = reasonIgnored;
         }
     }
 }

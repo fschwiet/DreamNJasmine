@@ -21,7 +21,11 @@ namespace NJasmine.Core
 
         public class TracingTest : INativeTest
         {
-            public void Add(TestBuilder test)
+            public void AddChild(TestBuilder test)
+            {
+            }
+
+            public void SetIgnoreReason(string reasonIgnored)
             {
             }
         }
