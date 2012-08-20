@@ -23,7 +23,7 @@ namespace NJasmine.NUnit
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
 
-            return new NativeTest(nunitTest);
+            return new NativeTest(nunitTest, testContext.Name);
         }
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
@@ -31,8 +31,8 @@ namespace NJasmine.NUnit
             var nunitTest = new NJasmineTestMethod(sharedContext.FixtureFactory, testContext);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
-            
-            return new NativeTest(nunitTest);
+
+            return new NativeTest(nunitTest, testContext.Name);
         }
         
         static void ApplyNameToNUnitTest(TestName testName, Test nJasmineTestSuiteNUnit)

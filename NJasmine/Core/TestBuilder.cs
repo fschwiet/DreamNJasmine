@@ -8,14 +8,12 @@ namespace NJasmine.Core
 {
     public class TestBuilder
     {
-        public TestName Name { get; set; }
         private string ReasonIgnored;
         readonly INativeTest _nativeTest;
 
-        public TestBuilder(INativeTest nativeTest, TestName name = null)
+        public TestBuilder(INativeTest nativeTest)
         {
             _nativeTest = nativeTest;
-            Name = name ?? new TestName();
         }
 
         public void AddChildTest(TestBuilder test)
@@ -53,7 +51,7 @@ namespace NJasmine.Core
 
         public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
         {
-            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext1), testContext1.Name);
+            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext1));
 
             if (explicitReason != null)
                 resultBuilder.AddIgnoreReason(explicitReason);
@@ -70,12 +68,12 @@ namespace NJasmine.Core
             {
                 var testContext = new TestContext()
                 {
-                    Name = sharedContext.NameReservations.GetReservedNameLike(resultBuilder.Name),
+                    Name = sharedContext.NameReservations.GetReservedNameLike(resultBuilder.GetUnderlyingTest().Name),
                     Position = testContext1.Position,
                     GlobalSetupManager = testContext1.GlobalSetupManager
                 };
 
-                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForTest(sharedContext, testContext), testContext.Name);
+                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForTest(sharedContext, testContext));
                 failingSuiteAsTest.GetUnderlyingTest().MarkTestFailed(exception);
 
                 if (isRootSuite)

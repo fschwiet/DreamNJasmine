@@ -50,7 +50,7 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.GetUnderlyingTest().Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
@@ -66,7 +66,7 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.GetUnderlyingTest().Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
@@ -103,12 +103,12 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.GetUnderlyingTest().Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext), testContext.Name);
+                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext));
                 buildResult.GetUnderlyingTest().MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);

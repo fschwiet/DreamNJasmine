@@ -12,9 +12,12 @@ namespace NJasmine.NUnit
     {
         readonly Test _test;
 
-        public NativeTest(Test test)
+        public NJasmine.Core.TestName Name { get; private set; }
+
+        public NativeTest(Test test, NJasmine.Core.TestName name)
         {
             _test = test;
+            Name = name;
         }
 
         public Test GetNative()

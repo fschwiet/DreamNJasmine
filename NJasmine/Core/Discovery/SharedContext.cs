@@ -56,12 +56,12 @@ namespace NJasmine.Core.Discovery
         {
             var testContext = new TestContext()
             {
-                Name = NameReservations.GetReservedTestName(description, parentTest.Name),
+                Name = NameReservations.GetReservedTestName(description, parentTest.GetUnderlyingTest().Name),
                 Position = position,
                 GlobalSetupManager = globalSetupManager
             };
 
-            var test = new TestBuilder(NativeTestFactory.ForTest(this, testContext), testContext.Name);
+            var test = new TestBuilder(NativeTestFactory.ForTest(this, testContext));
 
             return test;
         }

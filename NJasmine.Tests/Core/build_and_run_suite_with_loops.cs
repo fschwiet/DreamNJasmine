@@ -64,6 +64,12 @@ namespace NJasmineTests.Core
             public Dictionary<TestPosition, string> Results = new Dictionary<TestPosition, string>();
 
             public class NoopTest : INativeTest {
+                public NoopTest(TestName name)
+                {
+                    Name = name;
+                }
+
+                public TestName Name { get; private set; }
                 public void AddCategory(string category) { }
                 public void AddChild(TestBuilder test) { }
                 public void MarkTestIgnored(string reasonIgnored) { }
@@ -78,13 +84,13 @@ namespace NJasmineTests.Core
             public INativeTest ForSuite(TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
-                return new NoopTest();
+                return new NoopTest(testContext.Name);
             }
 
             public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
-                return new NoopTest();
+                return new NoopTest(testContext.Name);
             }
         }
 
