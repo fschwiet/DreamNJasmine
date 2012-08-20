@@ -29,7 +29,15 @@ namespace NJasmine.Core
 
         public void AddCategory(string category)
         {
-            Categories.Add(category);
+            var invalidReason = Validate.CheckForCategoryError(category);
+            if (invalidReason != null)
+            {
+                _nativeTest.MarkTestInvalid(invalidReason);
+            }
+            else
+            {
+                _nativeTest.AddCategory(category);
+            }
         }
 
         public void AddIgnoreReason(string ignoreReason)

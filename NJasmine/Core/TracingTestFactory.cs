@@ -21,6 +21,10 @@ namespace NJasmine.Core
 
         public class TracingTest : INativeTest
         {
+            public void AddCategory(string category)
+            {
+            }
+
             public void AddChild(TestBuilder test)
             {
             }

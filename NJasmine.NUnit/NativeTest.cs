@@ -17,18 +17,12 @@ namespace NJasmine.NUnit
 
         public Test GetNative(TestBuilder builder)
         {
-            foreach (var category in builder.Categories)
-            {
-                _test.Categories.Add(category);
-
-                var invalidReason = Validate.CheckForCategoryError(category);
-                if (invalidReason != null)
-                {
-                    MarkTestInvalid(invalidReason);
-                }
-            }
-
             return _test;
+        }
+
+        public void AddCategory(string category)
+        {
+            _test.Categories.Add(category);
         }
 
         public void AddChild(TestBuilder test)
