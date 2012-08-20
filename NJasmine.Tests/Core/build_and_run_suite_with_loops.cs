@@ -86,12 +86,6 @@ namespace NJasmineTests.Core
                 return new NoopTest();
             }
 
-            public INativeTest ForUnimplementedTest(TestContext testContext)
-            {
-                Results[testContext.Position] = testContext.Name.Shortname;
-                return new NoopTest();
-            }
-
             public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;

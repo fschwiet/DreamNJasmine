@@ -34,12 +34,19 @@ namespace NJasmine.NUnit.TestElements
         TestResult RunTest(EventListener listener)
         {
             listener.TestStarted(base.TestName);
-            
-            var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory, new List<string>());
 
-            var nunitTestResult = new TestResult(this);
+            TestResult nunitTestResult = new TestResult(this);
 
-            NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
+            if (RunState != RunState.NotRunnable)
+            {
+                var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory, new List<string>());
+
+                NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
+            }
+            else
+            {
+                nunitTestResult.SetResult(ResultState.NotRunnable, IgnoreReason, "");
+            }
 
             listener.TestFinished(nunitTestResult);
 

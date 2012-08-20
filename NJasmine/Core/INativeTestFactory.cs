@@ -9,7 +9,6 @@ namespace NJasmine.Core
         void SetRoot(INativeTest test);
         INativeTest ForSuite(TestContext testContext);
         INativeTest ForTest(SharedContext sharedContext, TestContext testContext);
-        INativeTest ForUnimplementedTest(TestContext testContext);
         INativeTest ForFailingSuite(TestContext testContext, Exception exception);
     }
 }

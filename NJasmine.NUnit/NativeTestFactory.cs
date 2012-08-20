@@ -35,15 +35,6 @@ namespace NJasmine.NUnit
             return new NativeTest(nunitTest);
         }
 
-        public INativeTest ForUnimplementedTest(TestContext testContext)
-        {
-            var test = new NJasmineUnimplementedTestMethod();
-
-            ApplyNameToNUnitTest(testContext.Name, test);
-
-            return new NativeTest(test);
-        }
-
         public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
         {
             var nunitTest = new NJasmineInvalidTestSuite(exception);

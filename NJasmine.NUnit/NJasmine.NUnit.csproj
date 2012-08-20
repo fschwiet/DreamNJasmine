@@ -60,7 +60,6 @@
     <Compile Include="TestElements\NJasmineInvalidTestSuite.cs" />
     <Compile Include="TestElements\NJasmineTestMethod.cs" />
     <Compile Include="TestElements\NJasmineTestSuiteNUnit.cs" />
-    <Compile Include="TestElements\NJasmineUnimplementedTestMethod.cs" />
     <Compile Include="TestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

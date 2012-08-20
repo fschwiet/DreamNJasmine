@@ -55,12 +55,6 @@ namespace NJasmine.Core
             return new TracingTest();
         }
 
-        public INativeTest ForUnimplementedTest(TestContext testContext)
-        {
-            Contexts[testContext.Name.FullName] = testContext;
-            return new TracingTest();
-        }
-
         public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
         {
             return new TracingTest();

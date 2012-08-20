@@ -55,7 +55,8 @@ namespace NJasmine.Core.Discovery
                     GlobalSetupManager = _globalSetup
                 };
                 
-                var result = new TestBuilder(_sharedContext.NativeTestFactory.ForUnimplementedTest(testContext));
+                var result = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext));
+                result.GetUnderlyingTest().MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -107,7 +108,8 @@ namespace NJasmine.Core.Discovery
                     GlobalSetupManager = _globalSetup
                 };
 
-                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForUnimplementedTest(testContext), testContext.Name);
+                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext), testContext.Name);
+                buildResult.GetUnderlyingTest().MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
                 
