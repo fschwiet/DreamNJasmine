@@ -72,7 +72,7 @@ namespace NJasmine.Core.Discovery
                     GlobalSetupManager = _globalSetup
                 };
 
-                var suiteResuilt = TestBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
+                var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
 
                 ApplyCategoryAndIgnoreIfSet(suiteResuilt);
 

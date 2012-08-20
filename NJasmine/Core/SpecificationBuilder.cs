@@ -10,20 +10,6 @@ namespace NJasmine.Core
 {
     public class SpecificationBuilder
     {
-        public class ExecutionContext : IDisposable
-        {
-            public GlobalSetupManager SetupManager;
-
-            public void Dispose()
-            {
-                if (SetupManager != null)
-                {
-                    SetupManager.Close();
-                    SetupManager = null;
-                }
-            }
-        }
-
         public static GlobalSetupManager BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
         {
             if (nativeTestFactory is ValidatingNativeTestFactory)
@@ -57,11 +43,51 @@ namespace NJasmine.Core
 
             var explicitReason = ExplicitAttributeReader.GetFor(type);
 
-            var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
+            var result = BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
 
             nativeTestFactory.SetRoot(result);
 
             return setupManager;
+        }
+
+        public static INativeTest BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
+        {
+            var result = sharedContext.NativeTestFactory.ForSuite(testContext1);
+
+            if (explicitReason != null)
+                result.MarkTestIgnored(explicitReason);
+
+            var builder = new DiscoveryVisitor(result, sharedContext, testContext1.GlobalSetupManager);
+
+            var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
+
+            if (exception == null)
+            {
+                builder.VisitAccumulatedTests(result.AddChild);
+            }
+            else
+            {
+                var testContext = new TestContext()
+                {
+                    Name = sharedContext.NameReservations.GetReservedNameLike(result.Name),
+                    Position = testContext1.Position,
+                    GlobalSetupManager = testContext1.GlobalSetupManager
+                };
+
+                var failingSuiteAsTest = sharedContext.NativeTestFactory.ForTest(sharedContext, testContext);
+                failingSuiteAsTest.MarkTestFailed(exception);
+
+                if (isRootSuite)
+                {
+                    result.AddChild(failingSuiteAsTest);
+                }
+                else
+                {
+                    return failingSuiteAsTest;
+                }
+            }
+
+            return result;
         }
     }
 }
