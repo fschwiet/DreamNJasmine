@@ -8,7 +8,7 @@ using NUnit.Core;
 
 namespace NJasmine.NUnit.TestElements
 {
-    public class NJasmineTestMethod : TestMethod
+    public class NJasmineTestMethod : TestMethod, IPrefailable
     {
         public TestPosition Position { get
             {
@@ -18,6 +18,7 @@ namespace NJasmine.NUnit.TestElements
 
         readonly Func<SpecificationFixture> _fixtureFactory;
         readonly TestContext _testContext;
+        private Exception _pendingException;
 
         public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestContext testContext)
             : base(new Action(delegate() { }).Method)
@@ -37,20 +38,34 @@ namespace NJasmine.NUnit.TestElements
 
             TestResult nunitTestResult = new TestResult(this);
 
-            if (RunState != RunState.NotRunnable)
+            if (_pendingException != null)
+            {
+                nunitTestResult.Failure(_pendingException.Message, _pendingException.StackTrace, FailureSite.Test);
+            }
+            else if (RunState == RunState.NotRunnable)
+            {
+                nunitTestResult.SetResult(ResultState.NotRunnable, IgnoreReason, "", FailureSite.Test);
+            }
+            else
             {
                 var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory, new List<string>());
 
                 NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
-            }
-            else
-            {
-                nunitTestResult.SetResult(ResultState.NotRunnable, IgnoreReason, "");
             }
 
             listener.TestFinished(nunitTestResult);
 
             return nunitTestResult;
         }
+
+        public void SetPendingException(Exception e)
+        {
+            _pendingException = e;
+        }
+    }
+
+    public interface IPrefailable
+    {
+        void SetPendingException(Exception e);
     }
 }

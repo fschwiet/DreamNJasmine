@@ -75,7 +75,8 @@ namespace NJasmine.Core
                     GlobalSetupManager = testContext1.GlobalSetupManager
                 };
 
-                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForFailingSuite(testContext, exception), testContext.Name);
+                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForTest(sharedContext, testContext), testContext.Name);
+                failingSuiteAsTest.GetUnderlyingTest().MarkTestFailed(exception);
 
                 if (isRootSuite)
                 {

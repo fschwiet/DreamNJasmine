@@ -34,16 +34,7 @@ namespace NJasmine.NUnit
             
             return new NativeTest(nunitTest);
         }
-
-        public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
-        {
-            var nunitTest = new NJasmineInvalidTestSuite(exception);
-
-            ApplyNameToNUnitTest(testContext.Name, nunitTest);
-            
-            return new NativeTest(nunitTest);
-        }
-
+        
         static void ApplyNameToNUnitTest(TestName testName, Test nJasmineTestSuiteNUnit)
         {
             nJasmineTestSuiteNUnit.TestName.Name = testName.Shortname;

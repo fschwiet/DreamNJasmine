@@ -1,3 +1,5 @@
+using System;
+
 namespace NJasmine.Core
 {
     public interface INativeTest
@@ -6,5 +8,6 @@ namespace NJasmine.Core
         void AddChild(TestBuilder test);
         void MarkTestIgnored(string reasonIgnored);
         void MarkTestInvalid(string reason);
+        void MarkTestFailed(Exception exception);
     }
 }

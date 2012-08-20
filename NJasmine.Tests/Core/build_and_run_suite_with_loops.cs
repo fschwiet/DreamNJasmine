@@ -68,6 +68,7 @@ namespace NJasmineTests.Core
                 public void AddChild(TestBuilder test) { }
                 public void MarkTestIgnored(string reasonIgnored) { }
                 public void MarkTestInvalid(string reason) { }
+                public void MarkTestFailed(Exception exception) { }
             }
 
             public void SetRoot(INativeTest test)
@@ -81,12 +82,6 @@ namespace NJasmineTests.Core
             }
 
             public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
-            {
-                Results[testContext.Position] = testContext.Name.Shortname;
-                return new NoopTest();
-            }
-
-            public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
                 return new NoopTest();

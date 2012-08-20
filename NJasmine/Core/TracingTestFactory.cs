@@ -37,6 +37,10 @@ namespace NJasmine.Core
             public void MarkTestInvalid(string reason)
             {
             }
+
+            public void MarkTestFailed(Exception exception)
+            {
+            }
         }
 
         public void SetRoot(INativeTest test)
@@ -52,11 +56,6 @@ namespace NJasmine.Core
         {
             FixtureBuilders[testContext.Name.FullName] = sharedContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
-            return new TracingTest();
-        }
-
-        public INativeTest ForFailingSuite(TestContext testContext, Exception exception)
-        {
             return new TracingTest();
         }
 

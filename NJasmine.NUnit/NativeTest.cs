@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
+using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 
 namespace NJasmine.NUnit
@@ -38,6 +40,11 @@ namespace NJasmine.NUnit
         public void MarkTestInvalid(string reason)
         {
             TryApplyRunState(RunState.NotRunnable, reason);
+        }
+
+        public void MarkTestFailed(Exception exception)
+        {
+            (_test as IPrefailable).SetPendingException(exception);
         }
 
         public void TryApplyRunState(RunState state, string reason)
