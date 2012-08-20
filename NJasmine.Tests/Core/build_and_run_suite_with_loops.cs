@@ -72,7 +72,7 @@ namespace NJasmineTests.Core
 
                 public TestName Name { get; private set; }
                 public void AddCategory(string category) { }
-                public void AddChild(TestBuilder test) { }
+                public void AddChild(INativeTest test) { }
                 public void MarkTestIgnored(string reasonIgnored) { }
                 public void MarkTestInvalid(string reason) { }
                 public void MarkTestFailed(Exception exception) { }

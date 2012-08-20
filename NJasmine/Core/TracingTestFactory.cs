@@ -34,7 +34,7 @@ namespace NJasmine.Core
             {
             }
 
-            public void AddChild(TestBuilder test)
+            public void AddChild(INativeTest test)
             {
             }
 

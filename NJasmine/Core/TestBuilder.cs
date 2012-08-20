@@ -9,64 +9,36 @@ namespace NJasmine.Core
 {
     public class TestBuilder
     {
-        private string ReasonIgnored;
-        readonly INativeTest _nativeTest;
-
-        public TestBuilder(INativeTest nativeTest)
+        public static INativeTest BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
         {
-            _nativeTest = nativeTest;
-        }
-
-        public void AddChildTest(TestBuilder test)
-        {
-            _nativeTest.AddChild(test);
-        }
-
-        public void AddCategory(string category)
-        {
-            _nativeTest.AddCategory(category);
-        }
-
-        public void AddIgnoreReason(string ignoreReason)
-        {
-            _nativeTest.MarkTestIgnored(ReasonIgnored);
-        }
-
-        public INativeTest GetUnderlyingTest()
-        {
-            return _nativeTest;
-        }
-
-        public static TestBuilder BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
-        {
-            var resultBuilder = new TestBuilder(sharedContext.NativeTestFactory.ForSuite(testContext1));
+            var result = sharedContext.NativeTestFactory.ForSuite(testContext1);
 
             if (explicitReason != null)
-                resultBuilder.AddIgnoreReason(explicitReason);
+                result.MarkTestIgnored(explicitReason);
 
-            var builder = new DiscoveryVisitor(resultBuilder, sharedContext, testContext1.GlobalSetupManager);
+            var builder = new DiscoveryVisitor(result, sharedContext, testContext1.GlobalSetupManager);
 
             var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
 
             if (exception == null)
             {
-                builder.VisitAccumulatedTests(resultBuilder.AddChildTest);
+                builder.VisitAccumulatedTests(result.AddChild);
             }
             else
             {
                 var testContext = new TestContext()
                 {
-                    Name = sharedContext.NameReservations.GetReservedNameLike(resultBuilder.GetUnderlyingTest().Name),
+                    Name = sharedContext.NameReservations.GetReservedNameLike(result.Name),
                     Position = testContext1.Position,
                     GlobalSetupManager = testContext1.GlobalSetupManager
                 };
 
-                var failingSuiteAsTest = new TestBuilder(sharedContext.NativeTestFactory.ForTest(sharedContext, testContext));
-                failingSuiteAsTest.GetUnderlyingTest().MarkTestFailed(exception);
+                var failingSuiteAsTest = sharedContext.NativeTestFactory.ForTest(sharedContext, testContext);
+                failingSuiteAsTest.MarkTestFailed(exception);
 
                 if (isRootSuite)
                 {
-                    resultBuilder.AddChildTest(failingSuiteAsTest);
+                    result.AddChild(failingSuiteAsTest);
                 }
                 else
                 {
@@ -74,7 +46,7 @@ namespace NJasmine.Core
                 }
             }
 
-            return resultBuilder;
+            return result;
         }
     }
 }

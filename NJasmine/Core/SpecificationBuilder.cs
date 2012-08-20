@@ -59,7 +59,7 @@ namespace NJasmine.Core
 
             var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
 
-            nativeTestFactory.SetRoot(result.GetUnderlyingTest());
+            nativeTestFactory.SetRoot(result);
 
             return setupManager;
         }

@@ -25,9 +25,9 @@ namespace NJasmine.NUnit
             _test.Categories.Add(category);
         }
 
-        public void AddChild(TestBuilder test)
+        public void AddChild(INativeTest test)
         {
-            (_test as global::NUnit.Core.TestSuite).Add((Test)test.GetUnderlyingTest().GetNative());
+            (_test as global::NUnit.Core.TestSuite).Add((Test)test.GetNative());
         }
 
         public void MarkTestIgnored(string reasonIgnored)

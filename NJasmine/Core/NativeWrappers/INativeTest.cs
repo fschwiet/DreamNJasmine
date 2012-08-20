@@ -6,7 +6,7 @@ namespace NJasmine.Core.NativeWrappers
     {
         TestName Name { get; }
         void AddCategory(string category);
-        void AddChild(TestBuilder test);
+        void AddChild(INativeTest test);
         void MarkTestIgnored(string reasonIgnored);
         void MarkTestInvalid(string reason);
         void MarkTestFailed(Exception exception);

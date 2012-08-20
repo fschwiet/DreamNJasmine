@@ -53,18 +53,16 @@ namespace NJasmine.Core.Discovery
             return exception;
         }
 
-        public TestBuilder CreateTest(IGlobalSetupManager globalSetupManager, TestBuilder parentTest, TestPosition position, string description)
+        public INativeTest CreateTest(IGlobalSetupManager globalSetupManager, INativeTest parentTest, TestPosition position, string description)
         {
             var testContext = new TestContext()
             {
-                Name = NameReservations.GetReservedTestName(description, parentTest.GetUnderlyingTest().Name),
+                Name = NameReservations.GetReservedTestName(description, parentTest.Name),
                 Position = position,
                 GlobalSetupManager = globalSetupManager
             };
 
-            var test = new TestBuilder(NativeTestFactory.ForTest(this, testContext));
-
-            return test;
+            return NativeTestFactory.ForTest(this, testContext);
         }
     }
 }

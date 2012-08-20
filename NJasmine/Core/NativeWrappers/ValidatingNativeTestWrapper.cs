@@ -35,7 +35,7 @@ namespace NJasmine.Core.NativeWrappers
             }
         }
 
-        public void AddChild(TestBuilder test)
+        public void AddChild(INativeTest test)
         {
             _nativeTest.AddChild(test);
         }

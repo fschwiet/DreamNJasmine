@@ -3,39 +3,40 @@ using System.Collections.Generic;
 using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Core.NativeWrappers;
 
 namespace NJasmine.Core.Discovery
 {
     class DiscoveryVisitor : ISpecPositionVisitor
     {
-        private readonly TestBuilder _parent;
+        private readonly INativeTest _parent;
         readonly SharedContext _sharedContext;
         private readonly IGlobalSetupManager _globalSetup;
-        List<TestBuilder> _accumulatedDescendants;
+        List<INativeTest> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public DiscoveryVisitor(TestBuilder parent, SharedContext sharedContext, IGlobalSetupManager globalSetup)
+        public DiscoveryVisitor(INativeTest parent, SharedContext sharedContext, IGlobalSetupManager globalSetup)
         {
             _parent = parent;
             _sharedContext = sharedContext;
             _globalSetup = globalSetup;
-            _accumulatedDescendants = new List<TestBuilder>();
+            _accumulatedDescendants = new List<INativeTest>();
             _accumulatedCategories = new List<string>();
             _ignoreReason = null;
         }
 
-        public void VisitAccumulatedTests(Action<TestBuilder> action)
+        public void VisitAccumulatedTests(Action<INativeTest> action)
         {
             foreach (var descendant in _accumulatedDescendants)
                 action(descendant);
         }
 
-        private void ApplyCategoryAndIgnoreIfSet(TestBuilder result)
+        private void ApplyCategoryAndIgnoreIfSet(INativeTest result)
         {
             if (_ignoreReason != null)
             {
-                result.AddIgnoreReason(_ignoreReason);
+                result.MarkTestIgnored(_ignoreReason);
             }
 
             foreach (var category in _accumulatedCategories)
@@ -50,13 +51,13 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.GetUnderlyingTest().Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
                 
-                var result = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext));
-                result.GetUnderlyingTest().MarkTestInvalid("Specification is not implemented.");
+                var result = _sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext);
+                result.MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(result);
 
@@ -66,16 +67,16 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.GetUnderlyingTest().Name),
+                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var finalResultBuilder = TestBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
+                var suiteResuilt = TestBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
 
-                ApplyCategoryAndIgnoreIfSet(finalResultBuilder);
+                ApplyCategoryAndIgnoreIfSet(suiteResuilt);
 
-                _accumulatedDescendants.Add(finalResultBuilder);
+                _accumulatedDescendants.Add(suiteResuilt);
             }
         }
 
@@ -103,17 +104,17 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.GetUnderlyingTest().Name),
+                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var buildResult = new TestBuilder(_sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext));
-                buildResult.GetUnderlyingTest().MarkTestInvalid("Specification is not implemented.");
+                var test = _sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext);
+                test.MarkTestInvalid("Specification is not implemented.");
 
-                ApplyCategoryAndIgnoreIfSet(buildResult);
+                ApplyCategoryAndIgnoreIfSet(test);
                 
-                _accumulatedDescendants.Add(buildResult);
+                _accumulatedDescendants.Add(test);
             }
             else
             {
@@ -133,7 +134,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                _parent.AddIgnoreReason(element.Reason);
+                _parent.MarkTestIgnored(element.Reason);
             }
         }
 
