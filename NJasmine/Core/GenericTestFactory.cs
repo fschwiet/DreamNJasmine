@@ -8,7 +8,7 @@ using NJasmine.Core.NativeWrappers;
 
 namespace NJasmine.Core
 {
-    public class TracingTestFactory : INativeTestFactory, IDisposable
+    public class GenericTestFactory : INativeTestFactory, IDisposable
     {
         public IEnumerable<string> Names
         {
@@ -21,55 +21,20 @@ namespace NJasmine.Core
             new Dictionary<string, Func<SpecificationFixture>>(); 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
 
-        public class TracingTest : INativeTest
-        {
-            public TestName Name { get; private set; }
-
-            public TracingTest(TestName name)
-            {
-                Name = name;
-            }
-
-            public void AddCategory(string category)
-            {
-            }
-
-            public void AddChild(INativeTest test)
-            {
-            }
-
-            public void MarkTestIgnored(string reasonIgnored)
-            {
-            }
-
-            public void MarkTestInvalid(string reason)
-            {
-            }
-
-            public void MarkTestFailed(Exception exception)
-            {
-            }
-
-            public object GetNative()
-            {
-                return null;
-            }
-        }
-
         public void SetRoot(INativeTest test)
         {
         }
 
         public INativeTest ForSuite(TestContext testContext)
         {
-            return new TracingTest(testContext.Name);
+            return new GenericNativeTest(testContext.Name);
         }
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
             FixtureBuilders[testContext.Name.FullName] = sharedContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
-            return new TracingTest(testContext.Name);
+            return new GenericNativeTest(testContext.Name);
         }
 
         public void Dispose()

@@ -54,9 +54,9 @@ namespace NJasmine.Marshalled
             }
         }
 
-        protected static TracingTestFactory RunTestDiscovery(Assembly assembly, Func<Type, bool> typeFilter)
+        protected static GenericTestFactory RunTestDiscovery(Assembly assembly, Func<Type, bool> typeFilter)
         {
-            TracingTestFactory nativeTestFactory = new TracingTestFactory();
+            GenericTestFactory nativeTestFactory = new GenericTestFactory();
 
             var filteredTypes = assembly.GetTypes().Where(t => FixtureClassifier.IsTypeSpecification(t)).Where(typeFilter);
 
