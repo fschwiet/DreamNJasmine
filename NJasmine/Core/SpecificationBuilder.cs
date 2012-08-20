@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Core.NativeWrappers;
 
 namespace NJasmine.Core
 {
@@ -25,6 +26,11 @@ namespace NJasmine.Core
 
         public static GlobalSetupManager BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
         {
+            if (nativeTestFactory is ValidatingNativeTestFactory)
+                throw new InvalidOperationException("Do not pass a ValidatingNativeTestFactory here.");
+    
+            nativeTestFactory = new ValidatingNativeTestFactory(nativeTestFactory);
+
             var constructor = type.GetConstructor(new Type[0]);
 
             Func<SpecificationFixture> fixtureFactory = delegate()

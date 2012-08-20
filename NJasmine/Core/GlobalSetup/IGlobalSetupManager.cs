@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.GlobalSetup
 {
     public interface IGlobalSetupManager
     {

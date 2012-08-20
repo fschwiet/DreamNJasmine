@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NJasmine.Core.FixtureVisitor;
+using NJasmine.Core.GlobalSetup;
 
 namespace NJasmine.Core.Execution
 {

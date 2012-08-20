@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.NativeWrappers;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using NUnit.Framework;
@@ -75,6 +76,7 @@ namespace NJasmineTests.Core
                 public void MarkTestIgnored(string reasonIgnored) { }
                 public void MarkTestInvalid(string reason) { }
                 public void MarkTestFailed(Exception exception) { }
+                public object GetNative() { return null; }
             }
 
             public void SetRoot(INativeTest test)

@@ -2,6 +2,7 @@ using System;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Core.NativeWrappers;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 using TestName = NJasmine.Core.TestName;

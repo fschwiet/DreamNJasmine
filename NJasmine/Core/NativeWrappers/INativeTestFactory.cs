@@ -1,8 +1,6 @@
-using System;
 using NJasmine.Core.Discovery;
-using NJasmine.Core.GlobalSetup;
 
-namespace NJasmine.Core
+namespace NJasmine.Core.NativeWrappers
 {
     public interface INativeTestFactory
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core;
-using NJasmine.Core.Discovery;
+using NJasmine.Core.NativeWrappers;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
 
@@ -20,11 +20,6 @@ namespace NJasmine.NUnit
             Name = name;
         }
 
-        public Test GetNative()
-        {
-            return _test;
-        }
-
         public void AddCategory(string category)
         {
             _test.Categories.Add(category);
@@ -32,7 +27,7 @@ namespace NJasmine.NUnit
 
         public void AddChild(TestBuilder test)
         {
-            (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative());
+            (_test as global::NUnit.Core.TestSuite).Add((Test)test.GetUnderlyingTest().GetNative());
         }
 
         public void MarkTestIgnored(string reasonIgnored)
@@ -48,6 +43,11 @@ namespace NJasmine.NUnit
         public void MarkTestFailed(Exception exception)
         {
             (_test as IPrefailable).SetPendingException(exception);
+        }
+
+        public object GetNative()
+        {
+            return _test;
         }
 
         public void TryApplyRunState(RunState state, string reason)

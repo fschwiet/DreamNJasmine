@@ -1,6 +1,7 @@
 ﻿using System;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Core.NativeWrappers;
 using NJasmine.Extras;
 
 namespace NJasmine.Core.Discovery

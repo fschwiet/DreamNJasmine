@@ -30,7 +30,7 @@ namespace NJasmine.NUnit
 
             SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
 
-            var result = (nativeTestFactory.RootTest as NativeTest).GetNative();
+            var result = nativeTestFactory.RootTest.GetNative() as Test;
 
             NUnitFramework.ApplyCommonAttributes(type.GetCustomAttributes(false).Cast<Attribute>().ToArray(), result);
 

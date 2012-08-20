@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.NativeWrappers;
 
 
 namespace NJasmine.Core
@@ -23,24 +24,11 @@ namespace NJasmine.Core
 
         public void AddCategory(string category)
         {
-            var invalidReason = Validate.CheckForCategoryError(category);
-            if (invalidReason != null)
-            {
-                _nativeTest.MarkTestInvalid(invalidReason);
-            }
-            else
-            {
-                _nativeTest.AddCategory(category);
-            }
+            _nativeTest.AddCategory(category);
         }
 
         public void AddIgnoreReason(string ignoreReason)
         {
-            if (String.IsNullOrEmpty(ReasonIgnored))
-                ReasonIgnored = ignoreReason;
-            else
-                ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
-
             _nativeTest.MarkTestIgnored(ReasonIgnored);
         }
 

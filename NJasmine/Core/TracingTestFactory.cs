@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core.Discovery;
 using NJasmine.Core.GlobalSetup;
+using NJasmine.Core.NativeWrappers;
 
 namespace NJasmine.Core
 {
@@ -47,6 +48,11 @@ namespace NJasmine.Core
 
             public void MarkTestFailed(Exception exception)
             {
+            }
+
+            public object GetNative()
+            {
+                return null;
             }
         }
 
