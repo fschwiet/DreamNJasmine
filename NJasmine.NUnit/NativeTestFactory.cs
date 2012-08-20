@@ -10,6 +10,13 @@ namespace NJasmine.NUnit
 {
     public class NativeTestFactory : INativeTestFactory
     {
+        public INativeTest RootTest;
+
+        public void SetRoot(INativeTest test)
+        {
+            RootTest = test;
+        }
+
         public INativeTest ForSuite(TestContext testContext)
         {
             var nunitTest = new NJasmineTestSuiteNUnit(testContext);

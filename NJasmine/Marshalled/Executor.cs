@@ -62,7 +62,7 @@ namespace NJasmine.Marshalled
 
             foreach (var type in filteredTypes)
             {
-                nativeTestFactory.ExecutionContext = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
+                nativeTestFactory.GlobalSetupManager = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
             }
             return nativeTestFactory;
         }

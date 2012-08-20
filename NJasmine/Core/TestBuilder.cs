@@ -8,19 +8,15 @@ namespace NJasmine.Core
 {
     public class TestBuilder
     {
+        public TestName Name { get; set; }
+        private string ReasonIgnored;
         readonly INativeTest _nativeTest;
 
         public TestBuilder(INativeTest nativeTest, TestName name = null)
         {
             _nativeTest = nativeTest;
-            Categories = new List<string>();
             Name = name ?? new TestName();
         }
-
-        public TestName Name { get; set; }
-
-        public string ReasonIgnored { get; private set; }
-        public List<string> Categories { get; private set; }
 
         public void AddChildTest(TestBuilder test)
         {

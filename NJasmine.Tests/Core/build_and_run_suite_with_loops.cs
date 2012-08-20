@@ -70,6 +70,10 @@ namespace NJasmineTests.Core
                 public void MarkTestInvalid(string reason) { }
             }
 
+            public void SetRoot(INativeTest test)
+            {
+            }
+
             public INativeTest ForSuite(TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
@@ -102,7 +106,7 @@ namespace NJasmineTests.Core
 
             var nativeTestFactory = new TrackingTestFactory();
 
-            using (var builder = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory))
+            using (SpecificationBuilder.BuildTestFixture(type, nativeTestFactory))
             {
                 expect(() => nativeTestFactory.Results[TestPosition.At(0)] == "a1");
                 expect(() => nativeTestFactory.Results[TestPosition.At(1)] == "a2");

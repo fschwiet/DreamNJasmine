@@ -6,6 +6,7 @@ namespace NJasmine.Core
 {
     public interface INativeTestFactory
     {
+        void SetRoot(INativeTest test);
         INativeTest ForSuite(TestContext testContext);
         INativeTest ForTest(SharedContext sharedContext, TestContext testContext);
         INativeTest ForUnimplementedTest(TestContext testContext);

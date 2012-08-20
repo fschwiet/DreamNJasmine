@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.GlobalSetup;
 
 namespace NJasmine.Core
 {
@@ -13,7 +14,7 @@ namespace NJasmine.Core
             get { return Contexts.Select(kvp => kvp.Key); }
         }
 
-        public SpecificationBuilder.ExecutionContext ExecutionContext;
+        public GlobalSetupManager GlobalSetupManager;
 
         public Dictionary<string, Func<SpecificationFixture>> FixtureBuilders =
             new Dictionary<string, Func<SpecificationFixture>>(); 
@@ -36,6 +37,10 @@ namespace NJasmine.Core
             public void MarkTestInvalid(string reason)
             {
             }
+        }
+
+        public void SetRoot(INativeTest test)
+        {
         }
 
         public INativeTest ForSuite(TestContext testContext)
@@ -63,10 +68,10 @@ namespace NJasmine.Core
 
         public void Dispose()
         {
-            if (ExecutionContext != null)
+            if (GlobalSetupManager != null)
             {
-                ExecutionContext.SetupManager.Close();
-                ExecutionContext = null;
+                GlobalSetupManager.Close();
+                GlobalSetupManager = null;
             }
         }
     }

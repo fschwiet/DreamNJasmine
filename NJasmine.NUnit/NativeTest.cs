@@ -15,7 +15,7 @@ namespace NJasmine.NUnit
             _test = test;
         }
 
-        public Test GetNative(TestBuilder builder)
+        public Test GetNative()
         {
             return _test;
         }
@@ -27,7 +27,7 @@ namespace NJasmine.NUnit
 
         public void AddChild(TestBuilder test)
         {
-            (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative(test));
+            (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative());
         }
 
         public void MarkTestIgnored(string reasonIgnored)

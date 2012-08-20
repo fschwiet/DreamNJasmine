@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace NJasmine.Core.GlobalSetup
 {
-    public class GlobalSetupManager : IGlobalSetupManager
+    public class GlobalSetupManager : IGlobalSetupManager, IDisposable
     {
         Func<SpecificationFixture> _fixtureFactory;
         Thread _thread;
@@ -105,6 +105,11 @@ namespace NJasmine.Core.GlobalSetup
         public bool HasThread()
         {
             return _thread != null;
+        }
+
+        public void Dispose()
+        {
+            Close();
         }
     }
 }

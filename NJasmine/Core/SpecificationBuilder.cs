@@ -11,7 +11,6 @@ namespace NJasmine.Core
     {
         public class ExecutionContext : IDisposable
         {
-            public TestBuilder Root;
             public GlobalSetupManager SetupManager;
 
             public void Dispose()
@@ -24,7 +23,7 @@ namespace NJasmine.Core
             }
         }
 
-        public static ExecutionContext BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
+        public static GlobalSetupManager BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
         {
             var constructor = type.GetConstructor(new Type[0]);
 
@@ -54,11 +53,9 @@ namespace NJasmine.Core
 
             var result = TestBuilder.BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
 
-            return new ExecutionContext
-            {
-                Root = result,
-                SetupManager = setupManager
-            };
+            nativeTestFactory.SetRoot(result.GetUnderlyingTest());
+
+            return setupManager;
         }
     }
 }
