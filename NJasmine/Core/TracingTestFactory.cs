@@ -25,7 +25,11 @@ namespace NJasmine.Core
             {
             }
 
-            public void SetIgnoreReason(string reasonIgnored)
+            public void MarkTestIgnored(string reasonIgnored)
+            {
+            }
+
+            public void MarkTestInvalid(string reason)
             {
             }
         }

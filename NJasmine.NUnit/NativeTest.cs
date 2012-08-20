@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NUnit.Core;
 
 namespace NJasmine.NUnit
@@ -18,10 +21,10 @@ namespace NJasmine.NUnit
             {
                 _test.Categories.Add(category);
 
-                if (category.IndexOfAny(new char[] { ',', '!', '+', '-' }) >= 0)
+                var invalidReason = Validate.CheckForCategoryError(category);
+                if (invalidReason != null)
                 {
-                    _test.RunState = RunState.NotRunnable;
-                    _test.IgnoreReason = "Category name must not contain ',', '!', '+' or '-'";
+                    MarkTestInvalid(invalidReason);
                 }
             }
 
@@ -33,10 +36,35 @@ namespace NJasmine.NUnit
             (_test as global::NUnit.Core.TestSuite).Add((test.GetUnderlyingTest() as NativeTest).GetNative(test));
         }
 
-        public void SetIgnoreReason(string reasonIgnored)
+        public void MarkTestIgnored(string reasonIgnored)
         {
-            _test.RunState = RunState.Explicit;
-            _test.IgnoreReason = reasonIgnored;
+            TryApplyRunState(RunState.Explicit, reasonIgnored);
         }
+
+        public void MarkTestInvalid(string reason)
+        {
+            TryApplyRunState(RunState.NotRunnable, reason);
+        }
+
+        public void TryApplyRunState(RunState state, string reason)
+        {
+            if (_runStatePriorities[state] < _runStatePriorities[_test.RunState])
+            {
+                _test.RunState = state;
+                _test.IgnoreReason = reason;
+            }
+        }
+
+        private Dictionary<RunState, int> _runStatePriorities = new Dictionary<RunState, int>
+        {
+            // kind of arbitrary, but I know:
+            //  NotRunnable should override Ignored or Explicit.
+            //  Everything should override runnable
+            {RunState.NotRunnable, 0},
+            {RunState.Skipped, 1},
+            {RunState.Ignored, 2},
+            {RunState.Explicit, 3},
+            {RunState.Runnable, 4},
+        };
     }
 }

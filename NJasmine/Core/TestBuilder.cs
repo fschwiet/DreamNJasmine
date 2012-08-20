@@ -39,7 +39,7 @@ namespace NJasmine.Core
             else
                 ReasonIgnored = ReasonIgnored + ", " + ignoreReason;
 
-            _nativeTest.SetIgnoreReason(ReasonIgnored);
+            _nativeTest.MarkTestIgnored(ReasonIgnored);
         }
 
         public INativeTest GetUnderlyingTest()

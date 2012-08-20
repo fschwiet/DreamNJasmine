@@ -52,6 +52,7 @@
     <Compile Include="Core\Discovery\SharedContext.cs" />
     <Compile Include="Core\Discovery\NameReservations.cs" />
     <Compile Include="Core\Discovery\TestContext.cs" />
+    <Compile Include="Core\Discovery\Validate.cs" />
     <Compile Include="Core\Elements\AfterEachElement.cs" />
     <Compile Include="Core\Elements\BeforeEachElement.cs" />
     <Compile Include="Core\Elements\BeforeAllElement.cs" />

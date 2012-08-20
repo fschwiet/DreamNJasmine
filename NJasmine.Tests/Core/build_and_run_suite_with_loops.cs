@@ -65,7 +65,8 @@ namespace NJasmineTests.Core
 
             public class NoopTest : INativeTest {
                 public void AddChild(TestBuilder test) { }
-                public void SetIgnoreReason(string reasonIgnored) { }
+                public void MarkTestIgnored(string reasonIgnored) { }
+                public void MarkTestInvalid(string reason) { }
             }
 
             public INativeTest ForSuite(TestContext testContext)
