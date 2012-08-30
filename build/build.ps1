@@ -27,15 +27,11 @@ properties {
 }
 
 task Build -depends RunMSBuild, CopyNUnitToBuild, CopyVS2012TestToBuild
-task Default -depends Initialize, TraceSourceControlCommit, Build, TestWithNUnit, TestWithVS2012, IntegrationTest, BuildNuget
+task Default -depends Initialize, TraceSourceControlCommit, Build, Test, IntegrationTest, BuildNuget
 task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
-Task TestWithNUnit { 
+Task Test { 
   exec { & "$($build.dir)\nunit\nunit-console.exe" "$($build.dir)\NJasmine.tests.dll" /xml="$($build.dir)\UnitTestResults.xml"}
-}
-
-Task TestWithVS2012 { 
-  exec { & "$($build.dir)\VS2012\vstest.console.exe" "$($build.dir)\NJasmine.tests.dll"}
 }
 
 function VisitTests($testHandler) {
@@ -50,26 +46,44 @@ function VisitTests($testHandler) {
 }
 
 Task VisualStudioIntegrationTest { 
+
+  $settings = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<RunSettings>
+<RunConfiguration>
+<ResultsDirectory>$($build.dir)</ResultsDirectory>
+</RunConfiguration>
+</RunSettings>
+"@;
   
   try
   {
 	$vsTestExe = "$($build.dir)\VS2012\vstest.console.exe"
+	$vsTestSettingsFile = "$($build.dir)\vstest.console.settings.xml"
+	$vsTestConsoleTarget = (join-path $build.dir "VS2012.IntegrationTest.txt")
+
+	$settings | set-content $vsTestSettingsFile -Encoding UTF8
 
 	$discovererListing = exec {& $vsTestExe /ListDiscoverers }
 
 	Assert ($discovererListing -match "NJasmine\.VS2012") "Expect to see NJasmine.VS2012 deployed for vstest.console.exe"
 
     VisitTests { 
-      
+	
       param ($test);
 
+	  gci $build.dir *.trx | rm
+      
       $testName = $test.Name;
       $testDll = (resolve-path (join-path $build.dir "NJasmine.Tests.dll")).path
       
 	  write-output "Checking $testName at $testDll."
 
-      & $vsTestExe $testDll "/Tests:`"$testName`""
-        #exec { & $vsTestExe (join-path $build.dir "NJasmine.Tests.dll") "/Tests:`"$testName`"" }
+      & $vsTestExe $testDll "/Tests:`"$testName`"" "/logger:trx" "/settings:`"$vsTestSettingsFile`"" > $vsTestConsoleTarget
+
+	  $trxFile = (gci $build.dir *.trx).fullname
+
+      exec { & "$($build.dir)\NJasmine.TestUtil.exe" "verify-test-vs2012" """$testName""" """$trxFile""" """$vsTestConsoleTarget""" }
     }
   } finally {
     $Host.UI.RawUI.ForegroundColor= [ConsoleColor]::Gray
@@ -91,7 +105,7 @@ Task NUnitIntegrationTest {
 
     & (& get-nunit-console) "$($build.dir)\NJasmine.tests.dll" /run=$testName /xml=$testXmlTarget > $testConsoleTarget
 
-    exec { & "$($build.dir)\NJasmine.TestUtil.exe" "verify-test" """$testName""" """$testXmlTarget""" """$testConsoleTarget""" }
+    exec { & "$($build.dir)\NJasmine.TestUtil.exe" "verify-test-nunit" """$testName""" """$testXmlTarget""" """$testConsoleTarget""" }
   }
 }
 

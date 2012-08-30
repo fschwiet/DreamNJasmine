@@ -6,11 +6,11 @@ using NJasmineTests.Specs.expectations;
 
 namespace NJasmineTestLoader
 {
-    class VerifyTestCommand : ConsoleCommand
+    class VerifyTestForNUnitCommand : ConsoleCommand
     {
-        public VerifyTestCommand()
+        public VerifyTestForNUnitCommand()
         {
-            this.IsCommand("verify-test", "Verifies the output of a test run meets specification.");
+            this.IsCommand("verify-test-nunit", "Verifies the output of a NUnit test run meets specification.");
             this.SkipsCommandSummaryBeforeRunning();
 
             this.HasAdditionalArguments(3, "<testName> <xmlOutputFile> <consoleOutputFile>");
