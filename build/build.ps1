@@ -27,11 +27,15 @@ properties {
 }
 
 task Build -depends RunMSBuild, CopyNUnitToBuild, CopyVS2012TestToBuild
-task Default -depends Initialize, TraceSourceControlCommit, Build, Test, IntegrationTest, BuildNuget
+task Default -depends Initialize, TraceSourceControlCommit, Build, TestWithNUnit, TestWithVS2012, IntegrationTest, BuildNuget
 task RunGUI -depends KillNUnit, Build, RunNUnitGUI
 
-Task Test { 
+Task TestWithNUnit { 
   exec { & "$($build.dir)\nunit\nunit-console.exe" "$($build.dir)\NJasmine.tests.dll" /xml="$($build.dir)\UnitTestResults.xml"}
+}
+
+Task TestWithVS2012 { 
+  exec { & "$($build.dir)\VS2012\vstest.console.exe" "$($build.dir)\NJasmine.tests.dll"}
 }
 
 function VisitTests($testHandler) {
@@ -91,7 +95,7 @@ Task NUnitIntegrationTest {
   }
 }
 
-task IntegrationTest -depends NUnitIntegrationTest # VisualStudioIntegrationTest
+task IntegrationTest -depends NUnitIntegrationTest, VisualStudioIntegrationTest
 
 Task Initialize -Depends Clean {
   New-Item $release.dir -ItemType Directory | Out-Null
