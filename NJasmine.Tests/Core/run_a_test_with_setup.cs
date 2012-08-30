@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Core.Discovery;
 using NJasmine.NUnit;
 using NJasmine.NUnit.TestElements;
 using NUnit.Framework;
@@ -94,7 +95,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                GlobalSetupManager = fakeGlobalSetupManager,
+                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = TestPosition.At(1, 3, 2)
             }, () => fixture, traceMessages);
@@ -115,7 +116,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                GlobalSetupManager = fakeGlobalSetupManager,
+                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
             }, () => fixture, traceMessages);
@@ -126,7 +127,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                GlobalSetupManager = fakeGlobalSetupManager,
+                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
             }, () => fixture, traceMessages1);

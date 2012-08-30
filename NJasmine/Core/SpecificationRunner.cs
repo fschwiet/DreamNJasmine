@@ -14,7 +14,7 @@ namespace NJasmine.Core
             var startTime = DateTime.UtcNow;
             var testResult = new TestResultShim();
 
-            Exception existingError = testContext.GlobalSetupManager.PrepareForTestPosition(testContext.Position);
+            Exception existingError = testContext.FixtureContext.GlobalSetupManager.PrepareForTestPosition(testContext.Position);
 
             if (existingError != null)
             {
@@ -23,13 +23,13 @@ namespace NJasmine.Core
             }
             else
             {
-                traceMessages.AddRange(testContext.GlobalSetupManager.GetTraceMessages());
+                traceMessages.AddRange(testContext.FixtureContext.GlobalSetupManager.GetTraceMessages());
                 try
                 {
                     List<string> traceMessages1 = traceMessages;
                     traceMessages1 = traceMessages1 ?? new List<string>();
 
-                    var executionContext = new NJasmineTestRunContext(testContext.Position, testContext.GlobalSetupManager, traceMessages1);
+                    var executionContext = new NJasmineTestRunContext(testContext.Position, testContext.FixtureContext.GlobalSetupManager, traceMessages1);
                     var runner = new NJasmineTestRunner(executionContext);
 
                     SpecificationFixture fixture = fixtureFactory();

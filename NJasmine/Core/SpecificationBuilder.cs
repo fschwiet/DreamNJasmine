@@ -25,14 +25,14 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations());
-
             var setupManager  = new GlobalSetupManager(fixtureFactory);
 
+            FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations(), setupManager);
+           
             var testContext = new TestContext()
             {
                 Position = TestPosition.At(),
-                GlobalSetupManager = setupManager ,
+                FixtureContext = fixtureContext,
                 Name = new TestName
                 {
                     FullName = type.Namespace + "." + type.Name,
@@ -57,7 +57,7 @@ namespace NJasmine.Core
             if (explicitReason != null)
                 result.MarkTestIgnored(explicitReason);
 
-            var builder = new DiscoveryVisitor(result, fixtureContext, testContext1.GlobalSetupManager);
+            var builder = new DiscoveryVisitor(result, fixtureContext, testContext1.FixtureContext.GlobalSetupManager);
 
             var exception = fixtureContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
 
@@ -71,7 +71,7 @@ namespace NJasmine.Core
                 {
                     Name = fixtureContext.NameReservations.GetReservedNameLike(result.Name),
                     Position = testContext1.Position,
-                    GlobalSetupManager = testContext1.GlobalSetupManager
+                    FixtureContext = testContext1.FixtureContext
                 };
 
                 var failingSuiteAsTest = fixtureContext.NativeTestFactory.ForTest(fixtureContext, testContext);

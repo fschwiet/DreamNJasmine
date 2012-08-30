@@ -123,7 +123,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                GlobalSetupManager = new FakeGlobalSetupManager(),
+                FixtureContext = new FixtureContext(null, () => fixture, null, new FakeGlobalSetupManager()),
                 Name = new TestName(),
                 Position = testPosition
             }, () => fixture, traceMessages);

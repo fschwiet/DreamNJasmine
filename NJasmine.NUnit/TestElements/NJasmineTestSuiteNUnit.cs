@@ -19,7 +19,7 @@ namespace NJasmine.NUnit.TestElements
         {
             try
             {
-                _testContext.GlobalSetupManager.Cleanup(_testContext.Position);
+                _testContext.FixtureContext.GlobalSetupManager.Cleanup(_testContext.Position);
             }
             catch (Exception innerException)
             {

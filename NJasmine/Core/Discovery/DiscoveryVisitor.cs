@@ -53,7 +53,7 @@ namespace NJasmine.Core.Discovery
                 {
                     Name = _fixtureContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
-                    GlobalSetupManager = _globalSetup
+                    FixtureContext = _fixtureContext
                 };
                 
                 var result = _fixtureContext.NativeTestFactory.ForTest(_fixtureContext, testContext);
@@ -69,7 +69,7 @@ namespace NJasmine.Core.Discovery
                 {
                     Name = _fixtureContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
                     Position = position,
-                    GlobalSetupManager = _globalSetup
+                    FixtureContext = _fixtureContext
                 };
 
                 var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(_fixtureContext, testContext, element.Action, false);
@@ -106,7 +106,7 @@ namespace NJasmine.Core.Discovery
                 {
                     Name = _fixtureContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
-                    GlobalSetupManager = _globalSetup
+                    FixtureContext = _fixtureContext
                 };
 
                 var test = _fixtureContext.NativeTestFactory.ForTest(_fixtureContext, testContext);
@@ -118,7 +118,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var buildResult = _fixtureContext.CreateTest(this._globalSetup, _parent, position, element.Description);
+                var buildResult = _fixtureContext.CreateTest(_parent, position, element.Description);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 
