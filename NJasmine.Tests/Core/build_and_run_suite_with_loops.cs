@@ -83,13 +83,13 @@ namespace NJasmineTests.Core
             {
             }
 
-            public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
+            public INativeTest ForSuite(FixtureContext fixtureContext, TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
                 return new NoopTest(testContext.Name);
             }
 
-            public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
+            public INativeTest ForTest(FixtureContext fixtureContext, TestContext testContext)
             {
                 Results[testContext.Position] = testContext.Name.Shortname;
                 return new NoopTest(testContext.Name);

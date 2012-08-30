@@ -18,7 +18,7 @@ namespace NJasmine.NUnit
             RootTest = test;
         }
 
-        public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
+        public INativeTest ForSuite(FixtureContext fixtureContext, TestContext testContext)
         {
             var nunitTest = new NJasmineTestSuiteNUnit(testContext);
             
@@ -27,9 +27,9 @@ namespace NJasmine.NUnit
             return new NativeTest(nunitTest, testContext.Name);
         }
 
-        public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
+        public INativeTest ForTest(FixtureContext fixtureContext, TestContext testContext)
         {
-            var nunitTest = new NJasmineTestMethod(sharedContext.FixtureFactory, testContext);
+            var nunitTest = new NJasmineTestMethod(fixtureContext.FixtureFactory, testContext);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
 

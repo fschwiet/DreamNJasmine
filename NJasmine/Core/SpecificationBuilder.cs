@@ -25,7 +25,7 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            SharedContext sharedContext = new SharedContext(nativeTestFactory, fixtureFactory, new NameReservations());
+            FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations());
 
             var setupManager  = new GlobalSetupManager(fixtureFactory);
 
@@ -43,23 +43,23 @@ namespace NJasmine.Core
 
             var explicitReason = ExplicitAttributeReader.GetFor(type);
 
-            var result = BuildSuiteForTextContext(sharedContext, testContext, sharedContext.GetSpecificationRootAction(), true, explicitReason);
+            var result = BuildSuiteForTextContext(fixtureContext, testContext, fixtureContext.GetSpecificationRootAction(), true, explicitReason);
 
             nativeTestFactory.SetRoot(result);
 
             return setupManager;
         }
 
-        public static INativeTest BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
+        public static INativeTest BuildSuiteForTextContext(FixtureContext fixtureContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
         {
-            var result = sharedContext.NativeTestFactory.ForSuite(sharedContext, testContext1);
+            var result = fixtureContext.NativeTestFactory.ForSuite(fixtureContext, testContext1);
 
             if (explicitReason != null)
                 result.MarkTestIgnored(explicitReason);
 
-            var builder = new DiscoveryVisitor(result, sharedContext, testContext1.GlobalSetupManager);
+            var builder = new DiscoveryVisitor(result, fixtureContext, testContext1.GlobalSetupManager);
 
-            var exception = sharedContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
+            var exception = fixtureContext.RunActionWithVisitor(testContext1.Position.GetFirstChildPosition(), invoke, builder);
 
             if (exception == null)
             {
@@ -69,12 +69,12 @@ namespace NJasmine.Core
             {
                 var testContext = new TestContext()
                 {
-                    Name = sharedContext.NameReservations.GetReservedNameLike(result.Name),
+                    Name = fixtureContext.NameReservations.GetReservedNameLike(result.Name),
                     Position = testContext1.Position,
                     GlobalSetupManager = testContext1.GlobalSetupManager
                 };
 
-                var failingSuiteAsTest = sharedContext.NativeTestFactory.ForTest(sharedContext, testContext);
+                var failingSuiteAsTest = fixtureContext.NativeTestFactory.ForTest(fixtureContext, testContext);
                 failingSuiteAsTest.MarkTestFailed(exception);
 
                 if (isRootSuite)

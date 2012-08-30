@@ -6,14 +6,14 @@ using NJasmine.Extras;
 
 namespace NJasmine.Core.Discovery
 {
-    public class SharedContext
+    public class FixtureContext
     {
         public NameReservations NameReservations;
         public readonly INativeTestFactory NativeTestFactory;
         private SpecificationFixture _fixtureInstanceForDiscovery;
         public Func<SpecificationFixture> FixtureFactory;
 
-        public SharedContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations)
+        public FixtureContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations)
         {
             NativeTestFactory = nativeTestFactory;
             FixtureFactory = fixtureFactory;

@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="Core\Discovery\DiscoveryVisitor.cs" />
     <Compile Include="Core\Discovery\FixtureClassifier.cs" />
-    <Compile Include="Core\Discovery\SharedContext.cs" />
+    <Compile Include="Core\Discovery\FixtureContext.cs" />
     <Compile Include="Core\Discovery\NameReservations.cs" />
     <Compile Include="Core\Discovery\TestContext.cs" />
     <Compile Include="Core\Discovery\Validate.cs" />

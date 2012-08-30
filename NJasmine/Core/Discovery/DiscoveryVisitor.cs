@@ -10,16 +10,16 @@ namespace NJasmine.Core.Discovery
     class DiscoveryVisitor : ISpecPositionVisitor
     {
         private readonly INativeTest _parent;
-        readonly SharedContext _sharedContext;
+        readonly FixtureContext _fixtureContext;
         private readonly IGlobalSetupManager _globalSetup;
         List<INativeTest> _accumulatedDescendants;
         List<string> _accumulatedCategories;
         string _ignoreReason;
 
-        public DiscoveryVisitor(INativeTest parent, SharedContext sharedContext, IGlobalSetupManager globalSetup)
+        public DiscoveryVisitor(INativeTest parent, FixtureContext fixtureContext, IGlobalSetupManager globalSetup)
         {
             _parent = parent;
-            _sharedContext = sharedContext;
+            _fixtureContext = fixtureContext;
             _globalSetup = globalSetup;
             _accumulatedDescendants = new List<INativeTest>();
             _accumulatedCategories = new List<string>();
@@ -51,12 +51,12 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _fixtureContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
                 
-                var result = _sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext);
+                var result = _fixtureContext.NativeTestFactory.ForTest(_fixtureContext, testContext);
                 result.MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(result);
@@ -67,12 +67,12 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
+                    Name = _fixtureContext.NameReservations.GetSharedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(_sharedContext, testContext, element.Action, false);
+                var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(_fixtureContext, testContext, element.Action, false);
 
                 ApplyCategoryAndIgnoreIfSet(suiteResuilt);
 
@@ -104,12 +104,12 @@ namespace NJasmine.Core.Discovery
             {
                 var testContext = new TestContext()
                 {
-                    Name = _sharedContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
+                    Name = _fixtureContext.NameReservations.GetReservedTestName(element.Description, _parent.Name),
                     Position = position,
                     GlobalSetupManager = _globalSetup
                 };
 
-                var test = _sharedContext.NativeTestFactory.ForTest(_sharedContext, testContext);
+                var test = _fixtureContext.NativeTestFactory.ForTest(_fixtureContext, testContext);
                 test.MarkTestInvalid("Specification is not implemented.");
 
                 ApplyCategoryAndIgnoreIfSet(test);
@@ -118,7 +118,7 @@ namespace NJasmine.Core.Discovery
             }
             else
             {
-                var buildResult = _sharedContext.CreateTest(this._globalSetup, _parent, position, element.Description);
+                var buildResult = _fixtureContext.CreateTest(this._globalSetup, _parent, position, element.Description);
 
                 ApplyCategoryAndIgnoreIfSet(buildResult);
 

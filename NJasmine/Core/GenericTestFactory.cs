@@ -27,19 +27,19 @@ namespace NJasmine.Core
         {
         }
 
-        public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
+        public INativeTest ForSuite(FixtureContext fixtureContext, TestContext testContext)
         {
             var result = new GenericNativeTest(testContext.Name);
-            RecordTestAt(sharedContext.FixtureFactory, testContext.Position, result);
+            RecordTestAt(fixtureContext.FixtureFactory, testContext.Position, result);
             return result;
         }
 
-        public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
+        public INativeTest ForTest(FixtureContext fixtureContext, TestContext testContext)
         {
-            FixtureBuilders[testContext.Name.FullName] = sharedContext.FixtureFactory;
+            FixtureBuilders[testContext.Name.FullName] = fixtureContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
             var result = new GenericNativeTest(testContext.Name);
-            RecordTestAt(sharedContext.FixtureFactory, testContext.Position, result);
+            RecordTestAt(fixtureContext.FixtureFactory, testContext.Position, result);
             return result;
         }
 
