@@ -49,6 +49,14 @@ namespace NJasmine.Core
             };
         }
 
+        public TestPosition GetFirestUnexpectedChildPosition()
+        {
+            return new TestPosition()
+            {
+                Coordinates = Coordinates.Concat(new int[] { 0 })
+            };
+        }
+
         public TestPosition GetNextSiblingPosition()
         {
             var copy = Coordinates.ToArray();

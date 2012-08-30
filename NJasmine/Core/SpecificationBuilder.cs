@@ -67,10 +67,14 @@ namespace NJasmine.Core
             }
             else
             {
+                var failedTestPositon = isRootSuite
+                                            ? testContext1.Position.GetFirestUnexpectedChildPosition()
+                                            : testContext1.Position;
+
                 var testContext = new TestContext()
                 {
                     Name = fixtureContext.NameReservations.GetReservedNameLike(result.Name),
-                    Position = testContext1.Position,
+                    Position = failedTestPositon,
                     FixtureContext = testContext1.FixtureContext
                 };
 
