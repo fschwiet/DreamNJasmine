@@ -18,7 +18,7 @@ namespace NJasmine.NUnit
             RootTest = test;
         }
 
-        public INativeTest ForSuite(TestContext testContext)
+        public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
         {
             var nunitTest = new NJasmineTestSuiteNUnit(testContext);
             

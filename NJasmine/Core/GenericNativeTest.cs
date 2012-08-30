@@ -6,7 +6,8 @@ namespace NJasmine.Core
     public class GenericNativeTest : INativeTest
     {
         public TestName Name { get; private set; }
-
+        public string ReasonIgnored;
+    
         public GenericNativeTest(TestName name)
         {
             Name = name;
@@ -22,6 +23,7 @@ namespace NJasmine.Core
 
         public void MarkTestIgnored(string reasonIgnored)
         {
+            ReasonIgnored = reasonIgnored;
         }
 
         public void MarkTestInvalid(string reason)

@@ -20,9 +20,9 @@ namespace NJasmine.Core.NativeWrappers
             _factory.SetRoot(test);
         }
 
-        public INativeTest ForSuite(TestContext testContext)
+        public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
         {
-            return new ValidatingNativeTestWrapper(_factory.ForSuite(testContext));
+            return new ValidatingNativeTestWrapper(_factory.ForSuite(sharedContext, testContext));
         }
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)

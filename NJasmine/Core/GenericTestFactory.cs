@@ -20,21 +20,35 @@ namespace NJasmine.Core
         public Dictionary<string, Func<SpecificationFixture>> FixtureBuilders =
             new Dictionary<string, Func<SpecificationFixture>>(); 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
+        public Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>> TestAt = 
+            new Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>>(); 
 
         public void SetRoot(INativeTest test)
         {
         }
 
-        public INativeTest ForSuite(TestContext testContext)
+        public INativeTest ForSuite(SharedContext sharedContext, TestContext testContext)
         {
-            return new GenericNativeTest(testContext.Name);
+            var result = new GenericNativeTest(testContext.Name);
+            RecordTestAt(sharedContext.FixtureFactory, testContext.Position, result);
+            return result;
         }
 
         public INativeTest ForTest(SharedContext sharedContext, TestContext testContext)
         {
             FixtureBuilders[testContext.Name.FullName] = sharedContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
-            return new GenericNativeTest(testContext.Name);
+            var result = new GenericNativeTest(testContext.Name);
+            RecordTestAt(sharedContext.FixtureFactory, testContext.Position, result);
+            return result;
+        }
+
+        private void RecordTestAt(Func<SpecificationFixture> fixtureFactory, TestPosition testPosition, GenericNativeTest result)
+        {
+            if (!TestAt.ContainsKey(fixtureFactory))
+                TestAt[fixtureFactory] = new Dictionary<TestPosition, GenericNativeTest>();
+            
+            TestAt[fixtureFactory][testPosition] = result;
         }
 
         public void Dispose()
@@ -44,6 +58,33 @@ namespace NJasmine.Core
                 GlobalSetupManager.Close();
                 GlobalSetupManager = null;
             }
+        }
+
+        public string GetIgnoreReason(string name)
+        {
+            List<GenericNativeTest> selfAndAncestors = new List<GenericNativeTest>();
+
+            var fixtureBuilder = FixtureBuilders[name];
+            var context = Contexts[name];
+            var position = context.Position;
+            
+            while(true)
+            {
+                selfAndAncestors.Add(TestAt[fixtureBuilder][position]);
+
+                if (position.Coordinates.Count() == 0)
+                    break;
+
+                position = position.Parent;
+            }
+
+            foreach(var test in selfAndAncestors)
+            {
+                if (test.ReasonIgnored != null)
+                    return test.ReasonIgnored;
+            }
+
+            return null;
         }
     }
 }

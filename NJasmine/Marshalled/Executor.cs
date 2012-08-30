@@ -34,13 +34,24 @@ namespace NJasmine.Marshalled
                         var testContext = nativeTestFactory.Contexts[name];
                         var testFixtureBuilder = nativeTestFactory.FixtureBuilders[name];
 
+                        var ignoreReason = nativeTestFactory.GetIgnoreReason(name);
+
                         listener.NotifyStart(testContext.Name.FullName);
 
                         List<string> traceMessages = new List<string>();
 
-                        var result = SpecificationRunner.RunTest(testContext, testFixtureBuilder, traceMessages);
+                        if (ignoreReason == null)
+                        {
+                            var result = SpecificationRunner.RunTest(testContext, testFixtureBuilder, traceMessages);
 
-                        listener.NotifyEnd(testContext.Name.FullName, result);
+                            listener.NotifyEnd(testContext.Name.FullName, result);
+                        }
+                        else
+                        {
+                            var result = new TestResultShim();
+                            result.SetSkipped(ignoreReason);
+                            listener.NotifyEnd(testContext.Name.FullName, result);
+                        }
                     }                    
                 }
             }
@@ -64,6 +75,7 @@ namespace NJasmine.Marshalled
             {
                 nativeTestFactory.GlobalSetupManager = SpecificationBuilder.BuildTestFixture(type, nativeTestFactory);
             }
+
             return nativeTestFactory;
         }
     }

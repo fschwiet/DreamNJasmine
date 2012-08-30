@@ -52,7 +52,7 @@ namespace NJasmine.Core
 
         public static INativeTest BuildSuiteForTextContext(SharedContext sharedContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)
         {
-            var result = sharedContext.NativeTestFactory.ForSuite(testContext1);
+            var result = sharedContext.NativeTestFactory.ForSuite(sharedContext, testContext1);
 
             if (explicitReason != null)
                 result.MarkTestIgnored(explicitReason);

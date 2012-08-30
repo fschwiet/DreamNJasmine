@@ -46,6 +46,12 @@ namespace NJasmine.VS2012
                 result.ErrorMessage = testResult.FailureReason;
                 result.ErrorStackTrace = testResult.FailureStackTrace;
             }
+            else if (result.Outcome == TestOutcome.Skipped)
+            {
+                // TODO: can we include the reason skipped in VS output somehow?
+                result.Messages.Add(
+                    new TestResultMessage("ReasonSkipped", testResult.ReasonSkipped));
+            }
 
             _frameworkHandle.RecordEnd(test, result.Outcome);
             _frameworkHandle.RecordResult(result);
@@ -59,6 +65,8 @@ namespace NJasmine.VS2012
                 return TestOutcome.Passed;
             case TestResultShim.Result.Error:
                 return TestOutcome.Failed;
+            case TestResultShim.Result.Skipped:
+                return TestOutcome.Skipped;
             default:
                 throw new ArgumentOutOfRangeException();
             }
