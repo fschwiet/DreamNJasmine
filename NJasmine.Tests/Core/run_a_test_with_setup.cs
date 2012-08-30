@@ -98,7 +98,7 @@ namespace NJasmineTests.Core
                 FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = TestPosition.At(1, 3, 2)
-            }, () => fixture, traceMessages);
+            }, traceMessages);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, 7, -2, -3, -4, 8);
         }
@@ -119,7 +119,7 @@ namespace NJasmineTests.Core
                 FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
-            }, () => fixture, traceMessages);
+            }, traceMessages);
 
             fixture.ResetObservations();
 
@@ -130,7 +130,7 @@ namespace NJasmineTests.Core
                 FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
-            }, () => fixture, traceMessages1);
+            }, traceMessages1);
 
             expect_observation_matches(fixture.Observations, 1, 2, 3, 4, 5, 6, -2, -3, -4, 7, 8);
         }

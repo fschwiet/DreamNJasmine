@@ -9,7 +9,7 @@ namespace NJasmine.Core
 {
     public class SpecificationRunner
     {
-        public static TestResultShim RunTest(TestContext testContext, Func<SpecificationFixture> fixtureFactory, List<string> traceMessages)
+        public static TestResultShim RunTest(TestContext testContext, List<string> traceMessages)
         {
             var startTime = DateTime.UtcNow;
             var testResult = new TestResultShim();
@@ -32,7 +32,7 @@ namespace NJasmine.Core
                     var executionContext = new NJasmineTestRunContext(testContext.Position, testContext.FixtureContext.GlobalSetupManager, traceMessages1);
                     var runner = new NJasmineTestRunner(executionContext);
 
-                    SpecificationFixture fixture = fixtureFactory();
+                    SpecificationFixture fixture = testContext.FixtureContext.FixtureFactory();
 
                     fixture.CurrentPosition = TestPosition.At(0);
                     fixture.Visitor = runner;

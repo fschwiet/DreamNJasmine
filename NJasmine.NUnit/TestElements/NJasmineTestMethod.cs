@@ -48,7 +48,7 @@ namespace NJasmine.NUnit.TestElements
             }
             else
             {
-                var testResult = SpecificationRunner.RunTest(this._testContext, this._fixtureFactory, new List<string>());
+                var testResult = SpecificationRunner.RunTest(this._testContext, new List<string>());
 
                 NativeTestResult.ApplyToNunitResult(testResult, nunitTestResult);
             }

@@ -42,7 +42,7 @@ namespace NJasmine.Marshalled
 
                         if (ignoreReason == null)
                         {
-                            var result = SpecificationRunner.RunTest(testContext, testFixtureBuilder, traceMessages);
+                            var result = SpecificationRunner.RunTest(testContext, traceMessages);
 
                             listener.NotifyEnd(testContext.Name.FullName, result);
                         }
