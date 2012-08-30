@@ -86,7 +86,7 @@ namespace NJasmine.Core.GlobalSetup
 
                     try
                     {
-                        this._visitor.RunFixture(_fixtureFactory);
+                        this._visitor.RunFixture(_fixtureFactory());
                     }
                     finally
                     {

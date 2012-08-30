@@ -29,7 +29,7 @@ namespace NJasmine.NUnit
 
         public INativeTest ForTest(FixtureContext fixtureContext, TestContext testContext)
         {
-            var nunitTest = new NJasmineTestMethod(fixtureContext.FixtureFactory, testContext);
+            var nunitTest = new NJasmineTestMethod(testContext);
             
             ApplyNameToNUnitTest(testContext.Name, nunitTest);
 

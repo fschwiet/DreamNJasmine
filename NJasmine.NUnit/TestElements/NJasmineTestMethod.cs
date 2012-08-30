@@ -16,14 +16,12 @@ namespace NJasmine.NUnit.TestElements
             } 
         }
 
-        readonly Func<SpecificationFixture> _fixtureFactory;
         readonly TestContext _testContext;
         private Exception _pendingException;
 
-        public NJasmineTestMethod(Func<SpecificationFixture> fixtureFactory, TestContext testContext)
+        public NJasmineTestMethod(TestContext testContext)
             : base(new Action(delegate() { }).Method)
         {
-            _fixtureFactory = fixtureFactory;
             _testContext = testContext;
         }
 

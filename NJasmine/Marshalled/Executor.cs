@@ -32,7 +32,7 @@ namespace NJasmine.Marshalled
                     foreach(var name in testNames)
                     {
                         var testContext = nativeTestFactory.Contexts[name];
-                        var testFixtureBuilder = nativeTestFactory.FixtureBuilders[name];
+                        var testFixtureBuilder = testContext.FixtureContext.FixtureFactory;
 
                         var ignoreReason = nativeTestFactory.GetIgnoreReason(name);
 

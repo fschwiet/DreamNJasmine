@@ -17,8 +17,6 @@ namespace NJasmine.Core
 
         public GlobalSetupManager GlobalSetupManager;
 
-        public Dictionary<string, Func<SpecificationFixture>> FixtureBuilders =
-            new Dictionary<string, Func<SpecificationFixture>>(); 
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
         public Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>> TestAt = 
             new Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>>(); 
@@ -36,7 +34,6 @@ namespace NJasmine.Core
 
         public INativeTest ForTest(FixtureContext fixtureContext, TestContext testContext)
         {
-            FixtureBuilders[testContext.Name.FullName] = fixtureContext.FixtureFactory;
             Contexts[testContext.Name.FullName] = testContext;
             var result = new GenericNativeTest(testContext.Name);
             RecordTestAt(fixtureContext.FixtureFactory, testContext.Position, result);
@@ -64,8 +61,8 @@ namespace NJasmine.Core
         {
             List<GenericNativeTest> selfAndAncestors = new List<GenericNativeTest>();
 
-            var fixtureBuilder = FixtureBuilders[name];
             var context = Contexts[name];
+            var fixtureBuilder = context.FixtureContext.FixtureFactory;
             var position = context.Position;
             
             while(true)

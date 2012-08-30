@@ -31,9 +31,8 @@ namespace NJasmine.Core.GlobalSetup
             _traceTracker = new TraceTracker();
         }
 
-        public void RunFixture(Func<SpecificationFixture> fixtureFactory)
+        public void RunFixture(SpecificationFixture fixture)
         {
-            var fixture = fixtureFactory();
             fixture.CurrentPosition = TestPosition.At(0);
             fixture.Visitor = this;
             try
