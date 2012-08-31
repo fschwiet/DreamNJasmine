@@ -15,18 +15,18 @@ namespace NJasmineTests.Export
             {
                 it("allows results that are inconclusive", delegate
                 {
-                    var xmlOutput = FixtureResult.GetSampleXmlResult(aSuiteName: "fooSuite", aSuiteResult: "Inconclusive");
+                    var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aSuiteName: "fooSuite", aSuiteResult: "Inconclusive");
 
-                    var sut = new FixtureResult("ignored", xmlOutput).hasSuite("fooSuite");
+                    var sut = new NUnitFixtureResult("ignored", xmlOutput).hasSuite("fooSuite");
 
                     sut.thatsInconclusive();
                 });
 
                 it("gives an error indicating the actual result when not inconclusive", delegate
                 {
-                    var xmlOutput = FixtureResult.GetSampleXmlResult(aSuiteName: "fooSuite", aSuiteResult: "OtherResult");
+                    var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aSuiteName: "fooSuite", aSuiteResult: "OtherResult");
 
-                    var sut = new FixtureResult("ignored", xmlOutput).hasSuite("fooSuite");
+                    var sut = new NUnitFixtureResult("ignored", xmlOutput).hasSuite("fooSuite");
 
                     var exception = Assert.Throws(FixtureResultTest.ExpectedAssertionType, delegate
                     {
@@ -42,8 +42,8 @@ namespace NJasmineTests.Export
             {
                 it("fails if the suite has results", delegate
                 {
-                    var sut = new FixtureResult("ignored",
-                        FixtureResult.GetSampleXmlResult(aSuiteName: "someSuiteHello"))
+                    var sut = new NUnitFixtureResult("ignored",
+                        NUnitFixtureResult.GetSampleXmlResult(aSuiteName: "someSuiteHello"))
                         .hasSuite("someSuiteHello");
 
                     var exception = Assert.Throws(FixtureResultTest.ExpectedAssertionType, delegate

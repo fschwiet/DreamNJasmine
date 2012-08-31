@@ -10,13 +10,13 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class FixtureResult : IFixtureResult
+    public class NUnitFixtureResult : IFixtureResult
     {
         private readonly string _testName;
         private readonly string _consoleOutput;
         private XDocument _doc;
 
-        public FixtureResult(string testName, string xmlOutput = null, string consoleOutput = "")
+        public NUnitFixtureResult(string testName, string xmlOutput = null, string consoleOutput = "")
         {
             _testName = testName;
             _consoleOutput = consoleOutput;

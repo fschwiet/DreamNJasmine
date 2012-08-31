@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ManyConsole;
+using NJasmineTests.Export;
 
 namespace NJasmineTestLoader
 {
@@ -33,7 +34,24 @@ namespace NJasmineTestLoader
             if (!File.Exists(ConsoleOutputFile))
                 throw new ConsoleHelpAsException("Could not find console output file at '" + ConsoleOutputFile + "'.");
 
-            Console.WriteLine("WAT DO?!?");
+            var testContstructor = VerifyTestForNUnitCommand.GetTestConstructor(TestName);
+
+            var trvContents = File.ReadAllText(TrvOutputFile);
+            var consoleContents = File.ReadAllText(ConsoleOutputFile);
+
+            var fixtureResult = new VS2012FixtureResult(TestName, trvContents, consoleContents);
+
+            try
+            {
+                testContstructor.Verify_NJasmine_implementation(fixtureResult);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception thrown:");
+                Console.WriteLine(e.ToString());
+                return -1;
+            }
+
             return 0;
         }
     }

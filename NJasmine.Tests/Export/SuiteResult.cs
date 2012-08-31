@@ -73,7 +73,7 @@ namespace NJasmineTests.Export
 
         public ISuiteResult hasSuite(string name)
         {
-            return FixtureResult.FindSuite(_xml, _fullName, name);
+            return NUnitFixtureResult.FindSuite(_xml, _fullName, name);
         }
 
         public ISuiteResult doesNotHaveTestContaining(string skipped)

@@ -29,14 +29,20 @@ namespace NJasmineTestLoader
             var xmlOutput = File.ReadAllText(XmlOutputFile);
             var consoleOutput = File.ReadAllText(ConsoleOutputFile);
 
-            var testType = typeof (can_check_that_an_arbtirary_condition_is_true).Assembly.GetType(TestName);
-            var test = testType.GetConstructor(new Type[0]).Invoke(new Type[0]) as INJasmineInternalRequirement;
+            var test = GetTestConstructor(this.TestName);
 
-            var fixtureResult = new FixtureResult(TestName, xmlOutput, consoleOutput);
+            var fixtureResult = new NUnitFixtureResult(TestName, xmlOutput, consoleOutput);
 
             test.Verify_NJasmine_implementation(fixtureResult);
 
             return 0;
+        }
+
+        public static INJasmineInternalRequirement GetTestConstructor(string fullTypeName)
+        {
+            var testType = typeof (can_check_that_an_arbtirary_condition_is_true).Assembly.GetType(fullTypeName);
+            var test = testType.GetConstructor(new Type[0]).Invoke(new Type[0]) as INJasmineInternalRequirement;
+            return test;
         }
     }
 }

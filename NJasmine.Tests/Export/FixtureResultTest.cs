@@ -18,26 +18,26 @@ namespace NJasmineTests.Export
             {
                 it("allows a passing test result", delegate
                 {
-                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1)).succeeds();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1)).succeeds();
                 });
 
                 var cases = new Dictionary<string, TestDelegate>();
                 
                 cases.Add("running against error", delegate
                 {
-                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 1));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 1));
                     sut.succeeds();
                 });
 
                 cases.Add("running against failure", delegate
                 {
-                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 0, 1));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 0, 1));
                     sut.succeeds();
                 });
 
                 cases.Add("running against no tests", delegate
                 {
-                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(0));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(0));
                     sut.succeeds();
                 });
 
@@ -48,13 +48,13 @@ namespace NJasmineTests.Export
             {
                 it("allows test results with errors or failures", delegate
                 {
-                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 1)).failed();
-                    new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 1)).failed();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
                 });
 
                 CheckScenario("running against no tests", delegate
                 {
-                    var sut = new FixtureResult(_expectedFixtureName, FixtureResult.GetSampleXmlResult(0), "");
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(0), "");
                     sut.failed();
                 }, _expectedFixtureName);
             });
@@ -102,7 +102,7 @@ Tests run: 3, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.0820047 seconds
                 
                 it("allows tests with the expected trace", delegate
                 {
-                    new FixtureResult(_expectedFixtureName, originalXml, originalConsole).containsTrace(@"
+                    new NUnitFixtureResult(_expectedFixtureName, originalXml, originalConsole).containsTrace(@"
 BEFORE ALL
 first test
 SECOND BEFORE ALL
@@ -120,7 +120,7 @@ DISPOSING BEFORE ALL
 
                 it("fails tests without the expected trace", delegate
                 {
-                    var sut = new FixtureResult(_expectedFixtureName, originalXml, originalConsole);
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, originalXml, originalConsole);
 
                     var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
@@ -147,9 +147,9 @@ THREE
             {
                 var expectedTestName = "one_two_test";
 
-                var xmlOutput = FixtureResult.GetSampleXmlResult(aTestName: _expectedFixtureName + ", " + expectedTestName);
+                var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aTestName: _expectedFixtureName + ", " + expectedTestName);
 
-                var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
+                var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName, xmlOutput));
 
                 it("returns a test by name", delegate
                 {
@@ -173,9 +173,9 @@ THREE
             {
                 var expectedSuiteName = "one_two_test";
 
-                var xmlOutput = FixtureResult.GetSampleXmlResult(aSuiteName: expectedSuiteName);
+                var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aSuiteName: expectedSuiteName);
 
-                var sut = arrange(() => new FixtureResult(_expectedFixtureName, xmlOutput));
+                var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName, xmlOutput));
 
                 it("returns a test suite by name", delegate
                 {
@@ -201,8 +201,8 @@ THREE
 
                 it("it returns the stacktraces in a fixture result", delegate
                 {
-                    var sut = arrange(() => new FixtureResult(_expectedFixtureName,
-                                                FixtureResult.GetSampleXmlResult(aStackTrace: fullTrace)));
+                    var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName,
+                                                NUnitFixtureResult.GetSampleXmlResult(aStackTrace: fullTrace)));
 
                     expect(() => sut.withStackTraces().Single() == fullTrace);
                 });

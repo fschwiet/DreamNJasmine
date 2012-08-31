@@ -67,12 +67,14 @@
     <Compile Include="Export\FixtureResultTest.cs" />
     <Compile Include="Export\IFixtureResult.cs" />
     <Compile Include="Export\INJasmineInternalRequirement.cs" />
-    <Compile Include="Export\FixtureResult.cs" />
+    <Compile Include="Export\NUnitFixtureResult.cs" />
     <Compile Include="Export\ISuiteResult.cs" />
     <Compile Include="Export\ITestResult.cs" />
     <Compile Include="Export\SuiteResult.cs" />
     <Compile Include="Export\SuiteResultTest.cs" />
     <Compile Include="Export\TestResult.cs" />
+    <Compile Include="Export\VS2012FixtureResult.cs" />
+    <Compile Include="Export\VS2012SuiteResult.cs" />
     <Compile Include="Extras\can_check_for_expected_substrings.cs" />
     <Compile Include="Extras\NUnitFixtureDriver.cs" />
     <Compile Include="Extras\ZipDeployToolsTest.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="TestDomain\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDomain\Song.cs" />
+    <Compile Include="Export\VS2012TestResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NJasmine.NUnit\NJasmine.NUnit.csproj">
