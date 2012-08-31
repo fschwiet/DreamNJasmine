@@ -25,7 +25,7 @@ namespace NJasmine.Marshalled
 
         public class SpecRunner : MarshalByRefObject
         {
-            public void RunTests(string assemblyName, string[] testNames, ITestResultListener listener)
+            public void RunTests(string assemblyName, string[] testNames, string explictlyIncluding, ITestResultListener listener)
             {
                 using(var nativeTestFactory = RunTestDiscovery(Assembly.Load(assemblyName), t => true))
                 {
@@ -33,7 +33,7 @@ namespace NJasmine.Marshalled
                     {
                         var testContext = nativeTestFactory.Contexts[name];
 
-                        var ignoreReason = nativeTestFactory.GetIgnoreReason(name);
+                        var ignoreReason = nativeTestFactory.GetIgnoreReason(name, explictlyIncluding);
 
                         listener.NotifyStart(testContext.Name.FullName);
 

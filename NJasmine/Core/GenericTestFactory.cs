@@ -58,11 +58,11 @@ namespace NJasmine.Core
             GlobalSetupManagers = new Dictionary<Type, GlobalSetupManager>();
         }
 
-        public string GetIgnoreReason(string name)
+        public string GetIgnoreReason(string testName, string explicitlyIncluding)
         {
             List<GenericNativeTest> selfAndAncestors = new List<GenericNativeTest>();
 
-            var context = Contexts[name];
+            var context = Contexts[testName];
             var fixtureBuilder = context.FixtureContext.FixtureFactory;
             var position = context.Position;
             
@@ -78,7 +78,7 @@ namespace NJasmine.Core
 
             foreach(var test in selfAndAncestors)
             {
-                if (test.ReasonIgnored != null)
+                if (test.ReasonIgnored != null && !explicitlyIncluding.StartsWith(test.Name.FullName))
                     return test.ReasonIgnored;
             }
 
