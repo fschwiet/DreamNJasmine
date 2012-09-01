@@ -77,7 +77,7 @@ Task VisualStudioIntegrationTest {
       $testName = $test.Name;
       $testDll = (resolve-path (join-path $build.dir "NJasmine.Tests.dll")).path
       
-	  write-output "Checking $testName at $testDll."
+	  write-output "vs2012 test runner running $testName"
 
       & $vsTestExe $testDll "/Tests:`"$testName`"" "/logger:trx" "/settings:`"$vsTestSettingsFile`"" > $vsTestConsoleTarget
 
@@ -98,7 +98,7 @@ Task NUnitIntegrationTest {
 	
     $testName = $test.Name;
 
-    write-output "Checking $testName."
+    write-output "NUnit test runner running $testName."
 
     $testXmlTarget = (join-path $build.dir "IntegrationTest.xml")
     $testConsoleTarget = (join-path $build.dir "IntegrationTest.txt")
