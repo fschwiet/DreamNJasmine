@@ -73,7 +73,7 @@ namespace NJasmineTests.Export
 
             Assert.AreEqual(1, tests.Count(), "Expected test not found, expected test named " + name);
 
-            return new TestResult(tests.Single());
+            return new NUnitTestResult(tests.Single());
         }
 
         public ISuiteResult hasSuite(string name)
@@ -81,7 +81,7 @@ namespace NJasmineTests.Export
             return FindSuite(_doc.Root, _testName, name);
         }
 
-        public static SuiteResult FindSuite(XElement element, string fixtureName, string name)
+        public static NUnitSuiteResult FindSuite(XElement element, string fixtureName, string name)
         {
             string expectedSuiteName = name;
 
@@ -93,7 +93,7 @@ namespace NJasmineTests.Export
                 "Expected test suite not found, expected suite named '" + expectedSuiteName + "', found:\n"
                 + string.Join("\n", allSuites.Select(s => s.Attribute("name").Value)));
 
-            return new SuiteResult(fixtureName, suites.Single());
+            return new NUnitSuiteResult(fixtureName, suites.Single());
         }
 
         public string[] withStackTraces()

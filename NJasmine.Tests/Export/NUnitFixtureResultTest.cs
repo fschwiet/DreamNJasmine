@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class FixtureResultTest : GivenWhenThenFixture
+    public class NUnitFixtureResultTest : GivenWhenThenFixture
     {
         public static Type ExpectedAssertionType = typeof(AssertionException);
         private const string _expectedFixtureName = "hello";

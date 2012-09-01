@@ -6,13 +6,13 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class BaseResult
+    public class NUnitBaseResult
     {
         protected string _name;
         private readonly string _descriptiveNameOfResultType;
         protected XElement _xml;
 
-        public BaseResult(string descriptiveNameOfResultType, XElement xml)
+        public NUnitBaseResult(string descriptiveNameOfResultType, XElement xml)
         {
             _descriptiveNameOfResultType = descriptiveNameOfResultType;
             _xml = xml;
@@ -35,7 +35,7 @@ namespace NJasmineTests.Export
             return _xml.Attribute("result").Value;
         }
 
-        protected TResult withCategories<TResult>(params string[] categories) where TResult : BaseResult
+        protected TResult withCategories<TResult>(params string[] categories) where TResult : NUnitBaseResult
         {
             var actualCategories = new List<string>();
 

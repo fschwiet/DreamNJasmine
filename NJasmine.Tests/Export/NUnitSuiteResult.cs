@@ -8,11 +8,11 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class SuiteResult : BaseResult, ISuiteResult
+    public class NUnitSuiteResult : NUnitBaseResult, ISuiteResult
     {
         readonly string _fullName;
 
-        public SuiteResult(string fixtureName, XElement xml) : base("test suite", xml)
+        public NUnitSuiteResult(string fixtureName, XElement xml) : base("test suite", xml)
         {
             _fullName = fixtureName + ", " + _name;
         }
@@ -47,7 +47,7 @@ namespace NJasmineTests.Export
 
             var name = tests.Single().Attribute("name").Value;
 
-            var testResult = new TestResult(tests.Single());
+            var testResult = new NUnitTestResult(tests.Single());
 
             handler(testResult);
 
@@ -68,7 +68,7 @@ namespace NJasmineTests.Export
 
         public ISuiteResult withCategories(params string[] categories)
         {
-            return base.withCategories<SuiteResult>(categories);
+            return base.withCategories<NUnitSuiteResult>(categories);
         }
 
         public ISuiteResult hasSuite(string name)

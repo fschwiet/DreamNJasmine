@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class SuiteResultTest : GivenWhenThenFixture
+    public class NUnitSuiteResultTest : GivenWhenThenFixture
     {
         public override void Specify()
         {
@@ -28,7 +28,7 @@ namespace NJasmineTests.Export
 
                     var sut = new NUnitFixtureResult("ignored", xmlOutput).hasSuite("fooSuite");
 
-                    var exception = Assert.Throws(FixtureResultTest.ExpectedAssertionType, delegate
+                    var exception = Assert.Throws(NUnitFixtureResultTest.ExpectedAssertionType, delegate
                     {
                         sut.thatsInconclusive();
                     });
@@ -46,7 +46,7 @@ namespace NJasmineTests.Export
                         NUnitFixtureResult.GetSampleXmlResult(aSuiteName: "someSuiteHello"))
                         .hasSuite("someSuiteHello");
 
-                    var exception = Assert.Throws(FixtureResultTest.ExpectedAssertionType, delegate
+                    var exception = Assert.Throws(NUnitFixtureResultTest.ExpectedAssertionType, delegate
                     {
                         sut.thatHasNoResults();
                     });

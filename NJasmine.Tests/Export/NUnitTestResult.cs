@@ -8,9 +8,9 @@ using NUnit.Framework;
 
 namespace NJasmineTests.Export
 {
-    public class TestResult : BaseResult, ITestResult
+    public class NUnitTestResult : NUnitBaseResult, ITestResult
     {
-        public TestResult(XElement element) : base("test", element)
+        public NUnitTestResult(XElement element) : base("test", element)
         {
         }
 
@@ -70,7 +70,7 @@ namespace NJasmineTests.Export
 
         public ITestResult withCategories(params string[] categories)
         {
-            return withCategories<TestResult>(categories);
+            return withCategories<NUnitTestResult>(categories);
         }
     }
 }
