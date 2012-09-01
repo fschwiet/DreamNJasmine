@@ -18,26 +18,26 @@ namespace NJasmineTests.Export
             {
                 it("allows a passing test result", delegate
                 {
-                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1)).succeeds();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(1)).succeeds();
                 });
 
                 var cases = new Dictionary<string, TestDelegate>();
                 
                 cases.Add("running against error", delegate
                 {
-                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 1));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(1, 1));
                     sut.succeeds();
                 });
 
                 cases.Add("running against failure", delegate
                 {
-                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 0, 1));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(1, 0, 1));
                     sut.succeeds();
                 });
 
                 cases.Add("running against no tests", delegate
                 {
-                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(0));
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(0));
                     sut.succeeds();
                 });
 
@@ -48,13 +48,13 @@ namespace NJasmineTests.Export
             {
                 it("allows test results with errors or failures", delegate
                 {
-                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 1)).failed();
-                    new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(1, 0, 1)).failed();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(1, 1)).failed();
+                    new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(1, 0, 1)).failed();
                 });
 
                 CheckScenario("running against no tests", delegate
                 {
-                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitFixtureResult.GetSampleXmlResult(0), "");
+                    var sut = new NUnitFixtureResult(_expectedFixtureName, NUnitSampleData.GetSampleXmlResult(0), "");
                     sut.failed();
                 }, _expectedFixtureName);
             });
@@ -147,7 +147,7 @@ THREE
             {
                 var expectedTestName = "one_two_test";
 
-                var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aTestName: _expectedFixtureName + ", " + expectedTestName);
+                var xmlOutput = NUnitSampleData.GetSampleXmlResult(aTestName: _expectedFixtureName + ", " + expectedTestName);
 
                 var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName, xmlOutput));
 
@@ -173,7 +173,7 @@ THREE
             {
                 var expectedSuiteName = "one_two_test";
 
-                var xmlOutput = NUnitFixtureResult.GetSampleXmlResult(aSuiteName: expectedSuiteName);
+                var xmlOutput = NUnitSampleData.GetSampleXmlResult(aSuiteName: expectedSuiteName);
 
                 var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName, xmlOutput));
 
@@ -202,7 +202,7 @@ THREE
                 it("it returns the stacktraces in a fixture result", delegate
                 {
                     var sut = arrange(() => new NUnitFixtureResult(_expectedFixtureName,
-                                                NUnitFixtureResult.GetSampleXmlResult(aStackTrace: fullTrace)));
+                                                NUnitSampleData.GetSampleXmlResult(aStackTrace: fullTrace)));
 
                     expect(() => sut.withStackTraces().Single() == fullTrace);
                 });

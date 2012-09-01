@@ -70,6 +70,7 @@
     <Compile Include="Export\NUnitFixtureResult.cs" />
     <Compile Include="Export\ISuiteResult.cs" />
     <Compile Include="Export\ITestResult.cs" />
+    <Compile Include="Export\NUnitSampleData.cs" />
     <Compile Include="Export\NUnitSuiteResult.cs" />
     <Compile Include="Export\NUnitSuiteResultTest.cs" />
     <Compile Include="Export\NUnitTestResult.cs" />
