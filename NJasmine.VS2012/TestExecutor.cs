@@ -17,15 +17,9 @@ namespace NJasmine.VS2012
     {
         public void RunTests(IEnumerable<TestCase> tests, IRunContext runContext, IFrameworkHandle frameworkHandle)
         {
-            var sink = new TestExecutorSinkAdapter(frameworkHandle, tests);
+            var explicitlyInclude = CommonStringPrefix.Of(tests.Select(t => t.FullyQualifiedName));
 
-            foreach(var group in tests.GroupBy(t => t.Source))
-            {
-                using (var appDomain = new AppDomainWrapper(group.Key))
-                {
-                    UsingAppDomain.RunTests(group.Key, appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), sink);
-                }
-            }
+            InternalRunTests(tests, runContext, frameworkHandle, explicitlyInclude);
         }
 
         public void RunTests(IEnumerable<string> sources, IRunContext runContext, IFrameworkHandle frameworkHandle)
@@ -34,12 +28,29 @@ namespace NJasmine.VS2012
 
             TestDiscoverer.VisitTests(sources, t => tests.Add(t));
 
-            RunTests(tests, runContext, frameworkHandle);
+            InternalRunTests(tests, runContext, frameworkHandle, null);
         }
 
         public void Cancel()
         {
             throw new NotImplementedException();
+        }
+
+        private static void InternalRunTests(
+            IEnumerable<TestCase> tests, 
+            IRunContext runContext, 
+            IFrameworkHandle frameworkHandle,
+            string explicitlyIncluding)
+        {
+            var sink = new TestExecutorSinkAdapter(frameworkHandle, tests);
+
+            foreach (var group in tests.GroupBy(t => t.Source))
+            {
+                using (var appDomain = new AppDomainWrapper(@group.Key))
+                {
+                    UsingAppDomain.RunTests(@group.Key, appDomain, tests.Select(t => t.FullyQualifiedName).ToArray(), explicitlyIncluding, sink);
+                }
+            }
         }
     }
 }
