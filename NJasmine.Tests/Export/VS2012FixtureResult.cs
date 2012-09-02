@@ -19,6 +19,9 @@ namespace NJasmineTests.Export
         {
             var counts = GetResultSummaryCounts();
 
+            if (counts.Executed == 0)
+                throw new Exception("Expected fixture result to be succeeded, but no tests were executed.");
+
             if (counts.Passed < counts.Executed)
                 throw new Exception("Expected fixture result to be succeeded, but not all executed tests passed.");
 
@@ -29,7 +32,10 @@ namespace NJasmineTests.Export
         {
             var counts = GetResultSummaryCounts();
 
-            if (counts.Passed == counts.Executed)
+            if (counts.Executed == 0)
+                throw new Exception("Expected fixture result to fail, but no tests were executed.");
+
+            if (counts.Executed == counts.Passed)
                 throw new Exception("Expected fixture result to fail, but all executed tests passed.");
 
             return this;
