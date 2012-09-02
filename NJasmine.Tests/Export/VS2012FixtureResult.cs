@@ -2,22 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace NJasmineTests.Export
 {
     public class VS2012FixtureResult : IFixtureResult
     {
-        public VS2012FixtureResult(string testName, string trvContents, string consoleContents)
+        public XDocument _trxResults;
+
+        public VS2012FixtureResult(string trxXmlContents)
         {
+            _trxResults = XDocument.Parse(trxXmlContents);
         }
 
         public IFixtureResult succeeds()
         {
+            var counts = GetResultSummaryCounts();
+
+            if (counts.Passed < counts.Executed)
+                throw new Exception("Expected fixture result to be succeeded, but not all executed tests passed.");
+
             return this;
         }
 
         public IFixtureResult failed()
         {
+            var counts = GetResultSummaryCounts();
+
+            if (counts.Passed == counts.Executed)
+                throw new Exception("Expected fixture result to fail, but all executed tests passed.");
+
             return this;
         }
 
@@ -43,6 +57,24 @@ namespace NJasmineTests.Export
         public string[] withStackTraces()
         {
             return new string[0];
+        }
+
+        class ResultSummaryCounts
+        {
+            public int Executed;
+            public int Passed;
+        }
+
+        private ResultSummaryCounts GetResultSummaryCounts()
+        {
+            var resultSummary = _trxResults.Descendants("ResultSummary").Single().Descendants("Counters").Single();
+
+            var counts = new ResultSummaryCounts()
+            {
+                Executed = int.Parse(resultSummary.Attribute("executed").Value),
+                Passed = int.Parse(resultSummary.Attribute("passed").Value),
+            };
+            return counts;
         }
     }
 }

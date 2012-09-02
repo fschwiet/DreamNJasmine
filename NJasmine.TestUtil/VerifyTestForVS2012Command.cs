@@ -39,7 +39,7 @@ namespace NJasmineTestLoader
             var trvContents = File.ReadAllText(TrvOutputFile);
             var consoleContents = File.ReadAllText(ConsoleOutputFile);
 
-            var fixtureResult = new VS2012FixtureResult(TestName, trvContents, consoleContents);
+            var fixtureResult = new VS2012FixtureResult(trvContents);
 
             try
             {

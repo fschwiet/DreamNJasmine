@@ -75,6 +75,7 @@
     <Compile Include="Export\NUnitSuiteResultTest.cs" />
     <Compile Include="Export\NUnitTestResult.cs" />
     <Compile Include="Export\VS2012FixtureResult.cs" />
+    <Compile Include="Export\VS2012FixtureResultTest.cs" />
     <Compile Include="Export\VS2012SuiteResult.cs" />
     <Compile Include="Extras\can_check_for_expected_substrings.cs" />
     <Compile Include="Extras\CommonStringPrefixTests.cs" />
