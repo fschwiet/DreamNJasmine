@@ -59,7 +59,7 @@ namespace NJasmineTests.Export
                 }, _expectedFixtureName);
             });
 
-            describe("containsTrace", delegate
+            describe("hasTrace", delegate
             {
                 var originalXml = "<xml></xml>";
                     
@@ -102,7 +102,7 @@ Tests run: 3, Errors: 0, Failures: 0, Inconclusive: 0, Time: 0.0820047 seconds
                 
                 it("allows tests with the expected trace", delegate
                 {
-                    new NUnitFixtureResult(_expectedFixtureName, originalXml, originalConsole).containsTrace(@"
+                    new NUnitFixtureResult(_expectedFixtureName, originalXml, originalConsole).hasTrace(@"
 BEFORE ALL
 first test
 SECOND BEFORE ALL
@@ -124,7 +124,7 @@ DISPOSING BEFORE ALL
 
                     var exception = Assert.Throws(ExpectedAssertionType, delegate
                     {
-                        sut.containsTrace(@"
+                        sut.hasTrace(@"
 ONE
 TWO
 THREE

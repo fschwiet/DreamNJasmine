@@ -75,7 +75,7 @@ namespace NJasmineTests.Specs.cleanup_any_IDisposable
         {
             fixtureResult.succeeds();
 
-            fixtureResult.containsTrace(@"
+            fixtureResult.hasTrace(@"
 creating some_observable_A
 creating some_observable_B
 creating some_observable_C

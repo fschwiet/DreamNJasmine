@@ -92,7 +92,7 @@ namespace NJasmineTests.Specs
         {
             fixtureResult.succeeds();
 
-            fixtureResult.containsTrace(@"
+            fixtureResult.hasTrace(@"
 test started, before include of a
 FixtureSetup some_Nunit_fixture_a
 after include of a

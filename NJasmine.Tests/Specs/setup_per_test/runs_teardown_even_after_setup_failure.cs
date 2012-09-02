@@ -44,7 +44,7 @@ namespace NJasmineTests.Specs.setup_per_test
         public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.failed();
-            fixtureResult.containsTrace(@"
+            fixtureResult.hasTrace(@"
 failure_in_setup_doesnt_prevent_cleanup_in_same_scope
 failure_in_setup_doesnt_prevent_cleanup");
         }

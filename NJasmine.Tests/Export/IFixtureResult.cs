@@ -4,7 +4,7 @@ namespace NJasmineTests.Export
     {
         IFixtureResult succeeds();
         IFixtureResult failed();
-        void containsTrace(string expectedTrace);
+        void hasTrace(string expectedTrace);
         ITestResult hasTest(string name);
         ITestResult hasTestWithFullName(string name);
         ISuiteResult hasSuite(string name);

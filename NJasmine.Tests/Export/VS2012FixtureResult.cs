@@ -8,11 +8,15 @@ namespace NJasmineTests.Export
 {
     public class VS2012FixtureResult : IFixtureResult
     {
-        public XDocument _trxResults;
+        private readonly string _testName;
+        private readonly string _consoleOutput;
+        public XDocument _trxXDocument;
 
-        public VS2012FixtureResult(string trxXmlContents)
+        public VS2012FixtureResult(string testName, string trxFileContents, string consoleOutput)
         {
-            _trxResults = XDocument.Parse(trxXmlContents);
+            _testName = testName;
+            _consoleOutput = consoleOutput;
+            _trxXDocument = XDocument.Parse(trxFileContents);
         }
 
         public IFixtureResult succeeds()
@@ -41,8 +45,9 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public void containsTrace(string expectedTrace)
+        public void hasTrace(string expectedTrace)
         {
+            NUnitFixtureResult.AssertContainsTrace(_testName, _consoleOutput, expectedTrace);
         }
 
         public ITestResult hasTest(string name)
@@ -73,7 +78,7 @@ namespace NJasmineTests.Export
 
         private ResultSummaryCounts GetResultSummaryCounts()
         {
-            var resultSummary = _trxResults.Descendants("ResultSummary").Single().Descendants("Counters").Single();
+            var resultSummary = _trxXDocument.Descendants("ResultSummary").Single().Descendants("Counters").Single();
 
             var counts = new ResultSummaryCounts()
             {

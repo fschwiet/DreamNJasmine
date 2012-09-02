@@ -43,23 +43,9 @@ namespace NJasmineTests.Export
             return this;
         }
 
-        public void containsTrace(string expectedTrace)
+        public void hasTrace(string expectedTrace)
         {
-            string resetMarker = "{{<<RESET>>}}";
-            string tracePattern = @"<<\{\{(.*)}}>>";
-
-            var lastReset = _consoleOutput.LastIndexOf(resetMarker);
-
-            if (lastReset < 0)
-                lastReset = 0;
-            else
-                lastReset = lastReset + resetMarker.Length;
-
-            MatchCollection matches = new Regex(tracePattern).Matches(_consoleOutput, lastReset);
-            
-            var trace = matches.OfType<Match>().Select(m => m.Groups[1].Value).ToArray();
-            
-            Assert.That(trace, Is.EquivalentTo(expectedTrace.Split(new [] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries)), "Did not find expected trace in " + _testName);
+            AssertContainsTrace(this._testName, this._consoleOutput, expectedTrace);
         }
 
         public ITestResult hasTest(string name)
@@ -109,6 +95,26 @@ namespace NJasmineTests.Export
         private int GetFailureCount()
         {
             return (int)_doc.Root.Attribute("failures");
+        }
+
+        public static void AssertContainsTrace(string testName, string consoleOutput, string expectedTrace)
+        {
+            string resetMarker = "{{<<RESET>>}}";
+            string tracePattern = @"<<\{\{(.*)}}>>";
+
+            var lastReset = consoleOutput.LastIndexOf(resetMarker);
+
+            if (lastReset < 0)
+                lastReset = 0;
+            else
+                lastReset = lastReset + resetMarker.Length;
+
+            MatchCollection matches = new Regex(tracePattern).Matches(consoleOutput, lastReset);
+
+            var trace = matches.OfType<Match>().Select(m => m.Groups[1].Value).ToArray();
+
+            Assert.That(trace, Is.EquivalentTo(expectedTrace.Split(new[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries)),
+                "Did not find expected trace in " + testName);
         }
     }
 }

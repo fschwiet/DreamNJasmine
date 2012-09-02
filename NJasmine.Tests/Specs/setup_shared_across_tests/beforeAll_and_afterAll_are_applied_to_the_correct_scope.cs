@@ -93,7 +93,7 @@ namespace NJasmineTests.Specs.setup_shared_across_tests
         public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.succeeds();
-            fixtureResult.containsTrace(@"
+            fixtureResult.hasTrace(@"
 BEFORE ALL
 first test
 SECOND BEFORE ALL

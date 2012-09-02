@@ -53,7 +53,7 @@ namespace NJasmineTests.Specs.setup_per_test
         public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
         {
             fixtureResult.succeeds();
-            fixtureResult.containsTrace(@"
+            fixtureResult.hasTrace(@"
 one
 two
 three

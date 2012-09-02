@@ -35,7 +35,7 @@ namespace NJasmineTests.Specs
             {
                 fixtureResult.succeeds();
 
-                fixtureResult.containsTrace(@"
+                fixtureResult.hasTrace(@"
 running test 1
 running test 2
 TearDown NamespaceSetupB
