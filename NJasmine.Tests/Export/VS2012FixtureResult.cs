@@ -10,13 +10,16 @@ namespace NJasmineTests.Export
     {
         private readonly string _testName;
         private readonly string _consoleOutput;
-        public XDocument _trxXDocument;
+        private readonly XDocument _trxXDocument;
+        private readonly XNamespace _namespace;
+
 
         public VS2012FixtureResult(string testName, string trxFileContents, string consoleOutput)
         {
             _testName = testName;
             _consoleOutput = consoleOutput;
             _trxXDocument = XDocument.Parse(trxFileContents);
+            _namespace = _trxXDocument.Root.GetDefaultNamespace();
         }
 
         public IFixtureResult succeeds()
@@ -67,7 +70,7 @@ namespace NJasmineTests.Export
 
         public string[] withStackTraces()
         {
-            return new string[0];
+            return _trxXDocument.Descendants(_namespace + "StackTrace").Select(s => s.Value).ToArray();
         }
 
         class ResultSummaryCounts
@@ -78,7 +81,7 @@ namespace NJasmineTests.Export
 
         private ResultSummaryCounts GetResultSummaryCounts()
         {
-            var resultSummary = _trxXDocument.Descendants("ResultSummary").Single().Descendants("Counters").Single();
+            var resultSummary = _trxXDocument.Descendants(_namespace + "ResultSummary").Single().Descendants(_namespace + "Counters").Single();
 
             var counts = new ResultSummaryCounts()
             {
