@@ -79,7 +79,7 @@ Task VisualStudioIntegrationTest {
       
 	  write-output "vs2012 test runner running $testName"
 
-      & $vsTestExe $testDll "/Tests:`"$testName`"" "/logger:trx" "/settings:`"$vsTestSettingsFile`"" > $vsTestConsoleTarget
+      & $vsTestExe $testDll "/Tests:`"$testName`"" "/logger:trx" "/settings:`"$vsTestSettingsFile`"" > $vsTestConsoleTarget 2> $null
 
 	  $trxFile = (gci $build.dir *.trx).fullname
 
