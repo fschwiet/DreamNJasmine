@@ -23,7 +23,7 @@
                 go();
             });
 
-            given("the browser is internet explorer", delegate
+            given("the browser is chrome", delegate
             {
                 Browser = arrange(() => new ChromeBrowser());
 
