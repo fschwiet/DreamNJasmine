@@ -110,10 +110,10 @@
     <Compile Include="Specs\checks_reentrancy\cannot_test_during_test.cs" />
     <Compile Include="Specs\duplicate_test_names_are_fine.cs" />
     <Compile Include="Specs\report_test_failures_usefully\nunit_fixture_setup_has_useful_errors.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\BrowserDriverContext.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\FutureStubs.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\HomepageTests.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\PretendBrowserDriver.cs" />
+    <Compile Include="Specs\proposed_specs\reusing_context\BrowserDriverContext.cs" />
+    <Compile Include="Specs\proposed_specs\reusing_context\FutureStubs.cs" />
+    <Compile Include="Specs\proposed_specs\reusing_context\HomepageTests.cs" />
+    <Compile Include="Specs\proposed_specs\reusing_context\PretendBrowserDriver.cs" />
     <Compile Include="Specs\Should_be_able_to_load_tests_through_AppDomain.cs" />
     <Compile Include="Specs\supports_categories.cs" />
     <Compile Include="Core\TestPositionTests.cs" />
