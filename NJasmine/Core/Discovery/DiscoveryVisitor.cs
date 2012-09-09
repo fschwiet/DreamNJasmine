@@ -98,6 +98,16 @@ namespace NJasmine.Core.Discovery
         {
         }
 
+        public void visitWith<T>(WithElement<T> element, Func<T> creator, Action<T> action) where T : SharedFixture
+        {
+
+            var fixtureContext = new SharedFixtureContext(_fixtureContext, creator);
+            fixtureContext.InstanceForDiscovery = creator();
+
+            SpecificationBuilder.BuildSuiteForTextContext(fixtureContext, _parent, () => action<T>, )
+            throw new NotImplementedException();
+        }
+
         public void visitTest(TestElement element, TestPosition position)
         {
             if (element.Action == null)

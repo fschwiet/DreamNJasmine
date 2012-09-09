@@ -135,6 +135,10 @@ namespace NJasmine
             return RunSpecificationElement<T>(new BeforeEachElement<T>(ActualKeyword.arrange, action));
         }
 
+        public T with<T>(Action<T> action) where T : SharedFixture
+        {
+            return RunSpecificationElement<T>(new WithElement<T>(ActualKeyword.with, action));
+        }
         /// <summary>
         /// Adds initialization code to be ran once before all tests in the following context.
         /// </summary>

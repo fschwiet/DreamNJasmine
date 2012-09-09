@@ -127,8 +127,7 @@ namespace NJasmineTests.Core
                 Name = new TestName(),
                 Position = testPosition
             }, traceMessages);
-
-
+            
             Assert.That(fixture.Observations, Is.EquivalentTo(expected));
         }
 

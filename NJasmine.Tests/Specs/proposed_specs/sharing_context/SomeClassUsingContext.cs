@@ -6,15 +6,16 @@ using NJasmine;
 
 namespace NJasmineTests.Specs.proposed_specs.sharing_context
 {
-    class SomeClassUsingContext : SharingFixtureBase
+    class SomeClassUsingContext : GivenWhenThenFixture
     {
         public override void Specify()
         {
-            var shared = with<SharedContextFixture>("with browser");
-
-            it("can use the context", delegate()
+            with<SharedContextFixture>(shared =>
             {
-                shared.WebDriver.Goto("url");
+                it("can use the context", delegate()
+                {
+                    shared.WebDriver.Goto("url");
+                });
             });
         }
     }

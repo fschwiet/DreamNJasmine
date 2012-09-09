@@ -92,8 +92,7 @@
     <Compile Include="Specs\proposed_specs\RazorSpecs\RazorFixture.cs" />
     <Compile Include="Specs\proposed_specs\RazorSpecs\Romanizer.cs" />
     <Compile Include="Specs\proposed_specs\sharing_context\SharedContextFixture.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\SharedFixtureBase.cs" />
-    <Compile Include="Specs\proposed_specs\sharing_context\SharingFixtureBase.cs" />
+    <Compile Include="Specs\proposed_specs\sharing_context\Can_discover_tests_sharing_context.cs" />
     <Compile Include="Specs\proposed_specs\sharing_context\SomeClassUsingContext.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_at_outermost_scope.cs" />
     <Compile Include="Specs\report_test_failures_usefully\reports_exception_within_describe.cs" />

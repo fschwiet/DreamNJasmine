@@ -24,6 +24,11 @@ namespace NJasmine.Core.FixtureVisitor
         {
         }
 
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture
+        {
+            return default(T);
+        }
+
         public virtual void visitTest(TestElement element, TestPosition position)
         {
         }

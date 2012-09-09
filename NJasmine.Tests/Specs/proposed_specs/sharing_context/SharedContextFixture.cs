@@ -1,6 +1,8 @@
-﻿namespace NJasmineTests.Specs.proposed_specs.sharing_context
+﻿using NJasmine;
+
+namespace NJasmineTests.Specs.proposed_specs.sharing_context
 {
-    class SharedContextFixture : SharedFixtureBase
+    class SharedContextFixture : SharedFixture
     {
         public IWebDriver WebDriver;
 
@@ -10,7 +12,7 @@
             {
                 WebDriver = beforeAll(() => new FakeDriver());
 
-                becomesContext("with browser");
+                run();
             });
         }
     }

@@ -20,6 +20,7 @@
         waitUntil,
         withCategory,
         trace,
-        leakDisposable
+        leakDisposable,
+        with
     }
 }
