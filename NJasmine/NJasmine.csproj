@@ -79,6 +79,7 @@
     <Compile Include="Core\FixtureVisitor\ActualKeyword.cs" />
     <Compile Include="Core\GlobalSetup\ErrorAccumulator.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupManager.cs" />
+    <Compile Include="Core\GlobalSetup\GlobalSetupOwner.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupVisitor.cs" />
     <Compile Include="Core\GlobalSetup\GlobalSetupResultAccumulator.cs" />
     <Compile Include="Core\GlobalSetup\IGlobalSetupManager.cs" />
