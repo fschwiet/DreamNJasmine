@@ -6,7 +6,7 @@ using NJasmine.Core.FixtureVisitor;
 
 namespace NJasmine.Core.Elements
 {
-    public class WithElement<T> : SpecificationElement where T : SharedFixture
+    public class WithElement<T> : SpecificationElement where T : SharedFixture, new()
     {
         public Func<T> Creator;
         private readonly Action<T> _action;
@@ -19,7 +19,8 @@ namespace NJasmine.Core.Elements
 
         public override object Run(ISpecPositionVisitor visitor, TestPosition position)
         {
-            throw new NotImplementedException();
+            visitor.visitWith(this, _action);
+            return null;
         }
     }
 }

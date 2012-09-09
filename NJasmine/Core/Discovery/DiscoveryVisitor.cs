@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using NJasmine.Core.Elements;
 using NJasmine.Core.FixtureVisitor;
 using NJasmine.Core.GlobalSetup;
@@ -112,12 +113,11 @@ namespace NJasmine.Core.Discovery
             };
 
             var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(fixtureContext, testContext,
-                () => action(fixtureContext.InstanceForDiscovery), false, null);
+                fixtureContext.InstanceForDiscovery.Specify, false, null);
 
             ApplyCategoryAndIgnoreIfSet(suiteResuilt);
 
             _accumulatedDescendants.Add(suiteResuilt);
-
         }
 
         public void visitTest(TestElement element, TestPosition position)

@@ -23,9 +23,9 @@ namespace NJasmineTests.Specs.proposed_specs.sharing_context
                     SpecificationBuilder.BuildTestFixture(type, testFactory, setupOwner);
 
                     Assert.That(testFactory.Names, Is.EquivalentTo(new string[]
-                {
-                    "NJasmineTests.Specs.proposed_specs.sharing_context.SomeClassUsingContext.given a web browser, it can use the context"
-                }));
+                    {
+                        "NJasmineTests.Specs.proposed_specs.sharing_context.SomeClassUsingContext.given a web browser., it can use the context"
+                    }));
                 }
             });
         }
