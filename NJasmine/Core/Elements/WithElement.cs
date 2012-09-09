@@ -8,10 +8,12 @@ namespace NJasmine.Core.Elements
 {
     public class WithElement<T> : SpecificationElement where T : SharedFixture
     {
+        public Func<T> Creator;
         private readonly Action<T> _action;
 
-        public WithElement(ActualKeyword actualKeyword, Action<T> action) : base(actualKeyword)
+        public WithElement(ActualKeyword actualKeyword, Func<T> creator, Action<T> action) : base(actualKeyword)
         {
+            Creator = creator;
             _action = action;
         }
 

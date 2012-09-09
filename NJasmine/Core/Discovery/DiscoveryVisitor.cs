@@ -98,10 +98,9 @@ namespace NJasmine.Core.Discovery
         {
         }
 
-        public void visitWith<T>(WithElement<T> element, Func<T> creator, Action<T> action) where T : SharedFixture
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture
         {
-
-            var fixtureContext = new SharedFixtureContext(_fixtureContext, creator);
+            var fixtureContext = new SharedFixtureContext(_fixtureContext, element.);
             fixtureContext.InstanceForDiscovery = creator();
 
             SpecificationBuilder.BuildSuiteForTextContext(fixtureContext, _parent, () => action<T>, )

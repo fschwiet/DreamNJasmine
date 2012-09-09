@@ -13,7 +13,7 @@ namespace NJasmine.Core.Discovery
         public SharedFixtureContext(FixtureContext containingContext, Func<T> creator) 
             : base(containingContext.NativeTestFactory, containingContext.FixtureFactory, containingContext.NameReservations, containingContext.GlobalSetupManager)
         {
-            GlobalSetupManager = new GlobalSetupManager(() => creator());
+            GlobalSetupManager = ;
         }
     }
 }

@@ -8,14 +8,16 @@ namespace NJasmine.Core.Discovery
 {
     public class FixtureContext
     {
+        public GlobalSetupOwner GlobalSetupOwner { get; set; }
         public NameReservations NameReservations;
         public readonly INativeTestFactory NativeTestFactory;
         private SpecificationFixture _fixtureInstanceForDiscovery;
         public Func<SpecificationFixture> FixtureFactory;
         public IGlobalSetupManager GlobalSetupManager;
 
-        public FixtureContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, IGlobalSetupManager globalSetupManager)
+        public FixtureContext(INativeTestFactory nativeTestFactory, Func<SpecificationFixture> fixtureFactory, NameReservations nameReservations, GlobalSetupOwner globalSetupOwner, IGlobalSetupManager globalSetupManager)
         {
+            GlobalSetupOwner = globalSetupOwner;
             NativeTestFactory = nativeTestFactory;
             FixtureFactory = fixtureFactory;
             NameReservations = nameReservations;
