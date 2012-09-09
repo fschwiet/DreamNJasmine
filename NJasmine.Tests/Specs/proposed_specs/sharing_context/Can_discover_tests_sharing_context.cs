@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine;
 using NJasmine.Core;
+using NJasmine.Core.GlobalSetup;
 using NUnit.Framework;
 
 namespace NJasmineTests.Specs.proposed_specs.sharing_context
@@ -17,8 +18,10 @@ namespace NJasmineTests.Specs.proposed_specs.sharing_context
 
             it("can discover tests sharing context", () =>
             {
-                using (SpecificationBuilder.BuildTestFixture(type, testFactory))
+                using (var setupOwner = new GlobalSetupOwner())
                 {
+                    SpecificationBuilder.BuildTestFixture(type, testFactory, setupOwner);
+
                     Assert.That(testFactory.Names, Is.EquivalentTo(new string[]
                 {
                     "NJasmineTests.Specs.proposed_specs.sharing_context.SomeClassUsingContext.given a web browser, it can use the context"

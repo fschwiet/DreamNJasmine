@@ -14,7 +14,7 @@ namespace NJasmine.Core.FixtureVisitor
 
         TArranged visitBeforeEach<TArranged>(BeforeEachElement<TArranged> element, TestPosition position);
         void visitAfterEach(SpecificationElement element, Action action, TestPosition position);
-        void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture;
+        void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new();
 
         void visitTest(TestElement element, TestPosition position);
         void visitIgnoreBecause(IgnoreElement element, TestPosition position);

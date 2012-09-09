@@ -39,6 +39,10 @@ namespace NJasmine.Core.Execution
         {
         }
 
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new()
+        {
+        }
+
         public void visitTest(TestElement element, TestPosition position)
         {
         }

@@ -39,6 +39,11 @@ namespace NJasmine.Core.Execution
             _runContext.State.visitAfterEach(element, action, position);
         }
 
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new()
+        {
+            throw new NotImplementedException();
+        }
+
         public void visitTest(TestElement element, TestPosition position)
         {
             _runContext.State.visitTest(element, position);

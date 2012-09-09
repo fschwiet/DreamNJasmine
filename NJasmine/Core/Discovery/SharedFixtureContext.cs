@@ -11,9 +11,9 @@ namespace NJasmine.Core.Discovery
         public T InstanceForDiscovery;
 
         public SharedFixtureContext(FixtureContext containingContext, Func<T> creator) 
-            : base(containingContext.NativeTestFactory, containingContext.FixtureFactory, containingContext.NameReservations, containingContext.GlobalSetupManager)
+            : base(containingContext.NativeTestFactory, containingContext.FixtureFactory, containingContext.NameReservations, containingContext.GlobalSetupOwner, containingContext.GlobalSetupManager)
         {
-            GlobalSetupManager = ;
+            GlobalSetupManager = containingContext.GlobalSetupOwner.CreateSetupManager(typeof (T), () => creator());
         }
     }
 }

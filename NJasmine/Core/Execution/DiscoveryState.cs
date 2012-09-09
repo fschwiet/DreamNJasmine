@@ -41,6 +41,11 @@ namespace NJasmine.Core.Execution
             });
         }
 
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void visitTest(TestElement element, TestPosition position)
         {
             if (_runContext.TestIsAtPosition(position))

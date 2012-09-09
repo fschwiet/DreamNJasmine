@@ -98,13 +98,26 @@ namespace NJasmine.Core.Discovery
         {
         }
 
-        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new()
         {
-            var fixtureContext = new SharedFixtureContext(_fixtureContext, element.);
-            fixtureContext.InstanceForDiscovery = creator();
+            var fixtureContext = new SharedFixtureContext<T>(_fixtureContext, element.Creator);
+            
+            fixtureContext.InstanceForDiscovery = element.Creator();
 
-            SpecificationBuilder.BuildSuiteForTextContext(fixtureContext, _parent, () => action<T>, )
-            throw new NotImplementedException();
+            var testContext = new TestContext()
+            {
+                FixtureContext = fixtureContext,
+                Name = _fixtureContext.NameReservations.GetReservedTestName(typeof (T).Name, _parent.Name),
+                Position = TestPosition.At()
+            };
+
+            var suiteResuilt = SpecificationBuilder.BuildSuiteForTextContext(fixtureContext, testContext,
+                () => action(fixtureContext.InstanceForDiscovery), false, null);
+
+            ApplyCategoryAndIgnoreIfSet(suiteResuilt);
+
+            _accumulatedDescendants.Add(suiteResuilt);
+
         }
 
         public void visitTest(TestElement element, TestPosition position)

@@ -27,7 +27,7 @@ namespace NJasmine.Core
 
             var setupManager  = globalSetupOwner.CreateSetupManager(type, fixtureFactory);
 
-            FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations(), setupManager);
+            FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations(), globalSetupOwner, setupManager);
            
             var testContext = new TestContext()
             {

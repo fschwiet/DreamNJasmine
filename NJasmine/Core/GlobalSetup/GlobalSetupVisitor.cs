@@ -179,6 +179,11 @@ namespace NJasmine.Core.GlobalSetup
             CheckNotAlreadyPastDiscovery(element);
         }
 
+        public void visitWith<T>(WithElement<T> element, Action<T> action) where T : SharedFixture, new()
+        {
+            throw new NotImplementedException();
+        }
+
         public void visitTest(TestElement element, TestPosition position)
         {
             CheckNotAlreadyPastDiscovery(element);

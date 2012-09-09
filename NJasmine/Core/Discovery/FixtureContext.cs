@@ -10,6 +10,7 @@ namespace NJasmine.Core.Discovery
     {
         public GlobalSetupOwner GlobalSetupOwner { get; set; }
         public NameReservations NameReservations;
+        private readonly GlobalSetupOwner _globalSetupOwner;
         public readonly INativeTestFactory NativeTestFactory;
         private SpecificationFixture _fixtureInstanceForDiscovery;
         public Func<SpecificationFixture> FixtureFactory;
@@ -21,6 +22,7 @@ namespace NJasmine.Core.Discovery
             NativeTestFactory = nativeTestFactory;
             FixtureFactory = fixtureFactory;
             NameReservations = nameReservations;
+            _globalSetupOwner = globalSetupOwner;
             _fixtureInstanceForDiscovery = fixtureFactory();
             GlobalSetupManager = globalSetupManager;
         }

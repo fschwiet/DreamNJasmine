@@ -95,7 +95,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
+                FixtureContext = new FixtureContext(null, () => fixture, null, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = TestPosition.At(1, 3, 2)
             }, traceMessages);
@@ -116,7 +116,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
+                FixtureContext = new FixtureContext(null, () => fixture, null, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
             }, traceMessages);
@@ -127,7 +127,7 @@ namespace NJasmineTests.Core
 
             SpecificationRunner.RunTest(new TestContext()
             {
-                FixtureContext = new FixtureContext(null, () => fixture, null, fakeGlobalSetupManager),
+                FixtureContext = new FixtureContext(null, () => fixture, null, null, fakeGlobalSetupManager),
                 Name = new TestName(),
                 Position = testPosition
             }, traceMessages1);
