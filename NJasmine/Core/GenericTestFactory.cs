@@ -15,8 +15,8 @@ namespace NJasmine.Core
             get { return Contexts.Select(kvp => kvp.Key); }
         }
 
-        public Dictionary<Type, GlobalSetupManager> GlobalSetupManagers = new Dictionary<Type, GlobalSetupManager>();
-
+        public GlobalSetupOwner GlobalSetupOwner = new GlobalSetupOwner();
+        
         public Dictionary<string, TestContext> Contexts = new Dictionary<string, TestContext>();
         public Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>> TestAt = 
             new Dictionary<Func<SpecificationFixture>, Dictionary<TestPosition, GenericNativeTest>>(); 
@@ -50,12 +50,7 @@ namespace NJasmine.Core
 
         public void Dispose()
         {
-            foreach (var globalSetupManager in GlobalSetupManagers.Values)
-            {
-                globalSetupManager.Close();
-            }
-
-            GlobalSetupManagers = new Dictionary<Type, GlobalSetupManager>();
+            GlobalSetupOwner.Dispose();
         }
 
         public string GetIgnoreReason(string testName, string explicitlyIncluding)

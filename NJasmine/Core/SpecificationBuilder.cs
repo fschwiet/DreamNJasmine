@@ -10,7 +10,7 @@ namespace NJasmine.Core
 {
     public class SpecificationBuilder
     {
-        public static GlobalSetupManager BuildTestFixture(Type type, INativeTestFactory nativeTestFactory)
+        public static void BuildTestFixture(Type type, INativeTestFactory nativeTestFactory, GlobalSetupOwner globalSetupOwner)
         {
             if (nativeTestFactory is ValidatingNativeTestFactory)
                 throw new InvalidOperationException("Do not pass a ValidatingNativeTestFactory here.");
@@ -25,7 +25,7 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            var setupManager  = new GlobalSetupManager(fixtureFactory);
+            var setupManager  = globalSetupOwner.CreateSetupManager(type, fixtureFactory);
 
             FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations(), setupManager);
            
@@ -46,8 +46,6 @@ namespace NJasmine.Core
             var result = BuildSuiteForTextContext(fixtureContext, testContext, fixtureContext.GetSpecificationRootAction(), true, explicitReason);
 
             nativeTestFactory.SetRoot(result);
-
-            return setupManager;
         }
 
         public static INativeTest BuildSuiteForTextContext(FixtureContext fixtureContext, TestContext testContext1, Action invoke, bool isRootSuite, string explicitReason = null)

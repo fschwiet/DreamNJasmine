@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NJasmine.Core;
 using NJasmine.Core.Discovery;
+using NJasmine.Core.GlobalSetup;
 using NJasmine.Core.NativeWrappers;
 using NJasmine.NUnit.TestElements;
 using NUnit.Core;
@@ -103,8 +104,10 @@ namespace NJasmineTests.Core
 
             var nativeTestFactory = new TrackingTestFactory();
 
-            using (SpecificationBuilder.BuildTestFixture(type, nativeTestFactory))
+            using (var globalSetupOwner = new GlobalSetupOwner())
             {
+                SpecificationBuilder.BuildTestFixture(type, nativeTestFactory, globalSetupOwner);
+
                 expect(() => nativeTestFactory.Results[TestPosition.At(0)] == "a1");
                 expect(() => nativeTestFactory.Results[TestPosition.At(1)] == "a2");
                 expect(() => nativeTestFactory.Results[TestPosition.At(2)] == "a3");
