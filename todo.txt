@@ -1,1 +1,15 @@
-﻿use VS2012 to run unit tests as part of build
+﻿How to support shared fixtures:
+	Discovery:
+	  Each specification can be enumerated independently.
+	  When a sub-spec is encountered, that spec can be enumerated completely first.
+	  
+	  After it is enumerated, its resulting tests are projected onto the containing test.
+	  The containing test's delegate passed to the sub-spec is executed for each branch in the contained test, extending the projected structure.
+
+	Execution
+	  The projected test steps use GlobalSetupOwner to move the contained fixture appropriately.
+	  The delegate passed to the sub-spec is than ran as-is.
+
+
+	Note: GlobalSetupManager isn't really the right thing, since it only runs global setup.
+	  We're going to need something that maintains a thread running for each fixture, and then they'll need a corresponding GlobalSetupManagerfor the global setup associated with that fixture.

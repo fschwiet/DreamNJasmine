@@ -9,7 +9,7 @@ namespace NJasmine.Core.GlobalSetup
     {
         private Dictionary<Type, GlobalSetupManager> _setupManagers = new Dictionary<Type, GlobalSetupManager>(); 
 
-        public GlobalSetupManager CreateSetupManager(Type type, Func<SpecificationFixture> fixtureFactory)
+        public GlobalSetupManager GetSetupManager(Type type, Func<SpecificationFixture> fixtureFactory)
         {
             GlobalSetupManager result;
             if (_setupManagers.TryGetValue(type, out result))

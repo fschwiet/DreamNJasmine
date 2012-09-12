@@ -25,7 +25,7 @@ namespace NJasmine.Core
                 return fixture;
             };
 
-            var setupManager  = globalSetupOwner.CreateSetupManager(type, fixtureFactory);
+            var setupManager  = globalSetupOwner.GetSetupManager(type, fixtureFactory);
 
             FixtureContext fixtureContext = new FixtureContext(nativeTestFactory, fixtureFactory, new NameReservations(), setupManager);
            
