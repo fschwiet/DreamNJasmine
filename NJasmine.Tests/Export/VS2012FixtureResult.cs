@@ -73,6 +73,11 @@ namespace NJasmineTests.Export
             return _trxXDocument.Descendants(_namespace + "StackTrace").Select(s => s.Value).ToArray();
         }
 
+        public bool WasRanByNUnit()
+        {
+            return false;
+        }
+
         class ResultSummaryCounts
         {
             public int Executed;

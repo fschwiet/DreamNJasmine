@@ -33,6 +33,9 @@ namespace NJasmineTests.Specs
 
             public void Verify_NJasmine_implementation(IFixtureResult fixtureResult)
             {
+                if (!fixtureResult.WasRanByNUnit())
+                    return;
+
                 fixtureResult.succeeds();
 
                 fixtureResult.hasTrace(@"

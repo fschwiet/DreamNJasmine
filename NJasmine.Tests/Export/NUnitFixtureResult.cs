@@ -87,6 +87,11 @@ namespace NJasmineTests.Export
             return _doc.Descendants("stack-trace").Select(s => s.Value).ToArray();
         }
 
+        public bool WasRanByNUnit()
+        {
+            return true;
+        }
+
         private int GetErrorCount()
         {
             return (int)_doc.Root.Attribute("errors");

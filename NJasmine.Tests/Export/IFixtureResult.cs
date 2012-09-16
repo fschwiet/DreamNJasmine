@@ -9,5 +9,6 @@ namespace NJasmineTests.Export
         ITestResult hasTestWithFullName(string name);
         ISuiteResult hasSuite(string name);
         string[] withStackTraces();
+        bool WasRanByNUnit();
     }
 }
