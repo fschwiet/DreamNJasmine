@@ -14,8 +14,8 @@
     <copyright>Copyright 2012</copyright>
     <tags>BDD TDD NUnit</tags>
 	<dependencies>
-		<dependency id="NUnit" version="2.6.0" />	
-		<dependency id="NUnit.Runners" version="2.6.0" />	
+		<dependency id="NUnit" version="[2.6.2]" />	
+		<dependency id="NUnit.Runners" version="[2.6.2]" />	
 		<dependency id="NJasmine" version="$version$" />
 	</dependencies>
   </metadata>
