@@ -8,13 +8,13 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: CLSCompliantAttribute(false )]
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute("NJasmine.Tests 0.3.2.0")]
+[assembly: AssemblyTitleAttribute("NJasmine.Tests 0.3.3.0")]
 [assembly: AssemblyDescriptionAttribute("NJasmine allows writing RSpec-like specifications.")]
 [assembly: AssemblyCompanyAttribute("n/a")]
-[assembly: AssemblyProductAttribute("NJasmine 0.3.2.0")]
+[assembly: AssemblyProductAttribute("NJasmine 0.3.3.0")]
 [assembly: AssemblyCopyrightAttribute("Copyright © Frank Schwieterman 2010-2011")]
-[assembly: AssemblyVersionAttribute("0.3.2.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.3.2.0 / 5a385f4")]
-[assembly: AssemblyFileVersionAttribute("0.3.2.0")]
+[assembly: AssemblyVersionAttribute("0.3.3.0")]
+[assembly: AssemblyInformationalVersionAttribute("0.3.3.0 / 67b2fb2")]
+[assembly: AssemblyFileVersionAttribute("0.3.3.0")]
 [assembly: AssemblyDelaySignAttribute(false)]
 

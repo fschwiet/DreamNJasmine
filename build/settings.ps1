@@ -26,7 +26,7 @@ properties {
   # BUILD_NUMBER is defined during CI builds. Make sure that this value
   # is changed if the CI system in use does not set this variable.
   # Make sure Semver versioning is used for the build number.
-  $build.version = "0.3.2"
+  $build.version = "0.3.3"
   if($env:BUILD_NUMBER) { $build.version = $env:BUILD_NUMBER } 
   $prerelease = $false;
 
