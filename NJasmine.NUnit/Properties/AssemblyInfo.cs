@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("NJasmine 0.3.2.0")]
 [assembly: AssemblyCopyrightAttribute("Copyright © Frank Schwieterman 2010-2011")]
 [assembly: AssemblyVersionAttribute("0.3.2.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.3.2.0 / 2d1e050")]
+[assembly: AssemblyInformationalVersionAttribute("0.3.2.0 / 5a385f4")]
 [assembly: AssemblyFileVersionAttribute("0.3.2.0")]
 [assembly: AssemblyDelaySignAttribute(false)]
 
