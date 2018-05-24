@@ -2,7 +2,7 @@
 
 Available on Nuget: http://nuget.org/List/Packages/NJasmine
 
-NJasmine is a RSpec-ish test language inspired by the javascript test library Jasmine (http://pivotal.github.com/jasmine/) for C# / .Net programming.
+NJasmine is a RSpec-ish test language inspired by the javascript test library Jasmine (https://jasmine.github.io/) for C# / .Net programming.
 
     given("some preconditions", () => {
 
